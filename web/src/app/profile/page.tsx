@@ -27,7 +27,8 @@ function Body() {
         <h1 className="text-xl font-bold">내 정보</h1>
         <dl className="mt-3 grid grid-cols-2 gap-y-2 text-sm sm:grid-cols-3">
           {[
-            ["가명 ID", p.pseudoId],
+            ["아이디", p.pseudoId],
+            ["학번", `${String(p.admissionYear).slice(2)}학번`],
             ["소속", `${dept?.college} ${dept?.name}`],
             ["학년·학적", `${p.grade}학년 · ${p.status}`],
             ["목표 직무", job.name],
@@ -107,7 +108,7 @@ function Body() {
 
       <div className="card border-red-200 p-5">
         <h2 className="font-bold text-danger">내 데이터 삭제</h2>
-        <p className="mt-1 text-sm text-slate-600">프로필·퀘스트·알림 기록을 모두 지워요. 되돌릴 수 없어요.</p>
+        <p className="mt-1 text-sm text-slate-600">계정과 프로필·퀘스트·알림 기록을 모두 지워요. 되돌릴 수 없어요.</p>
         <button
           className="btn mt-3 bg-danger text-white"
           onClick={() => {

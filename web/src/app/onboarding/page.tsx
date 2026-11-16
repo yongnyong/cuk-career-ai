@@ -1,75 +1,64 @@
 "use client";
-import { useMemo, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import { useRouter } from "next/navigation";
-import { Loader2, Sparkles, UserRound } from "lucide-react";
+import { ClipboardCheck, Loader2, Sparkles } from "lucide-react";
 import { COLLEGES, DEPARTMENTS, DEPARTMENT_SOURCE, getDepartment } from "@/lib/data/departments";
-import { JOBS, jobById, skillById } from "@/lib/data/catalog";
-import { suggestJobs } from "@/lib/engine";
+import { JOBS, jobById } from "@/lib/data/catalog";
+import { diagnosisItems, gradeStage, matchJobs } from "@/lib/engine";
 import { useStore } from "@/lib/store";
+import { useMounted } from "@/lib/useMounted";
 import type { Profile, SkillState } from "@/lib/types";
 
-const STEPS = ["소속", "목표", "현재 역량", "준비 시간"];
+const STEPS = ["기본 정보", "보유 역량 진단", "목표", "준비 시간"];
+const YEARS = Array.from({ length: 12 }, (_, i) => 2026 - i);
 
-// 시연용 페르소나 (기획서 4.8 스토리보드)
-const PERSONAS: { label: string; desc: string; p: Partial<Profile> }[] = [
-  {
-    label: "민지",
-    desc: "인공지능학과 3학년 · AI 엔지니어",
-    p: { departmentId: "ai", grade: 3, status: "재학", jobId: "ai-engineer", skills: { "SK-PY-01": "verified", "SK-DA": "self" } },
-  },
-  {
-    label: "서연",
-    desc: "프랑스어문화학과 2학년 · 문화 창업",
-    p: { departmentId: "french", grade: 2, status: "재학", jobId: "founder", interests: ["content-planner"], skills: { "SK-IDEA": "self" } },
-  },
-  {
-    label: "도윤",
-    desc: "영어영문학부 3학년 · 해외영업",
-    p: { departmentId: "english", grade: 3, status: "재학", jobId: "overseas-sales", interests: ["marketer"], skills: { "SK-TOEIC": "verified" } },
-  },
-];
+const blank: Profile = {
+  pseudoId: "",
+  admissionYear: 2026,
+  campus: "성심",
+  departmentId: "",
+  grade: 1,
+  status: "재학",
+  jobId: "",
+  interests: [],
+  weeklyHours: 5,
+  targetTerm: "2027 하계",
+  skills: {},
+  createdAt: "",
+};
 
-const newId = () => "U-" + Math.random().toString(36).slice(2, 8).toUpperCase();
-
-export default function Onboarding() {
-  const { setProfile } = useStore();
+function Form({ start }: { start: Profile }) {
+  const { session, setProfile } = useStore();
   const router = useRouter();
   const [step, setStep] = useState(0);
   const [loading, setLoading] = useState(false);
   const [college, setCollege] = useState("");
-  const [f, setF] = useState<Profile>({
-    pseudoId: "",
-    campus: "성심",
-    departmentId: "",
-    grade: 1,
-    status: "재학",
-    jobId: "",
-    interests: [],
-    weeklyHours: 5,
-    targetTerm: "2027 하계",
-    skills: {},
-    createdAt: "",
-  });
+  const [f, setF] = useState<Profile>(start);
 
   const dept = getDepartment(f.departmentId);
   const maxGrade = dept && ["medicine", "pharmacy"].includes(dept.field) ? 6 : 4;
-  const jobs = useMemo(() => (f.departmentId ? suggestJobs(f.departmentId) : JOBS), [f.departmentId]);
-  const recommendedIds = new Set(dept ? JOBS.filter((j) => j.fields.includes(dept.field)).map((j) => j.id) : []);
+  const stage = gradeStage(f.grade);
+  const groups = useMemo(() => (f.departmentId ? diagnosisItems(f.departmentId, f.grade) : []), [f.departmentId, f.grade]);
+  const matches = useMemo(() => matchJobs(f.skills, f.departmentId), [f.skills, f.departmentId]);
+  const heldCount = Object.values(f.skills).filter((x) => x !== "none").length;
   const job = jobById(f.jobId);
+  const canNext = [!!f.departmentId, true, !!f.jobId, true][step];
 
-  const canNext = [!!f.departmentId, !!f.jobId, true, true][step];
+  const toggle = (skill: string) => {
+    const next: Record<string, SkillState> = { ...f.skills };
+    if ((next[skill] ?? "none") === "none") next[skill] = "self";
+    else delete next[skill];
+    setF({ ...f, skills: next });
+  };
 
-  const finish = (p: Profile) => {
+  const finish = () => {
     setLoading(true);
     // 서버 연결 시: POST /api/profile → Gemini가 경로 설명 생성(노드는 직무 그래프 내 ID만 허용)
     setTimeout(() => {
-      setProfile({ ...p, pseudoId: newId(), createdAt: new Date().toISOString() });
+      setProfile({ ...f, pseudoId: session ?? f.pseudoId, createdAt: f.createdAt || new Date().toISOString() });
       router.push("/tree");
     }, 1200);
   };
-
-  const startPersona = (pp: Partial<Profile>) =>
-    finish({ ...f, interests: [], ...pp, campus: getDepartment(pp.departmentId!)!.campus } as Profile);
 
   if (loading)
     return (
@@ -81,17 +70,7 @@ export default function Onboarding() {
     );
 
   return (
-    <div className="mx-auto max-w-3xl space-y-5">
-      <div className="card flex flex-wrap items-center gap-2 p-4 text-sm">
-        <UserRound size={16} className="text-slate-500" />
-        <span className="text-slate-600">시연용 빠른 시작:</span>
-        {PERSONAS.map((x) => (
-          <button key={x.label} className="btn-ghost !py-1" onClick={() => startPersona(x.p)} title={x.desc}>
-            {x.label} <span className="text-xs text-slate-400">{x.desc}</span>
-          </button>
-        ))}
-      </div>
-
+    <div className="mx-auto max-w-3xl">
       <div className="card p-6">
         <ol className="mb-6 flex gap-2 text-xs">
           {STEPS.map((s, i) => (
@@ -103,8 +82,10 @@ export default function Onboarding() {
 
         {step === 0 && (
           <div className="space-y-4">
-            <h1 className="text-xl font-bold">어느 학과에서 출발하나요?</h1>
-            <p className="text-sm text-slate-500">전공은 출발점일 뿐, 진로의 한계가 아니에요. 이름·학번·연락처는 받지 않아요.</p>
+            <h1 className="text-xl font-bold">{session}님, 기본 정보를 알려 주세요</h1>
+            <p className="text-sm text-slate-500">
+              학과와 학년에 맞춰 체크할 항목을 골라 드려요. 학번은 입학년도만 받고, 개인을 알아볼 수 있는 학번 전체·이름·연락처는 받지 않아요.
+            </p>
             <div className="grid gap-3 sm:grid-cols-2">
               <label className="text-sm">
                 대학·계열
@@ -129,7 +110,7 @@ export default function Onboarding() {
                   value={f.departmentId}
                   onChange={(e) => {
                     const d = getDepartment(e.target.value);
-                    setF({ ...f, departmentId: e.target.value, campus: d?.campus ?? "성심", jobId: "" });
+                    setF({ ...f, departmentId: e.target.value, campus: d?.campus ?? "성심" });
                   }}
                 >
                   <option value="">선택하세요</option>
@@ -151,6 +132,16 @@ export default function Onboarding() {
                 </select>
               </label>
               <label className="text-sm">
+                학번 (입학년도)
+                <select className="input mt-1" value={f.admissionYear} onChange={(e) => setF({ ...f, admissionYear: +e.target.value })}>
+                  {YEARS.map((y) => (
+                    <option key={y} value={y}>
+                      {String(y).slice(2)}학번 ({y}년 입학)
+                    </option>
+                  ))}
+                </select>
+              </label>
+              <label className="text-sm">
                 학적
                 <select className="input mt-1" value={f.status} onChange={(e) => setF({ ...f, status: e.target.value as Profile["status"] })}>
                   <option>재학</option>
@@ -160,7 +151,7 @@ export default function Onboarding() {
               </label>
             </div>
             <p className="text-xs text-slate-400">
-              학과 목록 출처:{" "}
+              학과·학년·학적은 본인이 입력한 값이며 학교 시스템으로 확인한 정보가 아니에요. 학과 목록 출처:{" "}
               <a href={DEPARTMENT_SOURCE.url} target="_blank" rel="noreferrer" className="underline">
                 {DEPARTMENT_SOURCE.label}
               </a>{" "}
@@ -169,29 +160,83 @@ export default function Onboarding() {
           </div>
         )}
 
-        {step === 1 && (
+        {step === 1 && dept && (
+          <div className="space-y-4">
+            <h1 className="flex items-center gap-2 text-xl font-bold">
+              <ClipboardCheck className="text-accent" size={22} /> 지금 가지고 있는 것을 체크해 주세요
+            </h1>
+            <div className="rounded-lg bg-navy/5 px-4 py-3 text-sm">
+              <b>
+                {dept.name} {f.grade}학년 · {stage.stage} 단계
+              </b>
+              <p className="text-slate-600">{stage.tip}</p>
+            </div>
+            <p className="text-sm text-slate-500">
+              {dept.name} 학생이 많이 준비하는 항목을 골랐어요. 체크한 항목은 &lsquo;자기 보고&rsquo;로 저장되고, 점수·증빙 파일은 받지 않아요.
+            </p>
+            {groups.map((g) => (
+              <section key={g.kind}>
+                <h2 className="mb-1.5 flex items-center gap-2 text-sm font-bold">
+                  {g.kind}
+                  {g.focus && <span className="chip bg-accent/15 text-accent">{f.grade}학년에 챙기면 좋아요</span>}
+                </h2>
+                <div className="flex flex-wrap gap-1.5">
+                  {g.skills.map((sk) => {
+                    const on = (f.skills[sk.id] ?? "none") !== "none";
+                    return (
+                      <button
+                        key={sk.id}
+                        type="button"
+                        aria-pressed={on}
+                        onClick={() => toggle(sk.id)}
+                        className={`rounded-full border px-3 py-1.5 text-sm transition ${
+                          on ? "border-navy bg-navy text-white" : "border-slate-300 bg-white text-slate-700 hover:border-slate-500"
+                        }`}
+                      >
+                        {on ? "✓ " : ""}
+                        {sk.name}
+                      </button>
+                    );
+                  })}
+                </div>
+              </section>
+            ))}
+            <p className="rounded-lg bg-paper px-4 py-2 text-sm">
+              체크한 항목 <b>{heldCount}개</b>
+              {heldCount === 0 && " — 아직 없어도 괜찮아요. 다음 단계에서 시작할 경로를 골라요."}
+            </p>
+          </div>
+        )}
+
+        {step === 2 && (
           <div className="space-y-4">
             <h1 className="text-xl font-bold">어떤 일을 해 보고 싶나요?</h1>
             <p className="text-sm text-slate-500">
-              <span className="chip bg-accent/15 text-accent">전공 연계</span> 표시는 {dept?.name} 학생에게 먼저 보여 주는 직무예요. 다른 직무도
-              자유롭게 고를 수 있어요.
+              체크한 항목과 많이 겹치는 순서로 정렬했어요. 전공은 출발점일 뿐이라 어떤 직무든 고를 수 있어요.
             </p>
             <div className="grid gap-2 sm:grid-cols-2">
-              {jobs.map((j) => (
+              {matches.map((m) => (
                 <button
-                  key={j.id}
-                  onClick={() => setF({ ...f, jobId: j.id, interests: f.interests.filter((x) => x !== j.id) })}
-                  className={`rounded-lg border p-3 text-left text-sm transition ${f.jobId === j.id ? "border-navy bg-navy/5 ring-2 ring-navy/20" : "border-slate-200 hover:border-slate-400"}`}
+                  key={m.job.id}
+                  onClick={() => setF({ ...f, jobId: m.job.id, interests: f.interests.filter((x) => x !== m.job.id) })}
+                  className={`rounded-lg border p-3 text-left text-sm transition ${
+                    f.jobId === m.job.id ? "border-navy bg-navy/5 ring-2 ring-navy/20" : "border-slate-200 hover:border-slate-400"
+                  }`}
                 >
-                  <div className="flex items-center gap-2 font-medium">
-                    {j.name}
-                    {recommendedIds.has(j.id) && <span className="chip bg-accent/15 text-accent">전공 연계</span>}
+                  <div className="flex flex-wrap items-center gap-1.5 font-medium">
+                    {m.job.name}
+                    {m.major && <span className="chip bg-accent/15 text-accent">전공 연계</span>}
+                    {m.have > 0 && (
+                      <span className="chip bg-emerald-100 text-emerald-700">
+                        보유 {m.have}/{m.total}
+                      </span>
+                    )}
                   </div>
-                  <div className="text-xs text-slate-500">{j.summary}</div>
+                  <div className="text-xs text-slate-500">{m.job.summary}</div>
                 </button>
               ))}
             </div>
-            {f.jobId && (
+            {job && (
               <div>
                 <p className="mb-2 text-sm font-medium">함께 관심 있는 분야 (선택)</p>
                 <div className="flex flex-wrap gap-1.5">
@@ -210,43 +255,6 @@ export default function Onboarding() {
                 </div>
               </div>
             )}
-          </div>
-        )}
-
-        {step === 2 && job && (
-          <div className="space-y-4">
-            <h1 className="text-xl font-bold">{job.name} 경로에서 이미 해 둔 것이 있나요?</h1>
-            <p className="text-sm text-slate-500">
-              여기서 체크한 항목은 &lsquo;자기 보고&rsquo;로 표시돼요. 어학 점수·자격증은 내 정보에서 증빙을 확인하면 &lsquo;검증됨&rsquo;으로
-              바뀌어요.
-            </p>
-            <div className="grid gap-2 sm:grid-cols-2">
-              {job.nodes.map((n) => {
-                const sk = skillById(n.skill)!;
-                const on = (f.skills[n.skill] ?? "none") !== "none";
-                return (
-                  <label key={n.skill} className={`flex cursor-pointer items-center gap-3 rounded-lg border p-3 text-sm ${on ? "border-navy bg-navy/5" : "border-slate-200"}`}>
-                    <input
-                      type="checkbox"
-                      checked={on}
-                      onChange={() => {
-                        const next: Record<string, SkillState> = { ...f.skills };
-                        if (on) delete next[n.skill];
-                        else next[n.skill] = "self";
-                        setF({ ...f, skills: next });
-                      }}
-                    />
-                    <span>
-                      {sk.name}
-                      <span className="ml-1 text-xs text-slate-400">
-                        {sk.kind}
-                        {n.required ? " · 필수" : " · 선택"}
-                      </span>
-                    </span>
-                  </label>
-                );
-              })}
-            </div>
           </div>
         )}
 
@@ -281,10 +289,10 @@ export default function Onboarding() {
           </button>
           {step < 3 ? (
             <button className="btn-primary" disabled={!canNext} onClick={() => setStep(step + 1)}>
-              다음
+              {step === 0 ? "보유 역량 진단하기" : "다음"}
             </button>
           ) : (
-            <button className="btn bg-accent text-white" onClick={() => finish(f)}>
+            <button className="btn bg-accent text-white" onClick={finish}>
               <Sparkles size={16} /> AI 경로 만들기
             </button>
           )}
@@ -292,4 +300,16 @@ export default function Onboarding() {
       </div>
     </div>
   );
+}
+
+export default function Onboarding() {
+  const { session, profile, ready } = useStore();
+  const router = useRouter();
+  const mounted = useMounted();
+  useEffect(() => {
+    if (ready && !session) router.replace("/signup");
+  }, [ready, session, router]);
+  if (!mounted || !ready || !session) return null;
+  // 기존 프로필이 있으면 그 값에서 시작(다시 설정)
+  return <Form key={session} start={profile ?? blank} />;
 }

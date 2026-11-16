@@ -6,7 +6,7 @@
 
 ```
 [브라우저] ──HTTPS──> Vercel (web/ · Next.js)
-                         │  NEXT_PUBLIC_API_URL
+                         │  API_URL
                          ▼
                VPS 1대 (Docker Compose)
                ├─ caddy     : HTTPS 자동 인증서, 리버스 프록시
@@ -43,7 +43,7 @@
 2. Vercel에 저장소 연결, Root Directory `web` → 지금 상태(브라우저 저장 모드)로 먼저 공개 URL 확보
 3. VPS 생성(Ubuntu 24.04) → Docker 설치 → 방화벽 80·443·22만 허용, SSH 키 로그인만
 4. `api/` 구현 후 `docker compose up -d` → Caddy 도메인 연결
-5. Vercel 환경변수 `NEXT_PUBLIC_API_URL` 설정 → 웹이 서버 데이터로 전환
+5. Vercel 환경변수 `API_URL` 설정 → 웹이 서버 데이터로 전환
 6. 시드 스크립트로 시연 데이터 적재, DB 백업 파일 보관
 
 ## 비밀값
@@ -54,7 +54,8 @@
 
 ## 시연 안전장치
 
-- `NEXT_PUBLIC_API_URL`이 비어 있거나 서버가 응답하지 않으면 웹은 브라우저 내장 데이터로 동작한다 → 현장 네트워크 문제에도 시연 가능.
+- `API_URL`이 비어 있거나 서버가 응답하지 않으면 웹은 로컬 모드(브라우저 저장)로 동작한다 → 현장 네트워크 문제에도 시연 가능. 단, 이때는 서버 계정으로 로그인할 수 없고 시연용 계정을 쓴다.
+- 웹은 `/api/*` 요청을 `API_URL`로 넘긴다(Next.js rewrites). 브라우저 입장에서는 같은 출처라 세션 쿠키가 그대로 동작한다.
 - 12/1 기능 동결 후 서버 스냅샷 1회, DB 덤프 1회.
 - Gemini 호출은 공고 해시 기준으로 결과를 저장해 재호출하지 않는다. 일일 호출 상한을 둔다.
 - 시연 영상(3분)은 배포 URL에서 녹화한다.

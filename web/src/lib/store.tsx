@@ -1,14 +1,76 @@
 "use client";
-// 클라이언트 상태. 서버(api/) 연결 전까지 브라우저 localStorage에만 저장한다(개인정보 없음: 가명 ID·학과·학년만).
+// 클라이언트 상태.
+// - 서버 모드: 계정·세션은 API 서버가 관리하고(HttpOnly 쿠키), 내 데이터는 서버에 저장한다.
+// - 로컬 모드: API 서버에 닿지 않을 때의 대체 동작. 계정이 이 브라우저 안에서만 유효하다(비밀번호는 salt+PBKDF2 해시).
+// 공고 목록과 가상 시계는 아직 브라우저에만 있다.
 import { createContext, useCallback, useContext, useEffect, useMemo, useState } from "react";
 import { SEED_OPPORTUNITIES } from "./data/opportunities";
 import { evaluate, latest, syncNotices, fmt } from "./engine";
 import type { Notice, Opportunity, Profile, SkillState } from "./types";
 
 export const DEMO_START = "2026-11-16T09:00:00+09:00";
-const KEY = "cuk-career-ai:v1";
+const KEY = "cuk-career-ai:v2";
+
+interface UserData {
+  profile: Profile | null;
+  followed: string[];
+  quests: Record<string, Record<string, boolean>>;
+  notices: Notice[];
+  newOpps: string[];
+}
+interface Account {
+  salt: string;
+  hash: string; // 시연용 계정은 빈 문자열(비밀번호 없음)
+  data: UserData;
+}
+const isDemo = (id: string | null) => !!id && id.startsWith("demo-"); // 시연용 계정은 서버에 저장하지 않는다
+
+// API 호출. 서버에 닿지 않거나 JSON이 아니면 null(= 서버 없음)
+async function call(path: string, method = "GET", body?: unknown) {
+  try {
+    const r = await fetch("/api" + path, {
+      method,
+      headers: body ? { "Content-Type": "application/json" } : undefined,
+      body: body ? JSON.stringify(body) : undefined,
+      credentials: "same-origin",
+    });
+    if (!r.headers.get("content-type")?.includes("application/json")) return null;
+    return { ok: r.ok, status: r.status, data: await r.json() };
+  } catch {
+    return null;
+  }
+}
+const errorOf = (data: { detail?: unknown }) => (typeof data.detail === "string" ? data.detail : "요청을 처리하지 못했어요.");
+// 서버가 준 내 데이터에서 아는 필드만 꺼낸다
+const fromServer = (st: Partial<UserData> | null): UserData => ({ ...emptyUser(), ...(st ? pickKeys(st) : {}) });
+const pickKeys = (st: Partial<UserData>): Partial<UserData> => ({
+  ...(st.profile !== undefined && { profile: st.profile }),
+  ...(Array.isArray(st.followed) && { followed: st.followed }),
+  ...(st.quests && { quests: st.quests }),
+  ...(Array.isArray(st.notices) && { notices: st.notices }),
+  ...(Array.isArray(st.newOpps) && { newOpps: st.newOpps }),
+});
+
+const emptyUser = (): UserData => ({ profile: null, followed: [], quests: {}, notices: [], newOpps: [] });
+const pickUser = (s: State): UserData => ({
+  profile: s.profile,
+  followed: s.followed,
+  quests: s.quests,
+  notices: s.notices,
+  newOpps: s.newOpps,
+});
+
+async function hashPassword(salt: string, pw: string) {
+  // 느린 KDF(PBKDF2)로 무차별 대입을 어렵게 한다. 서버 연결 시에는 서버에서 argon2로 처리한다.
+  const enc = new TextEncoder();
+  const key = await crypto.subtle.importKey("raw", enc.encode(pw), "PBKDF2", false, ["deriveBits"]);
+  const buf = await crypto.subtle.deriveBits({ name: "PBKDF2", salt: enc.encode(salt), iterations: 600_000, hash: "SHA-256" }, key, 256);
+  return Array.from(new Uint8Array(buf), (b) => b.toString(16).padStart(2, "0")).join("");
+}
 
 interface State {
+  session: string | null; // 로그인한 아이디
+  users: Record<string, Account>;
   profile: Profile | null;
   now: string; // 가상 시계 (시연용)
   opportunities: Opportunity[];
@@ -19,6 +81,8 @@ interface State {
 }
 
 const initial = (): State => ({
+  session: null,
+  users: {},
   profile: null,
   now: DEMO_START,
   opportunities: SEED_OPPORTUNITIES,
@@ -29,8 +93,13 @@ const initial = (): State => ({
 });
 
 interface Ctx extends State {
-  ready: boolean; // localStorage 복원 완료 여부
+  ready: boolean; // 저장소 복원과 서버 세션 확인 완료 여부
+  mode: "server" | "local";
   nowDate: Date;
+  signup: (id: string, pw: string) => Promise<string | null>; // 실패 시 사유 반환
+  login: (id: string, pw: string) => Promise<string | null>;
+  loginDemo: (id: string, profile: Profile) => void;
+  logout: () => void;
   setProfile: (p: Profile) => void;
   setSkill: (skill: string, st: SkillState) => void;
   follow: (oppId: string) => void;
@@ -50,6 +119,7 @@ const StoreCtx = createContext<Ctx | null>(null);
 export function StoreProvider({ children }: { children: React.ReactNode }) {
   const [state, setState] = useState<State>(initial);
   const [ready, setReady] = useState(false);
+  const [mode, setMode] = useState<"server" | "local">("local");
 
   // 브라우저 저장소(외부 시스템)에서 한 번 복원한다
   /* eslint-disable react-hooks/set-state-in-effect */
@@ -60,7 +130,16 @@ export function StoreProvider({ children }: { children: React.ReactNode }) {
     } catch {
       /* 저장소 사용 불가 시 기본값 */
     }
-    setReady(true);
+    // 서버 세션 확인: 200이면 서버 데이터로 시작, 401이면 로그아웃 상태, 응답이 없으면 로컬 모드
+    call("/me").then((r) => {
+      if (r && (r.ok || r.status === 401)) {
+        setMode("server");
+        setState((s) =>
+          r.ok ? { ...s, ...fromServer(r.data.state), session: r.data.id } : isDemo(s.session) ? s : { ...s, ...emptyUser(), session: null },
+        );
+      }
+      setReady(true);
+    });
   }, []);
   /* eslint-enable react-hooks/set-state-in-effect */
 
@@ -73,11 +152,23 @@ export function StoreProvider({ children }: { children: React.ReactNode }) {
     }
   }, [state, ready]);
 
+  // 서버 모드: 내 데이터가 바뀌면 잠시 모아 서버에 저장
+  const { session, profile, followed, quests, notices, newOpps } = state;
+  useEffect(() => {
+    if (!ready || mode !== "server" || !session || isDemo(session)) return;
+    const t = setTimeout(() => call("/me/state", "PUT", { state: { profile, followed, quests, notices, newOpps } }), 600);
+    return () => clearTimeout(t);
+  }, [ready, mode, session, profile, followed, quests, notices, newOpps]);
+
   // 상태 변경 후 알림 재계산
   const update = useCallback((fn: (s: State) => State) => {
     setState((prev) => {
-      const s = fn(prev);
-      return { ...s, notices: syncNotices(s.notices, s.opportunities, s.followed, new Date(s.now)) };
+      let s = fn(prev);
+      s = { ...s, notices: syncNotices(s.notices, s.opportunities, s.followed, new Date(s.now)) };
+      // 로그인 중이면 계정별 데이터에 반영
+      if (s.session && s.users[s.session])
+        s = { ...s, users: { ...s.users, [s.session]: { ...s.users[s.session], data: pickUser(s) } } };
+      return s;
     });
   }, []);
 
@@ -85,7 +176,51 @@ export function StoreProvider({ children }: { children: React.ReactNode }) {
     () => ({
       ...state,
       ready,
+      mode,
       nowDate: new Date(state.now),
+      signup: async (id, pw) => {
+        if (mode === "server") {
+          const r = await call("/auth/signup", "POST", { id, password: pw });
+          if (!r) return "서버에 연결하지 못했어요. 잠시 뒤 다시 시도해 주세요.";
+          if (!r.ok) return errorOf(r.data);
+          update((s) => ({ ...s, ...emptyUser(), session: r.data.id }));
+          return null;
+        }
+        if (!/^[a-z0-9_]{4,16}$/.test(id)) return "아이디는 영문 소문자·숫자 4~16자로 입력해 주세요.";
+        if (pw.length < 6) return "비밀번호는 6자 이상으로 입력해 주세요.";
+        if (state.users[id]) return "이미 사용 중인 아이디예요.";
+        const salt = crypto.randomUUID();
+        const hash = await hashPassword(salt, pw);
+        update((s) => ({ ...s, ...emptyUser(), session: id, users: { ...s.users, [id]: { salt, hash, data: emptyUser() } } }));
+        return null;
+      },
+      login: async (id, pw) => {
+        if (mode === "server") {
+          const r = await call("/auth/login", "POST", { id, password: pw });
+          if (!r) return "서버에 연결하지 못했어요. 잠시 뒤 다시 시도해 주세요.";
+          if (!r.ok) return errorOf(r.data);
+          update((s) => ({ ...s, ...fromServer(r.data.state), session: r.data.id }));
+          return null;
+        }
+        const acc = state.users[id];
+        const fail = "아이디 또는 비밀번호가 맞지 않아요.";
+        if (!acc || !acc.hash) return fail;
+        if ((await hashPassword(acc.salt, pw)) !== acc.hash) return fail;
+        update((s) => ({ ...s, ...acc.data, session: id }));
+        return null;
+      },
+      loginDemo: (id, profile) =>
+        update((s) => ({
+          ...s,
+          ...emptyUser(),
+          ...(s.users[id]?.data ?? { profile }),
+          session: id,
+          users: s.users[id] ? s.users : { ...s.users, [id]: { salt: "", hash: "", data: emptyUser() } },
+        })),
+      logout: () => {
+        if (mode === "server" && !isDemo(state.session)) void call("/auth/logout", "POST");
+        update((s) => ({ ...s, ...emptyUser(), session: null }));
+      },
       setProfile: (p) => update((s) => ({ ...s, profile: p })),
       setSkill: (skill, st) =>
         update((s) => (s.profile ? { ...s, profile: { ...s.profile, skills: { ...s.profile.skills, [skill]: st } } } : s)),
@@ -147,11 +282,17 @@ export function StoreProvider({ children }: { children: React.ReactNode }) {
           }),
         })),
       clearNew: () => update((s) => ({ ...s, newOpps: [] })),
-      deleteMyData: () =>
-        update((s) => ({ ...s, profile: null, followed: [], quests: {}, notices: [], newOpps: [] })),
+      deleteMyData: () => {
+        if (mode === "server" && !isDemo(state.session)) void call("/me", "DELETE");
+        update((s) => {
+          const users = { ...s.users };
+          if (s.session) delete users[s.session];
+          return { ...s, ...emptyUser(), session: null, users };
+        });
+      },
       resetDemo: () => update(() => initial()),
     }),
-    [state, update, ready],
+    [state, update, ready, mode],
   );
 
   return <StoreCtx.Provider value={api}>{children}</StoreCtx.Provider>;

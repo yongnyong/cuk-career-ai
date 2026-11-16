@@ -76,7 +76,8 @@ export interface ConditionResult {
 export type SkillState = "none" | "self" | "verified";
 
 export interface Profile {
-  pseudoId: string; // 가명 ID — 이름·학번·연락처는 받지 않는다
+  pseudoId: string; // 로그인 아이디(가명) — 이름·연락처·학번 전체는 받지 않는다
+  admissionYear: number; // 학번 = 입학년도(예: 2021 → 21학번). 개인 식별이 되는 학번 전체는 저장하지 않는다
   campus: string;
   departmentId: string;
   grade: number;

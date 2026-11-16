@@ -12,7 +12,7 @@ const FEATURES = [
 ];
 
 export default function Home() {
-  const { profile } = useStore();
+  const { profile, session } = useStore();
   return (
     <div className="space-y-10">
       <section className="rounded-2xl bg-navy px-6 py-10 text-white sm:px-10">
@@ -26,7 +26,7 @@ export default function Home() {
           공고를 내 스킬트리에 연결해 드려요.
         </p>
         <div className="mt-6 flex flex-wrap gap-3">
-          <Link href={profile ? "/tree" : "/onboarding"} className="btn bg-accent text-white hover:brightness-110">
+          <Link href={profile ? "/tree" : session ? "/onboarding" : "/signup"} className="btn bg-accent text-white hover:brightness-110">
             {profile ? "내 스킬트리로" : "1분 만에 시작하기"} <ArrowRight size={16} />
           </Link>
           <Link href="/sources" className="btn border border-white/30 text-white hover:bg-white/10">

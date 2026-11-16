@@ -415,3 +415,38 @@ export function parsePosting(raw: string): Parsed {
 }
 
 export { SKILLS };
+
+// ───────── 보유 역량 진단 (가입 직후: 학과·학년 기준 체크 항목과 직무 일치도)
+const COMMON_SKILLS = ["SK-TOEIC", "SK-OPIC", "SK-COMP", "SK-PORT", "SK-RESUME"];
+const KIND_ORDER = ["어학", "자격증", "프로젝트", "교육", "경험", "역량"] as const;
+
+export const GRADE_STAGE: Record<number, { stage: string; tip: string; focus: string[] }> = {
+  1: { stage: "탐색", tip: "관심 활동 몇 개로 진로 후보를 찾는 시기예요. 아직 없는 게 당연해요.", focus: ["교육", "경험"] },
+  2: { stage: "역량 쌓기", tip: "목표 직무의 필수·우대 역량을 하나씩 채우는 시기예요.", focus: ["어학", "교육", "프로젝트"] },
+  3: { stage: "현장실습", tip: "조건이 맞는 실습을 찾고 서류를 준비하는 시기예요.", focus: ["프로젝트", "자격증", "역량"] },
+  4: { stage: "취업·창업", tip: "마감과 정정을 놓치지 않는 게 중요한 시기예요.", focus: ["역량", "자격증", "어학"] },
+};
+export const gradeStage = (grade: number) => GRADE_STAGE[Math.min(grade, 4)];
+
+export function diagnosisItems(departmentId: string, grade: number) {
+  const dept = getDepartment(departmentId);
+  const related = dept && dept.field !== "open" ? JOBS.filter((j) => j.fields.includes(dept.field)) : JOBS;
+  const ids = new Set<string>(COMMON_SKILLS);
+  for (const j of related) for (const n of j.nodes) ids.add(n.skill);
+  const focus = gradeStage(grade).focus;
+  return KIND_ORDER.map((kind) => ({
+    kind,
+    focus: focus.includes(kind),
+    skills: SKILLS.filter((s) => s.kind === kind && ids.has(s.id)),
+  }))
+    .filter((g) => g.skills.length)
+    .sort((a, b) => Number(b.focus) - Number(a.focus));
+}
+
+export function matchJobs(skills: Record<string, string>, departmentId: string) {
+  const dept = getDepartment(departmentId);
+  return JOBS.map((j) => {
+    const have = j.nodes.filter((n) => (skills[n.skill] ?? "none") !== "none").length;
+    return { job: j, have, total: j.nodes.length, major: !!dept && j.fields.includes(dept.field) };
+  }).sort((a, b) => b.have / b.total - a.have / a.total || Number(b.major) - Number(a.major));
+}
