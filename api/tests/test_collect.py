@@ -71,3 +71,23 @@ def test_kstartup_build_and_filters():
     assert {c["src"] for c in o["required"]} <= {s["id"] for s in o["sections"]}
     assert collect.build_kstartup({**KST_ITEM, "aply_trgt": "일반기업"}, NOW) is None
     assert collect.build_kstartup({**KST_ITEM, "supt_regin": "부산"}, NOW) is None
+
+
+W24 = """<r><empSeqno>7</empSeqno><empWantedTitle>신입 공채</empWantedTitle><empBusiNm>회사</empBusiNm>
+<empWantedStdt>20261109</empWantedStdt><empWantedEndt>20261120</empWantedEndt><empWantedHomepgDetail>https://corp.example/apply</empWantedHomepgDetail>
+<empSelsList><empSelsListInfo><selsNm>서류전형</selsNm></empSelsListInfo><empSelsListInfo><selsNm>면접</selsNm></empSelsListInfo></empSelsList>
+<empRecrList><empRecrListInfo><empRecrNm>데이터 분석</empRecrNm><jobCont>분석 업무</jobCont><empWantedCareerNm>CAREER</empWantedCareerNm>
+<empWantedEduNm>대졸(4년)</empWantedEduNm><sptCertEtc>- 관련 전공 학사 / 문의 010-1234-5678</sptCertEtc><workRegionNm>서울</workRegionNm></empRecrListInfo></empRecrList>
+<empJobsList><empJobsListInfo><jobsCdKorNm>데이터 전문가</jobsCdKorNm></empJobsListInfo></empJobsList></r>"""
+
+
+def test_work24_build_keeps_only_entry_level():
+    import xml.etree.ElementTree as ET
+
+    o = collect.build_work24(ET.fromstring(W24.replace("CAREER", "신입")), NOW)
+    assert o["id"] == "w24-7" and o["type"] == "채용" and o["applyUrl"] == "https://corp.example/apply"
+    assert o["versions"][0]["deadline"] == "2026-11-20T23:59:00+09:00"
+    assert o["required"][0]["label"] == "학력: 대졸(4년)" and "010-1234-5678" not in str(o)
+    assert {c["src"] for c in o["required"]} <= {s["id"] for s in o["sections"]}
+    assert "데이터 전문가" in o["_hint"]
+    assert collect.build_work24(ET.fromstring(W24.replace("CAREER", "경력")), NOW) is None

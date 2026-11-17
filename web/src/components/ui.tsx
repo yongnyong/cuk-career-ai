@@ -19,6 +19,7 @@ export function VirtualTag() {
 const TYPE_COLOR: Record<OppType, string> = {
   현장실습: "bg-blue-100 text-blue-700",
   창업지원: "bg-orange-100 text-orange-700",
+  채용: "bg-violet-100 text-violet-700",
   장학: "bg-emerald-100 text-emerald-700",
   학사: "bg-slate-200 text-slate-700",
   비교과: "bg-pink-100 text-pink-700",

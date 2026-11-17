@@ -20,7 +20,7 @@ export interface Job {
   nodes: { skill: string; prereq?: string[]; required: boolean }[];
 }
 
-export type OppType = "현장실습" | "창업지원" | "장학" | "학사" | "비교과";
+export type OppType = "현장실습" | "창업지원" | "채용" | "장학" | "학사" | "비교과";
 
 export interface Condition {
   key: "status" | "grade" | "major" | "skill" | "other";

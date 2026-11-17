@@ -18,9 +18,12 @@ import time
 import urllib.error
 import urllib.parse
 import urllib.request
+import xml.etree.ElementTree as ET
 from datetime import datetime, timedelta, timezone
 from pathlib import Path
 from urllib.robotparser import RobotFileParser
+
+from defusedxml.ElementTree import fromstring as parse_xml  # 외부 XML은 안전한 파서로만 읽는다
 
 BASE = "https://www.catholic.ac.kr"
 LIST_URL = BASE + "/ko/campuslife/notice.do"
@@ -31,7 +34,7 @@ UA = "CUK-Career-AI/0.1 (student contest project)"
 KST = timezone(timedelta(hours=9))
 GEMINI_MODEL = os.environ.get("GEMINI_MODEL", "gemini-3.1-flash-lite")
 CATALOG = json.loads((Path(__file__).parent / "catalog.json").read_text(encoding="utf-8"))
-TYPES = ["현장실습", "창업지원", "장학", "학사", "비교과"]
+TYPES = ["현장실습", "창업지원", "채용", "장학", "학사", "비교과"]
 STATUSES = ["재학", "휴학", "졸업예정"]
 
 # 개인정보가 들어 있을 가능성이 높은 공지(선발 결과·명단)는 건너뛴다
@@ -141,13 +144,13 @@ def prompt(item: dict, body: str) -> str:
 {body[:6000]}"""
 
 
-def gemini(text: str) -> dict:
+def gemini(text: str, schema: dict = SCHEMA):
     req = urllib.request.Request(
         f"https://generativelanguage.googleapis.com/v1beta/models/{GEMINI_MODEL}:generateContent",
         data=json.dumps(
             {
                 "contents": [{"parts": [{"text": text}]}],
-                "generationConfig": {"responseMimeType": "application/json", "responseSchema": SCHEMA, "temperature": 0},
+                "generationConfig": {"responseMimeType": "application/json", "responseSchema": schema, "temperature": 0},
             }
         ).encode(),
         headers={"Content-Type": "application/json", "x-goog-api-key": os.environ["GEMINI_API_KEY"]},
@@ -284,6 +287,141 @@ def fetch_kstartup() -> list[dict]:
     return out
 
 
+WORK24_URL = "https://www.work24.go.kr/cm/openApi/call/wk/callOpenApiSvcInfo210{kind}21.do"
+JOBS_SCHEMA = {
+    "type": "ARRAY",
+    "items": {
+        "type": "OBJECT",
+        "properties": {"id": {"type": "STRING"}, "jobs": {"type": "ARRAY", "items": {"type": "STRING"}}},
+        "required": ["id", "jobs"],
+    },
+}
+
+
+def work24(kind: str, **params) -> ET.Element:
+    """고용24 공채속보 API(개인 인증키로 허용된 범위). 인증키가 URL에 들어가므로 오류에 URL을 남기지 않는다."""
+    q = urllib.parse.urlencode({"authKey": os.environ["WORK24_API_KEY"], "callTp": kind, "returnType": "XML", **params})
+    try:
+        root = parse_xml(fetch(f"{WORK24_URL.format(kind=kind)}?{q}"))
+    except Exception as e:
+        raise RuntimeError(f"고용24 API 호출 실패: {type(e).__name__}") from None
+    if root.findtext("error"):
+        raise RuntimeError(f"고용24 API 오류: {root.findtext('error')}")
+    return root
+
+
+def build_work24(d: ET.Element, now: datetime) -> dict | None:
+    """공채속보 상세 → Opportunity. 신입(또는 경력 무관)을 뽑는 모집 단위가 없으면 None. 직무 연결은 나중에 채운다."""
+    clean = lambda t: scrub(re.sub(r"[ \t\r]+", " ", t or "")).strip()  # noqa: E731
+    units = [u for u in d.iter("empRecrListInfo") if re.search(r"신입|무관", u.findtext("empWantedCareerNm") or "")]
+    try:
+        deadline = datetime.strptime(d.findtext("empWantedEndt") or "", "%Y%m%d").replace(hour=23, minute=59, tzinfo=KST)
+    except ValueError:
+        return None
+    if not units:
+        return None
+    unit_text = "\n".join(
+        f"[{clean(u.findtext('empRecrNm'))}] {clean(u.findtext('jobCont'))} "
+        f"(경력: {u.findtext('empWantedCareerNm')}, 학력: {u.findtext('empWantedEduNm')}, 근무지: {u.findtext('workRegionNm')})"
+        for u in units
+    )
+    quals = "\n".join(clean(u.findtext("sptCertEtc")) for u in units if u.findtext("sptCertEtc"))
+    texts = [
+        ("모집 분야", unit_text),
+        ("지원 자격", quals),
+        ("전형 절차", " → ".join(x.findtext("selsNm") or "" for x in d.iter("empSelsListInfo"))),
+        ("제출 서류", clean(d.findtext("empSubmitDocCont"))),
+        ("접수 방법", clean(d.findtext("empRcptMthdCont"))),
+        ("기타", clean(d.findtext("empnEtcCont"))),
+        ("접수 기간", f"접수 기간: {d.findtext('empWantedStdt')} ~ {d.findtext('empWantedEndt')}"),
+    ]
+    sections = [{"id": f"§{i + 1}", "title": t, "text": v[:1200]} for i, (t, v) in enumerate((t, v) for t, v in texts if v)]
+    src = next((x["id"] for x in sections if x["title"] == "지원 자격"), "§1")
+    edu = sorted({u.findtext("empWantedEduNm") for u in units if u.findtext("empWantedEduNm")})
+    required = [{"key": "other", "label": f"학력: {'·'.join(edu)}"[:80], "src": "§1"}] if edu else []
+    lines = [x.lstrip("-·※ ").strip() for x in quals.splitlines() if len(x.strip()) > 3]
+    required += [{"key": "other", "label": x[:80], "src": src} for x in lines[:3]]
+    url = d.findtext("empWantedHomepgDetail") or d.findtext("empWantedHomepg") or "https://www.work24.go.kr/"
+    hint = [clean(u.findtext("empRecrNm")) for u in units] + [x.findtext("jobsCdKorNm") or "" for x in d.iter("empJobsListInfo")]
+    return {
+        "id": f"w24-{d.findtext('empSeqno')}",
+        "type": "채용",
+        "title": clean(d.findtext("empWantedTitle")),
+        "org": clean(d.findtext("empBusiNm"))[:60],
+        "source": {"name": "고용24 공채속보(고용노동부)", "url": url},
+        "isVirtual": False,
+        "jobs": ["etc"],
+        "required": required,
+        "preferred": [],
+        "documents": [],
+        "applyUrl": url,
+        "period": None,
+        "sections": sections,
+        "versions": [{"version": 1, "checkedAt": now.isoformat(timespec="seconds"), "deadline": deadline.isoformat()}],
+        "confidence": 1.0,
+        "reviewed": True,
+        "_hint": " / ".join(hint)[:300],  # 직무 연결용(저장 전에 지운다)
+    }
+
+
+def map_jobs(items: list[dict]) -> dict[str, list[str]]:
+    """공채 제목·모집 단위를 서비스의 직무 id에 연결한다(개인정보 없음). 맞는 직무가 없으면 빈 배열."""
+    jobs = ", ".join(f"{x['id']}={x['name']}" for x in CATALOG["jobs"])
+    rows = "\n".join(f"{o['id']} | {o['title']} | {o['_hint']}" for o in items)
+    text = (
+        "채용 공고마다 관련 직무 id를 최대 3개 고른다. 목록에 맞는 직무가 없으면 빈 배열.\n"
+        f"직무 목록: {jobs}\n\n공고(id | 제목 | 모집 단위·직종):\n{rows}"
+    )
+    valid = {x["id"] for x in CATALOG["jobs"]}
+    return {r["id"]: [j for j in r.get("jobs", []) if j in valid][:3] for r in gemini(text, JOBS_SCHEMA)}
+
+
+def run_work24() -> None:
+    from .main import Posting, SessionLocal
+
+    stats = {"seen": 0, "new": 0, "updated": 0, "errors": 0}
+    fresh: list[tuple[str, dict]] = []
+    with SessionLocal() as db:
+        page = 1
+        while page <= 5:
+            root = work24("L", startPage=page, display=100)
+            for x in root.iter("dhsOpenEmpInfo"):
+                stats["seen"] += 1
+                pid = f"w24-{x.findtext('empSeqno')}"
+                digest = hashlib.sha256(ET.tostring(x)).hexdigest()
+                row = db.get(Posting, pid)
+                if row and row.raw_hash == digest:
+                    continue  # 목록 내용이 그대로면 상세를 다시 부르지 않는다
+                time.sleep(1)
+                try:
+                    data = build_work24(work24("D", empSeqno=x.findtext("empSeqno")), datetime.now(KST))
+                except Exception as e:
+                    stats["errors"] += 1
+                    print(f"[오류] {pid}: {e}", file=sys.stderr)
+                    continue
+                if data:
+                    fresh.append((digest, data))
+                else:
+                    save(db, Posting, pid, digest, None, datetime.now(KST), {"new": 0, "updated": 0})
+            if page * 100 >= int(root.findtext("total") or 0):
+                break
+            page += 1
+        # 직무 연결: 30건씩 묶어 Gemini 한 번. 실패하면 직무 미연결("etc")로 저장한다
+        for i in range(0, len(fresh), 30):
+            mapped: dict[str, list[str]] = {}
+            if os.environ.get("GEMINI_API_KEY"):
+                try:
+                    mapped = map_jobs([d for _, d in fresh[i : i + 30]])
+                    time.sleep(INTERVAL)
+                except Exception as e:
+                    print(f"[직무 연결 실패] {type(e).__name__}", file=sys.stderr)
+            for digest, data in fresh[i : i + 30]:
+                data["jobs"] = mapped.get(data["id"]) or ["etc"]
+                del data["_hint"]
+                save(db, Posting, data["id"], digest, data, datetime.now(KST), stats)
+    print("work24", json.dumps(stats, ensure_ascii=False))
+
+
 def save(db, Posting, pid: str, digest: str, data: dict | None, now: datetime, stats: dict) -> None:
     from sqlalchemy.orm.attributes import flag_modified
 
@@ -357,3 +495,5 @@ if __name__ == "__main__":
         run()
     if os.environ.get("KSTARTUP_API_KEY"):
         run_kstartup()
+    if os.environ.get("WORK24_API_KEY"):
+        run_work24()

@@ -8,7 +8,7 @@ import { useStore } from "@/lib/store";
 import { evaluate, isOpen, recommend } from "@/lib/engine";
 import type { OppType } from "@/lib/types";
 
-const TYPES: (OppType | "전체")[] = ["전체", "현장실습", "창업지원", "비교과", "장학", "학사"];
+const TYPES: (OppType | "전체")[] = ["전체", "현장실습", "창업지원", "채용", "비교과", "장학", "학사"];
 
 function List() {
   const s = useStore();
