@@ -88,6 +88,13 @@ def to_condition(c: dict, posting: dict) -> dict | None:
         return None
     src = next((s["id"] for s in posting["sections"] if quote in norm(s["text"])), None)
     if not src:
+        # 구절을 글자 그대로 옮기지 않은 경우: 구절의 낱말(숫자 포함)이 거의 모두 한 문단에 있으면 인정한다
+        words = re.findall(r"[가-힣A-Za-z0-9]{2,}", c.get("quote", ""))
+        src = next(
+            (s["id"] for s in posting["sections"] if len(words) >= 2 and sum(w in norm(s["text"]) for w in words) >= 0.7 * len(words)),
+            None,
+        )
+    if not src:
         return None
     base = {"label": label, "src": src}
     if c.get("degree") in DEGREES and c["category"] == "학력":

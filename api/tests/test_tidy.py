@@ -54,3 +54,10 @@ def test_rule_conditions_are_kept_when_ai_gives_nothing_usable():
 def test_source_text_excludes_unrelated_sections():
     text = tidy.source_text(posting())
     assert "병역필" in text and "서류전형" not in text
+
+
+def test_quote_with_small_wording_changes_is_accepted_but_invented_words_are_not():
+    near = {"category": "병역", "label": "병역필 또는 면제", "kind": "required", "quote": "남자는 병역필 또는 면제자"}
+    far = {"category": "어학", "label": "오픽 AL", "kind": "required", "quote": "오픽 AL 등급 보유자"}
+    p = tidy.tidy_batch([posting()], fake([near, far]))[0]
+    assert [c["label"] for c in p["required"]] == ["병역: 병역필 또는 면제"]
