@@ -49,6 +49,8 @@ MONEY = re.compile(r"[^.\n·※]*?(?:최대\s*)?\d[\d,.]*\s*(?:억|천만|백만
 def money_lines(text: str, limit: int = 2) -> str:
     """공고문에서 금액이 적힌 구절을 최대 limit개 돌려준다. 없으면 빈 문자열(지어내지 않는다)."""
     found = [re.sub(r"\s+", " ", m.group(0)).strip(" -,") for m in MONEY.finditer(text or "")]
+    # 매출·자본금 같은 자격 기준 금액은 지원금이 아니므로 뺀다
+    found = [x for x in found if re.search(r"지원|상금|지급|제공|무상|상당|혜택|장학", x) and not re.search(r"매출|자본금|이상인", x)]
     return " / ".join(dict.fromkeys(x[:90] for x in found if x))[: 90 * limit + 3] if found else ""
 
 
@@ -481,7 +483,7 @@ def run_kstartup() -> None:
             if not data:
                 continue
             stats["kept"] += 1
-            digest = hashlib.sha256((BUILD_VERSION + json.dumps(x, sort_keys=True, ensure_ascii=False)).encode()).hexdigest()
+            digest = hashlib.sha256((BUILD_VERSION + "k2" + json.dumps(x, sort_keys=True, ensure_ascii=False)).encode()).hexdigest()
             row = db.get(Posting, data["id"])
             if not (row and row.raw_hash == digest):
                 save(db, Posting, data["id"], digest, data, now, stats)

@@ -103,3 +103,4 @@ def test_facts_show_money_and_preference_without_inventing():
     assert none["지원금·지원 규모"].startswith("공고 요약에 금액 표기 없음")
     o = collect.build(ITEM, "본문", {**G, "benefit": "장학금 100만원", "preferred_text": ""}, NOW)
     assert [f["label"] for f in o["facts"]] == ["지원금·혜택"]
+    assert collect.money_lines("연 매출액이 1,900만원 이상인 기업") == ""
