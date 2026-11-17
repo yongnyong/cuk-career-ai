@@ -335,13 +335,16 @@ Vercel 환경변수 `API_URL`은 `https://43-200-13-8.sslip.io`로 설정돼 있
 
 ### 서버 배포 (AWS Lightsail)
 
-`api/`나 `docker-compose.yml`을 고쳐 `main`에 합쳤다면 서버에서 받아 다시 빌드한다. DB 데이터는 유지된다.
+**배포 전에 반드시 `cd api && pytest -q`가 통과하는지 확인한다.** (2026-11-17에 테스트 실패를 놓친 채 배포해 API가 2~3분 멈춘 적이 있다.) `api/`나 `docker-compose.yml`을 고쳐 `main`에 합쳤다면 서버에서 받아 다시 빌드한다. DB 데이터는 유지된다.
 
 ```bash
 ssh -i ~/.ssh/lightsail-seoul.pem ubuntu@43.200.13.8
 cd ~/cuk-career-ai
 git pull --ff-only
-sudo docker compose up -d --build
+sudo docker compose build api
+# 새 이미지가 뜨는지 먼저 확인한다. 여기서 오류가 나면 아래 up을 실행하지 않는다(실행 중인 서버는 그대로 유지됨)
+sudo docker compose run --rm --no-deps -T api python -c "import app.main, app.collect, app.chat"
+sudo docker compose up -d
 curl https://43-200-13-8.sslip.io/api/health      # {"ok":true}
 ```
 
