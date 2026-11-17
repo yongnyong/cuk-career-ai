@@ -198,6 +198,11 @@ def delete_me(response: Response, user: User = Depends(current_user), db: Sessio
     return {"ok": True}
 
 
+from .chat import make_router  # noqa: E402
+
+app.include_router(make_router(get_db, Posting))
+
+
 # 만료된 세션 정리는 로그인 시점에 가볍게 수행
 @app.middleware("http")
 async def purge_expired(request, call_next):
