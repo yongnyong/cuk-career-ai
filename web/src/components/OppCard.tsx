@@ -6,11 +6,11 @@ import { DDay, TypeTag, VerdictBadge, VirtualTag } from "./ui";
 export function OppCard({ r, now, isNew }: { r: Recommendation; now: Date; isNew?: boolean }) {
   const o = r.opp;
   return (
-    <Link href={`/opportunities/${o.id}`} className={`card block p-4 transition hover:shadow-md ${isNew ? "ring-2 ring-accent" : ""}`}>
+    <Link href={`/opportunities/${o.id}`} className={`card block p-4 transition hover:border-edge ${isNew ? "unlock border-2 border-edge" : ""}`}>
       <div className="flex flex-wrap items-center gap-1.5">
         <TypeTag type={o.type} />
         {o.isVirtual && <VirtualTag />}
-        {isNew && <span className="chip bg-accent text-white">새 기회</span>}
+        {isNew && <span className="chip bg-gold text-on-gold">새 기회</span>}
         <span className="ml-auto">
           <DDay opp={o} now={now} />
         </span>

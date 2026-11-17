@@ -67,7 +67,7 @@ function Body() {
                 <div className="flex-1">
                   <b>{r.condition.label}</b> <span className="text-slate-600">— {r.reason}</span>
                 </div>
-                <a href={`#sec-${r.condition.src}`} className="chip bg-white text-slate-500">
+                <a href={`#sec-${r.condition.src}`} className="chip bg-panel text-slate-500">
                   원문 {r.condition.src}
                 </a>
               </li>
@@ -84,7 +84,7 @@ function Body() {
                   return (
                     <span
                       key={sk}
-                      className={`chip border ${st === "none" ? "border-slate-300 text-slate-500" : "border-navy bg-navy/5 text-navy"}`}
+                      className={`chip border ${st === "none" ? "border-slate-300 text-slate-500" : "border-edge bg-navy/5 text-ink"}`}
                     >
                       {skillById(sk)?.name} {st === "verified" ? "✓ 검증" : st === "self" ? "✓ 자기 보고" : "(준비 전)"}
                     </span>

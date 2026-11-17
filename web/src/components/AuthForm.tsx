@@ -73,7 +73,7 @@ export function AuthForm({ mode }: { mode: "login" | "signup" }) {
         </button>
         <p className="text-center text-sm text-slate-500">
           {signup ? "이미 계정이 있나요? " : "처음이신가요? "}
-          <Link href={signup ? "/login" : "/signup"} className="font-medium text-navy underline">
+          <Link href={signup ? "/login" : "/signup"} className="font-medium text-ink underline">
             {signup ? "로그인" : "회원가입"}
           </Link>
         </p>

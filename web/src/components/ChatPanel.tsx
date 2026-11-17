@@ -39,7 +39,7 @@ export function ChatPanel({ opp }: { opp: Opportunity }) {
         {msgs.length === 0 && (
           <div className="flex flex-wrap gap-1.5">
             {SUGGEST.map((x) => (
-              <button key={x} onClick={() => ask(x)} className="chip border border-slate-300 bg-white px-2.5 py-1 text-slate-600 hover:bg-slate-50">
+              <button key={x} onClick={() => ask(x)} className="chip border border-slate-300 bg-panel px-2.5 py-1 text-slate-600 hover:bg-slate-50">
                 {x}
               </button>
             ))}

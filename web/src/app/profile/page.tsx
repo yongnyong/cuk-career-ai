@@ -42,7 +42,7 @@ function Body() {
           ))}
         </dl>
         <div className="mt-3 flex items-center gap-3">
-          <span className="font-bold text-navy">Lv.{prog.level}</span>
+          <span className="font-bold text-ink">Lv.{prog.level}</span>
           <div className="h-2 flex-1 rounded-full bg-slate-100">
             <div className="h-full rounded-full bg-navy" style={{ width: `${prog.pct}%` }} />
           </div>

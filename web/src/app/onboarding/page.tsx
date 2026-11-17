@@ -190,7 +190,7 @@ function Form({ start }: { start: Profile }) {
                         aria-pressed={on}
                         onClick={() => toggle(sk.id)}
                         className={`rounded-full border px-3 py-1.5 text-sm transition ${
-                          on ? "border-navy bg-navy text-white" : "border-slate-300 bg-white text-slate-700 hover:border-slate-500"
+                          on ? "border-edge bg-navy text-white" : "border-slate-300 bg-panel text-slate-700 hover:border-slate-500"
                         }`}
                       >
                         {on ? "✓ " : ""}
@@ -220,7 +220,7 @@ function Form({ start }: { start: Profile }) {
                   key={m.job.id}
                   onClick={() => setF({ ...f, jobId: m.job.id, interests: f.interests.filter((x) => x !== m.job.id) })}
                   className={`rounded-lg border p-3 text-left text-sm transition ${
-                    f.jobId === m.job.id ? "border-navy bg-navy/5 ring-2 ring-navy/20" : "border-slate-200 hover:border-slate-400"
+                    f.jobId === m.job.id ? "border-edge bg-navy/5 ring-2 ring-navy/20" : "border-slate-200 hover:border-slate-400"
                   }`}
                 >
                   <div className="flex flex-wrap items-center gap-1.5 font-medium">
@@ -246,7 +246,7 @@ function Form({ start }: { start: Profile }) {
                       <button
                         key={j.id}
                         onClick={() => setF({ ...f, interests: on ? f.interests.filter((x) => x !== j.id) : [...f.interests, j.id] })}
-                        className={`chip border ${on ? "border-navy bg-navy text-white" : "border-slate-300 bg-white text-slate-600"}`}
+                        className={`chip border ${on ? "border-edge bg-navy text-white" : "border-slate-300 bg-panel text-slate-600"}`}
                       >
                         {j.name}
                       </button>

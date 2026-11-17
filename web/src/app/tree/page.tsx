@@ -3,44 +3,25 @@ import { useMemo, useState } from "react";
 import Link from "next/link";
 import { Background, Controls, Handle, Position, ReactFlow, type Edge, type Node, type NodeProps } from "@xyflow/react";
 import "@xyflow/react/dist/style.css";
-import { Award, Lock, Sparkles, Swords, X } from "lucide-react";
+import { Award, KeyRound, Swords, X } from "lucide-react";
 import { RequireProfile } from "@/components/RequireProfile";
 import { OppCard } from "@/components/OppCard";
+import { Legend, NodeBox, StatusWindow } from "@/components/quest-ui";
 import { AiNotice, DDay, TypeTag, VirtualTag } from "@/components/ui";
 import { useStore } from "@/lib/store";
-import { buildTree, dday, nextNode, progress, recommend, type TreeNode } from "@/lib/engine";
-import { jobById, skillById } from "@/lib/data/catalog";
-import { getDepartment } from "@/lib/data/departments";
+import { buildTree, dday, nextNode, recommend, type TreeNode } from "@/lib/engine";
+import { skillById } from "@/lib/data/catalog";
 import { questProgress } from "@/lib/quest";
 
 type SkillNodeData = { node: TreeNode; isNew: boolean; now: Date };
 
 function SkillNode({ data }: NodeProps<Node<SkillNodeData>>) {
-  const { node, isNew, now } = data;
-  const done = node.state !== "none";
-  const opps = node.opportunities;
-  const soonest = opps.length ? Math.min(...opps.map((o) => dday(o, now))) : null;
   return (
-    <div
-      className={`w-48 rounded-lg border-2 bg-white px-3 py-2 text-left text-sm shadow-sm ${
-        done ? "border-navy" : node.locked ? "border-dashed border-slate-300 text-slate-400" : "border-slate-300"
-      } ${opps.length ? (isNew ? "!border-accent ring-4 ring-accent/30" : "!border-danger") : ""}`}
-    >
-      <Handle type="target" position={Position.Top} className="!bg-slate-400" />
-      <div className="flex items-center gap-1 font-bold">
-        {node.locked && <Lock size={12} />}
-        {node.name}
-      </div>
-      <div className="text-[11px] text-slate-500">
-        {node.state === "verified" ? "검증됨" : node.state === "self" ? "완료 (자기 보고)" : node.locked ? "선행 노드 필요" : node.required ? "필수 노드" : "선택 노드"}
-      </div>
-      {opps.length > 0 && (
-        <div className={`mt-1 text-[11px] font-bold ${isNew ? "text-accent" : "text-danger"}`}>
-          {isNew ? "새 기회 열림" : `기회 ${opps.length}건`} · D-{soonest}
-        </div>
-      )}
-      <Handle type="source" position={Position.Bottom} className="!bg-slate-400" />
-    </div>
+    <>
+      <Handle type="target" position={Position.Top} className="!border-0 !bg-edge" />
+      <NodeBox node={data.node} isNew={data.isNew} now={data.now} />
+      <Handle type="source" position={Position.Bottom} className="!border-0 !bg-edge" />
+    </>
   );
 }
 const nodeTypes = { skill: SkillNode };
@@ -49,11 +30,8 @@ function TreeView() {
   const s = useStore();
   const p = s.profile!;
   const now = s.nowDate;
-  const job = jobById(p.jobId)!;
-  const dept = getDepartment(p.departmentId);
   const tree = useMemo(() => buildTree(p, s.opportunities, now), [p, s.opportunities, now]);
   const recs = useMemo(() => recommend(s.opportunities, p, now), [s.opportunities, p, now]);
-  const prog = progress(p);
   const [sel, setSel] = useState<string | null>(null);
   const selNode = tree.find((n) => n.skill === sel);
   const newSet = new Set(s.newOpps);
@@ -65,12 +43,12 @@ function TreeView() {
       return {
         id: n.skill,
         type: "skill",
-        position: { x: row * 215, y: n.depth * 115 },
+        position: { x: row * 215, y: n.depth * 130 + 50 },
         data: { node: n, isNew: n.opportunities.some((o) => newSet.has(o.id)), now },
       };
     });
     const edges: Edge[] = tree.flatMap((n) =>
-      n.prereq.map((q) => ({ id: `${q}-${n.skill}`, source: q, target: n.skill, animated: n.state === "none" && !n.locked })),
+      n.prereq.map((q) => ({ id: `${q}-${n.skill}`, source: q, target: n.skill, animated: n.state === "none" && !n.locked, style: { stroke: n.locked ? "#4a5078" : "#7c6cff", strokeWidth: 2 } })),
     );
     return { nodes, edges };
     // eslint-disable-next-line react-hooks/exhaustive-deps
@@ -86,35 +64,20 @@ function TreeView() {
 
   return (
     <div className="space-y-4">
-      <div className="card flex flex-wrap items-center gap-4 p-4">
-        <div>
-          <p className="text-xs text-slate-500">
-            {dept?.name} {p.grade}학년 · {p.pseudoId}
-          </p>
-          <h1 className="text-lg font-bold">
-            나의 스킬트리 · 목표: <span className="text-navy">{job.name}</span>
-          </h1>
-        </div>
-        <div className="flex min-w-48 flex-1 items-center gap-3">
-          <span className="font-bold text-navy">Lv.{prog.level}</span>
-          <div className="h-2.5 flex-1 rounded-full bg-slate-100">
-            <div className="h-full rounded-full bg-navy transition-all" style={{ width: `${prog.pct}%` }} />
-          </div>
-          <span className="text-xs text-slate-500">EXP {prog.pct}%</span>
-        </div>
+      <StatusWindow profile={p}>
         {newOpp && (
           <Link
             href={`/opportunities/${newOpp.id}`}
             onClick={() => s.clearNew()}
-            className="chip animate-pulse border border-danger bg-red-50 px-3 py-1.5 text-danger"
+            className="unlock chip border-2 border-edge bg-gold px-3 py-1.5 text-on-gold"
           >
-            <Sparkles size={12} /> 새 기회 열림 · {newOpp.title} · D-{dday(newOpp, now)}
+            <KeyRound size={12} /> 새 기회 열림 · {newOpp.title} · D-{dday(newOpp, now)}
           </Link>
         )}
-      </div>
+      </StatusWindow>
 
       <div className="grid gap-4 lg:grid-cols-[1fr_340px]">
-        <div className="card relative h-[600px] overflow-hidden">
+        <div className="relative h-[620px] overflow-hidden rounded-lg border-2 border-edge bg-panel">
           <ReactFlow
             nodes={nodes}
             edges={edges}
@@ -123,14 +86,18 @@ function TreeView() {
             fitViewOptions={{ padding: 0.12, maxZoom: 1.1 }}
             onNodeClick={(_, n) => setSel(n.id)}
             nodesDraggable={false}
+            colorMode="dark"
           >
-            <Background gap={20} color="#e2e8f0" />
+            <Background gap={24} color="#2a2f52" />
             <Controls showInteractive={false} />
           </ReactFlow>
-          <p className="absolute bottom-2 left-12 text-[11px] text-slate-400">노드를 눌러 상태를 바꾸고 연결된 기회를 확인하세요</p>
+          <div className="absolute inset-x-0 top-0 flex flex-wrap items-center justify-between gap-2 border-b border-line bg-panel/90 px-3 py-2">
+            <Legend />
+            <span className="text-xs text-ink/60">노드를 누르면 상태를 바꾸고 연결된 기회를 볼 수 있어요</span>
+          </div>
 
           {selNode && (
-            <div className="absolute right-3 top-3 z-10 w-72 rounded-xl border border-slate-200 bg-white p-4 shadow-lg">
+            <div className="window absolute right-3 top-14 z-10 w-72 p-4">
               <button className="absolute right-2 top-2 text-slate-400" onClick={() => setSel(null)} aria-label="닫기">
                 <X size={16} />
               </button>
@@ -171,10 +138,10 @@ function TreeView() {
         <aside className="space-y-4">
           <div className="card p-4">
             <h2 className="flex items-center gap-1.5 font-bold">
-              <Swords size={16} className="text-accent" /> 오늘의 퀘스트
+              <Swords size={16} className="text-go" /> 오늘의 퀘스트
             </h2>
             {activeQuest && qp ? (
-              <Link href={`/opportunities/${activeQuest.id}`} className="mt-2 block rounded-lg bg-paper p-3 text-sm hover:bg-slate-100">
+              <Link href={`/opportunities/${activeQuest.id}`} className="mt-2 block rounded-md bg-paper p-3 text-sm hover:brightness-95">
                 <div className="flex items-center gap-1">
                   {activeQuest.isVirtual && <VirtualTag />} <DDay opp={activeQuest} now={now} />
                 </div>

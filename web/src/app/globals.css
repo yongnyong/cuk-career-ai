@@ -1,36 +1,135 @@
 @import "tailwindcss";
+@import "pretendard/dist/web/variable/pretendardvariable-dynamic-subset.css";
 
+/* "시스템 창" 디자인: 어두운 밤하늘 바탕 + 보라빛 발광 테두리. 금색은 "기회 열림"에만 쓴다. */
 @theme inline {
-  --font-sans: var(--font-noto), system-ui, sans-serif;
-  --color-navy: #1d2b48;
-  --color-navy-2: #2c3e63;
-  --color-accent: #f08a24;
-  --color-danger: #e5484d;
-  --color-ok: #1f9d6b;
-  --color-warn: #c98a00;
-  --color-paper: #f6f7fb;
+  --font-sans: "Pretendard Variable", Pretendard, system-ui, sans-serif;
+  --font-display: var(--font-display-kr), "Pretendard Variable", sans-serif;
+  --color-paper: #07081a; /* 바탕 */
+  --color-panel: #11132b; /* 창·카드 면 */
+  --color-ink: #ecebff; /* 글자 */
+  --color-line: #2a2f58; /* 옅은 구분선 */
+  --color-edge: #7c6cff; /* 발광 테두리 */
+  --color-navy: #5b43f0; /* 채움(버튼·선택됨) */
+  --color-navy-2: #7460ff;
+  /* 상태색 4개 — 서비스 전체에서 같은 뜻으로만 쓴다 */
+  --color-gold: #f7c63d; /* 기회 열림 (채움) */
+  --color-on-gold: #1c1400;
+  --color-accent: #f7c63d; /* 기회 열림 (글자) */
+  --color-ok: #2fd39a; /* 완료 */
+  --color-go: #46a6ff; /* 지금 도전 */
+  --color-lock: #5f6690; /* 잠김 */
+  --color-danger: #ff6170;
+  --color-warn: #f7c63d;
+
+  /* 기존 화면의 밝은 회색·파스텔 클래스를 어두운 바탕용으로 바꿔 끼운다 */
+  --color-slate-50: #171a36;
+  --color-slate-100: #1c2042;
+  --color-slate-200: #262b54;
+  --color-slate-300: #363c6e;
+  --color-slate-400: #8087b3;
+  --color-slate-500: #9da3c9;
+  --color-slate-600: #bcc1e0;
+  --color-slate-700: #d8dbf2;
+  --color-slate-800: #ecebff;
+  --color-emerald-50: rgb(47 211 154 / 0.12);
+  --color-emerald-100: rgb(47 211 154 / 0.18);
+  --color-emerald-700: #5fe3b4;
+  --color-amber-50: rgb(247 198 61 / 0.12);
+  --color-amber-100: rgb(247 198 61 / 0.18);
+  --color-amber-200: rgb(247 198 61 / 0.28);
+  --color-amber-300: rgb(247 198 61 / 0.5);
+  --color-amber-700: #f9d368;
+  --color-amber-800: #f9d368;
+  --color-orange-100: rgb(255 150 70 / 0.18);
+  --color-orange-700: #ffb27d;
+  --color-blue-100: rgb(70 166 255 / 0.18);
+  --color-blue-700: #8cc6ff;
+  --color-pink-100: rgb(255 110 190 / 0.18);
+  --color-pink-700: #ff9fd2;
+  --color-violet-50: rgb(124 108 255 / 0.12);
+  --color-violet-100: rgb(124 108 255 / 0.22);
+  --color-violet-200: rgb(124 108 255 / 0.4);
+  --color-violet-700: #b9b0ff;
+  --color-violet-900: #d6d1ff;
+  --color-red-50: rgb(255 97 112 / 0.12);
+  --color-red-200: rgb(255 97 112 / 0.4);
 }
 
+html {
+  color-scheme: dark;
+}
 body {
-  background: var(--color-paper);
-  color: #1b2333;
+  color: var(--color-ink);
+  background:
+    radial-gradient(900px 500px at 85% -10%, rgb(124 108 255 / 0.28), transparent 60%),
+    radial-gradient(700px 420px at 0% 30%, rgb(70 120 255 / 0.14), transparent 60%),
+    var(--color-paper);
+  background-attachment: fixed;
 }
 
+:focus-visible {
+  outline: 2px solid var(--color-go);
+  outline-offset: 2px;
+}
+
+/* 제목에 옅은 발광 */
+.font-display {
+  text-shadow: 0 0 18px rgb(124 108 255 / 0.55);
+}
+
+/* 누를 수 있는 것 */
 @utility card {
-  @apply rounded-xl border border-slate-200 bg-white shadow-sm;
+  @apply rounded-lg border border-line bg-panel;
+}
+/* 시스템 창: 화면마다 한두 군데만 쓴다 */
+@utility window {
+  @apply rounded-lg border border-edge;
+  background: linear-gradient(180deg, rgb(26 24 66 / 0.92), rgb(13 14 36 / 0.92));
+  box-shadow:
+    0 0 28px rgb(124 108 255 / 0.35),
+    inset 0 0 24px rgb(124 108 255 / 0.12);
 }
 @utility btn {
-  @apply inline-flex items-center justify-center gap-1.5 rounded-lg px-3.5 py-2 text-sm font-medium transition disabled:opacity-40;
+  @apply inline-flex items-center justify-center gap-1.5 rounded-md px-3.5 py-2 text-sm font-semibold transition disabled:opacity-40;
 }
 @utility btn-primary {
   @apply btn bg-navy text-white hover:bg-navy-2;
+  box-shadow: 0 0 16px rgb(124 108 255 / 0.45);
+}
+@utility btn-gold {
+  @apply btn bg-gold text-on-gold hover:brightness-110;
+  box-shadow: 0 0 18px rgb(247 198 61 / 0.45);
 }
 @utility btn-ghost {
-  @apply btn border border-slate-300 bg-white text-slate-700 hover:bg-slate-50;
+  @apply btn border border-edge/60 bg-panel text-ink hover:border-edge;
 }
 @utility chip {
-  @apply inline-flex items-center gap-1 rounded-full px-2 py-0.5 text-xs font-medium;
+  @apply inline-flex items-center gap-1 rounded px-1.5 py-0.5 text-xs font-semibold;
 }
 @utility input {
-  @apply w-full rounded-lg border border-slate-300 bg-white px-3 py-2 text-sm outline-none focus:border-navy focus:ring-2 focus:ring-navy/15;
+  @apply w-full rounded-md border border-line bg-paper px-3 py-2 text-sm text-ink outline-none focus:border-edge focus:ring-2 focus:ring-edge/25;
+}
+/* 경험치 막대 */
+@utility exp {
+  @apply h-3 overflow-hidden rounded-sm border border-edge bg-paper;
+}
+
+/* 유일한 자동 연출: 새로 열린 기회 */
+@keyframes unlock {
+  0%,
+  100% {
+    box-shadow: 0 0 0 0 rgb(247 198 61 / 0.75);
+  }
+  50% {
+    box-shadow: 0 0 22px 6px rgb(247 198 61 / 0);
+  }
+}
+@utility unlock {
+  animation: unlock 1.6s ease-out infinite;
+}
+@media (prefers-reduced-motion: reduce) {
+  .unlock {
+    animation: none;
+  }
 }

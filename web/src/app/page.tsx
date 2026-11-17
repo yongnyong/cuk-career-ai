@@ -1,57 +1,203 @@
 "use client";
+import { useMemo } from "react";
 import Link from "next/link";
-import { ArrowRight, Bell, GitBranch, MessageSquareText, ShieldCheck } from "lucide-react";
+import { ChevronRight, KeyRound, Swords } from "lucide-react";
 import { useStore } from "@/lib/store";
-import { DEPARTMENTS, COLLEGES } from "@/lib/data/departments";
+import { useMounted } from "@/lib/useMounted";
+import { buildTree, dday, nextNode, recommend } from "@/lib/engine";
+import { DEPARTMENTS } from "@/lib/data/departments";
+import { SEED_OPPORTUNITIES } from "@/lib/data/opportunities";
+import { PERSONAS } from "@/lib/data/personas";
+import { skillById } from "@/lib/data/catalog";
+import { questProgress } from "@/lib/quest";
+import { Legend, NodeBox, StatusWindow } from "@/components/quest-ui";
+import { OppCard } from "@/components/OppCard";
+import { AiNotice, DDay } from "@/components/ui";
 
-const FEATURES = [
-  { icon: GitBranch, title: "진로 스킬트리", text: "목표 직무까지 어학·자격·프로젝트를 노드로 보여주고, 실제 공고가 들어오면 해당 노드에서 기회가 열려요." },
-  { icon: ShieldCheck, title: "자격 3단계 판정", text: "학년·학적·전공 같은 명시 조건은 코드가 판정하고, 애매한 조건은 '확인 필요'로 남겨요." },
-  { icon: Bell, title: "마감·정정 알림", text: "D-7·3·1 알림, 마감이 바뀌면 이전 알림을 무효로 하고 새 일정으로 다시 알려요." },
-  { icon: MessageSquareText, title: "근거 기반 챗봇", text: "공고 원문 문단을 인용해서만 답하고, 근거가 없으면 답을 보류해요." },
+const STEPS = [
+  { title: "학과·학년·가진 것을 고른다", text: "이름과 학번은 묻지 않아요. 1분이면 끝나요." },
+  { title: "목표 직무까지 스킬트리가 생긴다", text: "어학, 자격증, 프로젝트가 순서대로 이어져요." },
+  { title: "공고가 올라오면 노드에서 기회가 열린다", text: "지원 자격은 충족, 미충족, 확인 필요로 나눠 알려줘요." },
 ];
 
-export default function Home() {
-  const { profile, session } = useStore();
+function Landing() {
+  const s = useStore();
+  const demo = PERSONAS[0];
+  const now = s.nowDate;
+  const rows = useMemo(() => {
+    const tree = buildTree(demo.profile, SEED_OPPORTUNITIES, now);
+    const byDepth: (typeof tree)[] = [];
+    for (const n of tree) (byDepth[n.depth] ??= []).push(n);
+    return byDepth;
+  }, [demo, now]);
+
   return (
-    <div className="space-y-10">
-      <section className="rounded-2xl bg-navy px-6 py-10 text-white sm:px-10">
-        <p className="text-sm text-accent">나 혼자만 레벨업 — 나만의 속도로 취·창업까지</p>
-        <h1 className="mt-2 text-3xl font-bold leading-snug sm:text-4xl">
-          흩어진 공지를 <br className="sm:hidden" />
-          &ldquo;지금 할 수 있는 행동&rdquo;으로
-        </h1>
-        <p className="mt-3 max-w-2xl text-white/80">
-          가톨릭대학교 {COLLEGES.length}개 대학·계열, {DEPARTMENTS.length}개 학과 누구나 목표 직무를 고르면 AI가 준비 경로를 만들고, 현장실습·창업지원
-          공고를 내 스킬트리에 연결해 드려요.
-        </p>
-        <div className="mt-6 flex flex-wrap gap-3">
-          <Link href={profile ? "/tree" : session ? "/onboarding" : "/signup"} className="btn bg-accent text-white hover:brightness-110">
-            {profile ? "내 스킬트리로" : "1분 만에 시작하기"} <ArrowRight size={16} />
-          </Link>
-          <Link href="/sources" className="btn border border-white/30 text-white hover:bg-white/10">
-            데이터 원칙 보기
-          </Link>
+    <div className="space-y-12">
+      <section className="grid items-center gap-8 pt-4 lg:grid-cols-[5fr_6fr]">
+        <div>
+          <h1 className="font-display text-4xl leading-tight sm:text-5xl">
+            공지는 올라왔는데
+            <br />
+            나만 몰랐다
+          </h1>
+          <p className="mt-4 max-w-md text-ink/75">
+            가톨릭대학교 {DEPARTMENTS.length}개 학과 누구나, 목표 직무를 고르면 준비할 것들이 스킬트리로 이어져요. 현장실습과 창업지원 공고가
+            올라오면 내 트리의 해당 노드에서 기회가 열려요.
+          </p>
+          <div className="mt-6 flex flex-wrap gap-3">
+            <Link href={s.session ? "/onboarding" : "/signup"} className="btn-gold">
+              내 스킬트리 만들기
+            </Link>
+            <button className="btn-ghost" onClick={() => s.loginDemo(demo.id, demo.profile)}>
+              {demo.label}의 트리로 둘러보기
+            </button>
+          </div>
+        </div>
+
+        <div className="window overflow-hidden">
+          <div className="flex items-center justify-between border-b-2 border-edge bg-navy px-4 py-2 text-sm text-white">
+            <span className="font-bold">{demo.label}의 스킬트리</span>
+            <span className="text-white/70">{demo.desc}</span>
+          </div>
+          <div className="space-y-3 overflow-x-auto bg-paper p-4">
+            {rows.map((row, i) => (
+              <div key={i} className="flex justify-center gap-3">
+                {row.map((n) => (
+                  <NodeBox key={n.skill} node={n} now={now} />
+                ))}
+              </div>
+            ))}
+          </div>
+          <div className="border-t-2 border-edge px-4 py-2">
+            <Legend />
+          </div>
         </div>
       </section>
 
-      <section className="grid gap-4 sm:grid-cols-2">
-        {FEATURES.map((f) => (
-          <div key={f.title} className="card p-5">
-            <f.icon className="text-accent" size={22} />
-            <h2 className="mt-2 font-bold">{f.title}</h2>
-            <p className="mt-1 text-sm text-slate-600">{f.text}</p>
-          </div>
-        ))}
-      </section>
-
-      <section className="card p-5 text-sm text-slate-600">
-        <h2 className="mb-2 font-bold text-slate-800">이런 학생을 위해 만들었어요</h2>
-        <p>
-          인공지능학과 3학년 민지는 AI 현장실습 공고를 마감 다음 날에야 발견했어요. 공고는 게시판에 분명히 있었지만 민지에게 닿지 않았죠.
-          문제는 정보가 없는 게 아니라 전달 방식이에요. <span className="text-slate-400">(문제 상황을 보여주는 가상 사례)</span>
-        </p>
+      <section>
+        <h2 className="text-lg font-bold">이렇게 써요</h2>
+        <ol className="mt-3 grid gap-x-8 gap-y-4 border-t-2 border-edge pt-4 sm:grid-cols-3">
+          {STEPS.map((x, i) => (
+            <li key={x.title}>
+              <span className="font-display text-2xl text-ink/40">{i + 1}</span>
+              <h3 className="font-bold">{x.title}</h3>
+              <p className="mt-1 text-sm text-ink/70">{x.text}</p>
+            </li>
+          ))}
+        </ol>
       </section>
     </div>
   );
+}
+
+function Today() {
+  const s = useStore();
+  const p = s.profile!;
+  const now = s.nowDate;
+  const recs = useMemo(() => recommend(s.opportunities, p, now), [s.opportunities, p, now]);
+  const urgent = [...recs].sort((a, b) => dday(a.opp, now) - dday(b.opp, now)).slice(0, 3);
+  const next = nextNode(p);
+  const quests = s.followed
+    .map((id) => s.opportunities.find((o) => o.id === id))
+    .filter((o) => o !== undefined && dday(o, now) >= 0)
+    .map((o) => o!)
+    .sort((a, b) => dday(a, now) - dday(b, now));
+  const fresh = s.opportunities.filter((o) => s.newOpps.includes(o.id));
+
+  return (
+    <div className="space-y-8">
+      <StatusWindow profile={p}>
+        <Link href="/tree" className="btn-primary">
+          스킬트리 열기 <ChevronRight size={16} />
+        </Link>
+      </StatusWindow>
+
+      {fresh.length > 0 && (
+        <section className="unlock rounded-lg border-2 border-edge bg-gold text-on-gold p-4">
+          <h2 className="flex items-center gap-1.5 font-bold">
+            <KeyRound size={16} /> 새 기회가 열렸어요
+          </h2>
+          <ul className="mt-2 space-y-1">
+            {fresh.map((o) => (
+              <li key={o.id}>
+                <Link href={`/opportunities/${o.id}`} onClick={() => s.clearNew()} className="flex items-center gap-2 text-sm font-semibold underline">
+                  {o.title} <DDay opp={o} now={now} />
+                </Link>
+              </li>
+            ))}
+          </ul>
+        </section>
+      )}
+
+      <div className="grid gap-8 lg:grid-cols-2">
+        <section>
+          <h2 className="border-b-2 border-edge pb-2 text-lg font-bold">오늘 할 일</h2>
+          <ul className="divide-y divide-line">
+            {next && (
+              <li>
+                <Link href="/tree" className="flex items-center gap-3 py-3 hover:bg-panel">
+                  <span className="grid size-9 shrink-0 place-items-center rounded bg-go text-white">
+                    <Swords size={18} />
+                  </span>
+                  <span className="min-w-0 flex-1">
+                    <span className="block text-xs text-ink/60">다음에 깰 노드 · 주 {p.weeklyHours}시간 기준</span>
+                    <span className="block font-bold">{skillById(next.skill)?.name}</span>
+                  </span>
+                  <ChevronRight size={18} className="text-ink/40" />
+                </Link>
+              </li>
+            )}
+            {quests.map((o) => {
+              const qp = questProgress(o, s.quests[o.id]);
+              return (
+                <li key={o.id}>
+                  <Link href={`/opportunities/${o.id}`} className="flex items-center gap-3 py-3 hover:bg-panel">
+                    <span className="grid size-9 shrink-0 place-items-center rounded bg-gold text-on-gold">
+                      <KeyRound size={18} />
+                    </span>
+                    <span className="min-w-0 flex-1">
+                      <span className="flex items-center gap-1.5 text-xs text-ink/60">
+                        지원 퀘스트 {qp.done}/{qp.total} <DDay opp={o} now={now} />
+                      </span>
+                      <span className="block truncate font-bold">{o.title}</span>
+                      <span className="exp mt-1 block !h-2">
+                        <span className="block h-full bg-ok" style={{ width: `${(qp.done / qp.total) * 100}%` }} />
+                      </span>
+                    </span>
+                    <ChevronRight size={18} className="text-ink/40" />
+                  </Link>
+                </li>
+              );
+            })}
+            {!next && quests.length === 0 && <li className="py-3 text-sm text-ink/60">트리의 모든 노드를 완료했어요.</li>}
+          </ul>
+          {quests.length === 0 && (
+            <p className="mt-2 text-sm text-ink/60">기회 카드에서 &lsquo;지원 퀘스트 시작&rsquo;을 누르면 준비 목록이 여기에 생겨요.</p>
+          )}
+        </section>
+
+        <section>
+          <div className="flex items-baseline justify-between border-b-2 border-edge pb-2">
+            <h2 className="text-lg font-bold">마감이 가까운 기회</h2>
+            <Link href="/opportunities" className="text-sm font-semibold underline">
+              전체 보기
+            </Link>
+          </div>
+          <div className="mt-3 space-y-2">
+            {urgent.map((r) => (
+              <OppCard key={r.opp.id} r={r} now={now} isNew={s.newOpps.includes(r.opp.id)} />
+            ))}
+            {urgent.length === 0 && <p className="text-sm text-ink/60">지금 조건에 맞는 열린 기회가 없어요.</p>}
+          </div>
+          <AiNotice className="mt-2" />
+        </section>
+      </div>
+    </div>
+  );
+}
+
+export default function Home() {
+  const s = useStore();
+  const mounted = useMounted();
+  return mounted && s.profile ? <Today /> : <Landing />;
 }

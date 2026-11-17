@@ -29,7 +29,7 @@ function List() {
           <h1 className="text-xl font-bold">기회</h1>
           <p className="text-sm text-slate-500">조건을 먼저 거르고, 목표 직무·보유 역량·마감 순으로 정렬했어요.</p>
         </div>
-        <div className="flex rounded-lg border border-slate-300 bg-white p-0.5 text-sm">
+        <div className="flex rounded-lg border border-slate-300 bg-panel p-0.5 text-sm">
           {(["rec", "all"] as const).map((m) => (
             <button key={m} onClick={() => setMode(m)} className={`rounded-md px-3 py-1 ${mode === m ? "bg-navy text-white" : ""}`}>
               {m === "rec" ? `맞춤 추천 ${recs.length}` : `전체 공고 ${s.opportunities.length}`}
@@ -42,7 +42,7 @@ function List() {
           <button
             key={t}
             onClick={() => setType(t)}
-            className={`chip border px-3 py-1 ${type === t ? "border-navy bg-navy text-white" : "border-slate-300 bg-white text-slate-600"}`}
+            className={`chip border px-3 py-1 ${type === t ? "border-edge bg-navy text-white" : "border-slate-300 bg-panel text-slate-600"}`}
           >
             {t}
           </button>
