@@ -14,7 +14,7 @@ const STATUS = {
 
 export const nodeStatus = (n: TreeNode) => (n.state !== "none" ? "done" : n.locked ? "lock" : "go");
 
-export function NodeBox({ node, isNew, now }: { node: TreeNode; isNew?: boolean; now: Date }) {
+export function NodeBox({ node, isNew, now, proof }: { node: TreeNode; isNew?: boolean; now: Date; proof?: boolean }) {
   const st = STATUS[nodeStatus(node)];
   const opps = node.opportunities;
   const soonest = opps.length ? Math.min(...opps.map((o) => dday(o, now))) : null;
@@ -29,6 +29,7 @@ export function NodeBox({ node, isNew, now }: { node: TreeNode; isNew?: boolean;
           <span className="block text-[11px] opacity-70">
             {node.state === "none" ? st.label : node.score ? `완료 · ${formatScore(node.skill, node.score)}` : node.state === "verified" ? "완료 · 검증됨" : "완료 · 자기 보고"}
             {node.required ? " · 필수" : ""}
+            {proof ? " · 증빙 첨부" : ""}
           </span>
         </span>
       </div>

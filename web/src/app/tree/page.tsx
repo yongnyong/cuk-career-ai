@@ -1,11 +1,13 @@
 "use client";
-import { useMemo, useState } from "react";
+import { useCallback, useEffect, useMemo, useState } from "react";
 import Link from "next/link";
 import { Background, Controls, Handle, Position, ReactFlow, type Edge, type Node, type NodeProps } from "@xyflow/react";
 import "@xyflow/react/dist/style.css";
-import { Award, KeyRound, Swords, X } from "lucide-react";
+import { Award, Check, KeyRound, Printer, Swords, X } from "lucide-react";
 import { RequireProfile } from "@/components/RequireProfile";
 import { OppCard } from "@/components/OppCard";
+import { ProofField } from "@/components/ProofField";
+import { listProofs, type ProofMeta } from "@/lib/files";
 import { Legend, NodeBox, StatusWindow } from "@/components/quest-ui";
 import { AiNotice, DDay, TypeTag, VirtualTag } from "@/components/ui";
 import { useStore } from "@/lib/store";
@@ -13,13 +15,13 @@ import { buildTree, dday, nextNode, recommend, type TreeNode } from "@/lib/engin
 import { formatScore, meetsTarget, scaleOf, skillById } from "@/lib/data/catalog";
 import { questProgress } from "@/lib/quest";
 
-type SkillNodeData = { node: TreeNode; isNew: boolean; now: Date };
+type SkillNodeData = { node: TreeNode; isNew: boolean; now: Date; proof: boolean };
 
 function SkillNode({ data }: NodeProps<Node<SkillNodeData>>) {
   return (
     <>
       <Handle type="target" position={Position.Top} className="!border-0 !bg-edge" />
-      <NodeBox node={data.node} isNew={data.isNew} now={data.now} />
+      <NodeBox node={data.node} isNew={data.isNew} now={data.now} proof={data.proof} />
       <Handle type="source" position={Position.Bottom} className="!border-0 !bg-edge" />
     </>
   );
@@ -73,6 +75,13 @@ function TreeView() {
   const [sel, setSel] = useState<string | null>(null);
   const selNode = tree.find((n) => n.skill === sel);
   const newSet = new Set(s.newOpps);
+  // 증빙 파일 목록(이 브라우저에만 저장)
+  const [proofs, setProofs] = useState<Record<string, ProofMeta>>({});
+  const loadProofs = useCallback(() => {
+    listProofs(p.pseudoId).then(setProofs).catch(() => setProofs({}));
+  }, [p.pseudoId]);
+  useEffect(loadProofs, [loadProofs]);
+  const cancel = (skill: string) => (s.setScore(skill, ""), s.setSkill(skill, "none"));
 
   const { nodes, edges } = useMemo(() => {
     const perDepth: Record<number, number> = {};
@@ -82,7 +91,7 @@ function TreeView() {
         id: n.skill,
         type: "skill",
         position: { x: row * 215, y: n.depth * 130 + 50 },
-        data: { node: n, isNew: n.opportunities.some((o) => newSet.has(o.id)), now },
+        data: { node: n, isNew: n.opportunities.some((o) => newSet.has(o.id)), now, proof: !!proofs[n.skill] },
       };
     });
     const edges: Edge[] = tree.flatMap((n) =>
@@ -90,7 +99,7 @@ function TreeView() {
     );
     return { nodes, edges };
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [tree, s.newOpps, now]);
+  }, [tree, s.newOpps, now, proofs]);
 
   const newOpp = s.opportunities.find((o) => newSet.has(o.id) && tree.some((n) => n.opportunities.includes(o)));
   const next = nextNode(p);
@@ -160,17 +169,23 @@ function TreeView() {
                   onSave={(v) => s.setScore(selNode.skill, v)}
                 />
               )}
-              <div className="mt-3 flex gap-1.5">
-                {selNode.state === "none" ? (
-                  <button className="btn-primary !py-1 text-xs" onClick={() => s.setSkill(selNode.skill, "self")}>
-                    완료로 표시
+              {selNode.state === "none" ? (
+                !scaleOf(selNode.skill) && (
+                  <button className="btn-gold mt-3 w-full" onClick={() => s.setSkill(selNode.skill, "self")}>
+                    <Check size={16} /> 완료로 표시
                   </button>
-                ) : (
-                  <button className="btn-ghost !py-1 text-xs" onClick={() => (s.setScore(selNode.skill, ""), s.setSkill(selNode.skill, "none"))}>
+                )
+              ) : (
+                <>
+                  <p className="mt-3 flex items-center gap-1 rounded-md bg-emerald-100 px-2 py-1.5 text-sm font-bold text-emerald-700">
+                    <Check size={16} /> 완료한 노드예요
+                  </p>
+                  <ProofField owner={p.pseudoId} skill={selNode.skill} proof={proofs[selNode.skill]} onChange={loadProofs} />
+                  <button className="btn-ghost mt-2 !py-1 text-xs" onClick={() => cancel(selNode.skill)}>
                     완료 취소
                   </button>
-                )}
-              </div>
+                </>
+              )}
               <p className="mt-1 text-[11px] text-slate-400">완료 표시는 자기 보고이며 검증된 자격과 구분돼요.</p>
               <h4 className="mt-3 text-xs font-bold text-slate-600">이 노드에서 열린 기회</h4>
               <ul className="mt-1 space-y-1">
@@ -187,7 +202,54 @@ function TreeView() {
           )}
         </div>
 
-        <aside className="space-y-4">
+        <section className="card p-4 lg:col-start-1">
+          <div className="flex flex-wrap items-center justify-between gap-2">
+            <h2 className="font-bold">
+              노드 체크리스트 <span className="text-sm font-normal text-ink/60">완료 {tree.filter((n) => n.state !== "none").length} / {tree.length}</span>
+            </h2>
+            <Link href="/print" className="btn-ghost !py-1 text-xs">
+              <Printer size={12} /> 완료 내역·증빙 인쇄
+            </Link>
+          </div>
+          <ul className="mt-2 divide-y divide-line">
+            {tree.map((n) => {
+              const done = n.state !== "none";
+              return (
+                <li key={n.skill} className="flex flex-wrap items-center gap-2 py-2 text-sm">
+                  <span className={`grid size-6 shrink-0 place-items-center rounded ${done ? "bg-ok text-white" : "border border-line"}`}>
+                    {done && <Check size={14} />}
+                  </span>
+                  <button className="min-w-0 flex-1 text-left hover:underline" onClick={() => setSel(n.skill)}>
+                    <span className="font-semibold">{n.name}</span>
+                    <span className="ml-1.5 text-xs text-ink/60">
+                      {n.kind}
+                      {n.required && " · 필수"}
+                      {n.score && ` · ${formatScore(n.skill, n.score)}`}
+                      {proofs[n.skill] && " · 증빙 첨부"}
+                      {!done && n.locked && " · 앞 단계를 먼저 권장"}
+                    </span>
+                  </button>
+                  {done ? (
+                    <button className="btn-ghost !py-1 text-xs" onClick={() => cancel(n.skill)}>
+                      완료 취소
+                    </button>
+                  ) : scaleOf(n.skill) ? (
+                    <button className="btn-primary !py-1 text-xs" onClick={() => setSel(n.skill)}>
+                      점수·등급 입력
+                    </button>
+                  ) : (
+                    <button className="btn-primary !py-1 text-xs" onClick={() => s.setSkill(n.skill, "self")}>
+                      <Check size={14} /> 완료로 표시
+                    </button>
+                  )}
+                </li>
+              );
+            })}
+          </ul>
+          <p className="mt-2 text-xs text-ink/60">완료한 노드를 누르면 자격증·수료증 파일을 붙일 수 있어요.</p>
+        </section>
+
+        <aside className="space-y-4 lg:col-start-2 lg:row-span-2 lg:row-start-1">
           <div className="card p-4">
             <h2 className="flex items-center gap-1.5 font-bold">
               <Swords size={16} className="text-go" /> 오늘의 퀘스트

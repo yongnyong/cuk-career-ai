@@ -133,3 +133,23 @@ body {
     animation: none;
   }
 }
+
+/* 인쇄: 메뉴를 빼고 흰 종이에 검은 글자로 */
+@media print {
+  header,
+  footer,
+  nav {
+    display: none !important;
+  }
+  html {
+    color-scheme: light;
+  }
+  body {
+    background: #fff !important;
+    color: #000 !important;
+  }
+  main {
+    max-width: none !important;
+    padding: 0 !important;
+  }
+}
