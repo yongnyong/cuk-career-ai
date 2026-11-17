@@ -87,7 +87,7 @@ def test_work24_build_keeps_only_entry_level():
     o = collect.build_work24(ET.fromstring(W24.replace("CAREER", "신입")), NOW)
     assert o["id"] == "w24-7" and o["type"] == "채용" and o["applyUrl"] == "https://corp.example/apply"
     assert o["versions"][0]["deadline"] == "2026-11-20T23:59:00+09:00"
-    assert o["required"][0]["label"] == "학력: 대졸(4년)" and "010-1234-5678" not in str(o)
+    assert o["required"][0] == {"key": "degree", "label": "학력 조건은 원문에서 확인", "degree": "unknown", "src": "§1"} and "010-1234-5678" not in str(o)
     assert {c["src"] for c in o["required"]} <= {s["id"] for s in o["sections"]}
     assert "데이터 전문가" in o["_hint"]
     assert collect.build_work24(ET.fromstring(W24.replace("CAREER", "경력")), NOW) is None
@@ -122,3 +122,10 @@ def test_kstartup_detail_fills_support_preference_and_documents():
     assert any(s["title"].startswith("프로그램 운영") for s in o["sections"])
     same = collect.enrich_kstartup(collect.build_kstartup(KST_ITEM, NOW), {})
     assert same["documents"] == []
+
+
+def test_work24_degree_and_noise_lines():
+    assert collect.min_degree(["대졸(4)|박사"]) == "bachelor" and collect.min_degree(["고졸|박사", "대졸(4)"]) == "high"
+    assert collect.min_degree(["박사"]) == "unknown" and collect.min_degree(["학력무관"]) == "none" and collect.min_degree([""]) == "unknown"
+    text = "응시자격\n- 학력 : 대학교(학사)졸 이상\n- 경력 : 신입/경력 7년 이하\n[경력]\n전공무관\n- 해외여행에 결격사유가 없는 분\n- 모집분야별 상세 내용은 채용 홈페이지 참고\n- 교대근무 가능자입니다"
+    assert collect.qual_lines(text) == ["해외여행에 결격사유가 없는 분", "교대근무 가능자입니다"]

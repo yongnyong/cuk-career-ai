@@ -55,8 +55,19 @@ export function evaluateCondition(c: Condition, p: Profile): ConditionResult {
       if (st === "self") return r("check", "자기 보고 완료 — 증빙은 신청처에서 확인");
       return r("fail", "아직 준비하지 않은 역량");
     }
+    case "degree":
+      // 학부생 기준: 졸업 요건은 학적·학년으로 판정하고, 애매하면 확인 필요로 남긴다
+      if (c.degree === "none" || c.degree === "high") return r("pass", "학력 제한이 없거나 고졸 이상이라 지원할 수 있어요");
+      if (c.degree === "master") return r("fail", "석사 이상 대상이라 학부생은 지원할 수 없어요");
+      if (c.degree === "bachelor") {
+        if (p.status === "졸업예정") return r("pass", "졸업예정자로 지원할 수 있어요");
+        if (p.grade >= 4) return r("check", "졸업(예정)자 대상 — 4학년은 졸업예정 인정 시점을 원문에서 확인");
+        return r("fail", `졸업(예정)자 대상 공고예요. 현재 ${p.grade}학년`);
+      }
+      if (c.degree === "associate") return r("check", "전문대 졸업 이상 — 4년제 재학생 지원 가능 여부를 원문에서 확인");
+      return r("check", "공고에 최소 학력이 분명하지 않아요. 원문에서 확인");
     default:
-      return r("check", "명시적으로 판정할 수 없는 조건 — 원문 확인");
+      return r("check", "자동으로 판정하지 않는 조건이에요. 원문에서 직접 확인");
   }
 }
 

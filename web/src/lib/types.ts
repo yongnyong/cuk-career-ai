@@ -29,13 +29,14 @@ export interface Job {
 export type OppType = "현장실습" | "창업지원" | "채용" | "장학" | "학사" | "비교과";
 
 export interface Condition {
-  key: "status" | "grade" | "major" | "skill" | "other";
+  key: "status" | "grade" | "major" | "skill" | "degree" | "other";
   label: string; // 화면 표시용
   // 규칙 엔진이 검사할 값(명시적 조건만). other는 자동 판정하지 않고 "확인 필요"
   status?: ("재학" | "휴학" | "졸업예정")[];
   grades?: number[];
   majors?: Field[];
   skill?: string;
+  degree?: "none" | "high" | "associate" | "bachelor" | "master" | "unknown"; // 채용 공고의 최소 학력
   src: string; // 근거 문단 ID (예: §2)
 }
 

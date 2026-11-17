@@ -378,6 +378,45 @@ def work24(kind: str, **params) -> ET.Element:
     return root
 
 
+# 고용24 학력 표기("최소|최대")에서 최소 학력을 읽는다. 값이 하나뿐이고 석·박사면 최소 학력을 알 수 없다고 본다
+EDU_LEVEL = {"학력무관": "none", "고졸": "high", "대졸(2~3)": "associate", "대졸(4)": "bachelor", "석사": "master", "박사": "master"}
+EDU_ORDER = ["none", "high", "associate", "bachelor", "master"]
+EDU_LABEL = {
+    "none": "학력 제한 없음",
+    "high": "고졸 이상",
+    "associate": "전문대(2~3년) 졸업 이상",
+    "bachelor": "4년제 대학 졸업(예정) 이상",
+    "master": "석사 이상",
+    "unknown": "학력 조건은 원문에서 확인",
+}
+# 자격 요건 줄 가운데 조건이 아닌 것: 머리말, 학력·경력 반복, '무관', 다른 곳을 보라는 안내
+QUAL_NOISE = re.compile(r"^(학력|경력|전공|최종학력|신입)\b|무관\s*$|상세\s*내용|참고|참조|^\[?\s*(응시|지원)?\s*(자격|자격요건|공통|공통자격|필수|필수사항|우대사항|경력|신입)\s*\]?\s*:?$")
+
+
+def min_degree(values: list[str]) -> str:
+    """모집 단위들의 학력 표기에서 가장 낮은 최소 학력(지원 문턱)을 고른다."""
+    levels = []
+    for v in values:
+        parts = [x.strip() for x in (v or "").split("|") if x.strip()]
+        if not parts:
+            continue
+        if len(parts) == 1 and parts[0] in ("석사", "박사"):
+            levels.append("unknown")
+        else:
+            levels.append(EDU_LEVEL.get(parts[0], "unknown"))
+    known = [x for x in levels if x != "unknown"]
+    return min(known, key=EDU_ORDER.index) if known else "unknown"
+
+
+def qual_lines(text: str, limit: int = 3) -> list[str]:
+    out = []
+    for raw in text.splitlines():
+        line = raw.lstrip("-·※*○ ").strip()
+        if len(line) >= 7 and not QUAL_NOISE.search(line) and line not in out:
+            out.append(line)
+    return out[:limit]
+
+
 def build_work24(d: ET.Element, now: datetime) -> dict | None:
     """공채속보 상세 → Opportunity. 신입(또는 경력 무관)을 뽑는 모집 단위가 없으면 None. 직무 연결은 나중에 채운다."""
     clean = lambda t: scrub(re.sub(r"[ \t\r]+", " ", t or "")).strip()  # noqa: E731
@@ -405,10 +444,10 @@ def build_work24(d: ET.Element, now: datetime) -> dict | None:
     ]
     sections = [{"id": f"§{i + 1}", "title": t, "text": v[:1200]} for i, (t, v) in enumerate((t, v) for t, v in texts if v)]
     src = next((x["id"] for x in sections if x["title"] == "지원 자격"), "§1")
-    edu = sorted({u.findtext("empWantedEduNm") for u in units if u.findtext("empWantedEduNm")})
-    required = [{"key": "other", "label": f"학력: {'·'.join(edu)}"[:80], "src": "§1"}] if edu else []
-    lines = [x.lstrip("-·※ ").strip() for x in quals.splitlines() if len(x.strip()) > 3]
-    required += [{"key": "other", "label": x[:80], "src": src} for x in lines[:3]]
+    degree = min_degree([u.findtext("empWantedEduNm") or "" for u in units])
+    required = [{"key": "degree", "label": EDU_LABEL[degree], "degree": degree, "src": "§1"}]
+    required += [{"key": "other", "label": x[:80], "src": src} for x in qual_lines(quals)]
+    uniq = lambda tag: " · ".join(dict.fromkeys(clean(u.findtext(tag)) for u in units if u.findtext(tag)))  # noqa: E731
     url = d.findtext("empWantedHomepgDetail") or d.findtext("empWantedHomepg") or "https://www.work24.go.kr/"
     hint = [clean(u.findtext("empRecrNm")) for u in units] + [x.findtext("jobsCdKorNm") or "" for x in d.iter("empJobsListInfo")]
     return {
@@ -425,6 +464,15 @@ def build_work24(d: ET.Element, now: datetime) -> dict | None:
         "applyUrl": url,
         "period": None,
         "sections": sections,
+        "facts": facts(
+            [
+                ("고용 형태", (d.findtext("empWantedTypeNm") or "").replace("|", " · ")),
+                ("경력", uniq("empWantedCareerNm")),
+                ("학력", uniq("empWantedEduNm").replace("|", "~")),
+                ("근무지", uniq("workRegionNm")),
+                ("모집 분야", uniq("empRecrNm")),
+            ]
+        ),
         "versions": [{"version": 1, "checkedAt": now.isoformat(timespec="seconds"), "deadline": deadline.isoformat()}],
         "confidence": 1.0,
         "reviewed": True,
@@ -456,7 +504,7 @@ def run_work24() -> None:
             for x in root.iter("dhsOpenEmpInfo"):
                 stats["seen"] += 1
                 pid = f"w24-{x.findtext('empSeqno')}"
-                digest = hashlib.sha256(ET.tostring(x)).hexdigest()
+                digest = hashlib.sha256(b"w2" + ET.tostring(x)).hexdigest()
                 row = db.get(Posting, pid)
                 if row and row.raw_hash == digest:
                     continue  # 목록 내용이 그대로면 상세를 다시 부르지 않는다
