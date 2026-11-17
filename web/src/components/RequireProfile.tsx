@@ -13,6 +13,6 @@ export function RequireProfile({ children }: { children: React.ReactNode }) {
     if (!session) router.replace("/login");
     else if (!profile) router.replace(isAdmin ? "/admin" : "/onboarding");
   }, [ready, session, profile, isAdmin, router]);
-  if (!mounted || !profile) return null;
+  if (!mounted || !ready || !profile) return null; // ready 이후에 그려야 관리자 수정본이 반영된다
   return <>{children}</>;
 }

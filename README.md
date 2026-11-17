@@ -152,6 +152,9 @@ PR을 올리기 전에 네 가지를 모두 통과시킨다.
 | GET | `/api/me` | 내 아이디와 데이터 (로그인 필요) |
 | PUT | `/api/me/state` | 내 데이터 저장 (최대 200KB) |
 | DELETE | `/api/me` | 계정과 데이터 삭제 |
+| GET | `/api/catalog` | 관리자가 고친 테크트리(직무·스킬) 수정본 |
+| PUT | `/api/admin/catalog` | 수정본 저장 (관리자만) |
+| GET | `/api/admin/overview` | 서버 현황, 개수만 (관리자만) |
 | GET | `/api/opportunities` | 수집한 실제 공고 전체 (`types.ts`의 `Opportunity[]`) |
 | POST | `/api/chat` | `{oppId, question}` → `{text, citations, held}` |
 

@@ -2,9 +2,7 @@
 import { useEffect, useState } from "react";
 import { Database, GitBranch } from "lucide-react";
 import { useStore } from "@/lib/store";
-import { jobsFor } from "@/lib/engine";
-import { skillById } from "@/lib/data/catalog";
-import { DEPARTMENTS } from "@/lib/data/departments";
+import { TrackEditor } from "./TrackEditor";
 
 type Overview = {
   users: number;
@@ -51,43 +49,6 @@ export function ServerOverview() {
   );
 }
 
-// 모든 학과의 직무·테크와 노드를 한 화면에서 확인한다
-export function TrackBrowser() {
-  const [dept, setDept] = useState("psychology");
-  const jobs = jobsFor(dept);
-  return (
-    <div className="space-y-3">
-      <select className="input sm:w-72" value={dept} onChange={(e) => setDept(e.target.value)} aria-label="학과 선택">
-        {DEPARTMENTS.map((d) => (
-          <option key={d.id} value={d.id}>
-            {d.name}
-            {jobsFor(d.id).some((j) => j.departments) ? " (학과 테크 있음)" : ""}
-          </option>
-        ))}
-      </select>
-      <ul className="grid gap-2 lg:grid-cols-2">
-        {jobs.map((j) => (
-          <li key={j.id} className="rounded-md border border-line p-3 text-sm">
-            <div className="flex flex-wrap items-center gap-1.5 font-bold">
-              {j.name}
-              {j.departments && <span className="chip bg-gold text-on-gold">학과 테크</span>}
-              {j.srcUrl && (
-                <a href={j.srcUrl} target="_blank" rel="noreferrer" className="text-xs font-normal underline">
-                  출처
-                </a>
-              )}
-            </div>
-            <p className="text-xs text-slate-500">{j.summary}</p>
-            <p className="mt-1 text-xs text-slate-600">
-              {j.nodes.map((n) => `${skillById(n.skill)?.name ?? n.skill}${n.required ? "(필수)" : ""}`).join(" → ")}
-            </p>
-          </li>
-        ))}
-      </ul>
-    </div>
-  );
-}
-
 export function AdminOverview() {
   return (
     <>
@@ -99,9 +60,9 @@ export function AdminOverview() {
       </section>
       <section className="card space-y-3 p-5">
         <h2 className="flex items-center gap-1.5 font-bold">
-          <GitBranch size={16} /> 학과별 직무·테크 전체 보기
+          <GitBranch size={16} /> 학과별 테크트리 — 학생 화면 보기·수정
         </h2>
-        <TrackBrowser />
+        <TrackEditor />
       </section>
     </>
   );

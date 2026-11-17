@@ -199,5 +199,5 @@ function Today() {
 export default function Home() {
   const s = useStore();
   const mounted = useMounted();
-  return mounted && s.profile ? <Today /> : <Landing />;
+  return mounted && s.ready && s.profile ? <Today /> : <Landing />;
 }

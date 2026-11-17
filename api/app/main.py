@@ -73,6 +73,14 @@ class Posting(Base):
     checked_at: Mapped[int] = mapped_column(BigInteger)
 
 
+class Setting(Base):
+    """서비스 전체 설정. key="catalog": 관리자가 고친 직무·스킬(웹의 기본 사전 위에 덮어쓴다)."""
+
+    __tablename__ = "settings"
+    key: Mapped[str] = mapped_column(String(40), primary_key=True)
+    value: Mapped[dict[str, Any]] = mapped_column(JSON)
+
+
 Base.metadata.create_all(engine)
 app = FastAPI(title="CUK Career AI API")
 
@@ -180,6 +188,29 @@ def logout(response: Response, cuk_session: str | None = Cookie(default=None), d
 @app.get("/api/me")
 def me(user: User = Depends(current_user)):
     return {"id": user.id, "state": user.state, "admin": user.id in ADMIN_IDS}
+
+
+class CatalogBody(BaseModel):
+    skills: dict[str, dict[str, Any]] = Field(default_factory=dict, max_length=500)
+    jobs: dict[str, dict[str, Any]] = Field(default_factory=dict, max_length=300)
+
+
+@app.get("/api/catalog")
+def catalog(db: Session = Depends(get_db)):
+    row = db.get(Setting, "catalog")
+    return row.value if row else {"skills": {}, "jobs": {}}
+
+
+@app.put("/api/admin/catalog")
+def save_catalog(body: CatalogBody, user: User = Depends(current_user), db: Session = Depends(get_db)):
+    if user.id not in ADMIN_IDS:
+        raise HTTPException(403, "관리자만 고칠 수 있어요.")
+    value = body.model_dump()
+    if len(json.dumps(value, ensure_ascii=False).encode()) > 300_000:
+        raise HTTPException(413, "저장할 내용이 너무 커요.")
+    db.merge(Setting(key="catalog", value=value))
+    db.commit()
+    return {"ok": True}
 
 
 @app.get("/api/admin/overview")

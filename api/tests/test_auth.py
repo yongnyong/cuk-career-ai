@@ -94,3 +94,16 @@ def test_admin_overview_requires_admin(monkeypatch):
     body = c.get("/api/admin/overview").json()
     assert body["users"] >= 1 and set(body["postings"]) == {"total", "open", "pendingReview", "bySource", "byType"}
     assert "boss01" not in str(body)
+
+
+def test_catalog_is_public_to_read_and_admin_only_to_write(monkeypatch):
+    import app.main as m
+
+    c = client()
+    assert c.get("/api/catalog").json() == {"skills": {}, "jobs": {}}
+    c.post("/api/auth/signup", json={"id": "editor01", "password": "secret12"})
+    body = {"skills": {"ADM-1": {"id": "ADM-1", "name": "새 노드"}}, "jobs": {}}
+    assert c.put("/api/admin/catalog", json=body).status_code == 403
+    monkeypatch.setattr(m, "ADMIN_IDS", {"editor01"})
+    assert c.put("/api/admin/catalog", json=body).status_code == 200
+    assert client().get("/api/catalog").json()["skills"]["ADM-1"]["name"] == "새 노드"

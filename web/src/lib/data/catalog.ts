@@ -371,5 +371,51 @@ export const JOBS: Job[] = [
   },
 ];
 
+// ───────── 관리자 수정본 적용
+// 서버에 저장된 수정본(직무·스킬)을 기본 사전 위에 덮어쓴다. 배열을 제자리에서 바꾸므로 모든 화면에 바로 반영된다.
+export interface CatalogOverrides {
+  skills: Record<string, Skill>;
+  jobs: Record<string, Job>;
+}
+const BASE_SKILLS = [...SKILLS];
+const BASE_JOBS = [...JOBS];
+export const isBaseJob = (id: string) => BASE_JOBS.some((j) => j.id === id);
+
+// 잘못된 수정본이 화면을 멈추지 않게 한다: 없는 스킬·트랙 밖 선행·순환 선행을 걸러낸다
+export function sanitizeJob(job: Job, known: Set<string>): Job {
+  const seen = new Set<string>();
+  const nodes = (Array.isArray(job.nodes) ? job.nodes : [])
+    .filter((n) => n && known.has(n.skill) && !seen.has(n.skill) && seen.add(n.skill))
+    .map((n) => ({ skill: n.skill, required: !!n.required, prereq: (n.prereq ?? []).filter((q) => q !== n.skill) }));
+  const own = new Set(nodes.map((n) => n.skill));
+  for (const n of nodes) n.prereq = n.prereq.filter((q) => own.has(q));
+  const byId = new Map(nodes.map((n) => [n.skill, n]));
+  const state = new Map<string, 1 | 2>(); // 1 방문 중, 2 완료
+  const visit = (id: string) => {
+    state.set(id, 1);
+    const n = byId.get(id)!;
+    n.prereq = n.prereq.filter((q) => {
+      if (state.get(q) === 1) return false; // 순환을 만드는 선행은 버린다
+      if (!state.has(q)) visit(q);
+      return true;
+    });
+    state.set(id, 2);
+  };
+  for (const n of nodes) if (!state.has(n.skill)) visit(n.skill);
+  return { ...job, name: String(job.name ?? ""), summary: String(job.summary ?? ""), fields: job.fields ?? [], nodes };
+}
+
+export function applyOverrides(ov: Partial<CatalogOverrides> | null) {
+  const skills = new Map(BASE_SKILLS.map((x) => [x.id, x]));
+  for (const [id, x] of Object.entries(ov?.skills ?? {})) if (x?.name) skills.set(id, { ...x, id, verifiable: x.verifiable ?? false, kind: x.kind ?? "역량" });
+  SKILLS.length = 0;
+  SKILLS.push(...skills.values());
+  const known = new Set(skills.keys());
+  const jobs = new Map(BASE_JOBS.map((x) => [x.id, x]));
+  for (const [id, x] of Object.entries(ov?.jobs ?? {})) if (x?.name) jobs.set(id, sanitizeJob({ ...x, id }, known));
+  JOBS.length = 0;
+  JOBS.push(...jobs.values());
+}
+
 export const skillById = (id: string) => SKILLS.find((x) => x.id === id);
 export const jobById = (id: string) => JOBS.find((x) => x.id === id);

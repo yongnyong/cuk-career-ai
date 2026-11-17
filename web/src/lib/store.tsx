@@ -5,6 +5,7 @@
 // 공고 목록과 가상 시계는 아직 브라우저에만 있다.
 import { createContext, useCallback, useContext, useEffect, useMemo, useState } from "react";
 import { SEED_OPPORTUNITIES } from "./data/opportunities";
+import { applyOverrides, type CatalogOverrides } from "./data/catalog";
 import { evaluate, latest, syncNotices, fmt } from "./engine";
 import type { Notice, Opportunity, Profile, SkillState } from "./types";
 
@@ -99,7 +100,11 @@ const initial = (): State => ({
 interface Ctx extends State {
   ready: boolean; // 저장소 복원과 서버 세션 확인 완료 여부
   mode: "server" | "local";
-  isAdmin: boolean; // 관리자 계정: 실제·가상 공고를 모두 보고 서버 현황을 볼 수 있다
+  isAdmin: boolean;
+  catalog: CatalogOverrides; // 관리자가 고친 직무·스킬
+  catalogVersion: number;
+  saveCatalog: (next: CatalogOverrides) => Promise<string | null>;
+  // 관리자 계정: 실제·가상 공고를 모두 보고 서버 현황을 볼 수 있다
   nowDate: Date;
   signup: (id: string, pw: string) => Promise<string | null>; // 실패 시 사유 반환
   login: (id: string, pw: string) => Promise<string | null>;
@@ -125,6 +130,9 @@ export function StoreProvider({ children }: { children: React.ReactNode }) {
   const [state, setState] = useState<State>(initial);
   const [ready, setReady] = useState(false);
   const [mode, setMode] = useState<"server" | "local">("local");
+  // 관리자가 고친 테크트리. 바뀔 때마다 catalogVersion을 올려 화면을 다시 그린다
+  const [catalog, setCatalog] = useState<CatalogOverrides>({ skills: {}, jobs: {} });
+  const [catalogVersion, setCatalogVersion] = useState(0);
   const [isAdmin, setIsAdmin] = useState(false); // 서버가 알려준 관리자 여부(저장하지 않는다)
 
   // 브라우저 저장소(외부 시스템)에서 한 번 복원한다
@@ -137,7 +145,12 @@ export function StoreProvider({ children }: { children: React.ReactNode }) {
       /* 저장소 사용 불가 시 기본값 */
     }
     // 서버 세션 확인: 200이면 서버 데이터로 시작, 401이면 로그아웃 상태, 응답이 없으면 로컬 모드
-    call("/me").then((r) => {
+    Promise.all([call("/me"), call("/catalog")]).then(([r, c]) => {
+      if (c?.ok && c.data && typeof c.data === "object") {
+        applyOverrides(c.data);
+        setCatalog({ skills: c.data.skills ?? {}, jobs: c.data.jobs ?? {} });
+        setCatalogVersion((v) => v + 1);
+      }
       if (r && (r.ok || r.status === 401)) {
         setMode("server");
         setIsAdmin(r.ok && r.data.admin === true);
@@ -193,6 +206,16 @@ export function StoreProvider({ children }: { children: React.ReactNode }) {
       ...state,
       opportunities: visibleOpps(state, isAdmin),
       isAdmin,
+      catalog,
+      catalogVersion,
+      saveCatalog: async (next) => {
+        const r = await call("/admin/catalog", "PUT", next);
+        if (!r?.ok) return r ? errorOf(r.data) : "서버에 연결하지 못했어요.";
+        applyOverrides(next);
+        setCatalog(next);
+        setCatalogVersion((v) => v + 1);
+        return null;
+      },
       ready,
       mode,
       nowDate: new Date(state.now),
@@ -314,7 +337,7 @@ export function StoreProvider({ children }: { children: React.ReactNode }) {
       },
       resetDemo: () => update(() => initial()),
     }),
-    [state, update, ready, mode, isAdmin],
+    [state, update, ready, mode, isAdmin, catalog, catalogVersion],
   );
 
   return <StoreCtx.Provider value={api}>{children}</StoreCtx.Provider>;
