@@ -56,3 +56,18 @@ def test_deadline_change_adds_version():
     assert new["versions"][1]["changes"][0]["after"] == "2026-11-24T17:00:00+09:00"
     same = collect.with_history(old, collect.build(ITEM, "본문 오타 수정", G, NOW))
     assert len(same["versions"]) == 1
+
+
+KST_ITEM = {"pbanc_sn": 9, "biz_pbanc_nm": "창업 캠프", "pbanc_ntrp_nm": "기관", "aply_trgt": "대학생,일반인",
+            "aply_trgt_ctnt": "예비창업자 / 문의 010-1234-5678", "pbanc_ctnt": "모집합니다", "supt_regin": "서울",
+            "pbanc_rcpt_bgng_dt": "20261116", "pbanc_rcpt_end_dt": "20261210", "detl_pg_url": "https://www.k-startup.go.kr/x"}
+
+
+def test_kstartup_build_and_filters():
+    o = collect.build_kstartup(KST_ITEM, NOW)
+    assert o["id"] == "kst-9" and o["type"] == "창업지원" and o["jobs"] == ["founder"]
+    assert o["versions"][0]["deadline"] == "2026-12-10T23:59:00+09:00"
+    assert all(c["key"] == "other" for c in o["required"]) and "010-1234-5678" not in str(o)
+    assert {c["src"] for c in o["required"]} <= {s["id"] for s in o["sections"]}
+    assert collect.build_kstartup({**KST_ITEM, "aply_trgt": "일반기업"}, NOW) is None
+    assert collect.build_kstartup({**KST_ITEM, "supt_regin": "부산"}, NOW) is None

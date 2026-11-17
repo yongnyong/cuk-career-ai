@@ -16,6 +16,7 @@ import re
 import sys
 import time
 import urllib.error
+import urllib.parse
 import urllib.request
 from datetime import datetime, timedelta, timezone
 from pathlib import Path
@@ -220,9 +221,104 @@ def with_history(old: dict | None, new: dict) -> dict:
     return new
 
 
-def run() -> None:
+KSTARTUP_URL = "https://apis.data.go.kr/B552735/kisedKstartupService01/getAnnouncementInformation01"
+KSTARTUP_REGIONS = {"전국", "서울", "경기", "인천"}  # 교정 소재지 기준
+
+
+def build_kstartup(x: dict, now: datetime) -> dict | None:
+    """K-Startup 공고(공공데이터포털 공식 API, 공공누리 제1유형). 이미 구조화돼 있어 AI를 쓰지 않는다."""
+    if "대학생" not in (x.get("aply_trgt") or "") or (x.get("supt_regin") or "전국") not in KSTARTUP_REGIONS:
+        return None
+    try:
+        deadline = datetime.strptime(x["pbanc_rcpt_end_dt"], "%Y%m%d").replace(hour=23, minute=59, tzinfo=KST)
+    except (ValueError, TypeError, KeyError):
+        return None
+    target = scrub(re.sub(r"\s+", " ", x.get("aply_trgt_ctnt") or "")).strip()
+    texts = [
+        ("공고 내용", x.get("pbanc_ctnt")),
+        ("신청 대상", f"신청 대상: {x['aply_trgt']}. {target}"),
+        ("접수 기간", f"접수 기간: {x.get('pbanc_rcpt_bgng_dt')} ~ {x['pbanc_rcpt_end_dt']}"),
+        ("지원 분야·지역", f"지원 분야: {x.get('supt_biz_clsfc')}. 지역: {x.get('supt_regin')}. 창업 업력: {x.get('biz_enyy')}"),
+        ("신청 제외 대상", x.get("aply_excl_trgt_ctnt")),
+    ]
+    sections = [{"id": f"§{i + 1}", "title": t, "text": scrub(v)[:1200]} for i, (t, v) in enumerate((t, v) for t, v in texts if v)]
+    src = next(s["id"] for s in sections if s["title"] == "신청 대상")
+    required = [{"key": "other", "label": f"신청 대상: {x['aply_trgt']}"[:80], "src": src}]
+    if target:
+        required.append({"key": "other", "label": target[:80], "src": src})
+    url = x.get("detl_pg_url") or "https://www.k-startup.go.kr/"
+    return {
+        "id": f"kst-{x['pbanc_sn']}",
+        "type": "창업지원",
+        "title": x["biz_pbanc_nm"],
+        "org": (x.get("pbanc_ntrp_nm") or "")[:60],
+        "source": {"name": "K-Startup(창업진흥원) · 공공누리 제1유형", "url": url},
+        "isVirtual": False,
+        "jobs": ["founder"],
+        "required": required,
+        "preferred": [],
+        "documents": [],
+        "applyUrl": url,
+        "period": None,
+        "sections": sections,
+        "versions": [{"version": 1, "checkedAt": now.isoformat(timespec="seconds"), "deadline": deadline.isoformat()}],
+        "confidence": 1.0,
+        "reviewed": True,
+    }
+
+
+def fetch_kstartup() -> list[dict]:
+    """모집 중인 공고 전체. 서비스 키는 URL에 들어가므로 오류 메시지에 URL을 남기지 않는다."""
+    key, out, page = urllib.parse.quote(os.environ["KSTARTUP_API_KEY"], safe=""), [], 1
+    while page <= 10:
+        q = f"serviceKey={key}&page={page}&perPage=100&returnType=json&cond%5Brcrt_prgs_yn%3A%3AEQ%5D=Y"
+        try:
+            got = json.loads(fetch(f"{KSTARTUP_URL}?{q}"))
+        except Exception as e:
+            raise RuntimeError(f"K-Startup API 호출 실패: {type(e).__name__}") from None
+        out += got.get("data") or []
+        if page * 100 >= got.get("matchCount", 0):
+            break
+        page += 1
+        time.sleep(1)
+    return out
+
+
+def save(db, Posting, pid: str, digest: str, data: dict | None, now: datetime, stats: dict) -> None:
     from sqlalchemy.orm.attributes import flag_modified
 
+    row = db.get(Posting, pid)
+    if row:
+        row.data = with_history(row.data, data) if data else None
+        row.raw_hash, row.checked_at = digest, int(now.timestamp())
+        flag_modified(row, "data")
+        stats["updated"] += 1
+    else:
+        db.add(Posting(id=pid, raw_hash=digest, data=data, checked_at=int(now.timestamp())))
+        stats["new"] += 1
+    db.commit()
+
+
+def run_kstartup() -> None:
+    from .main import Posting, SessionLocal
+
+    stats = {"seen": 0, "new": 0, "updated": 0, "kept": 0}
+    with SessionLocal() as db:
+        for x in fetch_kstartup():
+            stats["seen"] += 1
+            now = datetime.now(KST)
+            data = build_kstartup(x, now)
+            if not data:
+                continue
+            stats["kept"] += 1
+            digest = hashlib.sha256(json.dumps(x, sort_keys=True, ensure_ascii=False).encode()).hexdigest()
+            row = db.get(Posting, data["id"])
+            if not (row and row.raw_hash == digest):
+                save(db, Posting, data["id"], digest, data, now, stats)
+    print("k-startup", json.dumps(stats, ensure_ascii=False))
+
+
+def run() -> None:
     from .main import Posting, SessionLocal
 
     robots = RobotFileParser(BASE + "/robots.txt")
@@ -248,21 +344,16 @@ def run() -> None:
                     if row and row.raw_hash == digest:
                         continue  # 바뀌지 않은 공지는 AI를 다시 부르지 않는다
                     data = build(item, body, gemini(prompt(item, body)), now) if len(body) >= 30 else None
-                    if row:
-                        row.data = with_history(row.data, data) if data else None
-                        row.raw_hash, row.checked_at = digest, int(now.timestamp())
-                        flag_modified(row, "data")
-                        stats["updated"] += 1
-                    else:
-                        db.add(Posting(id=f"cuk-{item['no']}", raw_hash=digest, data=data, checked_at=int(now.timestamp())))
-                        stats["new"] += 1
-                    db.commit()
+                    save(db, Posting, f"cuk-{item['no']}", digest, data, now, stats)
                 except Exception as e:  # 한 건의 실패가 전체 수집을 멈추지 않게 한다
                     db.rollback()
                     stats["errors"] += 1
                     print(f"[오류] {item['no']} {item['title'][:30]}: {type(e).__name__} {e}", file=sys.stderr)
-    print(json.dumps(stats, ensure_ascii=False))
+    print("school", json.dumps(stats, ensure_ascii=False))
 
 
 if __name__ == "__main__":
-    run()
+    if os.environ.get("GEMINI_API_KEY"):
+        run()
+    if os.environ.get("KSTARTUP_API_KEY"):
+        run_kstartup()

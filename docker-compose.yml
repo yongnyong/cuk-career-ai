@@ -21,6 +21,7 @@ services:
       DATABASE_URL: postgresql+psycopg://cuk:${POSTGRES_PASSWORD}@postgres:5432/cuk
       COOKIE_SECURE: ${COOKIE_SECURE:-1}
       GEMINI_API_KEY: ${GEMINI_API_KEY:-}
+      KSTARTUP_API_KEY: ${KSTARTUP_API_KEY:-}
     depends_on:
       postgres:
         condition: service_healthy

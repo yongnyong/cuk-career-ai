@@ -23,7 +23,7 @@ interface Account {
   hash: string; // 시연용 계정은 빈 문자열(비밀번호 없음)
   data: UserData;
 }
-const isCollected = (o: Opportunity) => o.id.startsWith("cuk-"); // 서버 수집 공고
+const isCollected = (o: Opportunity) => /^(cuk|kst)-/.test(o.id); // 서버 수집 공고(학교 공지·K-Startup)
 // 실제 공고가 있으면 실제 계정에는 가상 공고를 보여주지 않는다(시연용 계정은 둘 다 본다)
 const visibleOpps = (s: { opportunities: Opportunity[]; session: string | null }) =>
   !isDemo(s.session) && s.opportunities.some(isCollected) ? s.opportunities.filter((o) => !o.isVirtual) : s.opportunities;
