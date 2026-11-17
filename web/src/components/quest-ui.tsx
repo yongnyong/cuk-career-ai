@@ -1,7 +1,7 @@
 "use client";
 import { Check, KeyRound, Lock, Swords } from "lucide-react";
 import { dday, progress, type TreeNode } from "@/lib/engine";
-import { jobById } from "@/lib/data/catalog";
+import { formatScore, jobById } from "@/lib/data/catalog";
 import { getDepartment } from "@/lib/data/departments";
 import type { Profile } from "@/lib/types";
 
@@ -27,7 +27,7 @@ export function NodeBox({ node, isNew, now }: { node: TreeNode; isNew?: boolean;
         <span className="min-w-0">
           <span className="block truncate text-sm font-bold leading-tight">{node.name}</span>
           <span className="block text-[11px] opacity-70">
-            {node.state === "verified" ? "완료 · 검증됨" : node.state === "self" ? "완료 · 자기 보고" : st.label}
+            {node.state === "none" ? st.label : node.score ? `완료 · ${formatScore(node.skill, node.score)}` : node.state === "verified" ? "완료 · 검증됨" : "완료 · 자기 보고"}
             {node.required ? " · 필수" : ""}
           </span>
         </span>

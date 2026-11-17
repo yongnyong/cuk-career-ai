@@ -10,7 +10,7 @@ import { Legend, NodeBox, StatusWindow } from "@/components/quest-ui";
 import { AiNotice, DDay, TypeTag, VirtualTag } from "@/components/ui";
 import { useStore } from "@/lib/store";
 import { buildTree, dday, nextNode, recommend, type TreeNode } from "@/lib/engine";
-import { skillById } from "@/lib/data/catalog";
+import { formatScore, meetsTarget, scaleOf, skillById } from "@/lib/data/catalog";
 import { questProgress } from "@/lib/quest";
 
 type SkillNodeData = { node: TreeNode; isNew: boolean; now: Date };
@@ -25,6 +25,44 @@ function SkillNode({ data }: NodeProps<Node<SkillNodeData>>) {
   );
 }
 const nodeTypes = { skill: SkillNode };
+
+// 점수제(TOEIC 등)·등급제(OPIc, JLPT 등) 자격: 점수나 등급을 적으면 완료로 표시한다
+function ScoreField({ skill, value, target, onSave }: { skill: string; value?: string; target?: string; onSave: (v: string) => void }) {
+  const sc = scaleOf(skill)!;
+  const [v, setV] = useState(value ?? "");
+  const valid = "grades" in sc ? true : v === "" || (Number(v) >= sc.min && Number(v) <= sc.max);
+  const ok = meetsTarget(skill, value, target);
+  return (
+    <div className="mt-3 space-y-1 text-xs">
+      <label className="block font-bold text-slate-600" htmlFor="score-input">
+        {"grades" in sc ? "내 등급" : `내 점수 (${sc.min}~${sc.max}${sc.unit})`}
+      </label>
+      <div className="flex gap-1.5">
+        {"grades" in sc ? (
+          <select id="score-input" className="input !py-1" value={v} onChange={(e) => setV(e.target.value)}>
+            <option value="">아직 없음</option>
+            {sc.grades.map((g) => (
+              <option key={g}>{g}</option>
+            ))}
+          </select>
+        ) : (
+          <input id="score-input" className="input !py-1" inputMode="numeric" value={v} onChange={(e) => setV(e.target.value.replace(/\D/g, ""))} />
+        )}
+        <button className="btn-primary !py-1 text-xs" disabled={!valid} onClick={() => onSave(v)}>
+          저장
+        </button>
+      </div>
+      {!valid && <p className="text-danger">범위 안의 점수를 입력해 주세요.</p>}
+      {target && (
+        <p className={ok === false ? "text-warn" : "text-slate-500"}>
+          학과 권장: {formatScore(skill, target)} 이상
+          {ok === true && " · 충족"}
+          {ok === false && " · 아직 못 미쳐요"}
+        </p>
+      )}
+    </div>
+  );
+}
 
 function TreeView() {
   const s = useStore();
@@ -113,13 +151,22 @@ function TreeView() {
                   출처: 학과 홈페이지 안내
                 </a>
               )}
+              {scaleOf(selNode.skill) && (
+                <ScoreField
+                  key={selNode.skill}
+                  skill={selNode.skill}
+                  value={selNode.score}
+                  target={selNode.target}
+                  onSave={(v) => s.setScore(selNode.skill, v)}
+                />
+              )}
               <div className="mt-3 flex gap-1.5">
                 {selNode.state === "none" ? (
                   <button className="btn-primary !py-1 text-xs" onClick={() => s.setSkill(selNode.skill, "self")}>
                     완료로 표시
                   </button>
                 ) : (
-                  <button className="btn-ghost !py-1 text-xs" onClick={() => s.setSkill(selNode.skill, "none")}>
+                  <button className="btn-ghost !py-1 text-xs" onClick={() => (s.setScore(selNode.skill, ""), s.setSkill(selNode.skill, "none"))}>
                     완료 취소
                   </button>
                 )}

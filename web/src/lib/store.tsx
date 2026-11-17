@@ -112,6 +112,7 @@ interface Ctx extends State {
   logout: () => void;
   setProfile: (p: Profile) => void;
   setSkill: (skill: string, st: SkillState) => void;
+  setScore: (skill: string, value: string) => void; // 점수·등급 저장(값이 있으면 완료로 표시)
   follow: (oppId: string) => void;
   unfollow: (oppId: string) => void;
   toggleQuest: (oppId: string, item: string) => void;
@@ -267,6 +268,16 @@ export function StoreProvider({ children }: { children: React.ReactNode }) {
         update((s) => ({ ...s, ...emptyUser(), session: null }));
       },
       setProfile: (p) => update((s) => ({ ...s, profile: p })),
+      setScore: (skill, value) =>
+        update((s) => {
+          if (!s.profile) return s;
+          const scores = { ...s.profile.scores };
+          if (value) scores[skill] = value;
+          else delete scores[skill];
+          const cur = s.profile.skills[skill] ?? "none";
+          const skills = { ...s.profile.skills, [skill]: value ? (cur === "none" ? "self" : cur) : cur };
+          return { ...s, profile: { ...s.profile, skills, scores } };
+        }),
       setSkill: (skill, st) =>
         update((s) => (s.profile ? { ...s, profile: { ...s.profile, skills: { ...s.profile.skills, [skill]: st } } } : s)),
       follow: (id) => update((s) => (s.followed.includes(id) ? s : { ...s, followed: [...s.followed, id] })),

@@ -19,7 +19,8 @@ export interface Job {
   summary: string;
   fields: Field[]; // 우선 추천 계열(전공은 출발점일 뿐, 모든 직무 선택 가능)
   // 스킬트리 노드: 순서대로 선행 관계, prereq로 분기
-  nodes: { skill: string; prereq?: string[]; required: boolean }[];
+  // target: 학과가 권장한 점수·등급(예: "2급", "700")
+  nodes: { skill: string; prereq?: string[]; required: boolean; target?: string }[];
   departments?: string[]; // 학과 전용 테크(해당 학과 id). 없으면 모든 학과 공통 직무
   base?: string; // 공고 연결에 쓰는 공통 직무 id
   srcUrl?: string; // 학과 진로 페이지
@@ -92,6 +93,7 @@ export interface Profile {
   weeklyHours: number;
   targetTerm: string;
   skills: Record<string, SkillState>;
+  scores?: Record<string, string>; // 점수제·등급제 자격의 내 점수·등급(자기 보고)
   createdAt: string;
 }
 

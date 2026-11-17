@@ -3,7 +3,7 @@
 import type { Job, Skill } from "../types";
 
 type Node = Job["nodes"][number];
-const n = (skill: string, required = false, prereq?: string[]): Node => ({ skill, required, prereq });
+const n = (skill: string, required = false, prereq?: string[], target?: string): Node => ({ skill, required, prereq, ...(target && { target }) });
 
 const PAGES = {
   psy: "https://psychology.catholic.ac.kr/psychology/info/",
@@ -251,19 +251,19 @@ export const DEPT_JOBS: Job[] = [
 
   // 국사학과 — 학과 진로 로드맵 표의 갈래와 필요 자격
   track("his-curator", "학예사", "박물관·미술관에서 유물을 연구하고 전시한다", "korean-history", hisC, [
-    n("HIS-SOURCE", true), n("HIS-HERITAGE", true), n("HIS-C-HANJA"), n("HIS-TRIP"),
+    n("HIS-SOURCE", true), n("HIS-HERITAGE", true), n("HIS-C-HANJA", false, undefined, "2급"), n("HIS-TRIP"),
   ], "arts-planner"),
   track("his-archive", "기록관리사", "공공·민간 기록물을 관리한다", "korean-history", hisC, [
     n("HIS-SOURCE", true), n("HIS-ARCHIVE", true, ["HIS-SOURCE"]), n("HIS-C-HANJA"),
   ], "public-sector"),
   track("his-translate", "고전번역가", "한문 사료를 우리말로 옮긴다", "korean-history", hisC, [
-    n("HIS-SOURCE", true), n("HIS-C-HANJA", true, ["HIS-SOURCE"]),
+    n("HIS-SOURCE", true), n("HIS-C-HANJA", true, ["HIS-SOURCE"], "1급"),
   ]),
   track("his-content", "역사콘텐츠 크리에이터", "역사를 영상·글·전시 콘텐츠로 만든다", "korean-history", hisC, [
     n("HIS-CONTENT", true), n("SK-VIDEO"), n("HIS-CONTEST", false, ["HIS-CONTENT"]), n("HIS-TRIP"),
   ], "content-planner"),
   track("his-public", "공무원", "한국사·한자 능력을 살려 공직에 진출한다", "korean-history", hisC, [
-    n("SK-KHIST", true), n("HIS-C-HANJA"), n("SK-COMP"), n("SK-TOEIC"),
+    n("SK-KHIST", true, undefined, "1급"), n("HIS-C-HANJA", false, undefined, "3급"), n("SK-COMP", false, undefined, "2급"), n("SK-TOEIC"),
   ], "public-sector"),
 
   // 사회복지학과 — 학과가 밝힌 주요 분야

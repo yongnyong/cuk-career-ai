@@ -143,6 +143,8 @@ export interface TreeNode {
   state: "none" | "self" | "verified";
   locked: boolean;
   opportunities: Opportunity[]; // 이 노드에서 열리는 실제 기회
+  target?: string; // 학과 권장 점수·등급
+  score?: string; // 내 점수·등급
 }
 
 export function buildTree(p: Profile, opps: Opportunity[], now: Date): TreeNode[] {
@@ -175,6 +177,8 @@ export function buildTree(p: Profile, opps: Opportunity[], now: Date): TreeNode[
       state,
       locked,
       opportunities: linked,
+      target: n.target,
+      score: p.scores?.[n.skill],
     };
   });
 }

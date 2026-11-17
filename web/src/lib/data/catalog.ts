@@ -371,6 +371,36 @@ export const JOBS: Job[] = [
   },
 ];
 
+// ───────── 점수제·등급제 자격
+// 여기에 없는 자격은 합격/불합격으로만 기록한다(기사·산업기사, 면허, SQLD·ADsP 등).
+export type Scale = { unit: string; min: number; max: number } | { grades: string[] }; // grades는 낮은 등급 → 높은 등급
+export const SCALES: Record<string, Scale> = {
+  "SK-TOEIC": { unit: "점", min: 10, max: 990 },
+  "SK-OPIC": { grades: ["NL", "NM", "NH", "IL", "IM1", "IM2", "IM3", "IH", "AL"] },
+  "SK-JLPT": { grades: ["N5", "N4", "N3", "N2", "N1"] },
+  "SK-HSK": { grades: ["1급", "2급", "3급", "4급", "5급", "6급"] },
+  "SK-DELF": { grades: ["A1", "A2", "B1", "B2", "C1", "C2"] },
+  "SK-COMP": { grades: ["2급", "1급"] },
+  "SK-KHIST": { grades: ["6급", "5급", "4급", "3급", "2급", "1급"] },
+  "HIS-C-HANJA": { grades: ["8급", "7급", "6급", "5급", "4급", "3급", "2급", "1급"] },
+  "CLO-C-GTQ": { grades: ["3급", "2급", "1급"] },
+};
+export const scaleOf = (skillId: string): Scale | undefined => SCALES[skillId];
+export const formatScore = (skillId: string, value?: string) => {
+  const sc = SCALES[skillId];
+  return !sc || !value ? "" : "grades" in sc ? value : `${value}${sc.unit}`;
+};
+// 내 점수·등급이 권장 기준 이상인지. 기준이나 점수가 없으면 null(판단하지 않음)
+export function meetsTarget(skillId: string, value?: string, target?: string): boolean | null {
+  const sc = SCALES[skillId];
+  if (!sc || !value || !target) return null;
+  if ("grades" in sc) {
+    const [v, t] = [sc.grades.indexOf(value), sc.grades.indexOf(target)];
+    return v < 0 || t < 0 ? null : v >= t;
+  }
+  return Number(value) >= Number(target);
+}
+
 // ───────── 관리자 수정본 적용
 // 서버에 저장된 수정본(직무·스킬)을 기본 사전 위에 덮어쓴다. 배열을 제자리에서 바꾸므로 모든 화면에 바로 반영된다.
 export interface CatalogOverrides {
@@ -386,7 +416,7 @@ export function sanitizeJob(job: Job, known: Set<string>): Job {
   const seen = new Set<string>();
   const nodes = (Array.isArray(job.nodes) ? job.nodes : [])
     .filter((n) => n && known.has(n.skill) && !seen.has(n.skill) && seen.add(n.skill))
-    .map((n) => ({ skill: n.skill, required: !!n.required, prereq: (n.prereq ?? []).filter((q) => q !== n.skill) }));
+    .map((n) => ({ skill: n.skill, required: !!n.required, prereq: (n.prereq ?? []).filter((q) => q !== n.skill), ...(n.target && { target: String(n.target) }) }));
   const own = new Set(nodes.map((n) => n.skill));
   for (const n of nodes) n.prereq = n.prereq.filter((q) => own.has(q));
   const byId = new Map(nodes.map((n) => [n.skill, n]));
