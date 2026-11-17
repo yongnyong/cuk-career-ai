@@ -408,11 +408,28 @@ def min_degree(values: list[str]) -> str:
     return min(known, key=EDU_ORDER.index) if known else "unknown"
 
 
+# 자격 요건 문장에 적힌 학력(학력 칸이 불분명할 때 쓴다)
+DEGREE_TEXT = [
+    ("master", r"석사\s*(학위)?\s*(이상|소지|보유|취득)"),
+    ("bachelor", r"(4년제|학사|대학교).{0,14}(졸업|학위|이상)|대졸\s*이상"),
+    ("associate", r"전문학사|전문대|초대졸|2[,~·]\s*3년제"),
+    ("high", r"고졸|고등학교\s*졸업"),
+    ("none", r"학력\s*(및\s*경력\s*)?(무관|제한\s*없음)"),
+]
+DEGREE_LINE = re.compile("|".join(p for _, p in DEGREE_TEXT))
+
+
+def degree_from_text(text: str) -> str:
+    """자격 요건 문장에서 가장 낮은 학력 조건을 찾는다(모집 단위마다 다르면 가장 낮은 문턱)."""
+    found = [level for level, pat in DEGREE_TEXT if re.search(pat, text or "")]
+    return min(found, key=EDU_ORDER.index) if found else "unknown"
+
+
 def qual_lines(text: str, limit: int = 3) -> list[str]:
     out = []
     for raw in text.splitlines():
         line = raw.lstrip("-·※*○ ").strip()
-        if len(line) >= 7 and not QUAL_NOISE.search(line) and line not in out:
+        if len(line) >= 7 and not QUAL_NOISE.search(line) and not DEGREE_LINE.search(line) and line not in out:
             out.append(line)
     return out[:limit]
 
@@ -445,6 +462,8 @@ def build_work24(d: ET.Element, now: datetime) -> dict | None:
     sections = [{"id": f"§{i + 1}", "title": t, "text": v[:1200]} for i, (t, v) in enumerate((t, v) for t, v in texts if v)]
     src = next((x["id"] for x in sections if x["title"] == "지원 자격"), "§1")
     degree = min_degree([u.findtext("empWantedEduNm") or "" for u in units])
+    if degree == "unknown":
+        degree = degree_from_text(quals)
     required = [{"key": "degree", "label": EDU_LABEL[degree], "degree": degree, "src": "§1"}]
     required += [{"key": "other", "label": x[:80], "src": src} for x in qual_lines(quals)]
     uniq = lambda tag: " · ".join(dict.fromkeys(clean(u.findtext(tag)) for u in units if u.findtext(tag)))  # noqa: E731
@@ -467,7 +486,7 @@ def build_work24(d: ET.Element, now: datetime) -> dict | None:
         "facts": facts(
             [
                 ("고용 형태", (d.findtext("empWantedTypeNm") or "").replace("|", " · ")),
-                ("경력", uniq("empWantedCareerNm")),
+                ("경력", uniq("empWantedCareerNm").replace("|", " · ")),
                 ("학력", uniq("empWantedEduNm").replace("|", "~")),
                 ("근무지", uniq("workRegionNm")),
                 ("모집 분야", uniq("empRecrNm")),
@@ -504,7 +523,7 @@ def run_work24() -> None:
             for x in root.iter("dhsOpenEmpInfo"):
                 stats["seen"] += 1
                 pid = f"w24-{x.findtext('empSeqno')}"
-                digest = hashlib.sha256(b"w2" + ET.tostring(x)).hexdigest()
+                digest = hashlib.sha256(b"w3" + ET.tostring(x)).hexdigest()
                 row = db.get(Posting, pid)
                 if row and row.raw_hash == digest:
                     continue  # 목록 내용이 그대로면 상세를 다시 부르지 않는다
