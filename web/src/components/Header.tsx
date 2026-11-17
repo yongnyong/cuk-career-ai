@@ -68,7 +68,7 @@ export function Header() {
                     관리자
                   </Link>
                 )}
-                <Link href={profile ? "/profile" : "/onboarding"} className="flex items-center gap-1 font-semibold">
+                <Link href={profile ? "/profile" : store.isAdmin ? "/admin" : "/onboarding"} className="flex items-center gap-1 font-semibold">
                   <UserRound size={14} /> {session}
                 </Link>
                 <button

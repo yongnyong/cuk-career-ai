@@ -304,13 +304,16 @@ function Form({ start }: { start: Profile }) {
 }
 
 export default function Onboarding() {
-  const { session, profile, ready } = useStore();
+  const { session, profile, ready, isAdmin } = useStore();
   const router = useRouter();
   const mounted = useMounted();
+  // 관리자 계정은 기본 정보·역량 진단 없이 관리자 화면으로 간다
+  const skip = isAdmin && !profile;
   useEffect(() => {
     if (ready && !session) router.replace("/signup");
-  }, [ready, session, router]);
-  if (!mounted || !ready || !session) return null;
+    else if (ready && skip) router.replace("/admin");
+  }, [ready, session, skip, router]);
+  if (!mounted || !ready || !session || skip) return null;
   // 기존 프로필이 있으면 그 값에서 시작(다시 설정)
   return <Form key={session} start={profile ?? blank} />;
 }
