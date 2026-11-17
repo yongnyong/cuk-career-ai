@@ -25,8 +25,8 @@ interface Account {
 }
 const isCollected = (o: Opportunity) => /^(cuk|kst|w24)-/.test(o.id); // 서버 수집 공고(학교 공지·K-Startup·고용24)
 // 실제 공고가 있으면 실제 계정에는 가상 공고를 보여주지 않는다(시연용 계정은 둘 다 본다)
-const visibleOpps = (s: { opportunities: Opportunity[]; session: string | null }) =>
-  !isDemo(s.session) && s.opportunities.some(isCollected) ? s.opportunities.filter((o) => !o.isVirtual) : s.opportunities;
+const visibleOpps = (s: { opportunities: Opportunity[]; session: string | null }, isAdmin: boolean) =>
+  !isAdmin && !isDemo(s.session) && s.opportunities.some(isCollected) ? s.opportunities.filter((o) => !o.isVirtual) : s.opportunities;
 const isDemo = (id: string | null) => !!id && id.startsWith("demo-"); // 시연용 계정은 서버에 저장하지 않는다
 
 // API 호출. 서버에 닿지 않거나 JSON이 아니면 null(= 서버 없음)
@@ -99,6 +99,7 @@ const initial = (): State => ({
 interface Ctx extends State {
   ready: boolean; // 저장소 복원과 서버 세션 확인 완료 여부
   mode: "server" | "local";
+  isAdmin: boolean; // 관리자 계정: 실제·가상 공고를 모두 보고 서버 현황을 볼 수 있다
   nowDate: Date;
   signup: (id: string, pw: string) => Promise<string | null>; // 실패 시 사유 반환
   login: (id: string, pw: string) => Promise<string | null>;
@@ -124,6 +125,7 @@ export function StoreProvider({ children }: { children: React.ReactNode }) {
   const [state, setState] = useState<State>(initial);
   const [ready, setReady] = useState(false);
   const [mode, setMode] = useState<"server" | "local">("local");
+  const [isAdmin, setIsAdmin] = useState(false); // 서버가 알려준 관리자 여부(저장하지 않는다)
 
   // 브라우저 저장소(외부 시스템)에서 한 번 복원한다
   /* eslint-disable react-hooks/set-state-in-effect */
@@ -138,6 +140,7 @@ export function StoreProvider({ children }: { children: React.ReactNode }) {
     call("/me").then((r) => {
       if (r && (r.ok || r.status === 401)) {
         setMode("server");
+        setIsAdmin(r.ok && r.data.admin === true);
         setState((s) =>
           r.ok ? { ...s, ...fromServer(r.data.state), session: r.data.id, now: new Date().toISOString() } : isDemo(s.session) ? s : { ...s, ...emptyUser(), session: null },
         );
@@ -188,7 +191,8 @@ export function StoreProvider({ children }: { children: React.ReactNode }) {
   const api = useMemo<Ctx>(
     () => ({
       ...state,
-      opportunities: visibleOpps(state),
+      opportunities: visibleOpps(state, isAdmin),
+      isAdmin,
       ready,
       mode,
       nowDate: new Date(state.now),
@@ -197,6 +201,7 @@ export function StoreProvider({ children }: { children: React.ReactNode }) {
           const r = await call("/auth/signup", "POST", { id, password: pw });
           if (!r) return "서버에 연결하지 못했어요. 잠시 뒤 다시 시도해 주세요.";
           if (!r.ok) return errorOf(r.data);
+          setIsAdmin(r.data.admin === true);
           update((s) => ({ ...s, ...emptyUser(), session: r.data.id, now: new Date().toISOString() }));
           return null;
         }
@@ -213,6 +218,7 @@ export function StoreProvider({ children }: { children: React.ReactNode }) {
           const r = await call("/auth/login", "POST", { id, password: pw });
           if (!r) return "서버에 연결하지 못했어요. 잠시 뒤 다시 시도해 주세요.";
           if (!r.ok) return errorOf(r.data);
+          setIsAdmin(r.data.admin === true);
           update((s) => ({ ...s, ...fromServer(r.data.state), session: r.data.id, now: new Date().toISOString() }));
           return null;
         }
@@ -234,6 +240,7 @@ export function StoreProvider({ children }: { children: React.ReactNode }) {
         })),
       logout: () => {
         if (mode === "server" && !isDemo(state.session)) void call("/auth/logout", "POST");
+        setIsAdmin(false);
         update((s) => ({ ...s, ...emptyUser(), session: null }));
       },
       setProfile: (p) => update((s) => ({ ...s, profile: p })),
@@ -307,7 +314,7 @@ export function StoreProvider({ children }: { children: React.ReactNode }) {
       },
       resetDemo: () => update(() => initial()),
     }),
-    [state, update, ready, mode],
+    [state, update, ready, mode, isAdmin],
   );
 
   return <StoreCtx.Provider value={api}>{children}</StoreCtx.Provider>;

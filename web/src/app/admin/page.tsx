@@ -7,6 +7,7 @@ import { fmt, latest, parsePosting, type Parsed } from "@/lib/engine";
 import { DEMO_CORRECTION, DEMO_NEW_POSTING } from "@/lib/data/opportunities";
 import { jobById, skillById } from "@/lib/data/catalog";
 import { Warn } from "@/components/ui";
+import { AdminOverview } from "@/components/AdminOverview";
 import type { Condition, Opportunity } from "@/lib/types";
 
 function toOpportunity(raw: string, x: Parsed, now: string): Opportunity {
@@ -49,6 +50,8 @@ export default function Admin() {
         <h1 className="text-xl font-bold">관리자</h1>
         <p className="text-sm text-slate-500">공고 등록 → AI 구조화 → 검수 → 학생 스킬트리 연결·알림까지의 흐름을 확인해요.</p>
       </div>
+
+      <AdminOverview />
 
       <div className="grid gap-4 lg:grid-cols-2">
         <section className="card space-y-3 p-5">

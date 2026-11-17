@@ -23,6 +23,7 @@ services:
       GEMINI_API_KEY: ${GEMINI_API_KEY:-}
       KSTARTUP_API_KEY: ${KSTARTUP_API_KEY:-}
       WORK24_API_KEY: ${WORK24_API_KEY:-}
+      ADMIN_IDS: ${ADMIN_IDS:-}
     depends_on:
       postgres:
         condition: service_healthy

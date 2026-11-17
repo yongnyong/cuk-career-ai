@@ -17,7 +17,7 @@ def client():
 def test_signup_sets_httponly_cookie_and_me_works():
     c = client()
     r = c.post("/api/auth/signup", json={"id": "alice01", "password": PW})
-    assert r.status_code == 200 and r.json() == {"id": "alice01", "state": None}
+    assert r.status_code == 200 and r.json() == {"id": "alice01", "state": None, "admin": False}
     assert "httponly" in r.headers["set-cookie"].lower()
     assert c.get("/api/me").json()["id"] == "alice01"
 
@@ -81,3 +81,16 @@ def test_delete_account_removes_user_and_sessions():
     assert c.delete("/api/me").status_code == 200
     assert c.get("/api/me").status_code == 401
     assert c.post("/api/auth/login", json={"id": "bob0001", "password": PW}).status_code == 401
+
+
+def test_admin_overview_requires_admin(monkeypatch):
+    import app.main as m
+
+    c = client()
+    c.post("/api/auth/signup", json={"id": "boss01", "password": "secret12"})
+    assert c.get("/api/admin/overview").status_code == 403
+    monkeypatch.setattr(m, "ADMIN_IDS", {"boss01"})
+    assert c.get("/api/me").json()["admin"] is True
+    body = c.get("/api/admin/overview").json()
+    assert body["users"] >= 1 and set(body["postings"]) == {"total", "open", "pendingReview", "bySource", "byType"}
+    assert "boss01" not in str(body)

@@ -63,6 +63,11 @@ export function Header() {
             </Link>
             {session ? (
               <>
+                {mounted && store.isAdmin && (
+                  <Link href="/admin" className="chip bg-gold text-on-gold">
+                    관리자
+                  </Link>
+                )}
                 <Link href={profile ? "/profile" : "/onboarding"} className="flex items-center gap-1 font-semibold">
                   <UserRound size={14} /> {session}
                 </Link>

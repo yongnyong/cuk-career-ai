@@ -11,6 +11,7 @@ import os
 import re
 import secrets
 import time
+from datetime import datetime, timezone
 from pathlib import Path
 from typing import Any
 
@@ -18,7 +19,7 @@ from argon2 import PasswordHasher
 from argon2.exceptions import InvalidHashError, VerificationError
 from fastapi import Cookie, Depends, FastAPI, HTTPException, Response
 from pydantic import BaseModel, Field
-from sqlalchemy import JSON, BigInteger, ForeignKey, String, create_engine, delete, select
+from sqlalchemy import JSON, BigInteger, ForeignKey, String, create_engine, delete, func, select
 from sqlalchemy.orm import DeclarativeBase, Mapped, Session, mapped_column, sessionmaker
 
 # 기본값: api/dev.db (실행 위치와 무관하게 같은 파일)
@@ -29,6 +30,8 @@ SESSION_TTL = 14 * 24 * 3600
 MAX_STATE_BYTES = 200_000
 ID_RE = re.compile(r"^[a-z0-9_]{4,16}$")
 LOGIN_FAIL = "아이디 또는 비밀번호가 맞지 않아요."
+# 관리자 아이디(쉼표 구분). 관리자는 서버 현황을 볼 수 있다
+ADMIN_IDS = {x.strip() for x in os.environ.get("ADMIN_IDS", "").split(",") if x.strip()}
 
 engine = create_engine(
     DATABASE_URL,
@@ -144,7 +147,7 @@ def signup(body: Credentials, response: Response, db: Session = Depends(get_db))
     db.add(User(id=body.id, password_hash=hasher.hash(body.password), state=None, created_at=int(time.time())))
     db.commit()
     start_session(db, response, body.id)
-    return {"id": body.id, "state": None}
+    return {"id": body.id, "state": None, "admin": body.id in ADMIN_IDS}
 
 
 @app.post("/api/auth/login")
@@ -162,7 +165,7 @@ def login(body: Credentials, response: Response, db: Session = Depends(get_db)):
         raise HTTPException(401, LOGIN_FAIL)
     _failures.pop(body.id, None)
     start_session(db, response, user.id)
-    return {"id": user.id, "state": user.state}
+    return {"id": user.id, "state": user.state, "admin": user.id in ADMIN_IDS}
 
 
 @app.post("/api/auth/logout")
@@ -176,7 +179,34 @@ def logout(response: Response, cuk_session: str | None = Cookie(default=None), d
 
 @app.get("/api/me")
 def me(user: User = Depends(current_user)):
-    return {"id": user.id, "state": user.state}
+    return {"id": user.id, "state": user.state, "admin": user.id in ADMIN_IDS}
+
+
+@app.get("/api/admin/overview")
+def admin_overview(user: User = Depends(current_user), db: Session = Depends(get_db)):
+    """관리자용 현황. 개수만 돌려주고 계정 아이디·내 데이터 같은 개인 단위 정보는 넣지 않는다."""
+    if user.id not in ADMIN_IDS:
+        raise HTTPException(403, "관리자만 볼 수 있어요.")
+    rows = db.scalars(select(Posting)).all()
+    data = [r.data for r in rows if r.data]
+    now = datetime.now(timezone.utc)
+    by_source: dict[str, int] = {}
+    by_type: dict[str, int] = {}
+    for o in data:
+        by_source[o["id"].split("-")[0]] = by_source.get(o["id"].split("-")[0], 0) + 1
+        by_type[o["type"]] = by_type.get(o["type"], 0) + 1
+    last = max((r.checked_at for r in rows), default=None)
+    return {
+        "users": db.scalar(select(func.count()).select_from(User)),
+        "postings": {
+            "total": len(data),
+            "open": sum(datetime.fromisoformat(o["versions"][-1]["deadline"]) > now for o in data),
+            "pendingReview": sum(not o.get("reviewed") for o in data),
+            "bySource": by_source,
+            "byType": by_type,
+        },
+        "lastCheckedAt": datetime.fromtimestamp(last, timezone.utc).isoformat() if last else None,
+    }
 
 
 @app.put("/api/me/state")
