@@ -66,6 +66,7 @@ export interface Opportunity {
   applyUrl: string; // 공식 신청처
   period?: string; // 활동 기간
   sections: Section[]; // 원문 의미 단위 청크
+  facts?: { label: string; value: string }[]; // 핵심 정보(지원금·우대 사항·창업 단계 등). 원문에 적힌 것만
   versions: OppVersion[]; // 최신 버전이 마지막
   confidence: number; // AI 구조화 신뢰도 (0.8 미만이면 검수 대기)
   reviewed: boolean;

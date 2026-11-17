@@ -49,6 +49,29 @@ function Body() {
           )}
         </div>
 
+        {o.facts && o.facts.length > 0 && (
+          <div className="card p-5">
+            <h2 className="font-bold">핵심 정보</h2>
+            <dl className="mt-2 divide-y divide-line text-sm">
+              {o.facts.map((f) => (
+                <div key={f.label} className="grid gap-1 py-2 sm:grid-cols-[9rem_1fr]">
+                  <dt className="font-semibold text-slate-500">{f.label}</dt>
+                  <dd className={/지원금|혜택/.test(f.label) ? "font-bold text-accent" : ""}>
+                    {/^https?:\/\//.test(f.value) ? (
+                      <a href={f.value} target="_blank" rel="noreferrer" className="break-all underline">
+                        {f.value}
+                      </a>
+                    ) : (
+                      f.value
+                    )}
+                  </dd>
+                </div>
+              ))}
+            </dl>
+            <p className="mt-2 text-xs text-slate-500">공고문에 적힌 내용만 옮겼어요. 금액과 조건은 원문에서 다시 확인하세요.</p>
+          </div>
+        )}
+
         <div className="card p-5">
           <div className="flex items-center justify-between">
             <h2 className="font-bold">필수 조건</h2>

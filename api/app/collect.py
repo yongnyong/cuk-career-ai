@@ -41,6 +41,20 @@ STATUSES = ["재학", "휴학", "졸업예정"]
 SKIP_TITLE = re.compile(r"명단|합격자|선발자|선정자|수혜자|당첨|(선발|선정|심사|합격)\s*결과")
 PHONE = re.compile(r"01[016789][-.\s]?\d{3,4}[-.\s]?\d{4}")
 STUDENT_NO = re.compile(r"(?<!\d)(19|20)\d{7}(?!\d)")
+BUILD_VERSION = "2"  # 공고 구조가 바뀌면 올린다 → 학교 공지·K-Startup을 한 번 다시 만든다
+# 금액 표현이 들어간 구절(지원금·상금 등). 공고문에 적힌 표현을 그대로 옮기기 위해 문장 단위로 뽑는다
+MONEY = re.compile(r"[^.\n·※]*?(?:최대\s*)?\d[\d,.]*\s*(?:억|천만|백만|만)\s*원[^.\n·※]*")
+
+
+def money_lines(text: str, limit: int = 2) -> str:
+    """공고문에서 금액이 적힌 구절을 최대 limit개 돌려준다. 없으면 빈 문자열(지어내지 않는다)."""
+    found = [re.sub(r"\s+", " ", m.group(0)).strip(" -,") for m in MONEY.finditer(text or "")]
+    return " / ".join(dict.fromkeys(x[:90] for x in found if x))[: 90 * limit + 3] if found else ""
+
+
+def facts(pairs: list[tuple[str, str | None]]) -> list[dict]:
+    """화면의 '핵심 정보' 표. 값이 있는 항목만 남긴다."""
+    return [{"label": k, "value": scrub(re.sub(r"\s+", " ", v)).strip()[:200]} for k, v in pairs if v and str(v).strip()]
 
 
 def fetch(url: str) -> str:
@@ -116,6 +130,8 @@ SCHEMA = {
         "jobs": {"type": "ARRAY", "items": {"type": "STRING"}},
         "preferred": {"type": "ARRAY", "items": {"type": "STRING"}},
         "documents": {"type": "ARRAY", "items": {"type": "STRING"}},
+        "benefit": {"type": "STRING"},
+        "preferred_text": {"type": "STRING"},
         "confidence": {"type": "NUMBER"},
     },
     "required": ["is_opportunity", "type", "org", "deadline", "confidence"],
@@ -135,6 +151,8 @@ def prompt(item: dict, body: str) -> str:
 - jobs: 관련 직무 id만(최대 4개). 모든 학생 대상이면 빈 배열. 목록: {lst(CATALOG["jobs"])}
 - preferred: 공지에 우대·필요로 적힌 역량 id만. 없으면 빈 배열. 목록: {lst(CATALOG["skills"])}
 - documents: 제출 서류 이름. period: 활동 기간(없으면 빈 문자열). org: 주관 부서·기관.
+- benefit: 지원금·장학금·상금·급여 등 받는 혜택. 금액과 조건을 공지 표현 그대로 한두 문장으로. 공지에 없으면 빈 문자열.
+- preferred_text: 우대 사항·가산점. 공지 표현 그대로. 없으면 빈 문자열.
 - 사람 이름, 전화번호, 학번은 어떤 필드에도 쓰지 않는다.
 - confidence: 구조화 결과에 대한 확신(0~1). 마감일이나 자격이 모호하면 0.8 미만.
 
@@ -205,6 +223,7 @@ def build(item: dict, body: str, g: dict, now: datetime) -> dict | None:
         "applyUrl": url,
         "period": g.get("period") or None,
         "sections": sections,
+        "facts": facts([("지원금·혜택", g.get("benefit")), ("우대 사항", g.get("preferred_text")), ("활동 기간", g.get("period"))]),
         "versions": [{"version": 1, "checkedAt": now.isoformat(timespec="seconds"), "deadline": deadline.isoformat()}],
         "confidence": confidence,
         "reviewed": confidence >= 0.8,
@@ -264,6 +283,19 @@ def build_kstartup(x: dict, now: datetime) -> dict | None:
         "applyUrl": url,
         "period": None,
         "sections": sections,
+        "facts": facts(
+            [
+                ("지원금·지원 규모", money_lines(f"{x.get('pbanc_ctnt') or ''}\n{x.get('aply_trgt_ctnt') or ''}") or "공고 요약에 금액 표기 없음 · 원문에서 확인"),
+                ("지원 분야", x.get("supt_biz_clsfc")),
+                ("우대 사항", x.get("prfn_matr") or "공고 요약에 명시 없음"),
+                ("창업 단계(업력)", x.get("biz_enyy")),
+                ("대상 연령", x.get("biz_trgt_age")),
+                ("지역", x.get("supt_regin")),
+                ("신청 제외 대상", x.get("aply_excl_trgt_ctnt")),
+                ("온라인 접수처", x.get("aply_mthd_onli_rcpt_istc")),
+                ("주관 기관 구분", x.get("sprv_inst")),
+            ]
+        ),
         "versions": [{"version": 1, "checkedAt": now.isoformat(timespec="seconds"), "deadline": deadline.isoformat()}],
         "confidence": 1.0,
         "reviewed": True,
@@ -449,7 +481,7 @@ def run_kstartup() -> None:
             if not data:
                 continue
             stats["kept"] += 1
-            digest = hashlib.sha256(json.dumps(x, sort_keys=True, ensure_ascii=False).encode()).hexdigest()
+            digest = hashlib.sha256((BUILD_VERSION + json.dumps(x, sort_keys=True, ensure_ascii=False)).encode()).hexdigest()
             row = db.get(Posting, data["id"])
             if not (row and row.raw_hash == digest):
                 save(db, Posting, data["id"], digest, data, now, stats)
@@ -476,7 +508,7 @@ def run() -> None:
                 time.sleep(INTERVAL)
                 try:
                     body = scrub(parse_body(fetch(f"{LIST_URL}?mode=view&articleNo={item['no']}")))
-                    digest = hashlib.sha256((item["title"] + body).encode()).hexdigest()
+                    digest = hashlib.sha256((BUILD_VERSION + item["title"] + body).encode()).hexdigest()
                     row = db.get(Posting, f"cuk-{item['no']}")
                     now = datetime.now(KST)
                     if row and row.raw_hash == digest:

@@ -91,3 +91,15 @@ def test_work24_build_keeps_only_entry_level():
     assert {c["src"] for c in o["required"]} <= {s["id"] for s in o["sections"]}
     assert "데이터 전문가" in o["_hint"]
     assert collect.build_work24(ET.fromstring(W24.replace("CAREER", "경력")), NOW) is None
+
+
+def test_facts_show_money_and_preference_without_inventing():
+    assert "400만원" in collect.money_lines("본선 진출 혜택 - 창업 지원금 총 400만원 (등수별 차등 지급). 그 외 안내")
+    assert collect.money_lines("모집합니다. 자세한 내용은 공고문 참고") == ""
+    k = collect.build_kstartup({**KST_ITEM, "pbanc_ctnt": "선정 시 사업화 자금 최대 1억원 지원", "prfn_matr": None, "supt_biz_clsfc": "사업화", "biz_enyy": "예비창업자"}, NOW)
+    got = {f["label"]: f["value"] for f in k["facts"]}
+    assert "1억원" in got["지원금·지원 규모"] and got["우대 사항"] == "공고 요약에 명시 없음" and got["창업 단계(업력)"] == "예비창업자"
+    none = {f["label"]: f["value"] for f in collect.build_kstartup(KST_ITEM, NOW)["facts"]}
+    assert none["지원금·지원 규모"].startswith("공고 요약에 금액 표기 없음")
+    o = collect.build(ITEM, "본문", {**G, "benefit": "장학금 100만원", "preferred_text": ""}, NOW)
+    assert [f["label"] for f in o["facts"]] == ["지원금·혜택"]
