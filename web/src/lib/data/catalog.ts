@@ -1,5 +1,6 @@
 // 직무·역량 사전 (설명용 초안). 시험·자격 정보는 등록 시 공식 안내를 다시 확인한다.
 import type { Job, Skill } from "../types";
+import { DEPT_JOBS, DEPT_SKILLS } from "./deptTracks";
 
 const s = (id: string, name: string, kind: Skill["kind"], verifiable = false, officialUrl?: string): Skill => ({
   id,
@@ -13,6 +14,7 @@ const QNET = "https://www.q-net.or.kr/";
 const DATAQ = "https://www.dataq.or.kr/";
 
 export const SKILLS: Skill[] = [
+  ...DEPT_SKILLS,
   // 공통
   s("SK-TOEIC", "TOEIC", "어학", true, "https://exam.toeic.co.kr/"),
   s("SK-OPIC", "OPIc", "어학", true, "https://www.opic.or.kr/"),
@@ -93,6 +95,7 @@ export const SKILLS: Skill[] = [
 ];
 
 export const JOBS: Job[] = [
+  ...DEPT_JOBS,
   {
     id: "ai-engineer",
     name: "AI 엔지니어",

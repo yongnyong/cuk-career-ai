@@ -97,7 +97,7 @@ export function recommend(opps: Opportunity[], p: Profile, now: Date): Recommend
     if (o.jobs.length === 0) {
       score += 30;
       reasons.push("모든 학생 대상 공지");
-    } else if (o.jobs.includes(p.jobId)) {
+    } else if (o.jobs.includes(p.jobId) || (job?.base && o.jobs.includes(job.base))) {
       score += 50;
       reasons.push(`목표 직무(${job?.name}) 연결`);
     } else if (dept && o.jobs.some((j) => jobById(j)?.fields.includes(dept.field))) {
@@ -200,12 +200,15 @@ export function nextNode(p: Profile) {
 }
 
 // 경로 초안 생성 — 서버 연결 시 Gemini가 경로 설명을 쓰고, 노드는 직무 그래프에서만 고른다(존재하는 노드 ID만 허용)
+// 학과에서 고를 수 있는 직무: 공통 직무 + 그 학과의 전용 테크(다른 학과 전용 테크는 제외)
+export const jobsFor = (departmentId: string) => JOBS.filter((j) => !j.departments || j.departments.includes(departmentId));
+
 export function suggestJobs(departmentId: string) {
   const dept = getDepartment(departmentId);
-  if (!dept) return JOBS;
-  if (dept.field === "open") return JOBS;
-  const primary = JOBS.filter((j) => j.fields.includes(dept.field));
-  return [...primary, ...JOBS.filter((j) => !primary.includes(j))];
+  const all = jobsFor(departmentId);
+  if (!dept || dept.field === "open") return all;
+  const rank = (j: (typeof all)[number]) => (j.departments ? 0 : j.fields.includes(dept.field) ? 1 : 2);
+  return [...all].sort((a, b) => rank(a) - rank(b));
 }
 
 // ───────── 알림 (멱등키로 중복 방지, 정정 시 이전 알림 무효화)
@@ -430,7 +433,8 @@ export const gradeStage = (grade: number) => GRADE_STAGE[Math.min(grade, 4)];
 
 export function diagnosisItems(departmentId: string, grade: number) {
   const dept = getDepartment(departmentId);
-  const related = dept && dept.field !== "open" ? JOBS.filter((j) => j.fields.includes(dept.field)) : JOBS;
+  const all = jobsFor(departmentId);
+  const related = dept && dept.field !== "open" ? all.filter((j) => j.departments || j.fields.includes(dept.field)) : all;
   const ids = new Set<string>(COMMON_SKILLS);
   for (const j of related) for (const n of j.nodes) ids.add(n.skill);
   const focus = gradeStage(grade).focus;
@@ -445,8 +449,10 @@ export function diagnosisItems(departmentId: string, grade: number) {
 
 export function matchJobs(skills: Record<string, string>, departmentId: string) {
   const dept = getDepartment(departmentId);
-  return JOBS.map((j) => {
-    const have = j.nodes.filter((n) => (skills[n.skill] ?? "none") !== "none").length;
-    return { job: j, have, total: j.nodes.length, major: !!dept && j.fields.includes(dept.field) };
-  }).sort((a, b) => b.have / b.total - a.have / a.total || Number(b.major) - Number(a.major));
+  return jobsFor(departmentId)
+    .map((j) => {
+      const have = j.nodes.filter((n) => (skills[n.skill] ?? "none") !== "none").length;
+      return { job: j, have, total: j.nodes.length, own: !!j.departments, major: !!dept && j.fields.includes(dept.field) };
+    })
+    .sort((a, b) => Number(b.own) - Number(a.own) || b.have / b.total - a.have / a.total || Number(b.major) - Number(a.major));
 }

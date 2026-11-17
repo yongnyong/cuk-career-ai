@@ -9,6 +9,8 @@ export interface Skill {
   kind: SkillKind;
   verifiable: boolean; // 증빙으로 검증 가능한 자격(어학 점수·자격증)인지
   officialUrl?: string; // 시험·자격 공식 확인 경로
+  from?: "학과"; // 학과 홈페이지에 근거가 있는 항목
+  srcUrl?: string; // 근거 페이지
 }
 
 export interface Job {
@@ -18,6 +20,9 @@ export interface Job {
   fields: Field[]; // 우선 추천 계열(전공은 출발점일 뿐, 모든 직무 선택 가능)
   // 스킬트리 노드: 순서대로 선행 관계, prereq로 분기
   nodes: { skill: string; prereq?: string[]; required: boolean }[];
+  departments?: string[]; // 학과 전용 테크(해당 학과 id). 없으면 모든 학과 공통 직무
+  base?: string; // 공고 연결에 쓰는 공통 직무 id
+  srcUrl?: string; // 학과 진로 페이지
 }
 
 export type OppType = "현장실습" | "창업지원" | "채용" | "장학" | "학사" | "비교과";

@@ -108,6 +108,11 @@ function TreeView() {
                   공식 안내 확인
                 </a>
               )}
+              {skillById(selNode.skill)?.srcUrl && (
+                <a href={skillById(selNode.skill)!.srcUrl} target="_blank" rel="noreferrer" className="block text-xs underline">
+                  출처: 학과 홈페이지 안내
+                </a>
+              )}
               <div className="mt-3 flex gap-1.5">
                 {selNode.state === "none" ? (
                   <button className="btn-primary !py-1 text-xs" onClick={() => s.setSkill(selNode.skill, "self")}>

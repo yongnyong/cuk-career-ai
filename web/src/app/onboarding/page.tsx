@@ -3,8 +3,8 @@ import { useEffect, useMemo, useState } from "react";
 import { useRouter } from "next/navigation";
 import { ClipboardCheck, Loader2, Sparkles } from "lucide-react";
 import { COLLEGES, DEPARTMENTS, DEPARTMENT_SOURCE, getDepartment } from "@/lib/data/departments";
-import { JOBS, jobById } from "@/lib/data/catalog";
-import { diagnosisItems, gradeStage, matchJobs } from "@/lib/engine";
+import { jobById } from "@/lib/data/catalog";
+import { diagnosisItems, gradeStage, jobsFor, matchJobs } from "@/lib/engine";
 import { useStore } from "@/lib/store";
 import { useMounted } from "@/lib/useMounted";
 import type { Profile, SkillState } from "@/lib/types";
@@ -212,7 +212,7 @@ function Form({ start }: { start: Profile }) {
           <div className="space-y-4">
             <h1 className="text-xl font-bold">어떤 일을 해 보고 싶나요?</h1>
             <p className="text-sm text-slate-500">
-              체크한 항목과 많이 겹치는 순서로 정렬했어요. 전공은 출발점일 뿐이라 어떤 직무든 고를 수 있어요.
+              학과 홈페이지의 진로 안내를 바탕으로 만든 &lsquo;학과 테크&rsquo;가 있으면 먼저 보여드려요. 전공은 출발점일 뿐이라 어떤 직무든 고를 수 있어요.
             </p>
             <div className="grid gap-2 sm:grid-cols-2">
               {matches.map((m) => (
@@ -225,6 +225,7 @@ function Form({ start }: { start: Profile }) {
                 >
                   <div className="flex flex-wrap items-center gap-1.5 font-medium">
                     {m.job.name}
+                    {m.own && <span className="chip bg-gold text-on-gold">학과 테크</span>}
                     {m.major && <span className="chip bg-accent/15 text-accent">전공 연계</span>}
                     {m.have > 0 && (
                       <span className="chip bg-emerald-100 text-emerald-700">
@@ -240,7 +241,7 @@ function Form({ start }: { start: Profile }) {
               <div>
                 <p className="mb-2 text-sm font-medium">함께 관심 있는 분야 (선택)</p>
                 <div className="flex flex-wrap gap-1.5">
-                  {JOBS.filter((j) => j.id !== f.jobId).map((j) => {
+                  {jobsFor(f.departmentId).filter((j) => j.id !== f.jobId).map((j) => {
                     const on = f.interests.includes(j.id);
                     return (
                       <button

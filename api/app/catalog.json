@@ -1,6 +1,358 @@
 {
  "skills": [
   {
+   "id": "PSY-STAT",
+   "name": "심리통계·연구법"
+  },
+  {
+   "id": "PSY-TEST",
+   "name": "심리검사·평가 실습"
+  },
+  {
+   "id": "PSY-INTERVIEW",
+   "name": "상담면접 실습"
+  },
+  {
+   "id": "PSY-COMM",
+   "name": "지역사회상담 사례실습"
+  },
+  {
+   "id": "PSY-PLAY",
+   "name": "놀이치료 실습·슈퍼비전"
+  },
+  {
+   "id": "PSY-HRD",
+   "name": "인적자원개발 실습"
+  },
+  {
+   "id": "PSY-CRIME",
+   "name": "범죄심리학 수강"
+  },
+  {
+   "id": "PSY-C-YOUTH",
+   "name": "청소년상담사 3급"
+  },
+  {
+   "id": "PSY-C-COUNSEL",
+   "name": "상담심리사 2급(학회)"
+  },
+  {
+   "id": "PSY-C-JOB",
+   "name": "직업상담사"
+  },
+  {
+   "id": "PSY-C-CLIN",
+   "name": "임상심리사 2급"
+  },
+  {
+   "id": "PSY-C-MH",
+   "name": "정신건강임상심리사 2급"
+  },
+  {
+   "id": "PSY-C-DEV",
+   "name": "발달심리사 2급(학회)"
+  },
+  {
+   "id": "PSY-C-PLAY",
+   "name": "놀이심리재활사"
+  },
+  {
+   "id": "PSY-C-ORG",
+   "name": "인사조직심리사(학회)"
+  },
+  {
+   "id": "PSY-C-CRIME",
+   "name": "범죄심리사 2급(학회)"
+  },
+  {
+   "id": "PSY-GRAD",
+   "name": "대학원 진학(1급·전문가 자격은 석사 이상)"
+  },
+  {
+   "id": "ENV-AIR",
+   "name": "대기오염 제어·방지 실습"
+  },
+  {
+   "id": "ENV-WATER",
+   "name": "수질·폐수처리 공학"
+  },
+  {
+   "id": "ENV-WASTE",
+   "name": "에너지·자원순환 공학"
+  },
+  {
+   "id": "ENV-RENEW",
+   "name": "신재생에너지 공학·실습"
+  },
+  {
+   "id": "ENV-DATA",
+   "name": "환경빅데이터"
+  },
+  {
+   "id": "ENV-C-AIR",
+   "name": "대기환경기사 (학과 지정 중요)"
+  },
+  {
+   "id": "ENV-C-WATER",
+   "name": "수질환경기사 (학과 지정 중요)"
+  },
+  {
+   "id": "ENV-C-SAFE",
+   "name": "산업안전기사 (학과 지정 중요)"
+  },
+  {
+   "id": "ENV-C-WASTE",
+   "name": "폐기물처리기사"
+  },
+  {
+   "id": "ENV-C-SOIL",
+   "name": "토양환경기사"
+  },
+  {
+   "id": "ENV-C-GHG",
+   "name": "온실가스관리기사"
+  },
+  {
+   "id": "ENV-C-MEAS",
+   "name": "환경측정분석사"
+  },
+  {
+   "id": "ENV-C-RENEW",
+   "name": "신재생에너지발전설비기사"
+  },
+  {
+   "id": "ENV-C-ENERGY",
+   "name": "에너지관리기사"
+  },
+  {
+   "id": "ENV-C-CHE",
+   "name": "화공기사"
+  },
+  {
+   "id": "ENV-C-CHEM",
+   "name": "화학분석기사"
+  },
+  {
+   "id": "CLO-ILLUST",
+   "name": "패션일러스트레이션"
+  },
+  {
+   "id": "CLO-PATTERN",
+   "name": "의복 제작·패턴 CAD"
+  },
+  {
+   "id": "CLO-FABRIC",
+   "name": "의류소재 분석"
+  },
+  {
+   "id": "CLO-3D",
+   "name": "3D CLO 가상의류"
+  },
+  {
+   "id": "CLO-BIGDATA",
+   "name": "패션 빅데이터·트렌드 분석"
+  },
+  {
+   "id": "CLO-SHOW",
+   "name": "패션쇼·패션화보"
+  },
+  {
+   "id": "CLO-CONTEST",
+   "name": "패션상품기획콘테스트·공모전"
+  },
+  {
+   "id": "CLO-FIELD",
+   "name": "현장실습·패션매장 실무"
+  },
+  {
+   "id": "CLO-C-GTQ",
+   "name": "GTQ(Photoshop)·GTQi(Illustrator)"
+  },
+  {
+   "id": "CLO-C-COLOR",
+   "name": "컬러리스트산업기사"
+  },
+  {
+   "id": "CLO-C-CG",
+   "name": "컴퓨터그래픽스운용기능사"
+  },
+  {
+   "id": "CLO-C-TECH",
+   "name": "의류기사"
+  },
+  {
+   "id": "CLO-C-MD",
+   "name": "패션머천다이징산업기사"
+  },
+  {
+   "id": "CLO-C-DIST",
+   "name": "유통관리사"
+  },
+  {
+   "id": "CLO-C-GA",
+   "name": "Google Analytics 자격"
+  },
+  {
+   "id": "CLO-C-TRADE",
+   "name": "패션의류 무역 마스터과정"
+  },
+  {
+   "id": "ICE-PROG",
+   "name": "자료구조·프로그래밍응용"
+  },
+  {
+   "id": "ICE-LOGIC",
+   "name": "논리회로·디지털 설계 실험"
+  },
+  {
+   "id": "ICE-SIGNAL",
+   "name": "신호 및 시스템"
+  },
+  {
+   "id": "ICE-CRYPTO",
+   "name": "정보암호화"
+  },
+  {
+   "id": "ICE-SEMI",
+   "name": "반도체 소자·공정"
+  },
+  {
+   "id": "ICE-C-COMM",
+   "name": "정보통신기사"
+  },
+  {
+   "id": "ICE-C-RADIO",
+   "name": "무선설비기사"
+  },
+  {
+   "id": "ICE-C-SEMI",
+   "name": "반도체설계기사"
+  },
+  {
+   "id": "ICE-C-ELECTRIC",
+   "name": "전기기사"
+  },
+  {
+   "id": "ICE-C-CCNA",
+   "name": "CCNA"
+  },
+  {
+   "id": "ACC-FIN",
+   "name": "재무회계(중급회계)"
+  },
+  {
+   "id": "ACC-COST",
+   "name": "원가·관리회계"
+  },
+  {
+   "id": "ACC-TAX",
+   "name": "세무회계(소득세·법인세)"
+  },
+  {
+   "id": "ACC-AUDIT",
+   "name": "회계감사"
+  },
+  {
+   "id": "ACC-IT",
+   "name": "IT 활용 회계(ERP)"
+  },
+  {
+   "id": "ACC-HYUN",
+   "name": "고시반 '현양제' 참여"
+  },
+  {
+   "id": "ACC-C-CPA",
+   "name": "공인회계사"
+  },
+  {
+   "id": "ACC-C-CTA",
+   "name": "세무사"
+  },
+  {
+   "id": "SP-TYPES",
+   "name": "장애 유형별 교육"
+  },
+  {
+   "id": "SP-TEACH",
+   "name": "특수교육 실습"
+  },
+  {
+   "id": "SP-COUNSEL",
+   "name": "재활상담·사례관리"
+  },
+  {
+   "id": "SP-ASSESS",
+   "name": "직업평가"
+  },
+  {
+   "id": "SP-PRACT",
+   "name": "재활실습 150시간"
+  },
+  {
+   "id": "SP-C-REHAB",
+   "name": "장애인재활상담사"
+  },
+  {
+   "id": "SP-C-EVAL",
+   "name": "직업능력평가사(민간)"
+  },
+  {
+   "id": "HIS-SOURCE",
+   "name": "사료 읽기(한문 강독)"
+  },
+  {
+   "id": "HIS-ARCHIVE",
+   "name": "기록관리학의 이해"
+  },
+  {
+   "id": "HIS-HERITAGE",
+   "name": "한국의 문화유산·예술사"
+  },
+  {
+   "id": "HIS-CONTENT",
+   "name": "역사콘텐츠 캡스톤디자인"
+  },
+  {
+   "id": "HIS-CONTEST",
+   "name": "역사콘텐츠공모전"
+  },
+  {
+   "id": "HIS-TRIP",
+   "name": "답사준비위원회·학술제"
+  },
+  {
+   "id": "HIS-C-HANJA",
+   "name": "한자능력검정"
+  },
+  {
+   "id": "SW-SKILL",
+   "name": "사회복지 실천기술"
+  },
+  {
+   "id": "SW-PRACT",
+   "name": "사회복지현장실습 1·2"
+  },
+  {
+   "id": "SW-RESEARCH",
+   "name": "사회복지조사·자료분석"
+  },
+  {
+   "id": "SW-PROGRAM",
+   "name": "프로그램 개발과 평가"
+  },
+  {
+   "id": "SW-C-1",
+   "name": "사회복지사 1급"
+  },
+  {
+   "id": "SW-C-YOUTH",
+   "name": "청소년지도사"
+  },
+  {
+   "id": "SW-GRAD",
+   "name": "대학원 진학"
+  },
+  {
    "id": "SK-TOEIC",
    "name": "TOEIC"
   },
