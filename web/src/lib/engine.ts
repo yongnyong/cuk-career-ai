@@ -1,7 +1,7 @@
 // 규칙 엔진·추천·스킬트리·알림·근거 챗봇.
 // 원칙: 날짜·자격 판정은 AI가 아닌 코드가 한다. 근거가 없으면 답하지 않는다.
 // 서버(api/) 연결 전까지 브라우저에서 같은 로직으로 동작하며, 서버 구현도 이 규칙을 따른다.
-import { JOBS, SKILLS, jobById, skillById } from "./data/catalog";
+import { JOBS, SKILLS, formatScore, jobById, meetsTarget, skillById } from "./data/catalog";
 import { getDepartment } from "./data/departments";
 import type {
   ChatAnswer,
@@ -51,6 +51,13 @@ export function evaluateCondition(c: Condition, p: Profile): ConditionResult {
         : r("fail", `${dept.name} — 지정 계열에 포함되지 않음`);
     case "skill": {
       const st = p.skills[c.skill!] ?? "none";
+      if (c.min) {
+        // 점수·등급 기준이 있는 조건: 스킬트리에 적어 둔 내 점수와 비교한다
+        const ok = meetsTarget(c.skill!, p.scores?.[c.skill!], c.min);
+        const need = formatScore(c.skill!, c.min);
+        if (ok === null) return r("check", `${need} 이상 필요 — 스킬트리에 내 점수를 적으면 판정해요`);
+        return ok ? r("pass", `내 기록 ${formatScore(c.skill!, p.scores![c.skill!])} — 기준 ${need} 이상`) : r("fail", `기준은 ${need} 이상, 내 기록은 ${formatScore(c.skill!, p.scores![c.skill!])}`);
+      }
       if (st === "verified") return r("pass", "증빙 확인된 자격");
       if (st === "self") return r("check", "자기 보고 완료 — 증빙은 신청처에서 확인");
       return r("fail", "아직 준비하지 않은 역량");

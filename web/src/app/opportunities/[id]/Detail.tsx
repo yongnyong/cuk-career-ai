@@ -97,6 +97,11 @@ function Body() {
             ))}
           </ul>
           <p className="mt-2 text-xs text-slate-500">학과·학년만으로 선발 가능성을 판단하지 않아요. 날짜·명시 조건은 규칙 엔진이 판정해요.</p>
+          {o.conditionsBy === "ai" && (
+            <p className="mt-1 text-xs text-slate-500">
+              조건 문장은 AI가 읽어 정리했고, 공고 원문에 실제로 있는 구절만 남겼어요. 판정은 AI가 아니라 규칙이 해요.
+            </p>
+          )}
 
           {o.preferred.length > 0 && (
             <>

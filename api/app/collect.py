@@ -647,3 +647,7 @@ if __name__ == "__main__":
         run_kstartup()
     if os.environ.get("WORK24_API_KEY"):
         run_work24()
+    if os.environ.get("GEMINI_API_KEY"):
+        from .tidy import run as run_tidy  # 조건 정리 에이전트: 새로 들어오거나 바뀐 공고만 처리
+
+        run_tidy()
