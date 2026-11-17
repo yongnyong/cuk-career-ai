@@ -129,3 +129,10 @@ def test_work24_degree_and_noise_lines():
     assert collect.min_degree(["박사"]) == "unknown" and collect.min_degree(["학력무관"]) == "none" and collect.min_degree([""]) == "unknown"
     text = "응시자격\n- 학력 : 대학교(학사)졸 이상\n- 경력 : 신입/경력 7년 이하\n[경력]\n전공무관\n- 해외여행에 결격사유가 없는 분\n- 모집분야별 상세 내용은 채용 홈페이지 참고\n- 교대근무 가능자입니다"
     assert collect.qual_lines(text) == ["해외여행에 결격사유가 없는 분", "교대근무 가능자입니다"]
+    assert collect.degree_from_text("- 4년제 대학교 졸업(예정)자
+- 영어 가능자") == "bachelor"
+    assert collect.degree_from_text("전문학사(2, 3년) 이상 졸업자 / 학사 이상 학위 보유자") == "associate"
+    assert collect.degree_from_text("최종학력 고등학교 졸업 이상") == "high" and collect.degree_from_text("성실한 분") == "unknown"
+    assert collect.qual_lines("- 4년제 대학교 졸업(예정)자
+- 학사 이상 학위 보유자
+- 교대근무 가능자입니다") == ["교대근무 가능자입니다"]
