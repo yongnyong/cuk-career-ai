@@ -19,6 +19,7 @@ BATCH = 6
 CATEGORIES = ["학력", "학년·학적", "전공", "어학", "자격증", "경력", "병역", "연령", "지역", "창업 단계", "기타"]
 DEGREES = ["none", "high", "associate", "bachelor", "master"]
 # 점수·등급으로 비교할 수 있는 역량(웹의 SCALES와 같은 목록)
+SIDO = ["서울", "부산", "대구", "인천", "광주", "대전", "울산", "세종", "경기", "강원", "충북", "충남", "전북", "전남", "경북", "경남", "제주"]
 SCORED = ["SK-TOEIC", "SK-OPIC", "SK-JLPT", "SK-HSK", "SK-DELF", "SK-COMP", "SK-KHIST", "HIS-C-HANJA", "CLO-C-GTQ"]
 
 SCHEMA = {
@@ -42,6 +43,7 @@ SCHEMA = {
                         "majors": {"type": "ARRAY", "items": {"type": "STRING"}},
                         "skill": {"type": "STRING"},
                         "min": {"type": "STRING"},
+                        "regions": {"type": "ARRAY", "items": {"type": "STRING", "enum": SIDO}},
                     },
                     "required": ["category", "label", "kind", "quote"],
                 },
@@ -64,6 +66,7 @@ PROMPT = """모집 공고의 자격 요건 문장을 대학생이 한눈에 볼 
    - degree(학력): none=학력 무관, high=고졸 이상, associate=전문대 졸업 이상, bachelor=4년제 졸업(예정) 이상, master=석사 이상
    - grades(학년): 지원 가능한 학년 숫자 배열. status(학적): {statuses}
    - majors(전공): 다음 계열 코드만 — {fields}
+   - regions(지역): 거주지나 사업장 소재지를 제한할 때만, 해당 시·도 이름 배열 — {sido}
    - skill + min(어학·자격 점수): skill은 다음 id만 — {scored}. min은 점수나 등급만(예: "700", "IM2", "N2", "2급")
 8. 사람 이름, 전화번호는 쓰지 않는다.
 
@@ -108,9 +111,29 @@ def to_condition(c: dict, posting: dict) -> dict | None:
     majors = [m for m in c.get("majors") or [] if m in CATALOG["fields"]]
     if majors:
         return {**base, "key": "major", "majors": majors}
+    regions = [x for x in c.get("regions") or [] if x in SIDO]
+    if regions and c["category"] == "지역":
+        return {**base, "key": "region", "regions": regions, "label": f"지역: {label}"}
     if c.get("skill") in SCORED:
         return {**base, "key": "skill", "skill": c["skill"], **({"min": str(c["min"])[:8]} if c.get("min") else {})}
     return {**base, "key": "other", "label": f"{c['category']}: {label}" if c["category"] != "기타" else label}
+
+
+def startup_conditions(posting: dict) -> list[dict]:
+    """K-Startup 공식 API가 준 창업 단계(업력)·대상 연령을 판정할 수 있는 조건으로 만든다. 제한이 없으면 만들지 않는다."""
+    fact = lambda label: next((f["value"] for f in posting.get("facts", []) if f["label"] == label), "")  # noqa: E731
+    src = next((s["id"] for s in posting["sections"] if "지원 분야" in s["title"]), posting["sections"][0]["id"])
+    out = []
+    stages = [x.strip() for x in fact("창업 단계(업력)").split(",") if x.strip()]
+    years = [int(m.group(1)) for x in stages if (m := re.match(r"(\d+)년미만", x))]
+    if stages and not ("예비창업자" in stages and max(years, default=0) >= 10):
+        label = ("예비창업자" if "예비창업자" in stages else "") + (" · " if "예비창업자" in stages and years else "") + (f"창업 {max(years)}년 미만" if years else "")
+        out.append({"key": "startup", "label": f"창업 단계: {label}", "stages": stages, "src": src})
+    ages = [k for k, pat in (("u20", "20세 미만"), ("20-39", "20세 이상"), ("40+", "40세 이상")) if pat in fact("대상 연령")]
+    if ages and len(ages) < 3:
+        names = {"u20": "만 20세 미만", "20-39": "만 20~39세", "40+": "만 40세 이상"}
+        out.append({"key": "age", "label": "연령: " + " · ".join(names[a] for a in ages), "ages": ages, "src": src})
+    return out
 
 
 def apply(posting: dict, conditions: list[dict]) -> dict:
@@ -122,24 +145,30 @@ def apply(posting: dict, conditions: list[dict]) -> dict:
             continue
         seen.add(cond["label"])
         (preferred if c.get("kind") == "preferred" else required).append(cond)
+    official = startup_conditions(posting) if posting["id"].startswith("kst-") else []
+    # 공식 값이 있는 항목은 AI가 다시 쓴 같은 종류의 문장 조건을 빼서 중복을 막는다
+    dup = tuple(p for p, k in (("창업 단계:", "startup"), ("연령:", "age")) if any(c["key"] == k for c in official))
     if required:
+        required = [c for c in required if not (c["key"] == "other" and c["label"].startswith(dup))] if dup else required
         # 규칙으로 읽은 학력 조건은 AI가 학력을 따로 내지 않았을 때 유지한다
         if not any(c["key"] == "degree" for c in required):
             required = [c for c in posting["required"] if c["key"] == "degree" and c.get("degree") != "unknown"] + required
-        posting["required"] = required[:7]
+        posting["required"] = (official + required)[:7]
+    elif official:
+        posting["required"] = official + [c for c in posting["required"] if c["key"] not in ("startup", "age")]
     if preferred:
         facts = [f for f in posting.get("facts", []) if f["label"] != "우대 사항" or not f["value"].startswith("공고 ")]
         if not any(f["label"] == "우대 사항" for f in facts):
             facts.insert(0, {"label": "우대 사항", "value": " / ".join(c["label"] for c in preferred)[:200]})
         posting["facts"] = facts
-    posting["conditionsBy"] = "ai" if required else "rule"
+    posting["conditionsBy"] = "ai" if required or (conditions and official) else "rule"
     return posting
 
 
 def tidy_batch(postings: list[dict], ask=gemini) -> list[dict]:
     items = "\n\n".join(f"[{p['id']}] {p['title']}\n{source_text(p)}" for p in postings)
     out = ask(
-        PROMPT.format(statuses=", ".join(STATUSES), fields=", ".join(CATALOG["fields"]), scored=", ".join(SCORED), items=items),
+        PROMPT.format(statuses=", ".join(STATUSES), fields=", ".join(CATALOG["fields"]), scored=", ".join(SCORED), sido=", ".join(SIDO), items=items),
         SCHEMA,
     )
     by_id = {r.get("id"): r.get("conditions") or [] for r in out if isinstance(r, dict)}

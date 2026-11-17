@@ -61,3 +61,35 @@ def test_quote_with_small_wording_changes_is_accepted_but_invented_words_are_not
     far = {"category": "어학", "label": "오픽 AL", "kind": "required", "quote": "오픽 AL 등급 보유자"}
     p = tidy.tidy_batch([posting()], fake([near, far]))[0]
     assert [c["label"] for c in p["required"]] == ["병역: 병역필 또는 면제"]
+
+
+def kst(stage, age):
+    return {
+        "id": "kst-1", "title": "입주기업 모집",
+        "sections": [{"id": "§1", "title": "신청 대상", "text": "성남시에 거주하거나 사업장이 있는 예비 또는 3년 이내 창업자"}, {"id": "§2", "title": "지원 분야·지역", "text": "지원 분야: 시설"}],
+        "required": [{"key": "other", "label": "신청 대상: 대학생,일반인", "src": "§1"}],
+        "facts": [{"label": "창업 단계(업력)", "value": stage}, {"label": "대상 연령", "value": age}],
+    }
+
+
+ALL_AGE = "만 20세 미만,만 20세 이상 ~ 만 39세 이하,만 40세 이상"
+
+
+def test_startup_stage_age_and_region_become_checkable_conditions():
+    ai = [
+        {"category": "지역", "label": "성남시 거주 또는 사업장", "kind": "required", "quote": "성남시에 거주하거나 사업장이 있는", "regions": ["경기"]},
+        {"category": "창업 단계", "label": "예비 또는 3년 이내", "kind": "required", "quote": "예비 또는 3년 이내 창업자"},
+    ]
+    p = tidy.tidy_batch([{**kst("예비창업자,1년미만,2년미만,3년미만", "만 20세 이상 ~ 만 39세 이하"), "id": "kst-1"}], lambda a, b: [{"id": "kst-1", "conditions": ai}])[0]
+    assert [(c["key"], c["label"]) for c in p["required"]] == [
+        ("startup", "창업 단계: 예비창업자 · 창업 3년 미만"),
+        ("age", "연령: 만 20~39세"),
+        ("region", "지역: 성남시 거주 또는 사업장"),
+    ]
+    assert p["required"][0]["stages"] == ["예비창업자", "1년미만", "2년미만", "3년미만"] and p["required"][2]["regions"] == ["경기"]
+
+
+def test_no_startup_condition_when_unrestricted():
+    assert tidy.startup_conditions(kst("예비창업자,1년미만,2년미만,3년미만,5년미만,7년미만,10년미만", ALL_AGE)) == []
+    only = tidy.startup_conditions(kst("7년미만", ALL_AGE))
+    assert [(c["key"], c["label"]) for c in only] == [("startup", "창업 단계: 창업 7년 미만")]

@@ -29,13 +29,16 @@ export interface Job {
 export type OppType = "현장실습" | "창업지원" | "채용" | "장학" | "학사" | "비교과";
 
 export interface Condition {
-  key: "status" | "grade" | "major" | "skill" | "degree" | "other";
+  key: "status" | "grade" | "major" | "skill" | "degree" | "startup" | "age" | "region" | "other";
   label: string; // 화면 표시용
   // 규칙 엔진이 검사할 값(명시적 조건만). other는 자동 판정하지 않고 "확인 필요"
   status?: ("재학" | "휴학" | "졸업예정")[];
   grades?: number[];
   majors?: Field[];
   skill?: string;
+  stages?: string[]; // 창업 단계: 예비창업자, 1년미만 … (K-Startup 공식 값)
+  ages?: string[]; // 대상 연령대: u20, 20-39, 40+
+  regions?: string[]; // 거주·사업장 시·도
   min?: string; // 어학·자격의 최소 점수·등급(예: "700", "IM2")
   degree?: "none" | "high" | "associate" | "bachelor" | "master" | "unknown"; // 채용 공고의 최소 학력
   src: string; // 근거 문단 ID (예: §2)
@@ -97,7 +100,9 @@ export interface Profile {
   weeklyHours: number;
   targetTerm: string;
   skills: Record<string, SkillState>;
-  scores?: Record<string, string>; // 점수제·등급제 자격의 내 점수·등급(자기 보고)
+  scores?: Record<string, string>;
+  // 창업 공고 판정에만 쓰는 선택 정보. stage: none(계획 없음) | pre(예비창업자) | 1·3·7·10(창업 n년 미만)
+  startup?: { stage?: string; region?: string; birthYear?: number }; // 점수제·등급제 자격의 내 점수·등급(자기 보고)
   createdAt: string;
 }
 

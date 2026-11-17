@@ -62,6 +62,29 @@ export function evaluateCondition(c: Condition, p: Profile): ConditionResult {
       if (st === "self") return r("check", "자기 보고 완료 — 증빙은 신청처에서 확인");
       return r("fail", "아직 준비하지 않은 역량");
     }
+    case "startup": {
+      const stage = p.startup?.stage;
+      if (!stage) return r("check", "내 정보에 창업 단계를 적으면 판정해요");
+      if (stage === "none") return r("check", "창업 계획이 없다고 적어 두셨어요. 창업을 시작하면 다시 확인하세요");
+      if (stage === "pre")
+        return c.stages!.includes("예비창업자") ? r("pass", "예비창업자도 신청할 수 있어요") : r("fail", "이미 창업한 기업 대상이에요(예비창업자 제외)");
+      const limit = Math.max(0, ...c.stages!.map((x) => Number(x.match(/^(\d+)년미만$/)?.[1] ?? 0)));
+      if (!limit) return r("fail", "예비창업자 대상이에요(이미 창업한 기업 제외)");
+      return Number(stage) <= limit ? r("pass", `창업 ${stage}년 미만 — 공고는 ${limit}년 미만까지`) : r("fail", `공고는 창업 ${limit}년 미만까지, 내 기업은 그보다 오래됐어요`);
+    }
+    case "age": {
+      const year = p.startup?.birthYear;
+      if (!year) return r("check", "내 정보에 출생 연도를 적으면 판정해요");
+      const age = new Date().getFullYear() - year; // 생일 전후로 한 살 차이가 날 수 있다
+      const band = age < 20 ? "u20" : age < 40 ? "20-39" : "40+";
+      if (age === 19 || age === 20 || age === 39 || age === 40) return r("check", `만 ${age - 1}~${age}세 — 연령 경계라서 원문에서 기준일을 확인하세요`);
+      return c.ages!.includes(band) ? r("pass", `만 ${age}세 안팎 — 대상 연령에 포함`) : r("fail", `만 ${age}세 안팎 — 대상 연령이 아니에요`);
+    }
+    case "region": {
+      const region = p.startup?.region;
+      if (!region) return r("check", "내 정보에 거주 지역을 적으면 판정해요");
+      return c.regions!.includes(region) ? r("check", `${region} 거주 — 시·군 단위 조건은 원문에서 확인하세요`) : r("fail", `공고는 ${c.regions!.join("·")} 대상, 내 지역은 ${region}`);
+    }
     case "degree":
       // 학부생 기준: 졸업 요건은 학적·학년으로 판정하고, 애매하면 확인 필요로 남긴다
       if (c.degree === "none" || c.degree === "high") return r("pass", "학력 제한이 없거나 고졸 이상이라 지원할 수 있어요");

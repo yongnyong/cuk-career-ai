@@ -54,6 +54,49 @@ function Body() {
       </div>
 
       <div className="card p-5">
+        <h2 className="font-bold">창업 공고 판정용 정보 (선택)</h2>
+        <p className="mt-1 text-xs text-slate-500">
+          창업지원 공고의 창업 단계·연령·지역 조건을 자동으로 확인하는 데만 써요. 적지 않으면 그 조건은 &lsquo;확인 필요&rsquo;로 남아요.
+        </p>
+        <div className="mt-3 grid gap-3 sm:grid-cols-3">
+          <label className="text-sm">
+            <span className="mb-1 block font-semibold">창업 단계</span>
+            <select className="input" value={p.startup?.stage ?? ""} onChange={(e) => s.setProfile({ ...p, startup: { ...p.startup, stage: e.target.value || undefined } })}>
+              <option value="">적지 않음</option>
+              <option value="none">창업 계획 없음</option>
+              <option value="pre">예비창업자 (아이디어 단계, 사업자 없음)</option>
+              <option value="1">창업 1년 미만</option>
+              <option value="3">창업 3년 미만</option>
+              <option value="7">창업 7년 미만</option>
+              <option value="10">창업 10년 미만</option>
+            </select>
+          </label>
+          <label className="text-sm">
+            <span className="mb-1 block font-semibold">거주 지역 (시·도)</span>
+            <select className="input" value={p.startup?.region ?? ""} onChange={(e) => s.setProfile({ ...p, startup: { ...p.startup, region: e.target.value || undefined } })}>
+              <option value="">적지 않음</option>
+              {["서울", "경기", "인천", "부산", "대구", "광주", "대전", "울산", "세종", "강원", "충북", "충남", "전북", "전남", "경북", "경남", "제주"].map((x) => (
+                <option key={x}>{x}</option>
+              ))}
+            </select>
+          </label>
+          <label className="text-sm">
+            <span className="mb-1 block font-semibold">출생 연도</span>
+            <select
+              className="input"
+              value={p.startup?.birthYear ?? ""}
+              onChange={(e) => s.setProfile({ ...p, startup: { ...p.startup, birthYear: Number(e.target.value) || undefined } })}
+            >
+              <option value="">적지 않음</option>
+              {Array.from({ length: 50 }, (_, i) => 2010 - i).map((y) => (
+                <option key={y}>{y}</option>
+              ))}
+            </select>
+          </label>
+        </div>
+      </div>
+
+      <div className="card p-5">
         <h2 className="font-bold">보유 역량</h2>
         <p className="text-xs text-slate-500">
           자기 보고와 검증된 자격을 구분해요. 시연에서는 증빙 확인을 버튼으로 대신하며, 증빙 파일·점수는 저장하지 않아요.
