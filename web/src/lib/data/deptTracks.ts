@@ -67,6 +67,13 @@ export const DEPT_SKILLS: Skill[] = [
   d("PSY-C-PLAY", "놀이심리재활사", "자격증", psyQ),
   d("PSY-C-ORG", "인사조직심리사(학회)", "자격증", psyQ),
   d("PSY-C-CRIME", "범죄심리사 2급(학회)", "자격증", psyQ),
+  d("PSY-GROUP", "집단상담 실습", "경험", ROADMAP("psy")),
+  d("PSY-CAREER", "진로상담 실습", "경험", ROADMAP("psy")),
+  d("PSY-CLIN-PRACT", "병원·상담센터 임상현장 실습", "경험", psyQ),
+  d("PSY-PATHO", "발달정신병리학", "교육", ROADMAP("psy")),
+  d("PSY-CONSUMER", "소비자심리학", "교육", ROADMAP("psy")),
+  d("PSY-ORG", "조직심리학·조직개발 실습", "교육", ROADMAP("psy")),
+  { ...d("PSY-C-SURVEY", "사회조사분석사 2급", "자격증", "https://www.career.go.kr/cloud/w/major/uView?seq=330"), from: "커리어넷" as const },
   d("PSY-GRAD", "대학원 진학(1급·전문가 자격은 석사 이상)", "경험", psyQ),
   // 에너지환경공학과
   d("ENV-AIR", "대기오염 제어·방지 실습", "교육", ROADMAP("env")),
@@ -143,6 +150,11 @@ export const DEPT_SKILLS: Skill[] = [
   d("SW-PRACT", "사회복지현장실습 1·2", "경험", ROADMAP("sw")),
   d("SW-RESEARCH", "사회복지조사·자료분석", "교육", ROADMAP("sw")),
   d("SW-PROGRAM", "프로그램 개발과 평가", "교육", ROADMAP("sw")),
+  d("SW-YOUTH", "청소년복지론", "교육", ROADMAP("sw")),
+  d("SW-ELDER", "노인·장애인복지론", "교육", ROADMAP("sw")),
+  d("SW-MH", "정신건강사회복지론", "교육", ROADMAP("sw")),
+  d("SW-SOCIAL", "사회적경제", "교육", ROADMAP("sw")),
+  d("SW-POLICY", "사회복지정책론·행정론", "교육", ROADMAP("sw")),
   d("SW-C-1", "사회복지사 1급", "자격증", swC),
   d("SW-C-YOUTH", "청소년지도사", "자격증", swC),
   d("SW-GRAD", "대학원 진학", "경험", swC),
@@ -155,23 +167,32 @@ const accC = PAGES.acc + "roadmap.do";
 export const DEPT_JOBS: Job[] = [
   // 심리학과 — 학과 자격증 페이지의 분야 구분
   track("psy-counsel", "상담심리", "상담기관·학교에서 내담자를 만난다", "psychology", psyC, [
-    n("PSY-STAT", true), n("PSY-INTERVIEW", true, ["PSY-STAT"]), n("PSY-COMM", false, ["PSY-INTERVIEW"]),
-    n("PSY-C-YOUTH", false, ["PSY-INTERVIEW"]), n("PSY-C-COUNSEL", false, ["PSY-COMM"]), n("PSY-C-JOB"), n("PSY-GRAD", false, ["PSY-C-COUNSEL"]),
+    n("PSY-STAT", true), n("PSY-INTERVIEW", true, ["PSY-STAT"]), n("PSY-GROUP", false, ["PSY-INTERVIEW"]), n("PSY-CAREER", false, ["PSY-INTERVIEW"]),
+    n("PSY-COMM", false, ["PSY-GROUP"]), n("PSY-C-YOUTH", false, ["PSY-INTERVIEW"]), n("PSY-C-JOB", false, ["PSY-CAREER"]),
+    n("PSY-C-COUNSEL", false, ["PSY-COMM"]), n("PSY-GRAD", false, ["PSY-C-COUNSEL"]),
   ], "welfare"),
   track("psy-clinical", "임상심리", "병원·정신건강 기관에서 심리평가를 한다", "psychology", psyC, [
-    n("PSY-STAT", true), n("PSY-TEST", true, ["PSY-STAT"]), n("PSY-C-CLIN", true, ["PSY-TEST"]),
-    n("PSY-C-MH", false, ["PSY-C-CLIN"]), n("PSY-GRAD", false, ["PSY-C-CLIN"]),
+    n("PSY-STAT", true), n("PSY-TEST", true, ["PSY-STAT"]), n("PSY-PATHO", false, ["PSY-STAT"]), n("PSY-CLIN-PRACT", true, ["PSY-TEST"]),
+    n("PSY-C-CLIN", true, ["PSY-CLIN-PRACT"]), n("PSY-C-MH", false, ["PSY-C-CLIN"]), n("PSY-GRAD", false, ["PSY-C-CLIN"]),
   ], "welfare"),
   track("psy-develop", "발달·놀이치료", "아동·청소년의 발달을 평가하고 지원한다", "psychology", psyC, [
-    n("PSY-STAT", true), n("PSY-TEST", true, ["PSY-STAT"]), n("PSY-PLAY", false, ["PSY-TEST"]),
-    n("PSY-C-PLAY", false, ["PSY-PLAY"]), n("PSY-C-DEV"),
+    n("PSY-STAT", true), n("PSY-TEST", true, ["PSY-STAT"]), n("PSY-PATHO", false, ["PSY-STAT"]), n("PSY-PLAY", false, ["PSY-TEST"]),
+    n("PSY-C-PLAY", false, ["PSY-PLAY"]), n("PSY-C-DEV", false, ["PSY-PATHO"]),
   ], "welfare"),
   track("psy-org", "산업·조직(인사)", "기업에서 채용·교육·조직문화를 다룬다", "psychology", psyC, [
-    n("PSY-STAT", true), n("PSY-HRD", true), n("PSY-TEST"), n("PSY-C-ORG", false, ["PSY-HRD"]), n("PSY-C-JOB"), n("SK-TOEIC"),
+    n("PSY-STAT", true), n("PSY-ORG", true, ["PSY-STAT"]), n("PSY-HRD", true, ["PSY-ORG"]), n("PSY-TEST"),
+    n("PSY-C-ORG", false, ["PSY-HRD"]), n("PSY-C-JOB"), n("SK-TOEIC"),
   ]),
   track("psy-crime", "범죄·교정", "보호직·교정직, 경찰 등에서 일한다", "psychology", psyC, [
     n("PSY-STAT", true), n("PSY-CRIME", true), n("PSY-C-CRIME", false, ["PSY-CRIME"]),
   ], "public-sector"),
+  track("psy-research", "리서치·소비자 조사", "여론조사·시장조사 회사에서 사람의 생각을 데이터로 읽는다", "psychology", psyC, [
+    n("PSY-STAT", true), n("PSY-CONSUMER", true, ["PSY-STAT"]), n("SK-STAT", false, ["PSY-STAT"]), n("PSY-C-SURVEY", false, ["SK-STAT"]), n("SK-TOEIC"),
+  ], "data-analyst"),
+  track("psy-center", "상담센터 개업", "자격과 경력을 쌓아 상담센터를 연다", "psychology", psyC, [
+    n("PSY-INTERVIEW", true), n("PSY-COMM", true, ["PSY-INTERVIEW"]), n("PSY-C-COUNSEL", true, ["PSY-COMM"]), n("PSY-GRAD", false, ["PSY-C-COUNSEL"]),
+    n("SK-BMC"), n("SK-BIZPLAN", false, ["SK-BMC"]),
+  ], "founder"),
 
   // 에너지환경공학과 — 학과가 "중요"로 지정한 기사 중심
   track("env-air", "대기환경", "대기오염을 측정하고 방지시설을 설계한다", "energy-env", envC, [
@@ -268,17 +289,25 @@ export const DEPT_JOBS: Job[] = [
 
   // 사회복지학과 — 학과가 밝힌 주요 분야
   track("sw-youth", "청소년복지", "청소년 기관의 사회복지사·청소년지도사", "social-welfare", swC, [
-    n("SW-SKILL", true), n("SW-PRACT", true, ["SW-SKILL"]), n("SK-SW-CERT", true, ["SW-PRACT"]), n("SW-C-YOUTH"), n("SW-C-1", false, ["SK-SW-CERT"]),
+    n("SW-SKILL", true), n("SW-YOUTH", true), n("SW-PRACT", true, ["SW-SKILL"]), n("SK-SW-CERT", true, ["SW-PRACT"]),
+    n("SW-C-YOUTH", false, ["SW-YOUTH"]), n("SW-C-1", false, ["SK-SW-CERT"]),
   ], "welfare"),
   track("sw-facility", "장애인·노인복지", "복지관·요양시설의 사회복지사", "social-welfare", swC, [
-    n("SW-SKILL", true), n("SW-PRACT", true, ["SW-SKILL"]), n("SK-SW-CERT", true, ["SW-PRACT"]), n("SW-PROGRAM"), n("SW-C-1", false, ["SK-SW-CERT"]),
+    n("SW-SKILL", true), n("SW-ELDER", true), n("SW-PRACT", true, ["SW-SKILL"]), n("SK-SW-CERT", true, ["SW-PRACT"]),
+    n("SW-PROGRAM", false, ["SW-ELDER"]), n("SW-C-1", false, ["SK-SW-CERT"]),
   ], "welfare"),
   track("sw-medical", "의료·정신건강 사회복지", "병원·정신건강 기관의 사회복지사", "social-welfare", swC, [
-    n("SW-SKILL", true), n("SW-PRACT", true, ["SW-SKILL"]), n("SK-SW-CERT", true, ["SW-PRACT"]), n("SW-C-1", true, ["SK-SW-CERT"]),
+    n("SW-SKILL", true), n("SW-MH", true), n("SW-PRACT", true, ["SW-SKILL"]), n("SK-SW-CERT", true, ["SW-PRACT"]), n("SW-C-1", true, ["SK-SW-CERT"]),
   ], "welfare"),
   track("sw-public", "사회복지 공무원·공기업", "지자체·공단의 복지 행정", "social-welfare", swC, [
-    n("SK-SW-CERT", true), n("SW-RESEARCH"), n("SW-C-1", false, ["SK-SW-CERT"]),
+    n("SW-POLICY", true), n("SK-SW-CERT", true), n("SW-RESEARCH"), n("SW-C-1", false, ["SK-SW-CERT"]),
   ], "public-sector"),
+  track("sw-ngo", "비영리·NGO", "비영리기구와 단체에서 프로그램을 기획·운영한다", "social-welfare", swC, [
+    n("SW-SKILL", true), n("SW-PROGRAM", true, ["SW-SKILL"]), n("SK-VOL"), n("SK-NPO", false, ["SW-PROGRAM"]), n("SK-SW-CERT"),
+  ], "npo"),
+  track("sw-social", "사회적경제·소셜벤처", "사회문제를 사업으로 푸는 사회적기업을 만든다", "social-welfare", ROADMAP("sw"), [
+    n("SW-SOCIAL", true), n("SK-IDEA", true, ["SW-SOCIAL"]), n("SK-BMC", false, ["SK-IDEA"]), n("SK-BIZPLAN", false, ["SK-BMC"]), n("SK-MVP", false, ["SK-BIZPLAN"]), n("SW-PROGRAM"),
+  ], "founder"),
   track("sw-research", "연구원", "대학원 진학 후 국책·지자체 연구기관", "social-welfare", swC, [
     n("SW-RESEARCH", true), n("SW-PROGRAM"), n("SW-GRAD", false, ["SW-RESEARCH"]),
   ]),

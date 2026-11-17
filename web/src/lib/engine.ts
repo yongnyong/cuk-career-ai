@@ -403,6 +403,13 @@ const KEYWORD_SKILL: [RegExp, string][] = [
   [/사업계획/, "SK-BIZPLAN"],
   [/봉사/, "SK-VOL"],
   [/포트폴리오/, "SK-PORT"],
+  [/청소년상담사/, "PSY-C-YOUTH"],
+  [/집단상담/, "PSY-GROUP"],
+  [/상담면접|상담 면접/, "PSY-INTERVIEW"],
+  [/임상심리사/, "PSY-C-CLIN"],
+  [/직업상담사/, "PSY-C-JOB"],
+  [/사회복지사/, "SK-SW-CERT"],
+  [/사회적경제|소셜벤처/, "SW-SOCIAL"],
 ];
 
 export interface Parsed {

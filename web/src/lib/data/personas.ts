@@ -11,15 +11,18 @@ export const PERSONAS: { id: string; label: string; desc: string; profile: Profi
     profile: { ...base, pseudoId: "demo-minji", admissionYear: 2024, departmentId: "ai", grade: 3, jobId: "ai-engineer", skills: { "SK-PY-01": "verified", "SK-DA": "self" } },
   },
   {
-    id: "demo-seoyeon",
-    label: "서연",
-    desc: "프랑스어문화학과 2학년 · 문화 창업",
-    profile: { ...base, pseudoId: "demo-seoyeon", admissionYear: 2025, departmentId: "french", grade: 2, jobId: "founder", interests: ["content-planner"], skills: { "SK-IDEA": "self" } },
+    id: "demo-jiwoo",
+    label: "지우",
+    desc: "심리학과 3학년 · 상담심리",
+    profile: { ...base, pseudoId: "demo-jiwoo", admissionYear: 2024, departmentId: "psychology", grade: 3, jobId: "psy-counsel", interests: ["psy-org"], skills: { "PSY-STAT": "self", "PSY-INTERVIEW": "self" } },
   },
   {
-    id: "demo-doyun",
-    label: "도윤",
-    desc: "영어영문학부 3학년 · 해외영업",
-    profile: { ...base, pseudoId: "demo-doyun", admissionYear: 2024, departmentId: "english", grade: 3, jobId: "overseas-sales", interests: ["marketer"], skills: { "SK-TOEIC": "verified" } },
+    id: "demo-haneul",
+    label: "하늘",
+    desc: "사회복지학과 2학년 · 사회적경제·소셜벤처",
+    profile: {
+      ...base, pseudoId: "demo-haneul", admissionYear: 2025, departmentId: "social-welfare", grade: 2, jobId: "sw-social", interests: ["sw-youth"],
+      skills: { "SW-SOCIAL": "self" }, startup: { stage: "pre", region: "경기", birthYear: 2006 },
+    },
   },
 ];

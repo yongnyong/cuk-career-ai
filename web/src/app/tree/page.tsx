@@ -157,7 +157,7 @@ function TreeView() {
               )}
               {skillById(selNode.skill)?.srcUrl && (
                 <a href={skillById(selNode.skill)!.srcUrl} target="_blank" rel="noreferrer" className="block text-xs underline">
-                  출처: 학과 홈페이지 안내
+                  출처: {skillById(selNode.skill)!.from === "커리어넷" ? "커리어넷 학과정보" : "학과 홈페이지 안내"}
                 </a>
               )}
               {scaleOf(selNode.skill) && (

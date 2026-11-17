@@ -141,7 +141,13 @@ export function StoreProvider({ children }: { children: React.ReactNode }) {
   useEffect(() => {
     try {
       const raw = localStorage.getItem(KEY);
-      if (raw) setState({ ...initial(), ...JSON.parse(raw) });
+      if (raw) {
+        const saved = JSON.parse(raw);
+        // 저장된 공고 목록에 없는 가상 공고(나중에 추가된 것)는 채워 넣는다
+        const have = new Set((saved.opportunities ?? []).map((o: Opportunity) => o.id));
+        const opportunities = [...(saved.opportunities ?? []), ...SEED_OPPORTUNITIES.filter((o) => !have.has(o.id))];
+        setState({ ...initial(), ...saved, opportunities });
+      }
     } catch {
       /* 저장소 사용 불가 시 기본값 */
     }

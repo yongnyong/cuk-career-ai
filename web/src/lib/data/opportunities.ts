@@ -329,6 +329,45 @@ const SEEDS: Seed[] = [
     summary: "사례관리와 지역사회 프로그램 운영을 실습합니다.",
   },
   {
+    id: "opp-psy-center",
+    type: "현장실습",
+    title: "청소년상담복지센터 상담 보조 실습",
+    org: "○○청소년상담복지센터(가상)",
+    jobs: ["psy-counsel", "welfare"],
+    deadline: "2026-11-27 17:00",
+    grades: [3, 4],
+    status: ["재학"],
+    preferred: ["PSY-INTERVIEW", "PSY-C-YOUTH"],
+    documents: ["이력서", "자기소개서"],
+    period: "2027.01.04 ~ 2027.02.26",
+    summary: "접수 면접 보조, 집단 프로그램 운영 보조, 사례 회의 참관을 경험합니다.",
+  },
+  {
+    id: "opp-psy-hr",
+    type: "현장실습",
+    title: "인사팀(HR) 채용·교육 운영 인턴",
+    org: "○○리테일(가상)",
+    jobs: ["psy-org"],
+    deadline: "2026-12-04 17:00",
+    grades: [3, 4],
+    preferred: ["PSY-HRD", "SK-TOEIC"],
+    documents: ["이력서", "자기소개서"],
+    summary: "채용 면접 운영과 신입 교육 프로그램 진행을 돕습니다.",
+  },
+  {
+    id: "opp-sw-youth",
+    type: "현장실습",
+    title: "청소년수련관 사회복지현장실습",
+    org: "○○청소년수련관(가상)",
+    jobs: ["sw-youth", "welfare"],
+    deadline: "2026-12-08 17:00",
+    status: ["재학"],
+    other: "사회복지현장실습 교과 수강 예정자",
+    preferred: ["SW-YOUTH", "SW-SKILL"],
+    documents: ["실습 신청서", "자기소개서"],
+    summary: "청소년 프로그램 기획과 운영, 사례 기록을 실습합니다.",
+  },
+  {
     id: "opp-edu",
     type: "비교과",
     title: "다문화 아동 학습 멘토링",
@@ -437,6 +476,19 @@ const SEEDS: Seed[] = [
     summary: "문화·관광 분야 창업 아이디어를 공모하고 사업화를 지원합니다.",
   },
   {
+    id: "opp-startup-social",
+    type: "창업지원",
+    title: "소셜벤처 아이디어 경진대회",
+    org: "교내 창업지원단(가상)",
+    jobs: ["sw-social", "founder"],
+    deadline: "2026-12-02 18:00",
+    status: ["재학"],
+    other: "2~4인 팀 구성",
+    preferred: ["SW-SOCIAL", "SK-IDEA"],
+    documents: ["사업계획서", "팀 소개서"],
+    summary: "사회문제를 해결하는 사업 아이디어를 겨루고, 본선 진출 팀에 멘토링을 제공합니다.",
+  },
+  {
     id: "opp-startup-seed",
     type: "창업지원",
     title: "예비창업 시제품 제작 지원",
@@ -483,12 +535,12 @@ export const DEMO_CORRECTION = {
 };
 
 // 시연 장면 4용 새 공고 원문 (관리자 화면에 미리 채워 두는 예시)
-export const DEMO_NEW_POSTING = `[현장실습] ◎◎글로벌 해외마케팅 실습생 모집 (가상)
-지원 대상: 재학생(2~4학년)
-우대 사항: OPIc IM2 이상, SNS 채널 운영 경험
-제출 서류: 영문 이력서, 자기소개서
+export const DEMO_NEW_POSTING = `[현장실습] ◎◎심리상담센터 상담 보조 실습생 모집 (가상)
+지원 대상: 재학생(3~4학년)
+우대 사항: 청소년상담사 3급, 집단상담 실습 경험
+제출 서류: 이력서, 자기소개서
 접수 기간: ~ 2026.12.10(목) 17:00
-신청: 대학일자리플러스센터 시스템`;
+신청: 현장실습지원센터 시스템`;
 
 export { build as buildOpportunity };
 export type { Seed as OpportunitySeed };

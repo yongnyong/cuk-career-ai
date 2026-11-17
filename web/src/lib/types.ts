@@ -9,7 +9,7 @@ export interface Skill {
   kind: SkillKind;
   verifiable: boolean; // 증빙으로 검증 가능한 자격(어학 점수·자격증)인지
   officialUrl?: string; // 시험·자격 공식 확인 경로
-  from?: "학과"; // 학과 홈페이지에 근거가 있는 항목
+  from?: "학과" | "커리어넷"; // 근거: 학과 홈페이지 또는 커리어넷 학과정보
   srcUrl?: string; // 근거 페이지
 }
 
