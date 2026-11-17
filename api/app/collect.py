@@ -28,7 +28,7 @@ PER_CATEGORY = 20
 INTERVAL = 3.0
 UA = "CUK-Career-AI/0.1 (student contest project)"
 KST = timezone(timedelta(hours=9))
-GEMINI_MODEL = os.environ.get("GEMINI_MODEL", "gemini-2.5-flash")
+GEMINI_MODEL = os.environ.get("GEMINI_MODEL", "gemini-3.1-flash-lite")
 CATALOG = json.loads((Path(__file__).parent / "catalog.json").read_text(encoding="utf-8"))
 TYPES = ["현장실습", "창업지원", "장학", "학사", "비교과"]
 STATUSES = ["재학", "휴학", "졸업예정"]
@@ -160,7 +160,7 @@ def gemini(text: str) -> dict:
             if e.code not in (429, 503) or attempt == 2:
                 raise
             time.sleep(40)
-    return json.loads(out["candidates"][0]["content"]["parts"][0]["text"])
+    return json.loads("".join(p.get("text", "") for p in out["candidates"][0]["content"]["parts"]))
 
 
 def build(item: dict, body: str, g: dict, now: datetime) -> dict | None:
