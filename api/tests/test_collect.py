@@ -104,3 +104,21 @@ def test_facts_show_money_and_preference_without_inventing():
     o = collect.build(ITEM, "본문", {**G, "benefit": "장학금 100만원", "preferred_text": ""}, NOW)
     assert [f["label"] for f in o["facts"]] == ["지원금·혜택"]
     assert collect.money_lines("연 매출액이 1,900만원 이상인 기업") == ""
+
+
+KST_DETAIL = """<li class="dot_list"><p class="tit">신청대상</p><div class="list_wrap"><p class="list">예비창업자<br/>- 여성 창업자 우대</p></div></li>
+<li class="dot_list"><p class="tit">제출서류 (PDF 업로드)</p><div class="list_wrap"><p class="list">- 사업계획서<br/>- 신분증 사본</p></div></li>
+<li class="dot_list"><p class="tit">프로그램 운영 및 지원내용</p><div class="list_wrap"><p class="list">- 사업화 자금 최대 3,000만원 지원<br/>- 사무공간 제공, 문의 010-1234-5678</p></div></li>"""
+
+
+def test_kstartup_detail_fills_support_preference_and_documents():
+    detail = collect.parse_kstartup_detail(KST_DETAIL)
+    assert list(detail) == ["신청대상", "제출서류 (PDF 업로드)", "프로그램 운영 및 지원내용"]
+    o = collect.enrich_kstartup(collect.build_kstartup(KST_ITEM, NOW), detail)
+    got = {f["label"]: f["value"] for f in o["facts"]}
+    assert "3,000만원" in got["지원금·지원 규모"] and "사무공간" in got["지원 내용"] and "여성 창업자 우대" in got["우대 사항"]
+    assert o["documents"] == ["사업계획서", "신분증 사본"] and "010-1234-5678" not in str(o)
+    assert [f["label"] for f in o["facts"]].count("우대 사항") == 1
+    assert any(s["title"].startswith("프로그램 운영") for s in o["sections"])
+    same = collect.enrich_kstartup(collect.build_kstartup(KST_ITEM, NOW), {})
+    assert same["documents"] == []

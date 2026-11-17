@@ -304,6 +304,40 @@ def build_kstartup(x: dict, now: datetime) -> dict | None:
     }
 
 
+def parse_kstartup_detail(page: str) -> dict[str, str]:
+    """K-Startup 공고 상세 화면의 '제목 → 내용' 묶음(신청대상, 제출서류, 선발기준, 지원내용 등)."""
+    out: dict[str, str] = {}
+    for m in re.finditer(r'<p class="tit">([^<]{1,80})</p>\s*<div class="list_wrap"[^>]*>(.*?)</div>', page, re.S):
+        title, text = strip_tags(m.group(1)).replace("\n", " "), scrub(strip_tags(m.group(2)))
+        if title and text:
+            out[title] = text
+    return out
+
+
+def enrich_kstartup(data: dict, detail: dict[str, str]) -> dict:
+    """상세 화면에서 읽은 지원 내용·금액·우대 사항·제출 서류를 공고에 채운다. 화면에 적힌 것만 쓴다."""
+    if not detail:
+        return data
+    support = next((t for k, t in detail.items() if re.search(r"지원\s*내용|혜택|지원사항", k)), "")
+    everything = "\n".join(detail.values())
+    prefer = [x.strip(" -·※") for x in everything.splitlines() if re.search(r"우대|가점|가산점", x)]
+    found = {
+        "지원 내용": support,
+        "지원금·지원 규모": money_lines(support) or money_lines(everything),
+        "우대 사항": " / ".join(dict.fromkeys(prefer))[:200],
+    }
+    kept = [f for f in data["facts"] if f["label"] not in found or not found[f["label"]]]
+    for f in kept:  # 상세 화면까지 읽었는데도 없는 항목
+        f["value"] = f["value"].replace("공고 요약에", "공고 화면에")
+    data["facts"] = facts([(k, v) for k, v in found.items()]) + kept
+    docs = next((t for k, t in detail.items() if "제출서류" in k.replace(" ", "")), "")
+    data["documents"] = [x.strip(" -·")[:60] for x in docs.splitlines() if len(x.strip(" -·")) > 1][:8]
+    for title, text in detail.items():
+        if re.search(r"지원\s*내용|제출\s*서류|선발|평가|혜택", title):
+            data["sections"].append({"id": f"§{len(data['sections']) + 1}", "title": title[:40], "text": text[:1500]})
+    return data
+
+
 def fetch_kstartup() -> list[dict]:
     """모집 중인 공고 전체. 서비스 키는 URL에 들어가므로 오류 메시지에 URL을 남기지 않는다."""
     key, out, page = urllib.parse.quote(os.environ["KSTARTUP_API_KEY"], safe=""), [], 1
@@ -474,7 +508,12 @@ def save(db, Posting, pid: str, digest: str, data: dict | None, now: datetime, s
 def run_kstartup() -> None:
     from .main import Posting, SessionLocal
 
-    stats = {"seen": 0, "new": 0, "updated": 0, "kept": 0}
+    stats = {"seen": 0, "new": 0, "updated": 0, "kept": 0, "detail": 0}
+    robots = RobotFileParser("https://www.k-startup.go.kr/robots.txt")
+    try:
+        robots.read()
+    except Exception:
+        robots = None  # 확인하지 못하면 상세 화면은 읽지 않는다
     with SessionLocal() as db:
         for x in fetch_kstartup():
             stats["seen"] += 1
@@ -483,10 +522,20 @@ def run_kstartup() -> None:
             if not data:
                 continue
             stats["kept"] += 1
-            digest = hashlib.sha256((BUILD_VERSION + "k2" + json.dumps(x, sort_keys=True, ensure_ascii=False)).encode()).hexdigest()
+            digest = hashlib.sha256((BUILD_VERSION + "k3" + json.dumps(x, sort_keys=True, ensure_ascii=False)).encode()).hexdigest()
             row = db.get(Posting, data["id"])
-            if not (row and row.raw_hash == digest):
-                save(db, Posting, data["id"], digest, data, now, stats)
+            if row and row.raw_hash == digest:
+                continue
+            # 지원 내용·우대 사항은 API 요약에 없어 공고 상세 화면에서 읽는다(robots.txt 허용 범위, 요청 간격 준수)
+            url = data["applyUrl"]
+            if robots and url.startswith("https://www.k-startup.go.kr/") and robots.can_fetch(UA, url):
+                time.sleep(INTERVAL)
+                try:
+                    data = enrich_kstartup(data, parse_kstartup_detail(fetch(url)))
+                    stats["detail"] += 1
+                except Exception as e:
+                    print(f"[상세 실패] {data['id']}: {type(e).__name__}", file=sys.stderr)
+            save(db, Posting, data["id"], digest, data, now, stats)
     print("k-startup", json.dumps(stats, ensure_ascii=False))
 
 
