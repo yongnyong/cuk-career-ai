@@ -69,6 +69,7 @@ cuk-career-ai/
 │  └─ tests/             pytest
 ├─ scripts/server-setup.sh  새 서버 1회 설치 스크립트
 ├─ docs/DEPLOY.md        배포 구성 메모
+├─ docs/DEPT_TECH_TREES.md  학과별 테크트리 설계안 (학과 홈페이지 조사, 미반영)
 ├─ docker-compose.yml    서버용 (Postgres + API + Caddy)
 └─ Caddyfile             HTTPS 리버스 프록시
 ```

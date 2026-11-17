@@ -1,0 +1,403 @@
+# 학과별 테크트리 설계안
+
+2026-11-17 조사. 아직 서비스에 반영하지 않은 **설계안**이다.
+
+## 어떻게 조사했나
+
+1. 가톨릭대학교 홈페이지에서 학과별 사이트 주소를 모았다.
+2. 학과 사이트마다 공통으로 있는 **취업 및 진로 · 취득 자격증 · 전공로드맵 · 학과소개** 페이지를 읽었다(44개 사이트, `robots.txt` 확인, 요청 간격 3초, 첨부·이미지 미접근).
+3. 진로 페이지의 "진출 분야"를 테크(갈래)로, 로드맵의 트랙·마이크로디그리·실습 과목을 고유 스킬로, 자격증 페이지와 "필요 자격증" 표를 자격으로 옮겼다.
+
+### 표기
+
+- **(학과)** 학과 홈페이지에 적혀 있는 내용. 각 학과 끝의 출처 링크에서 확인할 수 있다.
+- **(추가)** 학과 페이지에는 없지만 해당 분야에서 흔히 준비하는 국가자격·공인시험을 조사자가 덧붙인 것. **응시자격과 시행 여부는 시행기관(Q-Net 등)에서 다시 확인해야 한다.**
+- 학과 페이지에 정보가 없는 항목은 지어내지 않고 "자료 없음"으로 적었다.
+
+### 조사 결과 요약
+
+| 구분 | 학과 수 | 비고 |
+|---|---|---|
+| 본문에 설계한 학과 | 40 | 그중 2개(프랑스어문화, 수학)는 진로 페이지가 없어 로드맵만 사용 |
+| 자격증 전용 페이지가 있는 학과 | 7 | 심리, 아동, 에너지환경, 의류, 정보통신전자, 회계, 특수교육 |
+| 진로 표에 자격증이 함께 적힌 학과 | 4 | 국사, 법, 중국언어문화, 의류 |
+| 자료가 부족한 학과 | 8 | 맨 아래 "자료가 부족한 학과" |
+
+학과 페이지 자체의 오류도 있었다(예: 일어일본문화학과 진로 페이지에 화학과 내용이 주석으로 남아 있음, 성악과 페이지 제목이 예술미디어융합학과로 표기). 그런 부분은 쓰지 않았다.
+
+---
+
+## 인문사회계열
+
+### 국어국문학과
+- **고유 스킬**: 텍스트 분석·작성, 교정·출판 편집, 창작(시·소설·실용), 미디어 이해, 한국문화 교육 (학과)
+- **테크**
+  1. 교육 — 임용 준비, 독서·작문 지도, 문학 치료 → 교육기관, 독서·논술지도사 (학과)
+  2. 문화산업 — 지역 문화재단, 출판, 기자, 방송작가, 스토리텔러 (학과)
+  3. 광고·홍보 — 광고회사, 기업 홍보, 카피라이터 (학과)
+  4. 창작 — 시인·소설가 등 (학과)
+- **경험**: 교수-학생 소모임, 학술답사, 학과 학술제, 응용작품대회, 종합설계, 가대문화상·신춘문예 공모 (학과)
+- **자격**: 중등 정교사 2급(국어, 교직 이수) (추가)
+- **출처**: [학과소개](https://korean.catholic.ac.kr/korean/info/department-introduction.do) · [진로](https://korean.catholic.ac.kr/korean/info/career.do) · [로드맵](https://korean.catholic.ac.kr/korean/course/roadmap.do)
+
+### 철학과
+- **고유 스킬**: 논리적 분석과 응용, 철학 문헌 읽기·토론, 윤리적 판단 (학과 로드맵)
+- **테크**: 아동 논술 교육 / 청소년 상담 / 대학원 / 경영·회계 / 금융권 / IT 사업 / 웹 디자인 / 공연·전시 기획 (학과: 동문 진출 분야)
+- **경험**: 철학교과교육(교직 연계), 철학책 읽기와 토론 수업 (학과 로드맵)
+- **자격**: 학과 페이지에 없음. 논술 교육은 교직 이수, 상담은 청소년상담사 3급을 검토 (추가)
+- 메모: 진출 분야가 넓고 학과 고유 자격이 없어, **복수전공과 묶은 테크**로 설계하는 편이 맞다.
+- **출처**: [학과소개](https://philosophy.catholic.ac.kr/philosophy/info/department-introduction.do) · [진로](https://philosophy.catholic.ac.kr/philosophy/info/career.do) · [로드맵](https://philosophy.catholic.ac.kr/philosophy/course/roadmap.do)
+
+### 국사학과
+- **고유 스킬**: 사료 읽기(한문 강독), 기록관리, 역사콘텐츠 제작 (학과)
+- **테크**와 필요 자격 (학과 "진로 로드맵" 표)
+  1. 역사학자 — 대학원. 한자능력 2급 이상, 외국어
+  2. 역사교사·강사 — 교직 과목
+  3. 학예사 — 한국예술사·한국의문화유산 등, 한자능력
+  4. 기록관리사 — 기록관리학의이해
+  5. 고전번역가 — 강독 과목, 한자능력 1급 이상
+  6. 역사콘텐츠 크리에이터 — 역사콘텐츠 캡스톤, 영상 편집·포토샵
+  7. 역사전문기자
+  8. 공무원 — 한국사능력검정 1급, 한자능력 3급 이상
+  9. 일반 기업 — 컴퓨터활용능력 2급 이상, 영어
+- **경험**: 학술제, 학회, 역사콘텐츠공모전, 답사준비위원회 (학과)
+- **자격**: 한국사능력검정, 한자능력검정, 컴퓨터활용능력 (학과) / 준학예사 (추가)
+- **출처**: [학과소개](https://koreanhistory.catholic.ac.kr/koreanhistory/info/department-introduction.do) · [진로](https://koreanhistory.catholic.ac.kr/koreanhistory/info/career.do) · [로드맵](https://koreanhistory.catholic.ac.kr/koreanhistory/course/roadmap.do)
+
+### 영어영문학부
+- **고유 스킬**: 영어 에세이·발표, 번역, 문학 비평·스토리텔링, 영어교육 (학과 로드맵)
+- **테크**: 외국계기업·무역 / 문화마케팅·브랜딩 / 영어교육(교직 이수 후 정교사) / 커뮤니케이션 전문가 / 출판·통번역 / 공기업·공공기관 / 미디어콘텐츠 창작·기획 / 대학원 (학과)
+- **경험**: 스타트업영어발표, 번역의원리와응용, 영어교과교육론 (학과 로드맵)
+- **자격**: 중등 정교사(영어) (학과) / TOEIC Speaking·OPIc, 국제무역사 (추가)
+- **출처**: [학과소개](https://english.catholic.ac.kr/english/intro/introduction.do) · [진로](https://english.catholic.ac.kr/english/intro/career.do) · [로드맵](https://english.catholic.ac.kr/english/course/roadmap.do)
+
+### 중국언어문화학과
+- **고유 스킬**: 중국어 회화·프레젠테이션, 통상중국어, AI 활용 중한번역, 중국 지역문화 (학과 로드맵)
+- **테크**: 통·번역(국제회의, 웹툰 번역) / 문화콘텐츠·출판 / 중국어 교육 / 엔터테인먼트·게임·여행 / 중국 기업·유통 / 사기업 해외영업·마케팅 / 공무원·공기업(KOTRA 등) / 대학원 (학과)
+- **자격**: HSK, BCT, TCT(번역능력인정시험), TSC, OPIc (학과)
+- 메모: 학과가 "복수전공으로 진출 범위가 넓어졌다"고 직접 밝힌다(경영, 미디어콘텐츠, 빅데이터 등).
+- **출처**: [학과소개](https://cn.catholic.ac.kr/cn/info/introduction.do) · [진로](https://cn.catholic.ac.kr/cn/info/career.do) · [로드맵](https://cn.catholic.ac.kr/cn/course/roadmap.do)
+
+### 일어일본문화학과
+- **고유 스킬**: 일본어 회화·작문·경어, 일한 번역, 시사 일본어 토론, 일본 사회·문화 이해 (학과 로드맵)
+- **테크**: 교육(교사·교재 개발) / 통·번역(도서, 영화, 웹툰·웹소설) / 일본 진출 기업·일본계 기업 / 일본 현지 취업 / 행정직·금융·언론·광고 (학과)
+- **자격**: 학과 페이지에 없음. JLPT, JPT (추가)
+- **출처**: [학과소개](https://japanese.catholic.ac.kr/japanese/info/introduction.do) · [진로](https://japanese.catholic.ac.kr/japanese/info/career001.do) · [로드맵](https://japanese.catholic.ac.kr/japanese/course/roadmap.do)
+
+### 프랑스어문화학과
+- **고유 스킬**: 프랑스어 회화·작문, 시청각·멀티미디어 프랑스어, 프랑코포니(프랑스어권) 이해 (학과 로드맵)
+- **테크**: 학과 진로 페이지를 찾지 못함. 로드맵에 "경영분야 연계과정"과 캡스톤디자인이 있어 해외영업·문화기획 방향이 의도된 것으로 보인다(추정).
+- **자격**: DELF/DALF (추가)
+- 메모: **자료 부족.** 학과 사무실에 진로 자료 확인이 필요하다.
+- **출처**: [학과소개](https://french.catholic.ac.kr/french/info/introduction.do) · [로드맵](https://french.catholic.ac.kr/french/course/roadmap.do)
+
+### 한국어문화학과
+- **고유 스킬**: 한국어 교수법(말하기·듣기·읽기·쓰기 교육), 한국어 교재·교육 콘텐츠 제작, 한국어능력평가 (학과 로드맵)
+- **테크**: 교수 / 국어교사 / 문화콘텐츠 전문가 / 언어학 연구원 / 영상콘텐츠 제작 / 문화콘텐츠 작가 (학과)
+- **경험**: 한국어 교실수업의 실제, 한국언어문화콘텐츠설계 (학과 로드맵)
+- **자격**: 한국어교원 2급(학위과정 이수) (추가 — 로드맵 과목 구성이 한국어교원 과정과 일치하나 학과 페이지에 명시는 없음)
+- **출처**: [학과소개](https://klc.catholic.ac.kr/klc/info/introduction.do) · [진로](https://klc.catholic.ac.kr/klc/info/career.do) · [로드맵](https://klc.catholic.ac.kr/klc/course/roadmap.do)
+
+### 사회복지학과
+- **고유 스킬**: 사회복지 실천기술, 사회복지조사·자료분석, 프로그램 개발과 평가, 현장실습 (학과 로드맵)
+- **테크** (학과: "주요 분야 7가지" + 연구)
+  1. 청소년복지 — 사회복지사, 청소년지도사
+  2. 장애인복지 — 장애인종합복지관
+  3. 노인복지 — 노인복지관·요양시설
+  4. 의료사회복지 — 병원
+  5. 정신건강복지
+  6. 사회복지 공무원·공기업
+  7. 비영리기구·NGO
+  8. 연구원 — 대학원 진학 후 국책연구기관
+- **경험**: 사회복지현장실습 1·2 (학과 로드맵)
+- **자격**: 사회복지사 1급 응시자격(졸업 시), 청소년지도사 (학과) / 정신건강사회복지사 2급(수련 필요) (추가)
+- **출처**: [학과소개](https://socialwelfare.catholic.ac.kr/socialwelfare/info/introduction.do) · [진로](https://socialwelfare.catholic.ac.kr/socialwelfare/info/career001.do) · [로드맵](https://socialwelfare.catholic.ac.kr/socialwelfare/course/roadmap.do)
+
+### 심리학과
+- **고유 스킬**: 심리통계·연구법, 심리검사·평가, 상담 면접 실습, 직업심리검사, 놀이치료 실습 (학과 로드맵)
+- **테크**와 자격 (학과 "취득 자격증" 페이지)
+  1. 상담 — 상담심리사 2급(학회), 청소년상담사 3급·2급(국가), 직업상담사(국가)
+  2. 임상 — 임상심리사 2급(국가), 정신건강임상심리사 2급(국가). 1급과 임상심리전문가는 석사 이상
+  3. 발달 — 발달심리사 2급(학회), 놀이심리재활사(국가)
+  4. 산업·조직(인사) — 인사조직심리사(학회)
+  5. 범죄 — 범죄심리사 2급(학회) → 법무부 보호직·교정직, 경찰
+  6. 건강·코칭 — 건강심리사, 코칭심리사 2급(학회)
+  7. 리서치 — 여론조사 전문가 (자격 명시 없음)
+- **경험**: 지역사회상담사례실습, 놀이치료실습 및 슈퍼비전, 인적자원개발 실습 (학과 로드맵)
+- 메모: 학과가 "석사 이상을 요구하는 자격이 많다"고 밝힌다. 학부 테크와 대학원 테크를 **노드에서 구분**해야 한다.
+- **출처**: [학과소개](https://psychology.catholic.ac.kr/psychology/info/introduction.do) · [진로](https://psychology.catholic.ac.kr/psychology/info/career.do) · [자격증](https://psychology.catholic.ac.kr/psychology/info/qualifications.do) · [로드맵](https://psychology.catholic.ac.kr/psychology/course/roadmap.do)
+
+### 사회학과
+- **고유 스킬**: 사회조사·통계 분석, 사회갈등·공공정책 분석 (학과 로드맵)
+- **테크**: 공공사회정책·공무원 / 사회조사·연구원(공공·민간 연구소) / 언론(기자·아나운서) / PD·작가·콘텐츠 기획 / 홍보·기획·마케팅(경영학 연계) / 사회단체·국제 NGO / 사회교과 중등교사 (학과)
+- **자격**: 사회조사분석사 (학과)
+- **출처**: [학과소개](https://sociology.catholic.ac.kr/sociology/info/introduction.do) · [진로](https://sociology.catholic.ac.kr/sociology/info/roadmap.do) · [로드맵](https://sociology.catholic.ac.kr/sociology/course/roadmap.do)
+
+### 아동학과
+- **고유 스킬**: 영유아 발달·교수방법, 놀이지도, 아동관찰 및 행동연구, 부모교육 (학과)
+- **테크**: 어린이집 보육교사 / 유치원 정교사(교직 이수) / 놀이심리재활사 / 영유아 교재교구 개발·아동문학 출판 / 육아정책·영유아 교육 연구원 / 보육 행정·정책 / 아동발달 전문가 (학과)
+- **경험**: 보육실습 6주 240시간 (학과)
+- **자격**: 보육교사 2급(17과목 51학점 이상 + 보육실습), 놀이심리재활사, 유치원 정교사 (학과)
+- **출처**: [학과소개](https://children.catholic.ac.kr/children/info/introduction.do) · [진로](https://children.catholic.ac.kr/children/info/career.do) · [자격증](https://children.catholic.ac.kr/children/info/licences.do) · [로드맵](https://children.catholic.ac.kr/children/course/roadmap.do)
+
+### 특수교육과
+- **고유 스킬**: 장애 유형별 교육(지적·자폐성·정서행동·시각·청각 등), 직업평가, 재활상담, 전환교육 (학과 로드맵)
+- **테크**: 중등 특수교사 / 직업평가사 / 재활상담사 / 장애인복지관·평생교육센터 특수교사 / 연구사·장학사 (학과)
+- **경험**: 재활실습 150시간, 특수교육과 재활실습 (학과)
+- **자격**: 특수학교 2급 정교사, 장애인재활상담사(국가, 18과목 54학점 이수 후 응시), 직업능력평가사(민간) (학과 — "학부에서 3가지 자격을 취득할 수 있다")
+- **출처**: [진로](https://sped.catholic.ac.kr/sped/info/career.do) · [자격증](https://sped.catholic.ac.kr/sped/info/qualification.do) · [로드맵](https://sped.catholic.ac.kr/sped/course/roadmap.do)
+
+### 국제학부
+- **고유 스킬**: 지역연구(미국·중국·일본·유럽·동남아), 국제통상 실무, 국제개발협력, 외교정책 분석 (학과 로드맵)
+- **테크**: 정부기관(외교부, KOICA 등) / 공기업·공공부문(무역협회 등) / 민간기업(대기업·외국계) / 시민단체(NGO) / 금융권 / 언론 / 전문직(관세사, 노무사) / 대학원 (학과)
+- **자격**: 관세사, 공인노무사 (학과 진출 사례) / 공인 어학, 국제무역사 (추가)
+- **출처**: [학과소개](https://is.catholic.ac.kr/is/info/introduction.do) · [진로](https://is.catholic.ac.kr/is/info/career.do) · [로드맵](https://is.catholic.ac.kr/is/course/roadmap.do)
+
+### 법학과
+- **고유 스킬**: 법률 문서 독해·작성, 사례 풀이(민사·형사·행정·상법) (학과 로드맵)
+- **테크**와 준비 (학과 "진로 로드맵" 표)
+  1. 일반대학원 — 영어 독해
+  2. 법학전문대학원 — 최대한 많은 전공과목, 공인영어 고득점
+  3. 공기업 — 행정법·상법, NCS 직업기초역량
+  4. 사기업 — 상법·민법, 기업실무
+  5. 일반행정직 공무원 — 헌법, 행정법
+  6. 법원직·검찰직·경찰직 공무원
+  7. 공인노무사 — 노동법
+- **경험**: 학술제, 학회 활동 (학과)
+- **자격**: 토익 700 이상(공무원 영어 대체), 공인노무사 (학과) / 한국사능력검정 (추가)
+- **출처**: [학과소개](https://law.catholic.ac.kr/law/info/introduction.do) · [진로](https://law.catholic.ac.kr/law/info/career.do) · [로드맵](https://law.catholic.ac.kr/law/course/roadmap.do)
+
+### 경제학과
+- **고유 스킬**: 경제 환경·시장 분석, 계량 분석 (학과)
+- **테크**: 금융기관(은행·증권) / 민간기업 기획·조사·컨설팅 / 정부·공기업(금융공기업, 공무원) / 연구기관(국책·민간) / NGO / 국제기구 / 대학원 (학과)
+- **자격**: 학과 페이지에 없음. 투자자산운용사, 한국사능력검정(공기업·공무원) (추가)
+- **출처**: [학과소개](https://economics.catholic.ac.kr/economics/info/introduction.do) · [진로](https://economics.catholic.ac.kr/economics/info/career.do) · [로드맵](https://economics.catholic.ac.kr/economics/info/career.do)
+
+### 행정학과
+- **고유 스킬**: 정책 분석·평가, 공공 관리 (학과)
+- **테크**: 공무원(중앙·지방, 경찰·검찰·법원) / 공공기관·공기업 / 연구소 / 전문직(변호사, 관세사, 감정평가사) / 대학 교직원 / 은행·사기업 / 외국계 기업 / 언론사 (학과)
+- **자격**: 학과 페이지에 없음. 한국사능력검정, 공인 어학, NCS (추가)
+- **출처**: [학과소개](https://pa.catholic.ac.kr/pa/info/introduction.do) · [진로](https://pa.catholic.ac.kr/pa/info/career001.do) · [로드맵](https://pa.catholic.ac.kr/pa/info/career001.do)
+
+## 경영대학
+
+### 경영학과
+- **고유 스킬**: 로드맵이 5개 영역으로 나뉜다 — 마케팅(시장조사, 마케팅데이터분석), 재무(투자론, 재무금융데이터분석), 인사조직(인적자원관리, 조직행위), 생산운영(SCM, 경영과학), 전략·국제경영 (학과 로드맵)
+- **테크**: 영역 5개를 그대로 테크로 쓰고, 진출처는 공공기관·공무원 / 금융권 / 일반 기업 / 창업 / 대학원 (학과)
+- **경험**: 경영학현장실습, 경영학캡스톤디자인 (학과 로드맵)
+- **자격**: 학과 페이지에 없음. 마케팅 — 유통관리사, 재무 — 투자자산운용사·재경관리사, 생산운영 — ERP 정보관리사, 데이터 — ADsP·SQLD (추가)
+- **출처**: [학과소개](https://business.catholic.ac.kr/business/info/introduction.do) · [진로](https://business.catholic.ac.kr/business/info/career.do) · [로드맵](https://business.catholic.ac.kr/business/course/roadmap.do)
+
+### 회계학과
+- **고유 스킬**: 재무회계, 원가·관리회계, 세무회계, 회계감사, IT 활용 회계(ERP, AI 회계데이터분석) (학과 로드맵)
+- **테크**: 회계법인(공인회계사) / 세무법인(세무사) / 대기업·중견기업 회계·재무 / 금융기관 / 공공기관 / 세무직 공무원 / 외국계기업 (학과)
+- **경험**: 공인회계사·세무사 고시반 "현양제" (학과)
+- **자격**: 공인회계사, 세무사 (학과 — 시험 과목까지 안내) / 전산회계·전산세무, 재경관리사 (추가)
+- **출처**: [학과소개](https://accounting.catholic.ac.kr/accounting/info/introduction.do) · [진로](https://accounting.catholic.ac.kr/accounting/info/roadmap.do) · [자격증](https://accounting.catholic.ac.kr/accounting/info/qualification.do) · [로드맵](https://accounting.catholic.ac.kr/accounting/course/roadmap.do)
+
+### 글로벌경영학과
+- **고유 스킬**: 다국적 기업 재무전략, M&A와 가치평가, 글로벌 공급망, ESG 경영 (학과 로드맵)
+- **테크**: 대기업·중견기업 / 금융기관 / 외국기업 / 공공기관·공기업 / 공무원 / 창업 / 대학원 (학과)
+- **자격**: 학과 페이지에 없음. 공인 어학, 국제무역사 (추가)
+- **출처**: [진로](https://globalbiz.catholic.ac.kr/globalbiz/info/career.do) · [로드맵](https://globalbiz.catholic.ac.kr/globalbiz/course/roadmap.do)
+
+## 자연공학계열
+
+### 화학과
+- **고유 스킬**: 유기·분석·물리·무기화학 실험, 기기분석, 소재화학(유기·무기·나노·전자재료) (학과 로드맵)
+- **테크**: 연구소 / 바이오 / 제약 / 생활용품(화장품·세제) / 반도체·전자부품 / 에너지(이차전지) / 화학(정밀·석유화학) / 교직(화학교과교육) / 대학원 (학과)
+- **경험**: 소재화학연구 1·2(심화연구) (학과 로드맵)
+- **자격**: 학과 페이지에 없음. 화학분석기사, 위험물산업기사 (추가)
+- **출처**: [학과소개](https://chemistry.catholic.ac.kr/chemistry/info/introduction.do) · [진로](https://chemistry.catholic.ac.kr/chemistry/info/career.do) · [로드맵](https://chemistry.catholic.ac.kr/chemistry/course/roadmap.do)
+
+### 수학과
+- **고유 스킬**: 로드맵 영역 — 대수·해석, 통계학(수리통계, 자료분석), 금융수학(전산금융, 위험관리), 응용수학(수학프로그래밍, 기계학습의 수학적 이론, 딥러닝) (학과 로드맵)
+- **테크**: 학과 진로 페이지를 읽지 못함(게시판 형태). 로드맵 기준으로 금융·리스크 / 데이터·AI / 교직 / 대학원으로 나눌 수 있다(추정).
+- **자격**: 보험계리사, ADsP, 빅데이터분석기사 (추가)
+- 메모: **진로는 추정.** 학과 확인 필요.
+- **출처**: [학과소개](https://math.catholic.ac.kr/math/info/introduction.do) · [로드맵](https://math.catholic.ac.kr/math/course/roadmap.do) · [진로](https://math.catholic.ac.kr/math/community/job.do)
+
+### 물리학과
+- **고유 스킬**: 물리 실험(현대·고급물리학실험), 전산물리와 딥러닝, 반도체 물리. "복잡계 시뮬레이션 나노디그리" 운영 (학과 로드맵)
+- **테크**: 국공립 연구소 / 산업체(전기·전자·반도체·디스플레이) / 대기업 연구소 / 금융·언론·기술평가 / 대학원 (학과)
+- **자격**: 학과가 "각종 자격증 취득"이라고만 적고 구체 자격은 없음. 자료 없음.
+- **출처**: [학과소개](https://physics.catholic.ac.kr/physics/info/introduction.do) · [진로](https://physics.catholic.ac.kr/physics/info/career.do) · [로드맵](https://physics.catholic.ac.kr/physics/course/roadmap.do)
+
+### 에너지환경공학과
+- **고유 스킬**: 대기오염 제어, 수질·폐수처리, 폐기물·자원순환, 신재생에너지, 기기분석, 환경빅데이터 (학과 로드맵)
+- **테크**: 환경직 공무원(환경부, 서울시, 지자체) / 연구직 공무원(국립환경과학원 등) / 국책연구원 / 공기업(환경공단, 에너지공단, 수자원공사, 발전사) / 시도 연구원 / 엔지니어링 기업(환경 플랜트 설계·시공) (학과)
+- **자격** (학과 "주요 기사 및 자격증")
+  - 환경: **대기환경기사(중요), 수질환경기사(중요)**, 폐기물처리기사, 토양환경기사, 소음진동기사, 온실가스관리기사, 자연생태복원기사, 환경측정분석사
+  - 에너지: 신재생에너지발전설비기사, 에너지관리기사
+  - 화공·안전: 화공기사, 화학분석기사, **산업안전기사(중요)**
+- **출처**: [학과소개](https://envi.catholic.ac.kr/envi/info/introduction.do) · [진로](https://envi.catholic.ac.kr/envi/info/career.do) · [자격증](https://envi.catholic.ac.kr/envi/info/qualification.do) · [로드맵](https://envi.catholic.ac.kr/envi/course/roadmap.do)
+
+### 공간디자인·소비자학과
+- **고유 스킬**: 제도·표현기법, CAD, 주택설계, 실내 코디네이션, VMD, 가구디자인, 포트폴리오디자인 / 소비자조사, 상품기획 (학과 로드맵)
+- **테크** (학과)
+  - 공간디자인: 주택설계 / 인테리어 디자인(주거·상업·전시) / 도시재생(문화공간 기획) / 실내 코디네이션(VMD, 스타일링) / 가구·디자인 소품
+  - 소비자: 소비자조사·교육 / 기업 CS·CCM / 상품·서비스 기획 / 소매유통·물류 / 홍보·광고
+- **경험**: 디자인문화현장 워크샵, 공간디자인종합설계, 소비자학 캡스톤디자인 (학과 로드맵)
+- **자격**: 학과 페이지에 없음. 실내건축기사·산업기사, 컬러리스트산업기사, 소비자전문상담사 2급, 유통관리사 (추가)
+- **출처**: [학과소개](https://design.catholic.ac.kr/design/info/introduction.do) · [진로](https://design.catholic.ac.kr/design/info/career.do) · [로드맵](https://design.catholic.ac.kr/design/course/major-roadmap.do)
+
+### 의류학과
+- **고유 스킬**: 패션일러스트레이션, 의복 제작·패턴 CAD, 의류소재 분석, 3D 가상의류(CLO), 패션 빅데이터·트렌드 분석 (학과 로드맵)
+- **테크** (학과 "진로 로드맵" 표)
+  1. 아트디렉션 — 아트디렉터, 에디터, 스타일리스트, 무대의상
+  2. 패션 테크·소재 — 3D 디자이너, 테크니컬 디자이너, 소재분석가
+  3. 패션 디자인 — 스타일·소재·그래픽 디자이너
+  4. 머천다이징 — 상품기획, 바잉, 온라인 MD
+  5. 마케팅 — 마케터, 광고, 홍보
+  6. 리테일·유통 — 영업관리, VMD, 물류
+  7. 국내외 벤더 — 영업, R&D
+  8. 창업 — 패션 브랜드, 온라인 쇼핑몰
+- **경험**: 패션쇼·패션화보, 3D CLO 공모전, 3D가상의류디자이너양성과정, 패션상품기획콘테스트, 현장실습, 창업동아리, 패션매장 실무 (학과)
+- **자격** (학과 "취득 자격증")
+  - 공통: Photoshop(GTQ), Illustrator(GTQi), 어학, 컴퓨터활용능력
+  - 디자인: Premiere Pro, 3D CLO, Blender, 컬러리스트산업기사, 컴퓨터그래픽스운용기능사, 양장기능사, 의류기사
+  - 마케팅·무역: Google Analytics, 패션머천다이징산업기사, 유통관리사, 패션의류 무역 마스터과정
+- **출처**: [학과소개](https://clothing.catholic.ac.kr/clothing/info/introduction.do) · [진로](https://clothing.catholic.ac.kr/clothing/info/career.do) · [자격증](https://clothing.catholic.ac.kr/clothing/info/qualifications.do) · [로드맵](https://clothing.catholic.ac.kr/clothing/course/roadmap.do)
+
+### 식품영양학과
+- **고유 스킬**: 식품가공·식품분석, 임상영양·식사요법, 영양판정, 영양교육·상담, 단체급식관리 (학과 로드맵)
+- **테크**: 영양교사 / 임상·급식 영양사 / 헬스케어 컨설턴트 / 외식경영자 / 식품 MD / 식품 저널리스트 / 식품·보건 공무원 / 식품기업 연구원 (학과)
+- **경험**: 영양사 현장실습(방학 중) (학과 로드맵)
+- **자격**: 영양사("영양사 이수과목" 지정), 영양교사(교직) (학과) / 위생사, 식품기사 (추가)
+- **출처**: [학과소개](https://fn.catholic.ac.kr/fn/info/introduction.do) · [진로](https://fn.catholic.ac.kr/fn/info/career.do) · [로드맵](https://fn.catholic.ac.kr/fn/course/roadmap.do)
+
+## 바이오헬스융합대학
+
+### 생명공학과
+- **고유 스킬**: 마이크로디그리 4종 — RED Bio(바이오의약품, 면역학), GREEN Bio(산업미생물, 발효공학), WHITE Bio(유전공학, 생물공정, 단백질공학), Bio Experiment Expert(BT 실험, 심화연구실습) (학과 로드맵)
+- **테크**: 공무원·연구기관(식약처 등) / 제약회사·생명공학 벤처(R&D, 임상, 품질관리) / 병원 연구소·QC 부서 / 식품·기능성 화장품 제조 / 변리사 / 창업 / 대학원 (학과)
+- **경험**: 심화연구실습(학부연구) (학과 로드맵)
+- **자격**: 변리사 (학과 진출 분야) / 바이오화학제품제조기사, 생물공학기사 (추가)
+- **출처**: [학과소개](https://biotech.catholic.ac.kr/biotech/info/introduction.do) · [진로](https://biotech.catholic.ac.kr/biotech/info/career.do) · [로드맵](https://biotech.catholic.ac.kr/biotech/course/roadmap.do)
+
+### 바이오메디컬화학공학과
+- **고유 스킬**: 마이크로디그리 10종 — 재생생체소재, 첨단바이오의약품, 나노 의약품소재, 반도체 공정·BioMEMS, 반응 공정, 화장품소재, 백신전달소재, 분자질병진단, 제약공정, 나노바이오 센서 (학과 로드맵)
+- **테크**: 제약 / 화장품 / 바이오 / 반도체·이차전지 / 정유·에너지 / 의료기기 / 화학 / 대학원 후 전문연구직 (학과)
+- **자격**: 학과 페이지에 없음. 화공기사, 화학분석기사, 위험물산업기사 (추가)
+- 메모: 마이크로디그리가 진출 산업과 거의 1:1로 대응해 **테크 설계에 그대로 쓸 수 있다.**
+- **출처**: [학과소개](https://bmce.catholic.ac.kr/bmce/info/introduction.do) · [진로](https://bmce.catholic.ac.kr/bmce/info/career.do) · [로드맵](https://bmce.catholic.ac.kr/bmce/course/roadmap.do)
+
+### AI의공학과
+- **고유 스킬**: 생체신호 처리, 의료영상 처리, 의용계측, 의료센서, 헬스케어 머신러닝·딥러닝 (학과 로드맵)
+- **테크**: 디지털 헬스케어 기업(의료 AI) / 의료기기 대기업·전문업체 / 전자·바이오·컴퓨터 산업체 / 정부출연기관(식약처 등) / 대학병원 / 창업 / 대학원 (학과)
+- **경험**: ABME 경험랩, 캡스톤디자인 (학과 로드맵)
+- **자격**: 변리사 (학과 진출 분야) / 의공기사, 의료기기 RA 전문가 (추가)
+- **출처**: [학과소개](https://aibme.catholic.ac.kr/aibme/info/introduction.do) · [진로](https://aibme.catholic.ac.kr/aibme/info/career.do) · [로드맵](https://aibme.catholic.ac.kr/aibme/course/roadmap.do)
+
+### 의생명과학과
+- **고유 스킬**: 분자진단, 유전체·전사체 분석, 줄기세포·오가노이드, 신약개발(분자모델링) (학과 로드맵)
+- **테크**: 국가 연구소(질병관리청, 식약처, 국과수 등) / 제약회사(QC·QA, 임상설계, 개발, 기술영업) / 바이오벤처·진단 기업 / 교직 / 대학원(학석사연계) (학과)
+- **경험**: 의생명과학실험, 줄기세포연구 종합설계 (학과 로드맵)
+- **자격**: 학과 페이지에 없음. 바이오화학제품제조기사, 생물공학기사 (추가)
+- **출처**: [학과소개](https://mbs.catholic.ac.kr/mbs/info/introduction.do) · [진로](https://mbs.catholic.ac.kr/mbs/info/career.do) · [로드맵](https://mbs.catholic.ac.kr/mbs/course/roadmap.do)
+
+### 바이오메디컬소프트웨어학과
+- **고유 스킬**: 생체신호·의료영상 처리, 헬스케어 머신러닝·딥러닝·생성형 AI, 의료 빅데이터 분석, 바이오인포매틱스, 의료 AI 윤리 (학과 로드맵)
+- **테크**: 의료 소프트웨어 개발자 / 의료기기 개발자 / 바이오헬스 기술지원 / 병원·제약회사 / IT 대기업 / 공기업 기술직(식약처, 국립암센터) / 창업 (학과)
+- **경험**: 산학의료AI 종합설계, 임상의료AI 종합설계, 현장실습 (학과 로드맵)
+- **자격**: 학과 페이지에 없음. 정보처리기사, SQLD (추가)
+- **출처**: [학과소개](https://bmsw.catholic.ac.kr/bmsw/info/introduction.do) · [진로](https://bmsw.catholic.ac.kr/bmsw/info/career.do) · [로드맵](https://bmsw.catholic.ac.kr/bmsw/course/roadmap.do)
+
+## AI전자정보융합대학
+
+### 인공지능학과
+- **고유 스킬**: 머신러닝·딥러닝, 자연어처리, 컴퓨터비전, 음성인식·합성, 정보검색, 그래프신경망 (학과 로드맵)
+- **테크**: AI 연구원 / 로봇·자율주행 연구원 / 데이터과학 연구원 / 소프트웨어 개발자 / 게임 프로그래머 / AI 스타트업 취·창업 / 공기업 기술직 / 대학원 (학과)
+- **경험**: 인공지능캡스톤디자인, 인공지능현장실습, 기술적 글쓰기 (학과 로드맵)
+- **자격**: 학과 페이지에 없음. 정보처리기사, 빅데이터분석기사, ADsP, SQLD (추가)
+- **출처**: [학과소개](https://ai.catholic.ac.kr/ai/info/introduction.do) · [진로](https://ai.catholic.ac.kr/ai/info/academic003.do) · [로드맵](https://ai.catholic.ac.kr/ai/course/roadmap.do)
+
+### 데이터사이언스학과
+- **고유 스킬**: 데이터 수집·분석·시각화, 다변량 분석, 분산컴퓨팅, 데이터마이닝, 강화학습 (학과 로드맵)
+- **테크** (학과 "직무에 따른 진로")
+  1. 데이터 사이언티스트 — 분석 체계·의사결정안 도출
+  2. 빅데이터 분석가 — 데이터 식별·분석으로 문제 해결
+  3. 빅데이터 엔지니어 — 데이터 처리·개발, 유지보수
+  4. 정보기술 전문가 — 데이터베이스·서버·네트워크
+  5. 데이터 분석 컨설턴트
+- **진출처**: IT기업, 공공기관, 금융기관, 의료·바이오, 방송·광고, 컨설팅, 창업 (학과)
+- **자격**: 학과 페이지에 없음. ADsP·ADP, 빅데이터분석기사, SQLD (추가)
+- **출처**: [학과소개](https://datascience.catholic.ac.kr/datascience/info/introduction.do) · [진로](https://datascience.catholic.ac.kr/datascience/info/career.do) · [로드맵](https://datascience.catholic.ac.kr/datascience/course/roadmap.do)
+
+### 컴퓨터정보공학부
+- **고유 스킬**: 자료구조·알고리즘, 운영체제, 네트워크·시스템 보안, 데이터베이스 설계, 임베디드·모바일, 웹서비스 (학과 로드맵)
+- **테크**: 소프트웨어 개발자 / 시스템 엔지니어 / 보안 전문가 / 정보화 컨설턴트 / IT 교육강사 / 전산직 공무원 / IT 융합 기업·연구소 / 대학원 (학과)
+- **자격**: 학과 페이지에 없음. 정보처리기사, 정보보안기사, SQLD, 리눅스마스터 (추가)
+- **출처**: [학과소개](https://csie.catholic.ac.kr/csie/info/introduction.do) · [진로](https://csie.catholic.ac.kr/csie/info/career.do) · [로드맵](https://csie.catholic.ac.kr/csie/course/roadmap.do)
+
+### 정보통신전자공학부
+- **고유 스킬**: 회로이론·전자회로 실험, 논리회로, 신호 및 시스템, 정보암호화 (학과)
+- **테크** (학과 "진로 로드맵" 표)
+  1. 네트워크·정보보안
+  2. 멀티미디어 통신
+  3. 무선통신 시스템
+  4. 반도체 소자·공정
+  5. 디지털 시스템 설계
+  6. 아날로그 회로설계
+  7. 공기업
+- **자격**: 정보처리기사, 정보통신기사, 전기기사, 전기공사기사, 반도체설계기사, 전자기사, 무선설비기사·산업기사, CCNA 등 국제 자격 (학과)
+- **출처**: [학과소개](https://ice.catholic.ac.kr/ice/info/introduction.do) · [진로](https://ice.catholic.ac.kr/ice/info/career001.do) · [자격증](https://ice.catholic.ac.kr/ice/info/license.do) · [로드맵](https://ice.catholic.ac.kr/ice/course/roadmap.do)
+
+### 미디어기술콘텐츠학과
+- **고유 스킬**: IT 기반 콘텐츠 기획, 실감미디어 프로그래밍, 영상 연출, 콘텐츠 데이터 분석 (학과)
+- **테크**: ICT 기획자·프로그래밍 창업 / 콘텐츠 데이터사이언스·콘텐츠 AI / 문화예술 프로그램 기획·마케터·라이선싱 관리 / 영화·방송·유튜브 기획 연출 / 실감미디어·게임 기획 개발 / 영상 특수효과 제작 (학과)
+- **자격**: 학과 페이지에 없음. 컴퓨터그래픽스운용기능사, GTQ, ADsP (추가)
+- **출처**: [학과소개](https://mtc.catholic.ac.kr/mtc/info/introduction.do) · [진로](https://mtc.catholic.ac.kr/mtc/info/alumni001.do) · [로드맵](https://mtc.catholic.ac.kr/mtc/info/alumni001.do)
+
+## 예체능계열
+
+### 음악과
+- **고유 스킬**: 전공 실기(성악, 관현악, 피아노·오르간, 작곡), 시창·청음, 화성, 합창·합주 (학과 로드맵)
+- **테크**: 시립 오케스트라·합창단 / 초등학교 예술강사 / 지역 문화재단·예술회관 / 게임회사 작곡가 / 스튜디오·학원 창업 / 군악대장(ROTC) / 중·고등학교 음악교사 / 대학원 (학과)
+- **자격**: 학과 페이지에 없음. 중등 정교사(음악, 교직 이수), 문화예술교육사 2급 (추가)
+- **출처**: [학과소개](https://music.catholic.ac.kr/music/info/introduction.do) · [진로](https://music.catholic.ac.kr/music/info/career.do) · [로드맵](https://music.catholic.ac.kr/music/course/roadmap.do)
+
+### 성악과
+- **고유 스킬**: 성악 실기, 딕션, 오페라·합창 무대 (학과)
+- **테크**: 성악가·오페라 가수 / 전문 합창단원 / 뮤지컬 / 연출·공연기획(음악 PD, 음악감독) / 음악 전문 교육자 / 클래식 해설가 / 방송 (학과)
+- **자격**: 학과 페이지에 없음. 문화예술교육사 2급 (추가)
+- **출처**: [학과소개](https://voice.catholic.ac.kr/voice/info/introduction.do) · [진로](https://voice.catholic.ac.kr/voice/info/career.do)
+
+## 약학대학
+
+### 약학과
+- **고유 스킬**: 약품분석, 약물학, 제제학, 임상약학 실무, 산업약학 실무, 실무실습(기초·필수·심화) (학과 로드맵)
+- **테크**: 개국·근무 약사 / 병원 약사 / 제약회사(생산관리, 개발·허가, 마케팅, 품질관리, 연구소) / 공직 약사(식약처, 보건소) / 의약품 도매 / 학계 (학과)
+- **자격**: 약사 면허(국가시험) (학과)
+- **출처**: [학과소개](https://pharmacy.catholic.ac.kr/pharmacy/info/introduction.do) · [진로](https://pharmacy.catholic.ac.kr/pharmacy/info/career.do) · [로드맵](https://pharmacy.catholic.ac.kr/pharmacy/course/roadmap.do)
+
+---
+
+## 자료가 부족한 학과
+
+| 학과 | 상태 | 제안 |
+|---|---|---|
+| 바이오로직스공학부 | 학과 사이트가 전공진로설계지원센터 페이지로 연결됨 | 학과 사무실에 교육과정·진로 자료 요청 |
+| 예술미디어융합학과 | 학부 사이트를 찾지 못함(대학원 사이트만 확인) | 학과 확인 |
+| 프랑스어문화학과 | 진로 페이지 없음 | 로드맵만으로 임시 설계, 학과 확인 |
+| 수학과 | 진로 메뉴가 채용 게시판 | 로드맵만으로 임시 설계 |
+| 간호학과 | 학과 사이트에 진로·자격 안내 없음 | 간호사 면허 중심의 기존 "의료·간호" 테크 유지 |
+| 의예과·의학과 | 진로 안내 없음 | 기존 테크 유지 |
+| 신학과 | 성신교정 사이트 미수집 | 기존 "사목·비영리" 테크 유지 |
+| 자유전공·광역·융합전공 | 고유 테크 없음(자유전공학부가 각 학과 로드맵으로 연결) | 1학년은 "전공 탐색" 테크, 전공 선택 후 해당 학과 테크로 전환 |
+
+---
+
+## 서비스 반영 방안 (제안)
+
+지금은 직무 22개가 계열(15개) 단위로 학과에 연결돼 있어, 같은 계열 학과는 같은 트리를 본다. 아래처럼 바꾸면 "학과마다 고유 스킬"이 드러난다.
+
+1. **학과 → 테크 목록**: 위 "테크"를 학과별 선택지로 넣는다. 기본 정보 입력에서 학과를 고르면 그 학과의 테크만 추천한다(다른 학과 테크도 선택은 가능).
+2. **테크 → 노드**: 노드를 4종류로 나눈다 — 고유 스킬(전공 과목·실습), 경험(현장실습·공모전·학술제), 자격(국가·학회), 공통(어학·컴활).
+3. **출처 표시**: 노드마다 "(학과) / (추가)"와 출처 링크를 보여준다. 대회 규정의 출처 표시 원칙과 맞는다.
+4. **대학원 구분**: 석사 이상이 필요한 자격(임상심리사 1급 등)은 학부 트리 끝에 "대학원 이후" 노드로 따로 둔다.
+5. **공고 연결**: 수집 공고의 직무 연결(지금 22개)을 테크 id로 바꾼다. 테크가 150개 안팎이 되므로 Gemini 연결 프롬프트를 학과군별로 나눠야 한다.
+
+작업량이 크므로 단계로 나누는 것을 권한다: ① 자료가 가장 풍부한 6~8개 학과(심리, 에너지환경, 의류, 정보통신전자, 회계, 특수교육, 국사, 사회복지)부터 반영해 화면 확인 → ② 나머지 학과 → ③ 공고 연결 교체.
+
+**반영 전에 확인할 것**: "(추가)"로 적은 자격은 조사자가 덧붙인 것이므로, 각 학과 학생(팀원이나 지인)에게 한 번 보여주고 틀린 것을 걸러내는 과정이 필요하다.
