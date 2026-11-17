@@ -23,6 +23,10 @@ interface Account {
   hash: string; // 시연용 계정은 빈 문자열(비밀번호 없음)
   data: UserData;
 }
+const isCollected = (o: Opportunity) => o.id.startsWith("cuk-"); // 서버 수집 공고
+// 실제 공고가 있으면 실제 계정에는 가상 공고를 보여주지 않는다(시연용 계정은 둘 다 본다)
+const visibleOpps = (s: { opportunities: Opportunity[]; session: string | null }) =>
+  !isDemo(s.session) && s.opportunities.some(isCollected) ? s.opportunities.filter((o) => !o.isVirtual) : s.opportunities;
 const isDemo = (id: string | null) => !!id && id.startsWith("demo-"); // 시연용 계정은 서버에 저장하지 않는다
 
 // API 호출. 서버에 닿지 않거나 JSON이 아니면 null(= 서버 없음)
@@ -135,7 +139,7 @@ export function StoreProvider({ children }: { children: React.ReactNode }) {
       if (r && (r.ok || r.status === 401)) {
         setMode("server");
         setState((s) =>
-          r.ok ? { ...s, ...fromServer(r.data.state), session: r.data.id } : isDemo(s.session) ? s : { ...s, ...emptyUser(), session: null },
+          r.ok ? { ...s, ...fromServer(r.data.state), session: r.data.id, now: new Date().toISOString() } : isDemo(s.session) ? s : { ...s, ...emptyUser(), session: null },
         );
       }
       setReady(true);
@@ -172,9 +176,19 @@ export function StoreProvider({ children }: { children: React.ReactNode }) {
     });
   }, []);
 
+  // 서버가 수집한 실제 공고. 이전에 받아 둔 실제 공고는 서버 목록으로 바꿔 끼운다
+  useEffect(() => {
+    if (!ready) return;
+    call("/opportunities").then((r) => {
+      if (r?.ok && Array.isArray(r.data))
+        update((s) => ({ ...s, opportunities: [...s.opportunities.filter((o) => !isCollected(o)), ...r.data] }));
+    });
+  }, [ready, update]);
+
   const api = useMemo<Ctx>(
     () => ({
       ...state,
+      opportunities: visibleOpps(state),
       ready,
       mode,
       nowDate: new Date(state.now),
@@ -183,7 +197,7 @@ export function StoreProvider({ children }: { children: React.ReactNode }) {
           const r = await call("/auth/signup", "POST", { id, password: pw });
           if (!r) return "서버에 연결하지 못했어요. 잠시 뒤 다시 시도해 주세요.";
           if (!r.ok) return errorOf(r.data);
-          update((s) => ({ ...s, ...emptyUser(), session: r.data.id }));
+          update((s) => ({ ...s, ...emptyUser(), session: r.data.id, now: new Date().toISOString() }));
           return null;
         }
         if (!/^[a-z0-9_]{4,16}$/.test(id)) return "아이디는 영문 소문자·숫자 4~16자로 입력해 주세요.";
@@ -199,7 +213,7 @@ export function StoreProvider({ children }: { children: React.ReactNode }) {
           const r = await call("/auth/login", "POST", { id, password: pw });
           if (!r) return "서버에 연결하지 못했어요. 잠시 뒤 다시 시도해 주세요.";
           if (!r.ok) return errorOf(r.data);
-          update((s) => ({ ...s, ...fromServer(r.data.state), session: r.data.id }));
+          update((s) => ({ ...s, ...fromServer(r.data.state), session: r.data.id, now: new Date().toISOString() }));
           return null;
         }
         const acc = state.users[id];
@@ -215,6 +229,7 @@ export function StoreProvider({ children }: { children: React.ReactNode }) {
           ...emptyUser(),
           ...(s.users[id]?.data ?? { profile }),
           session: id,
+          now: DEMO_START,
           users: s.users[id] ? s.users : { ...s.users, [id]: { salt: "", hash: "", data: emptyUser() } },
         })),
       logout: () => {

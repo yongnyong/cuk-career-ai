@@ -1,0 +1,383 @@
+{
+ "skills": [
+  {
+   "id": "SK-TOEIC",
+   "name": "TOEIC"
+  },
+  {
+   "id": "SK-OPIC",
+   "name": "OPIc"
+  },
+  {
+   "id": "SK-JLPT",
+   "name": "JLPT"
+  },
+  {
+   "id": "SK-HSK",
+   "name": "HSK"
+  },
+  {
+   "id": "SK-DELF",
+   "name": "DELF"
+  },
+  {
+   "id": "SK-COMP",
+   "name": "컴퓨터활용능력"
+  },
+  {
+   "id": "SK-PORT",
+   "name": "포트폴리오 정리"
+  },
+  {
+   "id": "SK-RESUME",
+   "name": "이력서·자기소개서"
+  },
+  {
+   "id": "SK-PPT",
+   "name": "기획서·발표"
+  },
+  {
+   "id": "SK-PY-01",
+   "name": "Python 기초"
+  },
+  {
+   "id": "SK-DA",
+   "name": "데이터 분석(pandas)"
+  },
+  {
+   "id": "SK-SQL",
+   "name": "SQL 실습"
+  },
+  {
+   "id": "SK-SQLD",
+   "name": "SQLD"
+  },
+  {
+   "id": "SK-ADSP",
+   "name": "ADsP"
+  },
+  {
+   "id": "SK-ML-EVAL",
+   "name": "모델 평가"
+  },
+  {
+   "id": "SK-DL",
+   "name": "딥러닝 프로젝트"
+  },
+  {
+   "id": "SK-DEPLOY",
+   "name": "모델·서비스 배포"
+  },
+  {
+   "id": "SK-ALGO",
+   "name": "알고리즘·코딩테스트"
+  },
+  {
+   "id": "SK-WEB",
+   "name": "웹 개발 프로젝트"
+  },
+  {
+   "id": "SK-INFO-PE",
+   "name": "정보처리기사"
+  },
+  {
+   "id": "SK-CIRCUIT",
+   "name": "회로 설계 기초"
+  },
+  {
+   "id": "SK-EMB",
+   "name": "임베디드 프로젝트"
+  },
+  {
+   "id": "SK-ELEC-PE",
+   "name": "전자기사"
+  },
+  {
+   "id": "SK-BIO-LAB",
+   "name": "세포배양·실험 기본기"
+  },
+  {
+   "id": "SK-BIOINFO",
+   "name": "바이오인포매틱스 프로젝트"
+  },
+  {
+   "id": "SK-SCI-PAPER",
+   "name": "학부연구생·논문 참여"
+  },
+  {
+   "id": "SK-GMP",
+   "name": "GMP 교육 이수"
+  },
+  {
+   "id": "SK-BIO-QC",
+   "name": "품질관리(QC/QA) 실무"
+  },
+  {
+   "id": "SK-BIO-PE",
+   "name": "바이오화학제품제조기사"
+  },
+  {
+   "id": "SK-PHARM-INTERN",
+   "name": "제약·약국 실무실습"
+  },
+  {
+   "id": "SK-RA",
+   "name": "인허가(RA) 교육"
+  },
+  {
+   "id": "SK-CLIN",
+   "name": "임상실습"
+  },
+  {
+   "id": "SK-BLS",
+   "name": "BLS 자격"
+  },
+  {
+   "id": "SK-RESEARCH",
+   "name": "임상 연구 참여"
+  },
+  {
+   "id": "SK-ACC",
+   "name": "전산회계 1급"
+  },
+  {
+   "id": "SK-FIN",
+   "name": "재무분석 프로젝트"
+  },
+  {
+   "id": "SK-MKT",
+   "name": "마케팅 기획 프로젝트"
+  },
+  {
+   "id": "SK-TRADE",
+   "name": "국제무역사"
+  },
+  {
+   "id": "SK-NCS",
+   "name": "NCS 직업기초능력"
+  },
+  {
+   "id": "SK-KHIST",
+   "name": "한국사능력검정"
+  },
+  {
+   "id": "SK-POLICY",
+   "name": "정책 리서치 프로젝트"
+  },
+  {
+   "id": "SK-LAW-DOC",
+   "name": "법률 문서 작성"
+  },
+  {
+   "id": "SK-STAT",
+   "name": "통계 분석(R)"
+  },
+  {
+   "id": "SK-SW-CERT",
+   "name": "사회복지사 2급(교과 이수)"
+  },
+  {
+   "id": "SK-COUNSEL",
+   "name": "상담 실습"
+  },
+  {
+   "id": "SK-VOL",
+   "name": "봉사·현장 활동"
+  },
+  {
+   "id": "SK-SPED",
+   "name": "특수교사 자격(교직 이수)"
+  },
+  {
+   "id": "SK-KOR-TEACH",
+   "name": "한국어교원 자격"
+  },
+  {
+   "id": "SK-DESIGN-TOOL",
+   "name": "CAD·3D 툴"
+  },
+  {
+   "id": "SK-INTERIOR",
+   "name": "실내건축기사"
+  },
+  {
+   "id": "SK-FASHION",
+   "name": "패션 MD 프로젝트"
+  },
+  {
+   "id": "SK-DIET",
+   "name": "영양사 면허"
+  },
+  {
+   "id": "SK-HACCP",
+   "name": "식품위생·HACCP 교육"
+  },
+  {
+   "id": "SK-ENV-PE",
+   "name": "수질·대기환경기사"
+  },
+  {
+   "id": "SK-LAB-ANAL",
+   "name": "기기분석 실습"
+  },
+  {
+   "id": "SK-CONTENT",
+   "name": "콘텐츠 기획 프로젝트"
+  },
+  {
+   "id": "SK-WRITE",
+   "name": "글쓰기·카피라이팅"
+  },
+  {
+   "id": "SK-SNS",
+   "name": "SNS 채널 운영"
+  },
+  {
+   "id": "SK-VIDEO",
+   "name": "영상 편집"
+  },
+  {
+   "id": "SK-PERF",
+   "name": "공연·무대 경험"
+  },
+  {
+   "id": "SK-ARTS-PLAN",
+   "name": "공연 기획"
+  },
+  {
+   "id": "SK-PASTORAL",
+   "name": "사목 실습"
+  },
+  {
+   "id": "SK-NPO",
+   "name": "비영리 프로그램 기획"
+  },
+  {
+   "id": "SK-IDEA",
+   "name": "고객 인터뷰·아이디어 검증"
+  },
+  {
+   "id": "SK-BMC",
+   "name": "비즈니스 모델 캔버스"
+  },
+  {
+   "id": "SK-BIZPLAN",
+   "name": "사업계획서 작성"
+  },
+  {
+   "id": "SK-MVP",
+   "name": "시제품(MVP) 제작"
+  },
+  {
+   "id": "SK-IR",
+   "name": "IR 피칭"
+  }
+ ],
+ "jobs": [
+  {
+   "id": "ai-engineer",
+   "name": "AI 엔지니어"
+  },
+  {
+   "id": "data-analyst",
+   "name": "데이터 분석가"
+  },
+  {
+   "id": "sw-developer",
+   "name": "소프트웨어 개발자"
+  },
+  {
+   "id": "electronics",
+   "name": "전자·통신 엔지니어"
+  },
+  {
+   "id": "bio-researcher",
+   "name": "바이오 연구원"
+  },
+  {
+   "id": "bio-qa",
+   "name": "바이오의약 생산·품질"
+  },
+  {
+   "id": "pharma",
+   "name": "제약·약무"
+  },
+  {
+   "id": "clinical",
+   "name": "의료·간호 전문인"
+  },
+  {
+   "id": "content-planner",
+   "name": "콘텐츠 기획자"
+  },
+  {
+   "id": "overseas-sales",
+   "name": "해외영업·무역"
+  },
+  {
+   "id": "finance",
+   "name": "경영기획·재무회계"
+  },
+  {
+   "id": "marketer",
+   "name": "마케터"
+  },
+  {
+   "id": "public-sector",
+   "name": "공공기관·행정"
+  },
+  {
+   "id": "legal",
+   "name": "법무·컴플라이언스"
+  },
+  {
+   "id": "welfare",
+   "name": "사회복지·상담"
+  },
+  {
+   "id": "educator",
+   "name": "교육 전문가"
+  },
+  {
+   "id": "designer",
+   "name": "공간·패션 디자이너"
+  },
+  {
+   "id": "food",
+   "name": "식품·영양 전문가"
+  },
+  {
+   "id": "env-engineer",
+   "name": "에너지·환경 엔지니어"
+  },
+  {
+   "id": "arts-planner",
+   "name": "공연예술·문화기획"
+  },
+  {
+   "id": "npo",
+   "name": "사목·비영리"
+  },
+  {
+   "id": "founder",
+   "name": "창업가"
+  }
+ ],
+ "fields": [
+  "humanities",
+  "language",
+  "social",
+  "law_econ",
+  "business",
+  "science",
+  "engineering",
+  "living",
+  "bio",
+  "ict",
+  "arts",
+  "pharmacy",
+  "medicine",
+  "nursing",
+  "theology"
+ ]
+}

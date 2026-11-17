@@ -18,7 +18,7 @@ from argon2 import PasswordHasher
 from argon2.exceptions import InvalidHashError, VerificationError
 from fastapi import Cookie, Depends, FastAPI, HTTPException, Response
 from pydantic import BaseModel, Field
-from sqlalchemy import JSON, BigInteger, ForeignKey, String, create_engine, delete
+from sqlalchemy import JSON, BigInteger, ForeignKey, String, create_engine, delete, select
 from sqlalchemy.orm import DeclarativeBase, Mapped, Session, mapped_column, sessionmaker
 
 # 기본값: api/dev.db (실행 위치와 무관하게 같은 파일)
@@ -57,6 +57,17 @@ class SessionRow(Base):
     token_hash: Mapped[str] = mapped_column(String(64), primary_key=True)
     user_id: Mapped[str] = mapped_column(ForeignKey("users.id"), index=True)
     expires_at: Mapped[int] = mapped_column(BigInteger)
+
+
+class Posting(Base):
+    """수집한 공개 공고. data는 웹의 Opportunity 구조(web/src/lib/types.ts)와 같다."""
+
+    __tablename__ = "postings"
+    id: Mapped[str] = mapped_column(String(40), primary_key=True)
+    raw_hash: Mapped[str] = mapped_column(String(64))
+    # 기회가 아닌 공지(결과 발표 등)나 마감일을 찾지 못한 공지는 data가 비어 있다
+    data: Mapped[dict[str, Any] | None] = mapped_column(JSON, nullable=True)
+    checked_at: Mapped[int] = mapped_column(BigInteger)
 
 
 Base.metadata.create_all(engine)
@@ -114,6 +125,12 @@ class StateBody(BaseModel):
 @app.get("/api/health")
 def health():
     return {"ok": True}
+
+
+@app.get("/api/opportunities")
+def opportunities(db: Session = Depends(get_db)):
+    rows = db.scalars(select(Posting).where(Posting.data.is_not(None))).all()
+    return [r.data for r in rows if r.data]
 
 
 @app.post("/api/auth/signup")
