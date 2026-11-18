@@ -7,8 +7,8 @@ export const PERSONAS: { id: string; label: string; desc: string; profile: Profi
   {
     id: "demo-minji",
     label: "민지",
-    desc: "인공지능학과 3학년 · AI 엔지니어",
-    profile: { ...base, pseudoId: "demo-minji", admissionYear: 2024, departmentId: "ai", grade: 3, jobId: "ai-engineer", skills: { "SK-PY-01": "verified", "SK-DA": "self" } },
+    desc: "인공지능학과 3학년 · AI 연구원",
+    profile: { ...base, pseudoId: "demo-minji", admissionYear: 2024, departmentId: "ai", grade: 3, jobId: "ai-research", interests: ["ai-data"], skills: { "SK-PY-01": "verified", "AI-ML": "self" } },
   },
   {
     id: "demo-jiwoo",

@@ -401,6 +401,834 @@
    "name": "대학원 진학"
   },
   {
+   "id": "MTC-PLAN",
+   "name": "콘텐츠 기획·스토리텔링"
+  },
+  {
+   "id": "MTC-VIDEO",
+   "name": "영상 촬영·연출"
+  },
+  {
+   "id": "MTC-XR",
+   "name": "실감미디어(XR) 프로그래밍"
+  },
+  {
+   "id": "MTC-GAME",
+   "name": "게임 기획·개발"
+  },
+  {
+   "id": "MTC-VFX",
+   "name": "영상 특수효과(VFX) 제작"
+  },
+  {
+   "id": "MTC-DATA",
+   "name": "콘텐츠 데이터 분석"
+  },
+  {
+   "id": "MTC-LICENSE",
+   "name": "문화예술 프로그램 기획·라이선싱"
+  },
+  {
+   "id": "MTC-C-BROAD",
+   "name": "방송통신기사"
+  },
+  {
+   "id": "AI-ML",
+   "name": "머신러닝·딥러닝"
+  },
+  {
+   "id": "AI-NLP",
+   "name": "자연어처리"
+  },
+  {
+   "id": "AI-CV",
+   "name": "컴퓨터비전·디지털영상처리"
+  },
+  {
+   "id": "AI-SPEECH",
+   "name": "음성인식·합성"
+  },
+  {
+   "id": "AI-IR",
+   "name": "정보검색"
+  },
+  {
+   "id": "AI-GNN",
+   "name": "그래프마이닝·그래프신경망"
+  },
+  {
+   "id": "AI-CAP",
+   "name": "인공지능 캡스톤디자인"
+  },
+  {
+   "id": "AI-FIELD",
+   "name": "인공지능 현장실습"
+  },
+  {
+   "id": "AI-WRITE",
+   "name": "기술적 글쓰기"
+  },
+  {
+   "id": "DS-VIZ",
+   "name": "데이터 수집·분석·시각화"
+  },
+  {
+   "id": "DS-MULTI",
+   "name": "다변량 데이터 분석"
+  },
+  {
+   "id": "DS-DIST",
+   "name": "분산컴퓨팅"
+  },
+  {
+   "id": "DS-MINING",
+   "name": "데이터마이닝"
+  },
+  {
+   "id": "DS-ML",
+   "name": "머신러닝·딥러닝"
+  },
+  {
+   "id": "DS-CAP",
+   "name": "데이터사이언스 캡스톤디자인"
+  },
+  {
+   "id": "DS-DB",
+   "name": "데이터베이스"
+  },
+  {
+   "id": "DS-C-SURVEY",
+   "name": "사회조사분석사"
+  },
+  {
+   "id": "DS-C-INFO",
+   "name": "정보처리기사"
+  },
+  {
+   "id": "CS-DS",
+   "name": "자료구조·알고리즘 설계"
+  },
+  {
+   "id": "CS-OS",
+   "name": "운영체제·컴퓨터구조"
+  },
+  {
+   "id": "CS-NET",
+   "name": "컴퓨터 네트워크"
+  },
+  {
+   "id": "CS-SEC",
+   "name": "네트워크·시스템 보안"
+  },
+  {
+   "id": "CS-DB",
+   "name": "데이터베이스 설계"
+  },
+  {
+   "id": "CS-SE",
+   "name": "소프트웨어 공학"
+  },
+  {
+   "id": "CS-EMB",
+   "name": "임베디드·모바일"
+  },
+  {
+   "id": "CS-IS",
+   "name": "정보시스템 분석·설계"
+  },
+  {
+   "id": "CS-C-LINUX",
+   "name": "리눅스마스터"
+  },
+  {
+   "id": "CS-C-NET",
+   "name": "네트워크관리사"
+  },
+  {
+   "id": "KOR-TEXT",
+   "name": "텍스트 분석·작성"
+  },
+  {
+   "id": "KOR-EDIT",
+   "name": "교정·출판 편집"
+  },
+  {
+   "id": "KOR-CREATE",
+   "name": "창작(시·소설·실용)"
+  },
+  {
+   "id": "KOR-TEACH",
+   "name": "독서·작문 지도"
+  },
+  {
+   "id": "KOR-FEST",
+   "name": "학과 학술제·학술답사"
+  },
+  {
+   "id": "KOR-CONTEST",
+   "name": "응용작품대회·문예 공모"
+  },
+  {
+   "id": "KOR-C-TEACH",
+   "name": "중등 정교사 2급(국어)"
+  },
+  {
+   "id": "PHI-LOGIC",
+   "name": "논리적 분석과 응용"
+  },
+  {
+   "id": "PHI-READ",
+   "name": "철학 문헌 읽기·토론"
+  },
+  {
+   "id": "PHI-ETHIC",
+   "name": "현대사회와 윤리 문제"
+  },
+  {
+   "id": "PHI-EDU",
+   "name": "철학교과교육"
+  },
+  {
+   "id": "PHI-C-TEACH",
+   "name": "중등 정교사 2급(철학)"
+  },
+  {
+   "id": "ENG-ESSAY",
+   "name": "영어 에세이 쓰기"
+  },
+  {
+   "id": "ENG-PRES",
+   "name": "영어 발표"
+  },
+  {
+   "id": "ENG-TRANS",
+   "name": "번역의 원리와 응용"
+  },
+  {
+   "id": "ENG-LIT",
+   "name": "영미문학·스토리텔링"
+  },
+  {
+   "id": "ENG-EDU",
+   "name": "영어교과교육론·지도법"
+  },
+  {
+   "id": "ENG-C-TEACH",
+   "name": "중등 정교사(영어, 교직 이수)"
+  },
+  {
+   "id": "ENG-C-TRADE",
+   "name": "무역영어"
+  },
+  {
+   "id": "CHN-TALK",
+   "name": "중국어 회화·프레젠테이션"
+  },
+  {
+   "id": "CHN-BIZ",
+   "name": "통상중국어"
+  },
+  {
+   "id": "CHN-TRANS",
+   "name": "AI 활용 중한번역 연습"
+  },
+  {
+   "id": "CHN-CULTURE",
+   "name": "중국 지역문화"
+  },
+  {
+   "id": "CHN-C-BCT",
+   "name": "BCT"
+  },
+  {
+   "id": "CHN-C-TSC",
+   "name": "TSC"
+  },
+  {
+   "id": "CHN-C-TCT",
+   "name": "TCT(번역능력인정시험)"
+  },
+  {
+   "id": "JPN-TALK",
+   "name": "일본어 회화·작문·경어"
+  },
+  {
+   "id": "JPN-TRANS",
+   "name": "일한 번역"
+  },
+  {
+   "id": "JPN-NEWS",
+   "name": "시사 일본어 토론"
+  },
+  {
+   "id": "JPN-SOC",
+   "name": "일본 사회·문화 이해"
+  },
+  {
+   "id": "KLC-TEACH",
+   "name": "한국어 교수법(말하기·듣기·읽기·쓰기 교육)"
+  },
+  {
+   "id": "KLC-MATERIAL",
+   "name": "한국어 교재·교육 콘텐츠 제작"
+  },
+  {
+   "id": "KLC-TEST",
+   "name": "한국어능력평가"
+  },
+  {
+   "id": "KLC-PRACT",
+   "name": "한국어 교실수업의 실제"
+  },
+  {
+   "id": "KLC-CONTENT",
+   "name": "한국언어문화콘텐츠 설계"
+  },
+  {
+   "id": "KLC-C-TEACH",
+   "name": "한국어교원 2급"
+  },
+  {
+   "id": "SOC-SURVEY",
+   "name": "사회조사·통계 분석"
+  },
+  {
+   "id": "SOC-POLICY",
+   "name": "공공사회정책"
+  },
+  {
+   "id": "SOC-CONFLICT",
+   "name": "사회갈등·사회운동 연구"
+  },
+  {
+   "id": "SOC-CORP",
+   "name": "기업과 사회(경영학 연계)"
+  },
+  {
+   "id": "SOC-C-SURVEY",
+   "name": "사회조사분석사"
+  },
+  {
+   "id": "CHD-DEV",
+   "name": "영유아 발달·교수방법"
+  },
+  {
+   "id": "CHD-PLAY",
+   "name": "놀이지도"
+  },
+  {
+   "id": "CHD-OBS",
+   "name": "아동관찰 및 행동연구"
+  },
+  {
+   "id": "CHD-PRACT",
+   "name": "보육실습 6주 240시간"
+  },
+  {
+   "id": "CHD-PARENT",
+   "name": "부모교육·아동상담"
+  },
+  {
+   "id": "CHD-C-CARE",
+   "name": "보육교사 2급"
+  },
+  {
+   "id": "CHD-C-PLAY",
+   "name": "놀이심리재활사"
+  },
+  {
+   "id": "CHD-C-KINDER",
+   "name": "유치원 정교사(교직 이수)"
+  },
+  {
+   "id": "INT-AREA",
+   "name": "지역연구(미국·중국·일본·유럽·동남아)"
+  },
+  {
+   "id": "INT-TRADE",
+   "name": "통상실무개론"
+  },
+  {
+   "id": "INT-DEV",
+   "name": "국제개발협력"
+  },
+  {
+   "id": "INT-DIPLO",
+   "name": "외교정책 분석"
+  },
+  {
+   "id": "INT-METHOD",
+   "name": "국제학 방법론"
+  },
+  {
+   "id": "LAW-CIVIL",
+   "name": "민사법(민법총칙·채권·물권)"
+  },
+  {
+   "id": "LAW-CRIM",
+   "name": "형사법(형법총론·각론)"
+  },
+  {
+   "id": "LAW-CONST",
+   "name": "헌법"
+  },
+  {
+   "id": "LAW-ADMIN",
+   "name": "행정법"
+  },
+  {
+   "id": "LAW-COMM",
+   "name": "상법·회사법"
+  },
+  {
+   "id": "LAW-LABOR",
+   "name": "노동법"
+  },
+  {
+   "id": "LAW-FEST",
+   "name": "학술제·학회 활동"
+  },
+  {
+   "id": "LAW-C-LABOR",
+   "name": "공인노무사"
+  },
+  {
+   "id": "ECO-MICRO",
+   "name": "미시·거시경제 분석"
+  },
+  {
+   "id": "ECO-METRIC",
+   "name": "계량 분석"
+  },
+  {
+   "id": "ECO-FIN",
+   "name": "금융·화폐 경제"
+  },
+  {
+   "id": "ECO-C-FP",
+   "name": "자산관리사(FP)"
+  },
+  {
+   "id": "ECO-C-CREDIT",
+   "name": "신용분석사"
+  },
+  {
+   "id": "PA-POLICY",
+   "name": "정책 분석·평가"
+  },
+  {
+   "id": "PA-MANAGE",
+   "name": "공공 관리·조직"
+  },
+  {
+   "id": "PA-C-ADMIN",
+   "name": "행정사"
+  },
+  {
+   "id": "PA-C-LABOR",
+   "name": "공인노무사"
+  },
+  {
+   "id": "BIZ-MKT",
+   "name": "마케팅·시장조사·마케팅데이터분석"
+  },
+  {
+   "id": "BIZ-FIN",
+   "name": "재무관리·투자론"
+  },
+  {
+   "id": "BIZ-HR",
+   "name": "인적자원관리·조직행위론"
+  },
+  {
+   "id": "BIZ-OPS",
+   "name": "생산운영·SCM"
+  },
+  {
+   "id": "BIZ-STRATEGY",
+   "name": "경영전략·국제경영"
+  },
+  {
+   "id": "BIZ-FIELD",
+   "name": "경영학 현장실습"
+  },
+  {
+   "id": "BIZ-CAP",
+   "name": "경영학 캡스톤디자인"
+  },
+  {
+   "id": "BIZ-C-CONSULT",
+   "name": "경영지도사"
+  },
+  {
+   "id": "BIZ-C-LOGIS",
+   "name": "물류관리사"
+  },
+  {
+   "id": "BIZ-C-SURVEY",
+   "name": "사회조사분석사"
+  },
+  {
+   "id": "GB-FIN",
+   "name": "다국적 기업 재무전략·M&A와 가치평가"
+  },
+  {
+   "id": "GB-SCM",
+   "name": "글로벌 공급망 전략"
+  },
+  {
+   "id": "GB-ESG",
+   "name": "다국적 기업과 ESG 경영"
+  },
+  {
+   "id": "GB-MKT",
+   "name": "글로벌 마케팅·소비자행동"
+  },
+  {
+   "id": "GB-STRATEGY",
+   "name": "국제경영·글로벌 경영전략"
+  },
+  {
+   "id": "CHE-ORG",
+   "name": "유기화학·유기합성 실험"
+  },
+  {
+   "id": "CHE-ANAL",
+   "name": "분석화학·기기분석"
+  },
+  {
+   "id": "CHE-PHYS",
+   "name": "물리화학·전기화학"
+  },
+  {
+   "id": "CHE-INORG",
+   "name": "무기화학·나노재료화학"
+  },
+  {
+   "id": "CHE-MATERIAL",
+   "name": "소재화학(유기·전자재료)"
+  },
+  {
+   "id": "CHE-RESEARCH",
+   "name": "소재화학연구(심화연구)"
+  },
+  {
+   "id": "CHE-EDU",
+   "name": "화학교과교육론"
+  },
+  {
+   "id": "CHE-C-CHE",
+   "name": "화공기사"
+  },
+  {
+   "id": "MAT-ANAL",
+   "name": "해석학·대수학"
+  },
+  {
+   "id": "MAT-STAT",
+   "name": "확률론·수리통계학·자료분석"
+  },
+  {
+   "id": "MAT-FIN",
+   "name": "금융수학·전산금융·위험관리론"
+  },
+  {
+   "id": "MAT-ML",
+   "name": "기계학습의 수학적 이론·딥러닝"
+  },
+  {
+   "id": "MAT-PROG",
+   "name": "수학프로그래밍·계산수학"
+  },
+  {
+   "id": "MAT-C-ACTUARY",
+   "name": "보험계리사"
+  },
+  {
+   "id": "MAT-C-SURVEY",
+   "name": "사회조사분석사"
+  },
+  {
+   "id": "PHY-LAB",
+   "name": "현대·고급물리학실험"
+  },
+  {
+   "id": "PHY-COMP",
+   "name": "전산물리와 딥러닝"
+  },
+  {
+   "id": "PHY-SEMI",
+   "name": "반도체·고체물리학"
+  },
+  {
+   "id": "PHY-QUANT",
+   "name": "양자역학·전자기학"
+  },
+  {
+   "id": "PHY-SIM",
+   "name": "복잡계 시뮬레이션 나노디그리"
+  },
+  {
+   "id": "SPD-DRAW",
+   "name": "제도·표현기법"
+  },
+  {
+   "id": "SPD-CAD",
+   "name": "CAD(Computer Aided Design)"
+  },
+  {
+   "id": "SPD-HOUSE",
+   "name": "주택설계"
+  },
+  {
+   "id": "SPD-INTERIOR",
+   "name": "실내디자인 프로젝트"
+  },
+  {
+   "id": "SPD-VMD",
+   "name": "VMD(비주얼머천다이징)·실내 코디네이션"
+  },
+  {
+   "id": "SPD-FURN",
+   "name": "가구디자인 종합설계"
+  },
+  {
+   "id": "SPD-PORT",
+   "name": "포트폴리오 디자인"
+  },
+  {
+   "id": "SPD-CONSUMER",
+   "name": "소비자학 캡스톤디자인(소비자조사·상품기획)"
+  },
+  {
+   "id": "SPD-C-INTERIOR",
+   "name": "실내건축기사"
+  },
+  {
+   "id": "SPD-C-COLOR",
+   "name": "컬러리스트기사"
+  },
+  {
+   "id": "FN-PROCESS",
+   "name": "식품가공학·식품화학 실험"
+  },
+  {
+   "id": "FN-CLINIC",
+   "name": "임상영양학·식사요법"
+  },
+  {
+   "id": "FN-ASSESS",
+   "name": "영양판정·영양교육 및 상담"
+  },
+  {
+   "id": "FN-MEAL",
+   "name": "단체급식관리·급식경영학"
+  },
+  {
+   "id": "FN-FIELD",
+   "name": "영양사 현장실습"
+  },
+  {
+   "id": "FN-MKT",
+   "name": "외식마케팅"
+  },
+  {
+   "id": "FN-C-TEACH",
+   "name": "영양교사(교직 이수)"
+  },
+  {
+   "id": "FN-C-SANIT",
+   "name": "위생사"
+  },
+  {
+   "id": "BT-RED",
+   "name": "RED Bio 마이크로디그리(바이오의약품·면역학)"
+  },
+  {
+   "id": "BT-GREEN",
+   "name": "GREEN Bio 마이크로디그리(산업미생물·발효공학)"
+  },
+  {
+   "id": "BT-WHITE",
+   "name": "WHITE Bio 마이크로디그리(유전공학·생물공정)"
+  },
+  {
+   "id": "BT-EXP",
+   "name": "Bio Experiment Expert(BT 실험)"
+  },
+  {
+   "id": "BT-RESEARCH",
+   "name": "심화연구실습"
+  },
+  {
+   "id": "BT-C-BIO",
+   "name": "생물공학기사"
+  },
+  {
+   "id": "BT-C-FOOD",
+   "name": "식품기사"
+  },
+  {
+   "id": "BMC-PHARM",
+   "name": "제약공정 마이크로디그리"
+  },
+  {
+   "id": "BMC-BIO",
+   "name": "첨단바이오의약품 마이크로디그리"
+  },
+  {
+   "id": "BMC-COSME",
+   "name": "화장품소재 마이크로디그리"
+  },
+  {
+   "id": "BMC-SEMI",
+   "name": "반도체 공정·BioMEMS 마이크로디그리"
+  },
+  {
+   "id": "BMC-REACT",
+   "name": "화공 반응 공정 마이크로디그리"
+  },
+  {
+   "id": "BMC-DIAG",
+   "name": "분자질병진단 마이크로디그리"
+  },
+  {
+   "id": "BMC-C-CHE",
+   "name": "화공기사"
+  },
+  {
+   "id": "BMC-C-ANAL",
+   "name": "화학분석기사"
+  },
+  {
+   "id": "BMC-C-HAZ",
+   "name": "위험물산업기사"
+  },
+  {
+   "id": "ABE-SIGNAL",
+   "name": "생체신호 처리"
+  },
+  {
+   "id": "ABE-IMAGE",
+   "name": "의료영상·생체디지털영상처리"
+  },
+  {
+   "id": "ABE-MEASURE",
+   "name": "의용계측·의료센서"
+  },
+  {
+   "id": "ABE-ML",
+   "name": "헬스케어 머신러닝·딥러닝"
+  },
+  {
+   "id": "ABE-LAB",
+   "name": "ABME 경험랩"
+  },
+  {
+   "id": "ABE-CAP",
+   "name": "ABME 캡스톤디자인"
+  },
+  {
+   "id": "ABE-C-BME",
+   "name": "의공기사"
+  },
+  {
+   "id": "MBS-DIAG",
+   "name": "의학분자진단학"
+  },
+  {
+   "id": "MBS-OMICS",
+   "name": "유전체학·전사체학"
+  },
+  {
+   "id": "MBS-STEM",
+   "name": "줄기세포연구 종합설계"
+  },
+  {
+   "id": "MBS-DRUG",
+   "name": "분자모델링 기반 신약개발"
+  },
+  {
+   "id": "MBS-LAB",
+   "name": "의생명과학실험"
+  },
+  {
+   "id": "MBS-C-BIO",
+   "name": "생물공학기사"
+  },
+  {
+   "id": "BSW-SIGNAL",
+   "name": "생체신호·의료영상 처리"
+  },
+  {
+   "id": "BSW-ML",
+   "name": "헬스케어 머신러닝·딥러닝·생성형 AI"
+  },
+  {
+   "id": "BSW-DATA",
+   "name": "의료 빅데이터 분석"
+  },
+  {
+   "id": "BSW-BIOINFO",
+   "name": "AI 바이오인포매틱스"
+  },
+  {
+   "id": "BSW-CAP",
+   "name": "산학·임상 의료AI 종합설계"
+  },
+  {
+   "id": "BSW-FIELD",
+   "name": "BMSW 현장실습"
+  },
+  {
+   "id": "BSW-ETHIC",
+   "name": "의료 AI 윤리"
+  },
+  {
+   "id": "MUS-MAJOR",
+   "name": "전공 실기(성악·관현악·피아노·작곡)"
+  },
+  {
+   "id": "MUS-EAR",
+   "name": "시창·청음·화성"
+  },
+  {
+   "id": "MUS-ENSEMBLE",
+   "name": "합창·합주"
+  },
+  {
+   "id": "MUS-STAGE",
+   "name": "연주(무대 발표)"
+  },
+  {
+   "id": "VOC-MAJOR",
+   "name": "성악 실기·딕션"
+  },
+  {
+   "id": "VOC-OPERA",
+   "name": "오페라·합창 무대"
+  },
+  {
+   "id": "PHM-ANAL",
+   "name": "약품분석·약물학·제제학"
+  },
+  {
+   "id": "PHM-CLINIC",
+   "name": "임상약학 실무"
+  },
+  {
+   "id": "PHM-INDUSTRY",
+   "name": "산업약학 실무"
+  },
+  {
+   "id": "PHM-PRACT",
+   "name": "실무실습(기초·필수·심화)"
+  },
+  {
+   "id": "PHM-C-LICENSE",
+   "name": "약사 면허(국가시험)"
+  },
+  {
    "id": "SK-TOEIC",
    "name": "TOEIC"
   },

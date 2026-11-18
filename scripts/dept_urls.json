@@ -1,0 +1,774 @@
+{
+ "의과대학": {
+  "site": "https://medicine.catholic.ac.kr/",
+  "pages": {
+   "intro": {
+    "url": "https://medicine.catholic.ac.kr/medicine/about/greeting.do"
+   }
+  }
+ },
+ "간호대학": {
+  "site": "https://nursing.catholic.ac.kr/nursing/index.do",
+  "pages": {
+   "intro": {
+    "url": "https://nursing.catholic.ac.kr/nursing/about/greeting.do"
+   }
+  }
+ },
+ "경영학과": {
+  "site": "https://business.catholic.ac.kr/",
+  "pages": {
+   "intro": {
+    "url": "https://business.catholic.ac.kr:443/business/info/introduction.do"
+   },
+   "career": {
+    "url": "https://business.catholic.ac.kr:443/business/info/career.do"
+   },
+   "curriculum": {
+    "url": "https://business.catholic.ac.kr:443/business/course/curriculum.do"
+   },
+   "roadmap": {
+    "url": "https://business.catholic.ac.kr:443/business/course/roadmap.do"
+   }
+  }
+ },
+ "경제학과": {
+  "site": "https://economics.catholic.ac.kr/",
+  "pages": {
+   "intro": {
+    "url": "https://economics.catholic.ac.kr:443/economics/info/introduction.do"
+   },
+   "career": {
+    "url": "https://economics.catholic.ac.kr:443/economics/info/career.do"
+   },
+   "roadmap": {
+    "url": "https://economics.catholic.ac.kr:443/economics/info/career.do"
+   },
+   "curriculum": {
+    "url": "https://economics.catholic.ac.kr:443/economics/course/curriculum.do"
+   }
+  }
+ },
+ "공간디자인ㆍ소비자학과": {
+  "site": "https://design.catholic.ac.kr/",
+  "pages": {
+   "intro": {
+    "url": "https://design.catholic.ac.kr:443/design/info/introduction.do"
+   },
+   "career": {
+    "url": "https://design.catholic.ac.kr:443/design/info/career.do"
+   },
+   "curriculum": {
+    "url": "https://design.catholic.ac.kr:443/design/course/curriculum.do"
+   },
+   "roadmap": {
+    "url": "https://design.catholic.ac.kr:443/design/course/major-roadmap.do"
+   }
+  }
+ },
+ "국사학과": {
+  "site": "https://koreanhistory.catholic.ac.kr/",
+  "pages": {
+   "intro": {
+    "url": "https://koreanhistory.catholic.ac.kr:443/koreanhistory/info/department-introduction.do"
+   },
+   "career": {
+    "url": "https://koreanhistory.catholic.ac.kr:443/koreanhistory/info/career.do"
+   },
+   "curriculum": {
+    "url": "https://koreanhistory.catholic.ac.kr:443/koreanhistory/course/curriculum.do"
+   },
+   "roadmap": {
+    "url": "https://koreanhistory.catholic.ac.kr:443/koreanhistory/course/roadmap.do"
+   }
+  }
+ },
+ "국어국문학과": {
+  "site": "https://korean.catholic.ac.kr/",
+  "pages": {
+   "intro": {
+    "url": "https://korean.catholic.ac.kr:443/korean/info/department-introduction.do"
+   },
+   "career": {
+    "url": "https://korean.catholic.ac.kr:443/korean/info/career.do"
+   },
+   "curriculum": {
+    "url": "https://korean.catholic.ac.kr:443/korean/course/curriculum.do"
+   },
+   "roadmap": {
+    "url": "https://korean.catholic.ac.kr:443/korean/course/roadmap.do"
+   }
+  }
+ },
+ "국제학부": {
+  "site": "https://is.catholic.ac.kr/",
+  "pages": {
+   "intro": {
+    "url": "https://is.catholic.ac.kr:443/is/info/introduction.do"
+   },
+   "career": {
+    "url": "https://is.catholic.ac.kr:443/is/info/career.do"
+   },
+   "curriculum": {
+    "url": "https://is.catholic.ac.kr:443/is/course/curriculum.do"
+   },
+   "roadmap": {
+    "url": "https://is.catholic.ac.kr:443/is/course/roadmap.do"
+   }
+  }
+ },
+ "데이터사이언스학과": {
+  "site": "https://datascience.catholic.ac.kr/",
+  "pages": {
+   "intro": {
+    "url": "https://datascience.catholic.ac.kr:443/datascience/info/introduction.do"
+   },
+   "career": {
+    "url": "https://datascience.catholic.ac.kr:443/datascience/info/career.do"
+   },
+   "curriculum": {
+    "url": "https://datascience.catholic.ac.kr:443/datascience/course/curriculum.do"
+   },
+   "roadmap": {
+    "url": "https://datascience.catholic.ac.kr:443/datascience/course/roadmap.do"
+   }
+  }
+ },
+ "물리학과": {
+  "site": "https://physics.catholic.ac.kr/",
+  "pages": {
+   "intro": {
+    "url": "https://physics.catholic.ac.kr:443/physics/info/introduction.do"
+   },
+   "career": {
+    "url": "https://physics.catholic.ac.kr:443/physics/info/career.do"
+   },
+   "curriculum": {
+    "url": "https://physics.catholic.ac.kr:443/physics/course/curriculum.do"
+   },
+   "roadmap": {
+    "url": "https://physics.catholic.ac.kr:443/physics/course/roadmap.do"
+   }
+  }
+ },
+ "미디어기술콘텐츠학과": {
+  "site": "https://mtc.catholic.ac.kr/",
+  "pages": {
+   "intro": {
+    "url": "https://mtc.catholic.ac.kr:443/mtc/info/introduction.do"
+   },
+   "career": {
+    "url": "https://mtc.catholic.ac.kr:443/mtc/info/alumni001.do"
+   },
+   "roadmap": {
+    "url": "https://mtc.catholic.ac.kr:443/mtc/info/alumni001.do"
+   },
+   "curriculum": {
+    "url": "https://mtc.catholic.ac.kr:443/mtc/course/curriculum.do"
+   }
+  }
+ },
+ "바이오메디컬소프트웨어학과": {
+  "site": "https://bmsw.catholic.ac.kr/",
+  "pages": {
+   "intro": {
+    "url": "https://bmsw.catholic.ac.kr:443/bmsw/info/introduction.do"
+   },
+   "career": {
+    "url": "https://bmsw.catholic.ac.kr:443/bmsw/info/career.do"
+   },
+   "curriculum": {
+    "url": "https://bmsw.catholic.ac.kr:443/bmsw/course/curriculum.do"
+   },
+   "roadmap": {
+    "url": "https://bmsw.catholic.ac.kr:443/bmsw/course/roadmap.do"
+   }
+  }
+ },
+ "바이오메디컬화학공학과": {
+  "site": "https://bmce.catholic.ac.kr/",
+  "pages": {
+   "intro": {
+    "url": "https://bmce.catholic.ac.kr:443/bmce/info/introduction.do"
+   },
+   "career": {
+    "url": "https://bmce.catholic.ac.kr:443/bmce/info/career.do"
+   },
+   "curriculum": {
+    "url": "https://bmce.catholic.ac.kr:443/bmce/course/curriculum.do"
+   },
+   "roadmap": {
+    "url": "https://bmce.catholic.ac.kr:443/bmce/course/roadmap.do"
+   }
+  }
+ },
+ "법학과": {
+  "site": "https://law.catholic.ac.kr/",
+  "pages": {
+   "intro": {
+    "url": "https://law.catholic.ac.kr:443/law/info/introduction.do"
+   },
+   "career": {
+    "url": "https://law.catholic.ac.kr:443/law/info/career.do"
+   },
+   "curriculum": {
+    "url": "https://law.catholic.ac.kr:443/law/course/curriculum.do"
+   },
+   "roadmap": {
+    "url": "https://law.catholic.ac.kr:443/law/course/roadmap.do"
+   }
+  }
+ },
+ "사회복지학과": {
+  "site": "https://socialwelfare.catholic.ac.kr/",
+  "pages": {
+   "intro": {
+    "url": "https://socialwelfare.catholic.ac.kr:443/socialwelfare/info/introduction.do"
+   },
+   "career": {
+    "url": "https://socialwelfare.catholic.ac.kr:443/socialwelfare/info/career001.do"
+   },
+   "curriculum": {
+    "url": "https://socialwelfare.catholic.ac.kr:443/socialwelfare/course/curriculum.do"
+   },
+   "roadmap": {
+    "url": "https://socialwelfare.catholic.ac.kr:443/socialwelfare/course/roadmap.do"
+   }
+  }
+ },
+ "사회학과": {
+  "site": "https://sociology.catholic.ac.kr/",
+  "pages": {
+   "intro": {
+    "url": "https://sociology.catholic.ac.kr:443/sociology/info/introduction.do"
+   },
+   "career": {
+    "url": "https://sociology.catholic.ac.kr:443/sociology/info/roadmap.do"
+   },
+   "curriculum": {
+    "url": "https://sociology.catholic.ac.kr:443/sociology/course/curriculum.do"
+   },
+   "roadmap": {
+    "url": "https://sociology.catholic.ac.kr:443/sociology/course/roadmap.do"
+   }
+  }
+ },
+ "생명공학과": {
+  "site": "https://biotech.catholic.ac.kr/",
+  "pages": {
+   "intro": {
+    "url": "https://biotech.catholic.ac.kr:443/biotech/info/introduction.do"
+   },
+   "career": {
+    "url": "https://biotech.catholic.ac.kr:443/biotech/info/career.do"
+   },
+   "curriculum": {
+    "url": "https://biotech.catholic.ac.kr:443/biotech/course/curriculum.do"
+   },
+   "roadmap": {
+    "url": "https://biotech.catholic.ac.kr:443/biotech/course/roadmap.do"
+   }
+  }
+ },
+ "수학과": {
+  "site": "https://math.catholic.ac.kr/",
+  "pages": {
+   "intro": {
+    "url": "https://math.catholic.ac.kr:443/math/info/introduction.do"
+   },
+   "curriculum": {
+    "url": "https://math.catholic.ac.kr:443/math/course/curriculum.do"
+   },
+   "roadmap": {
+    "url": "https://math.catholic.ac.kr:443/math/course/roadmap.do"
+   },
+   "career": {
+    "url": "https://math.catholic.ac.kr:443/math/community/job.do"
+   }
+  }
+ },
+ "식품영양학과": {
+  "site": "https://fn.catholic.ac.kr/",
+  "pages": {
+   "intro": {
+    "url": "https://fn.catholic.ac.kr:443/fn/info/introduction.do"
+   },
+   "career": {
+    "url": "https://fn.catholic.ac.kr:443/fn/info/career.do"
+   },
+   "curriculum": {
+    "url": "https://fn.catholic.ac.kr:443/fn/course/curriculum.do"
+   },
+   "roadmap": {
+    "url": "https://fn.catholic.ac.kr:443/fn/course/roadmap.do"
+   }
+  }
+ },
+ "심리학과": {
+  "site": "https://psychology.catholic.ac.kr/",
+  "pages": {
+   "intro": {
+    "url": "https://psychology.catholic.ac.kr:443/psychology/info/introduction.do"
+   },
+   "career": {
+    "url": "https://psychology.catholic.ac.kr:443/psychology/info/career.do"
+   },
+   "qual": {
+    "url": "https://psychology.catholic.ac.kr:443/psychology/info/qualifications.do"
+   },
+   "curriculum": {
+    "url": "https://psychology.catholic.ac.kr:443/psychology/course/curriculum.do"
+   },
+   "roadmap": {
+    "url": "https://psychology.catholic.ac.kr:443/psychology/course/roadmap.do"
+   }
+  }
+ },
+ "아동학과": {
+  "site": "https://children.catholic.ac.kr/",
+  "pages": {
+   "intro": {
+    "url": "https://children.catholic.ac.kr:443/children/info/introduction.do"
+   },
+   "career": {
+    "url": "https://children.catholic.ac.kr:443/children/info/career.do"
+   },
+   "qual": {
+    "url": "https://children.catholic.ac.kr:443/children/info/licences.do"
+   },
+   "curriculum": {
+    "url": "https://children.catholic.ac.kr:443/children/course/curriculum.do"
+   },
+   "roadmap": {
+    "url": "https://children.catholic.ac.kr:443/children/course/roadmap.do"
+   }
+  }
+ },
+ "약학대학": {
+  "site": "https://pharmacy.catholic.ac.kr/",
+  "pages": {
+   "intro": {
+    "url": "https://pharmacy.catholic.ac.kr:443/pharmacy/info/introduction.do"
+   },
+   "career": {
+    "url": "https://pharmacy.catholic.ac.kr:443/pharmacy/info/career.do"
+   }
+  }
+ },
+ "에너지환경공학과": {
+  "site": "https://envi.catholic.ac.kr/",
+  "pages": {
+   "intro": {
+    "url": "https://envi.catholic.ac.kr:443/envi/info/introduction.do"
+   },
+   "career": {
+    "url": "https://envi.catholic.ac.kr:443/envi/info/career.do"
+   },
+   "qual": {
+    "url": "https://envi.catholic.ac.kr:443/envi/info/qualification.do"
+   },
+   "curriculum": {
+    "url": "https://envi.catholic.ac.kr:443/envi/course/curriculum.do"
+   },
+   "roadmap": {
+    "url": "https://envi.catholic.ac.kr:443/envi/course/roadmap.do"
+   }
+  }
+ },
+ "영어영문학부": {
+  "site": "https://english.catholic.ac.kr/",
+  "pages": {
+   "intro": {
+    "url": "https://english.catholic.ac.kr:443/english/intro/introduction.do"
+   },
+   "career": {
+    "url": "https://english.catholic.ac.kr:443/english/intro/career.do"
+   },
+   "curriculum": {
+    "url": "https://english.catholic.ac.kr:443/english/course/curriculum.do"
+   },
+   "roadmap": {
+    "url": "https://english.catholic.ac.kr:443/english/course/roadmap.do"
+   }
+  }
+ },
+ "융합전공학부": {
+  "site": "https://major-convergence.catholic.ac.kr/",
+  "pages": {}
+ },
+ "의류학과": {
+  "site": "https://clothing.catholic.ac.kr/",
+  "pages": {
+   "intro": {
+    "url": "https://clothing.catholic.ac.kr:443/clothing/info/introduction.do"
+   },
+   "career": {
+    "url": "https://clothing.catholic.ac.kr:443/clothing/info/career.do"
+   },
+   "qual": {
+    "url": "https://clothing.catholic.ac.kr:443/clothing/info/qualifications.do"
+   },
+   "curriculum": {
+    "url": "https://clothing.catholic.ac.kr:443/clothing/course/curriculum.do"
+   },
+   "roadmap": {
+    "url": "https://clothing.catholic.ac.kr:443/clothing/course/roadmap.do"
+   }
+  }
+ },
+ "의생명과학과": {
+  "site": "https://mbs.catholic.ac.kr/",
+  "pages": {
+   "intro": {
+    "url": "https://mbs.catholic.ac.kr:443/mbs/info/introduction.do"
+   },
+   "career": {
+    "url": "https://mbs.catholic.ac.kr:443/mbs/info/career.do"
+   },
+   "curriculum": {
+    "url": "https://mbs.catholic.ac.kr:443/mbs/course/curriculum.do"
+   },
+   "roadmap": {
+    "url": "https://mbs.catholic.ac.kr:443/mbs/course/roadmap.do"
+   }
+  }
+ },
+ "인공지능학과": {
+  "site": "https://ai.catholic.ac.kr/",
+  "pages": {
+   "intro": {
+    "url": "https://ai.catholic.ac.kr:443/ai/info/introduction.do"
+   },
+   "career": {
+    "url": "https://ai.catholic.ac.kr:443/ai/info/academic003.do"
+   },
+   "curriculum": {
+    "url": "https://ai.catholic.ac.kr:443/ai/course/curriculum.do"
+   },
+   "roadmap": {
+    "url": "https://ai.catholic.ac.kr:443/ai/course/roadmap.do"
+   }
+  }
+ },
+ "일어일본문화학과": {
+  "site": "https://japanese.catholic.ac.kr/",
+  "pages": {
+   "intro": {
+    "url": "https://japanese.catholic.ac.kr:443/japanese/info/introduction.do"
+   },
+   "career": {
+    "url": "https://japanese.catholic.ac.kr:443/japanese/info/career001.do"
+   },
+   "curriculum": {
+    "url": "https://japanese.catholic.ac.kr:443/japanese/course/curriculum.do"
+   },
+   "roadmap": {
+    "url": "https://japanese.catholic.ac.kr:443/japanese/course/roadmap.do"
+   }
+  }
+ },
+ "정보통신전자공학부": {
+  "site": "https://ice.catholic.ac.kr/",
+  "pages": {
+   "intro": {
+    "url": "https://ice.catholic.ac.kr:443/ice/info/introduction.do"
+   },
+   "career": {
+    "url": "https://ice.catholic.ac.kr:443/ice/info/career001.do"
+   },
+   "qual": {
+    "url": "https://ice.catholic.ac.kr:443/ice/info/license.do"
+   },
+   "curriculum": {
+    "url": "https://ice.catholic.ac.kr:443/ice/course/curriculum.do"
+   },
+   "roadmap": {
+    "url": "https://ice.catholic.ac.kr:443/ice/course/roadmap.do"
+   }
+  }
+ },
+ "중국언어문화학과": {
+  "site": "https://cn.catholic.ac.kr/",
+  "pages": {
+   "intro": {
+    "url": "https://cn.catholic.ac.kr:443/cn/info/introduction.do"
+   },
+   "career": {
+    "url": "https://cn.catholic.ac.kr:443/cn/info/career.do"
+   },
+   "curriculum": {
+    "url": "https://cn.catholic.ac.kr:443/cn/course/curriculum.do"
+   },
+   "roadmap": {
+    "url": "https://cn.catholic.ac.kr:443/cn/course/roadmap.do"
+   }
+  }
+ },
+ "철학과": {
+  "site": "https://philosophy.catholic.ac.kr/",
+  "pages": {
+   "intro": {
+    "url": "https://philosophy.catholic.ac.kr:443/philosophy/info/department-introduction.do"
+   },
+   "career": {
+    "url": "https://philosophy.catholic.ac.kr:443/philosophy/info/career.do"
+   },
+   "curriculum": {
+    "url": "https://philosophy.catholic.ac.kr:443/philosophy/course/curriculum.do"
+   },
+   "roadmap": {
+    "url": "https://philosophy.catholic.ac.kr:443/philosophy/course/roadmap.do"
+   }
+  }
+ },
+ "컴퓨터정보공학부": {
+  "site": "https://csie.catholic.ac.kr/",
+  "pages": {
+   "intro": {
+    "url": "https://csie.catholic.ac.kr:443/csie/info/introduction.do"
+   },
+   "career": {
+    "url": "https://csie.catholic.ac.kr:443/csie/info/career.do"
+   },
+   "curriculum": {
+    "url": "https://csie.catholic.ac.kr:443/csie/course/curriculum.do"
+   },
+   "roadmap": {
+    "url": "https://csie.catholic.ac.kr:443/csie/course/roadmap.do"
+   }
+  }
+ },
+ "프랑스어문화학과": {
+  "site": "https://french.catholic.ac.kr/",
+  "pages": {
+   "intro": {
+    "url": "https://french.catholic.ac.kr:443/french/info/introduction.do"
+   },
+   "curriculum": {
+    "url": "https://french.catholic.ac.kr:443/french/course/curriculum.do"
+   },
+   "roadmap": {
+    "url": "https://french.catholic.ac.kr:443/french/course/roadmap.do"
+   }
+  }
+ },
+ "한국어문화학과": {
+  "site": "https://klc.catholic.ac.kr/",
+  "pages": {
+   "intro": {
+    "url": "https://klc.catholic.ac.kr:443/klc/info/introduction.do"
+   },
+   "career": {
+    "url": "https://klc.catholic.ac.kr:443/klc/info/career.do"
+   },
+   "curriculum": {
+    "url": "https://klc.catholic.ac.kr:443/klc/course/curriculum.do"
+   },
+   "roadmap": {
+    "url": "https://klc.catholic.ac.kr:443/klc/course/roadmap.do"
+   }
+  }
+ },
+ "행정학과": {
+  "site": "https://pa.catholic.ac.kr/",
+  "pages": {
+   "intro": {
+    "url": "https://pa.catholic.ac.kr:443/pa/info/introduction.do"
+   },
+   "career": {
+    "url": "https://pa.catholic.ac.kr:443/pa/info/career001.do"
+   },
+   "roadmap": {
+    "url": "https://pa.catholic.ac.kr:443/pa/info/career001.do"
+   },
+   "curriculum": {
+    "url": "https://pa.catholic.ac.kr:443/pa/course/curriculum.do"
+   }
+  }
+ },
+ "화학과": {
+  "site": "https://chemistry.catholic.ac.kr/",
+  "pages": {
+   "intro": {
+    "url": "https://chemistry.catholic.ac.kr:443/chemistry/info/introduction.do"
+   },
+   "career": {
+    "url": "https://chemistry.catholic.ac.kr:443/chemistry/info/career.do"
+   },
+   "curriculum": {
+    "url": "https://chemistry.catholic.ac.kr:443/chemistry/course/curriculum.do"
+   },
+   "roadmap": {
+    "url": "https://chemistry.catholic.ac.kr:443/chemistry/course/roadmap.do"
+   }
+  }
+ },
+ "회계학과": {
+  "site": "https://accounting.catholic.ac.kr/",
+  "pages": {
+   "intro": {
+    "url": "https://accounting.catholic.ac.kr:443/accounting/info/introduction.do"
+   },
+   "career": {
+    "url": "https://accounting.catholic.ac.kr:443/accounting/info/roadmap.do"
+   },
+   "qual": {
+    "url": "https://accounting.catholic.ac.kr:443/accounting/info/qualification.do"
+   },
+   "curriculum": {
+    "url": "https://accounting.catholic.ac.kr:443/accounting/course/curriculum.do"
+   },
+   "roadmap": {
+    "url": "https://accounting.catholic.ac.kr:443/accounting/course/roadmap.do"
+   }
+  }
+ },
+ "AI의공학과": {
+  "site": "https://aibme.catholic.ac.kr/",
+  "pages": {
+   "intro": {
+    "url": "https://aibme.catholic.ac.kr:443/aibme/info/introduction.do"
+   },
+   "career": {
+    "url": "https://aibme.catholic.ac.kr:443/aibme/info/career.do"
+   },
+   "curriculum": {
+    "url": "https://aibme.catholic.ac.kr:443/aibme/course/curriculum.do"
+   },
+   "roadmap": {
+    "url": "https://aibme.catholic.ac.kr:443/aibme/course/roadmap.do"
+   }
+  }
+ },
+ "패션디자인학과": {
+  "site": "https://clothing.catholic.ac.kr/clothing/graduate/academic001.do",
+  "pages": {
+   "intro": {
+    "url": "https://clothing.catholic.ac.kr/clothing/info/introduction.do"
+   },
+   "career": {
+    "url": "https://clothing.catholic.ac.kr/clothing/info/career.do"
+   }
+  }
+ },
+ "간호학과": {
+  "site": "https://nursing.catholic.ac.kr/",
+  "pages": {
+   "intro": {
+    "url": "https://nursing.catholic.ac.kr/nursing/about/greeting.do"
+   },
+   "curriculum": {
+    "url": "https://nursing.catholic.ac.kr/nursing/sutdent-life/curriculum.do"
+   },
+   "career": {
+    "url": "https://nursing.catholic.ac.kr/nursing/sutdent-life/career_counseling.do"
+   }
+  }
+ },
+ "학부대학": {
+  "site": "https://catholic-college.catholic.ac.kr/",
+  "pages": {
+   "intro": {
+    "url": "https://catholic-college.catholic.ac.kr:443/catholic_college/humanities-social-sciences/info.do"
+   }
+  }
+ },
+ "음악과": {
+  "site": "https://music.catholic.ac.kr/",
+  "pages": {
+   "intro": {
+    "url": "https://music.catholic.ac.kr:443/music/info/introduction.do"
+   },
+   "career": {
+    "url": "https://music.catholic.ac.kr:443/music/info/career.do"
+   },
+   "curriculum": {
+    "url": "https://music.catholic.ac.kr:443/music/course/curriculum.do"
+   },
+   "roadmap": {
+    "url": "https://music.catholic.ac.kr:443/music/course/roadmap.do"
+   }
+  }
+ },
+ "성악과": {
+  "site": "https://voice.catholic.ac.kr/",
+  "pages": {
+   "intro": {
+    "url": "https://voice.catholic.ac.kr:443/voice/info/introduction.do"
+   },
+   "career": {
+    "url": "https://voice.catholic.ac.kr:443/voice/info/career.do"
+   }
+  }
+ },
+ "약학과": {
+  "site": "https://pharmacy.catholic.ac.kr/",
+  "pages": {
+   "intro": {
+    "url": "https://pharmacy.catholic.ac.kr:443/pharmacy/info/introduction.do"
+   },
+   "career": {
+    "url": "https://pharmacy.catholic.ac.kr:443/pharmacy/info/career.do"
+   },
+   "curriculum": {
+    "url": "https://pharmacy.catholic.ac.kr:443/pharmacy/course/curriculum.do"
+   },
+   "roadmap": {
+    "url": "https://pharmacy.catholic.ac.kr:443/pharmacy/course/roadmap.do"
+   }
+  }
+ },
+ "특수교육과": {
+  "site": "https://sped.catholic.ac.kr/",
+  "pages": {
+   "career": {
+    "url": "https://sped.catholic.ac.kr:443/sped/info/career.do"
+   },
+   "qual": {
+    "url": "https://sped.catholic.ac.kr:443/sped/info/qualification.do"
+   },
+   "curriculum": {
+    "url": "https://sped.catholic.ac.kr:443/sped/course/curriculum.do"
+   },
+   "roadmap": {
+    "url": "https://sped.catholic.ac.kr:443/sped/course/roadmap.do"
+   }
+  }
+ },
+ "글로벌경영학과": {
+  "site": "https://globalbiz.catholic.ac.kr/",
+  "pages": {
+   "career": {
+    "url": "https://globalbiz.catholic.ac.kr:443/globalbiz/info/career.do"
+   },
+   "curriculum": {
+    "url": "https://globalbiz.catholic.ac.kr:443/globalbiz/course/curriculum.do"
+   },
+   "roadmap": {
+    "url": "https://globalbiz.catholic.ac.kr:443/globalbiz/course/roadmap.do"
+   }
+  }
+ },
+ "바이오로직스공학부": {
+  "site": "https://www.catholic.ac.kr/BLE/index.do",
+  "pages": {
+   "career": {
+    "url": "https://www.catholic.ac.kr/caa/index.do"
+   }
+  }
+ },
+ "자유전공학부": {
+  "site": "https://liberal.catholic.ac.kr/",
+  "pages": {
+   "career": {
+    "url": "https://liberal.catholic.ac.kr:443/liberal/info/career.do"
+   },
+   "curriculum": {
+    "url": "https://liberal.catholic.ac.kr:443/liberal/course/curriculum.do"
+   },
+   "roadmap": {
+    "url": "https://liberal.catholic.ac.kr:443/liberal/course/roadmap.do"
+   }
+  }
+ }
+}
