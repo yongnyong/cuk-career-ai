@@ -17,6 +17,15 @@ export const PERSONAS: { id: string; label: string; desc: string; profile: Profi
     profile: { ...base, pseudoId: "demo-jiwoo", admissionYear: 2024, departmentId: "psychology", grade: 3, jobId: "psy-counsel", interests: ["psy-org"], skills: { "PSY-STAT": "self", "PSY-INTERVIEW": "self" } },
   },
   {
+    id: "demo-yuna",
+    label: "유나",
+    desc: "미디어기술콘텐츠학과 3학년 · 영상 기획·연출",
+    profile: {
+      ...base, pseudoId: "demo-yuna", admissionYear: 2024, departmentId: "media-tech", grade: 3, jobId: "mtc-video", interests: ["mtc-startup"],
+      skills: { "MTC-PLAN": "self", "SK-VIDEO": "self" },
+    },
+  },
+  {
     id: "demo-haneul",
     label: "하늘",
     desc: "사회복지학과 2학년 · 사회적경제·소셜벤처",
