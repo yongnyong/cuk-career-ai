@@ -38,7 +38,7 @@ function Body() {
           <h1 className="mt-2 text-xl font-bold">{o.title}</h1>
           <p className="text-sm text-slate-500">
             {o.org}
-            {o.period && ` · 활동 ${o.period}`} · 마감 {fmt(v.deadline)}
+            {o.period && ` · 활동 ${o.period}`} · 마감 {o.deadlineStatus === "unknown" ? "원문 확인 필요" : fmt(v.deadline)}
           </p>
           <SourceLine opp={o} />
           <AiNotice className="mt-1" />

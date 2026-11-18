@@ -67,6 +67,14 @@ export interface Opportunity {
   jobs: string[]; // 연결 직무
   required: Condition[];
   preferred: string[]; // 우대 역량(skill id)
+  skillEvidence?: {
+    skill: string;
+    basis: "required" | "preferred";
+    quote: string;
+    src: string;
+    scope: "role" | "posting";
+    minimum?: string;
+  }[];
   documents: string[];
   applyUrl: string; // 공식 신청처
   period?: string; // 활동 기간
@@ -76,6 +84,7 @@ export interface Opportunity {
   versions: OppVersion[]; // 최신 버전이 마지막
   confidence: number; // AI 구조화 신뢰도 (0.8 미만이면 검수 대기)
   reviewed: boolean;
+  deadlineStatus?: "announced" | "date_only" | "unknown";
 }
 
 export type Verdict = "pass" | "fail" | "check";
@@ -87,6 +96,32 @@ export interface ConditionResult {
 }
 
 export type SkillState = "none" | "self" | "verified";
+
+export interface TreeSignal {
+  skillId: string;
+  basis: "required" | "preferred" | "school" | "activity";
+  status: "gap" | "unknown" | "matched";
+  minimum?: string;
+  reference: {
+    id: string;
+    title: string;
+    url: string;
+    historical: boolean;
+    version?: number;
+    sectionId?: string;
+    sourceKind?: string;
+    quote?: string;
+    scope?: "role" | "posting";
+  };
+}
+
+export interface RecommendedQuest {
+  skillId: string;
+  actionKind: "start" | "improve" | "verify";
+  reasonCode: "prerequisite" | "evidence" | "score_target" | "track";
+  signals: TreeSignal[];
+  targetSkill?: string;
+}
 
 export interface Profile {
   pseudoId: string; // 로그인 아이디(가명) — 이름·연락처·학번 전체는 받지 않는다

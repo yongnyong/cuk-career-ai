@@ -9,7 +9,8 @@ from fastapi import APIRouter, Depends, HTTPException, Request
 from pydantic import BaseModel, Field
 from sqlalchemy.orm import Session
 
-from .collect import gemini, scrub
+from .collect import scrub
+from .ai_provider import generate_json, provider_name
 
 router = APIRouter()
 
@@ -65,8 +66,9 @@ class ChatBody(BaseModel):
     question: str = Field(min_length=1, max_length=300)
 
 
-def answer(posting: dict, question: str, ask=gemini) -> dict:
+def answer(posting: dict, question: str, ask=None) -> dict:
     """공고(Opportunity)와 질문 → ChatAnswer. 모델 출력의 근거 번호를 실제 문단과 대조한다."""
+    ask = ask or generate_json
     version = posting["versions"][-1]
     ids = {s["id"] for s in posting["sections"]}
     out = ask(
@@ -91,6 +93,9 @@ def answer(posting: dict, question: str, ask=gemini) -> dict:
 def make_router(get_db, Posting):
     @router.post("/api/chat")
     def chat(body: ChatBody, request: Request, db: Session = Depends(get_db)):
+        if provider_name() == 'codex':
+            from .preparation import require_local_ai
+            require_local_ai(request)
         ip = (request.headers.get("x-forwarded-for") or (request.client.host if request.client else "")).split(",")[0].strip()
         if limited(ip):
             raise HTTPException(429, "질문이 너무 많아요. 1분 뒤에 다시 시도해 주세요.")

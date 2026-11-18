@@ -11,22 +11,78 @@ import { listProofs, type ProofMeta } from "@/lib/files";
 import { Legend, NodeBox, StatusWindow } from "@/components/quest-ui";
 import { AiNotice, DDay, TypeTag, VirtualTag } from "@/components/ui";
 import { useStore } from "@/lib/store";
-import { buildTree, dday, nextNode, recommend, type TreeNode } from "@/lib/engine";
+import { dday, recommend, type TreeNode } from "@/lib/engine";
+import type { RecommendedQuest } from "@/lib/types";
 import { formatScore, meetsTarget, scaleOf, skillById } from "@/lib/data/catalog";
 import { questProgress } from "@/lib/quest";
 
-type SkillNodeData = { node: TreeNode; isNew: boolean; now: Date; proof: boolean };
+type SkillNodeData = { node: TreeNode; isNew: boolean; now: Date; proof: boolean; recommended: boolean };
 
 function SkillNode({ data }: NodeProps<Node<SkillNodeData>>) {
   return (
     <>
       <Handle type="target" position={Position.Top} className="!border-0 !bg-edge" />
-      <NodeBox node={data.node} isNew={data.isNew} now={data.now} proof={data.proof} />
+      <NodeBox node={data.node} isNew={data.isNew} now={data.now} proof={data.proof} recommended={data.recommended} />
       <Handle type="source" position={Position.Bottom} className="!border-0 !bg-edge" />
     </>
   );
 }
 const nodeTypes = { skill: SkillNode };
+
+const ACTION_TEXT: Record<string, string> = {
+  review_record: "보유 기록과 시험·자격의 인정 조건을 비교해 보세요.",
+  review_source: "원문에서 인정되는 선택지와 유효기간을 확인해 보세요.",
+  practice_gap: "부족한 영역의 연습 문제를 풀고 틀린 유형을 기록해 보세요.",
+  diagnose: "예제나 모의 문항으로 현재 준비 수준을 점검해 보세요.",
+  first_exercise: "입문 예제를 하나 골라 직접 끝까지 해 보세요.",
+  outline: "작은 실습이나 프로젝트 주제를 하나 정하고 첫 결과물의 범위를 적어 보세요.",
+  review_scope: "공식 안내에서 시험 범위와 응시 조건을 확인해 보세요.",
+  review_activity: "활동 원문에서 모집 대상과 진행 내용을 확인해 보세요.",
+};
+const BASIS_LABEL = { required: "공고 필수", preferred: "공고 우대", school: "학과 진로표", activity: "학습 활동" };
+
+function QuestDetail({ node, quest, loadAction }: {
+  node: TreeNode; quest: RecommendedQuest; loadAction: (() => Promise<string | undefined>) | null;
+}) {
+  const [result, setResult] = useState<{ request: typeof loadAction; actionId?: string }>();
+  useEffect(() => {
+    if (!loadAction) return;
+    let current = true;
+    void loadAction().then((actionId) => {
+      if (current) setResult({ request: loadAction, actionId });
+    });
+    return () => { current = false; };
+  }, [loadAction]);
+  const source = quest.signals[0];
+  const reason = quest.reasonCode === "prerequisite"
+    ? `${skillById(quest.targetSkill!)?.name ?? "목표 역량"}을 준비하기 위한 선수 단계예요.`
+    : quest.reasonCode === "score_target"
+      ? `현재 기록이 학과 권장 기준(${formatScore(node.skill, node.target)})에 아직 못 미쳐요.`
+      : source?.minimum && quest.actionKind === "improve"
+        ? `현재 기록이 자료의 기준(${formatScore(node.skill, source.minimum)})에 아직 못 미쳐요.`
+        : source?.reference.scope === "posting" ? "여러 모집 부문의 공고에 나온 역량이에요. 목표 직무에 적용되는지 원문에서 확인해 보세요."
+          : source ? `${BASIS_LABEL[source.basis]} 자료에 이 역량이 나와요.` : "선택한 직무의 기본 준비 단계예요.";
+  const fallback = quest.actionKind === "verify" ? source?.basis === "activity" ? "review_activity" : "review_record"
+    : quest.actionKind === "improve" ? "practice_gap"
+    : node.kind === "어학" || node.kind === "자격증" ? "review_scope" : "first_exercise";
+  const actionId = result?.request === loadAction ? result?.actionId : undefined;
+  return (
+    <div className="mt-2 space-y-1 border-l-2 border-go pl-2 text-xs">
+      <p className="font-bold text-go">추천 퀘스트</p>
+      <p>{reason}</p>
+      {source?.reference.quote && <p className="text-ink/70">“{source.reference.quote}”</p>}
+      <p>{(actionId && Object.hasOwn(ACTION_TEXT, actionId) ? ACTION_TEXT[actionId] : undefined) ?? ACTION_TEXT[fallback]}</p>
+      {quest.signals.slice(0, 2).map(({ reference }) => (
+        <a key={reference.id} href={reference.url} target="_blank" rel="noreferrer" className="block break-words underline">
+          {reference.historical && "지난 공고 · "}
+          {reference.sourceKind === "platform_repost" && "재게시 · "}
+          {reference.title}
+          {reference.sectionId && ` ${reference.sectionId}`}
+        </a>
+      ))}
+    </div>
+  );
+}
 
 // 점수제(TOEIC 등)·등급제(OPIc, JLPT 등) 자격: 점수나 등급을 적으면 완료로 표시한다
 function ScoreField({ skill, value, target, onSave }: { skill: string; value?: string; target?: string; onSave: (v: string) => void }) {
@@ -70,11 +126,12 @@ function TreeView() {
   const s = useStore();
   const p = s.profile!;
   const now = s.nowDate;
-  const tree = useMemo(() => buildTree(p, s.opportunities, now), [p, s.opportunities, now]);
+  const { tree, recommendedQuest, treeProgress } = s.careerPath!;
   const recs = useMemo(() => recommend(s.opportunities, p, now), [s.opportunities, p, now]);
   const [sel, setSel] = useState<string | null>(null);
   const selNode = tree.find((n) => n.skill === sel);
-  const newSet = new Set(s.newOpps);
+  const newSet = useMemo(() => new Set(s.newOpps), [s.newOpps]);
+  const questSkill = recommendedQuest?.skillId;
   // 증빙 파일 목록(이 브라우저에만 저장)
   const [proofs, setProofs] = useState<Record<string, ProofMeta>>({});
   const loadProofs = useCallback(() => {
@@ -91,18 +148,16 @@ function TreeView() {
         id: n.skill,
         type: "skill",
         position: { x: row * 215, y: n.depth * 130 + 50 },
-        data: { node: n, isNew: n.opportunities.some((o) => newSet.has(o.id)), now, proof: !!proofs[n.skill] },
+        data: { node: n, isNew: n.opportunities.some((o) => newSet.has(o.id)), now, proof: !!proofs[n.skill], recommended: n.skill === questSkill },
       };
     });
     const edges: Edge[] = tree.flatMap((n) =>
       n.prereq.map((q) => ({ id: `${q}-${n.skill}`, source: q, target: n.skill, animated: n.state === "none" && !n.locked, style: { stroke: n.locked ? "#4a5078" : "#7c6cff", strokeWidth: 2 } })),
     );
     return { nodes, edges };
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [tree, s.newOpps, now, proofs]);
+  }, [tree, newSet, now, proofs, questSkill]);
 
   const newOpp = s.opportunities.find((o) => newSet.has(o.id) && tree.some((n) => n.opportunities.includes(o)));
-  const next = nextNode(p);
   const activeQuest = s.followed
     .map((id) => s.opportunities.find((o) => o.id === id)!)
     .filter((o) => o && dday(o, now) >= 0)
@@ -111,7 +166,7 @@ function TreeView() {
 
   return (
     <div className="space-y-4">
-      <StatusWindow profile={p}>
+      <StatusWindow profile={p} treeProgress={treeProgress}>
         {newOpp && (
           <Link
             href={`/opportunities/${newOpp.id}`}
@@ -144,12 +199,15 @@ function TreeView() {
           </div>
 
           {selNode && (
-            <div className="window absolute right-3 top-14 z-10 w-72 p-4">
+            <div className="window absolute right-3 top-14 z-10 max-h-[calc(100%_-_4.5rem)] w-72 overflow-y-auto p-4">
               <button className="absolute right-2 top-2 text-slate-400" onClick={() => setSel(null)} aria-label="닫기">
                 <X size={16} />
               </button>
               <p className="text-xs text-slate-500">{selNode.kind}</p>
               <h3 className="font-bold">{selNode.name}</h3>
+              {recommendedQuest && selNode.skill === questSkill && (
+                <QuestDetail key={selNode.skill} node={selNode} quest={recommendedQuest} loadAction={s.getQuestAction} />
+              )}
               {skillById(selNode.skill)?.officialUrl && (
                 <a href={skillById(selNode.skill)!.officialUrl} target="_blank" rel="noreferrer" className="text-xs underline">
                   공식 안내 확인
@@ -252,7 +310,7 @@ function TreeView() {
         <aside className="space-y-4 lg:col-start-2 lg:row-span-2 lg:row-start-1">
           <div className="card p-4">
             <h2 className="flex items-center gap-1.5 font-bold">
-              <Swords size={16} className="text-go" /> 오늘의 퀘스트
+              <Swords size={16} className="text-go" /> 퀘스트
             </h2>
             {activeQuest && qp ? (
               <Link href={`/opportunities/${activeQuest.id}`} className="mt-2 block rounded-md bg-paper p-3 text-sm hover:brightness-95">
@@ -270,9 +328,9 @@ function TreeView() {
             ) : (
               <p className="mt-2 text-sm text-slate-500">아래 기회 카드에서 &lsquo;지원 퀘스트 시작&rsquo;을 누르면 여기에 나타나요.</p>
             )}
-            {next && (
+            {questSkill && (
               <p className="mt-3 text-sm">
-                다음 노드: <b>{skillById(next.skill)?.name}</b>{" "}
+                추천 퀘스트 · <button type="button" className="font-bold hover:underline" onClick={() => setSel(questSkill)}>{skillById(questSkill)?.name}</button>{" "}
                 <span className="text-xs text-slate-500">(주 {p.weeklyHours}시간 기준)</span>
               </p>
             )}

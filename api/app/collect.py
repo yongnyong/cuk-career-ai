@@ -512,7 +512,7 @@ def map_jobs(items: list[dict]) -> dict[str, list[str]]:
 
 
 def run_work24() -> None:
-    from .main import Posting, SessionLocal
+    from .career_db import Posting, CareerSessionLocal as SessionLocal
 
     stats = {"seen": 0, "new": 0, "updated": 0, "errors": 0}
     fresh: list[tuple[str, dict]] = []
@@ -573,7 +573,7 @@ def save(db, Posting, pid: str, digest: str, data: dict | None, now: datetime, s
 
 
 def run_kstartup() -> None:
-    from .main import Posting, SessionLocal
+    from .career_db import Posting, CareerSessionLocal as SessionLocal
 
     stats = {"seen": 0, "new": 0, "updated": 0, "kept": 0, "detail": 0}
     robots = RobotFileParser("https://www.k-startup.go.kr/robots.txt")
@@ -607,7 +607,7 @@ def run_kstartup() -> None:
 
 
 def run() -> None:
-    from .main import Posting, SessionLocal
+    from .career_db import Posting, CareerSessionLocal as SessionLocal
 
     robots = RobotFileParser(BASE + "/robots.txt")
     robots.read()

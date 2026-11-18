@@ -3,11 +3,11 @@
 // - 서버 모드: 계정·세션은 API 서버가 관리하고(HttpOnly 쿠키), 내 데이터는 서버에 저장한다.
 // - 로컬 모드: API 서버에 닿지 않을 때의 대체 동작. 계정이 이 브라우저 안에서만 유효하다(비밀번호는 salt+PBKDF2 해시).
 // 공고 목록과 가상 시계는 아직 브라우저에만 있다.
-import { createContext, useCallback, useContext, useEffect, useMemo, useState } from "react";
+import { createContext, useCallback, useContext, useEffect, useMemo, useRef, useState } from "react";
 import { SEED_OPPORTUNITIES } from "./data/opportunities";
 import { applyOverrides, type CatalogOverrides } from "./data/catalog";
-import { evaluate, latest, syncNotices, fmt } from "./engine";
-import type { Notice, Opportunity, Profile, SkillState } from "./types";
+import { buildCareerPath, evaluate, latest, syncNotices, fmt } from "./engine";
+import type { Notice, Opportunity, Profile, SkillState, TreeSignal } from "./types";
 
 export const DEMO_START = "2026-11-16T09:00:00+09:00";
 const KEY = "cuk-career-ai:v2";
@@ -24,7 +24,7 @@ interface Account {
   hash: string; // 시연용 계정은 빈 문자열(비밀번호 없음)
   data: UserData;
 }
-const isCollected = (o: Opportunity) => /^(cuk|kst|w24)-/.test(o.id); // 서버 수집 공고(학교 공지·K-Startup·고용24)
+const isCollected = (o: Opportunity) => /^(cuk|kst|w24|hist)-/.test(o.id);
 // 실제 공고가 있으면 실제 계정에는 가상 공고를 보여주지 않는다(시연용 계정은 둘 다 본다)
 const visibleOpps = (s: { opportunities: Opportunity[]; session: string | null }, isAdmin: boolean) =>
   !isAdmin && !isDemo(s.session) && s.opportunities.some(isCollected) ? s.opportunities.filter((o) => !o.isVirtual) : s.opportunities;
@@ -106,6 +106,8 @@ interface Ctx extends State {
   saveCatalog: (next: CatalogOverrides) => Promise<string | null>;
   // 관리자 계정: 실제·가상 공고를 모두 보고 서버 현황을 볼 수 있다
   nowDate: Date;
+  careerPath: ReturnType<typeof buildCareerPath> | null;
+  getQuestAction: (() => Promise<string | undefined>) | null;
   signup: (id: string, pw: string) => Promise<string | null>; // 실패 시 사유 반환
   login: (id: string, pw: string) => Promise<string | null>;
   loginDemo: (id: string, profile: Profile) => void;
@@ -208,10 +210,60 @@ export function StoreProvider({ children }: { children: React.ReactNode }) {
     });
   }, [ready, update]);
 
+  const visible = useMemo(() => visibleOpps({ opportunities: state.opportunities, session }, isAdmin), [state.opportunities, session, isAdmin]);
+  const asOf = state.now;
+  const signalRequest = useMemo(() => profile ? {
+    asOf,
+    profile: {
+      departmentId: profile.departmentId, grade: profile.grade, status: profile.status,
+      jobId: profile.jobId, skills: profile.skills, scores: profile.scores,
+    },
+  } : null, [profile, asOf]);
+  const signalKey = signalRequest ? JSON.stringify([session, catalogVersion, signalRequest]) : "";
+  const [snapshot, setSnapshot] = useState<{ key: string; signals: TreeSignal[] }>();
+  useEffect(() => {
+    if (!ready || !signalRequest) return;
+    let current = true;
+    void call("/preparation/tree-signals", "POST", signalRequest).then((response) => {
+      if (current && response?.ok && Array.isArray(response.data.signals)) {
+        setSnapshot({ key: signalKey, signals: response.data.signals });
+      }
+    });
+    return () => { current = false; };
+  }, [ready, signalKey, signalRequest]);
+  const careerPath = useMemo(() => {
+    if (!profile || !signalKey) return null;
+    return buildCareerPath(profile, visible, new Date(asOf), snapshot?.key === signalKey ? snapshot.signals : []);
+  }, [profile, signalKey, visible, asOf, snapshot]);
+  const recommendation = careerPath?.recommendedQuest;
+  const questRequestKey = recommendation && profile
+    ? JSON.stringify([signalKey, profile.weeklyHours, recommendation])
+    : "";
+  const actionCache = useRef<{ key: string; promise: Promise<string | undefined> } | null>(null);
+  const getQuestAction = useMemo(() => {
+    if (!questRequestKey || !profile || !recommendation) return null;
+    const stage = profile.grade <= 1 ? "explore" : profile.grade === 2 ? "prepare" : profile.grade === 3 ? "practice" : "apply";
+    const timeBudget = profile.weeklyHours <= 3 ? "short" : profile.weeklyHours <= 8 ? "medium" : "long";
+    const body = { skillId: recommendation.skillId, actionKind: recommendation.actionKind,
+      basis: recommendation.signals[0]?.basis, stage, timeBudget };
+    return () => {
+      if (actionCache.current?.key === questRequestKey) return actionCache.current.promise;
+      const promise = call("/preparation/quest-action", "POST", body).then((response) =>
+        response?.ok && typeof response.data.actionId === "string" ? response.data.actionId : undefined);
+      actionCache.current = { key: questRequestKey, promise };
+      return promise;
+    };
+  }, [profile, recommendation, questRequestKey]);
+  useEffect(() => {
+    if (actionCache.current?.key !== questRequestKey) actionCache.current = null;
+  }, [questRequestKey]);
+
   const api = useMemo<Ctx>(
     () => ({
       ...state,
-      opportunities: visibleOpps(state, isAdmin),
+      opportunities: visible,
+      careerPath,
+      getQuestAction,
       isAdmin,
       catalog,
       catalogVersion,
@@ -354,7 +406,7 @@ export function StoreProvider({ children }: { children: React.ReactNode }) {
       },
       resetDemo: () => update(() => initial()),
     }),
-    [state, update, ready, mode, isAdmin, catalog, catalogVersion],
+    [state, update, ready, mode, isAdmin, catalog, catalogVersion, visible, careerPath, getQuestAction],
   );
 
   return <StoreCtx.Provider value={api}>{children}</StoreCtx.Provider>;

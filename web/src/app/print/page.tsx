@@ -1,10 +1,10 @@
 "use client";
-import { useEffect, useMemo, useState } from "react";
+import { useEffect, useState } from "react";
 import Link from "next/link";
 import { Printer } from "lucide-react";
 import { RequireProfile } from "@/components/RequireProfile";
 import { useStore } from "@/lib/store";
-import { buildTree, fmt } from "@/lib/engine";
+import { fmt } from "@/lib/engine";
 import { formatScore, jobById } from "@/lib/data/catalog";
 import { getDepartment } from "@/lib/data/departments";
 import { getProof, listProofs, openProof, type ProofMeta } from "@/lib/files";
@@ -14,7 +14,7 @@ function Sheet() {
   const s = useStore();
   const p = s.profile!;
   const owner = s.session!;
-  const tree = useMemo(() => buildTree(p, [], s.nowDate), [p, s.nowDate]);
+  const { tree } = s.careerPath!;
   const [proofs, setProofs] = useState<Record<string, ProofMeta>>({});
   const [images, setImages] = useState<{ skill: string; name: string; url: string }[]>([]);
 

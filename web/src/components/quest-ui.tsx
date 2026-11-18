@@ -14,7 +14,9 @@ const STATUS = {
 
 export const nodeStatus = (n: TreeNode) => (n.state !== "none" ? "done" : n.locked ? "lock" : "go");
 
-export function NodeBox({ node, isNew, now, proof }: { node: TreeNode; isNew?: boolean; now: Date; proof?: boolean }) {
+export function NodeBox({ node, isNew, now, proof, recommended }: {
+  node: TreeNode; isNew?: boolean; now: Date; proof?: boolean; recommended?: boolean;
+}) {
   const st = STATUS[nodeStatus(node)];
   const opps = node.opportunities;
   const soonest = opps.length ? Math.min(...opps.map((o) => dday(o, now))) : null;
@@ -26,6 +28,7 @@ export function NodeBox({ node, isNew, now, proof }: { node: TreeNode; isNew?: b
         </span>
         <span className="min-w-0">
           <span className="block truncate text-sm font-bold leading-tight">{node.name}</span>
+          {recommended && <span className="block text-[11px] font-bold text-go">추천 퀘스트</span>}
           <span className="block text-[11px] opacity-70">
             {node.state === "none" ? st.label : node.score ? `완료 · ${formatScore(node.skill, node.score)}` : node.state === "verified" ? "완료 · 검증됨" : "완료 · 자기 보고"}
             {node.required ? " · 필수" : ""}
@@ -66,10 +69,12 @@ export function Legend() {
 }
 
 // 상태창: 내가 누구이고 어디까지 왔는지
-export function StatusWindow({ profile, children }: { profile: Profile; children?: React.ReactNode }) {
+export function StatusWindow({ profile, children, treeProgress }: {
+  profile: Profile; children?: React.ReactNode; treeProgress?: ReturnType<typeof progress>;
+}) {
   const job = jobById(profile.jobId);
   const dept = getDepartment(profile.departmentId);
-  const prog = progress(profile);
+  const prog = treeProgress ?? progress(profile);
   return (
     <section className="window p-4 sm:p-5">
       <div className="flex flex-wrap items-end gap-x-6 gap-y-3">

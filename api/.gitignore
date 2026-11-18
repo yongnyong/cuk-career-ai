@@ -1,5 +1,7 @@
 .venv/
 __pycache__/
 *.db
+*.db-*
+!career.db
 .env
 .pytest_cache/

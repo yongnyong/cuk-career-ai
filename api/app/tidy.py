@@ -179,7 +179,7 @@ def run(limit: int = 400) -> None:
     from sqlalchemy import select
     from sqlalchemy.orm.attributes import flag_modified
 
-    from .main import Posting, SessionLocal
+    from .career_db import Posting, CareerSessionLocal as SessionLocal
 
     stats = {"todo": 0, "ai": 0, "kept_rule": 0, "errors": 0}
     with SessionLocal() as db:

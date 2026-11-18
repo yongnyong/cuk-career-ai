@@ -8,7 +8,7 @@ import { AiNotice } from "./ui";
 
 type Msg = { role: "user"; text: string } | { role: "bot"; a: ChatAnswer };
 
-// 서버가 수집한 실제 공고는 서버의 Gemini 챗봇이 답한다(근거 문단 번호는 서버에서 대조)
+// 실제 공고는 서버에 설정된 AI 제공자가 답한다(근거 문단 번호는 서버에서 대조).
 const REAL_SUGGEST = ["지원 자격이 어떻게 되나요?", "언제까지 신청해야 해요?", "어떻게 신청하나요?", "합격하려면 뭐가 필요해요?"];
 async function askServer(oppId: string, question: string): Promise<ChatAnswer | null> {
   try {
@@ -44,7 +44,7 @@ export function ChatPanel({ opp }: { opp: Opportunity }) {
     setMsgs((m) => [...m, { role: "user", text }]);
     setQ("");
     setBusy(true);
-    // 실제 공고: 서버(Gemini)에 묻고, 실패하면 브라우저의 규칙 기반 답변으로 대신한다
+    // 실제 공고: 서버 모델에 묻고, 실패하면 브라우저의 규칙 기반 답변으로 대신한다.
     const fromAi = useAi ? await askServer(opp.id, text.slice(0, 300)) : null;
     const a = verifyCitations(fromAi ?? answer(text, opp, profile), opp);
     setMsgs((m) => [...m, { role: "bot", a }]);

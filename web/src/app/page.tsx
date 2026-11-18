@@ -4,7 +4,7 @@ import Link from "next/link";
 import { ChevronRight, KeyRound, Swords } from "lucide-react";
 import { useStore } from "@/lib/store";
 import { useMounted } from "@/lib/useMounted";
-import { buildTree, dday, nextNode, recommend } from "@/lib/engine";
+import { buildTree, dday, recommend } from "@/lib/engine";
 import { DEPARTMENTS } from "@/lib/data/departments";
 import { SEED_OPPORTUNITIES } from "@/lib/data/opportunities";
 import { PERSONAS } from "@/lib/data/personas";
@@ -96,7 +96,7 @@ function Today() {
   const now = s.nowDate;
   const recs = useMemo(() => recommend(s.opportunities, p, now), [s.opportunities, p, now]);
   const urgent = [...recs].sort((a, b) => dday(a.opp, now) - dday(b.opp, now)).slice(0, 3);
-  const next = nextNode(p);
+  const { recommendedQuest: next, treeProgress, tree } = s.careerPath!;
   const quests = s.followed
     .map((id) => s.opportunities.find((o) => o.id === id))
     .filter((o) => o !== undefined && dday(o, now) >= 0)
@@ -106,7 +106,7 @@ function Today() {
 
   return (
     <div className="space-y-8">
-      <StatusWindow profile={p}>
+      <StatusWindow profile={p} treeProgress={treeProgress}>
         <Link href="/tree" className="btn-primary">
           스킬트리 열기 <ChevronRight size={16} />
         </Link>
@@ -141,7 +141,7 @@ function Today() {
                   </span>
                   <span className="min-w-0 flex-1">
                     <span className="block text-xs text-ink/60">다음에 깰 노드 · 주 {p.weeklyHours}시간 기준</span>
-                    <span className="block font-bold">{skillById(next.skill)?.name}</span>
+                    <span className="block font-bold">{skillById(next.skillId)?.name}</span>
                   </span>
                   <ChevronRight size={18} className="text-ink/40" />
                 </Link>
@@ -169,7 +169,13 @@ function Today() {
                 </li>
               );
             })}
-            {!next && quests.length === 0 && <li className="py-3 text-sm text-ink/60">트리의 모든 노드를 완료했어요.</li>}
+            {!next && quests.length === 0 && (
+              <li className="py-3 text-sm text-ink/60">
+                {tree.length > 0 && tree.every((node) => node.state !== "none")
+                  ? "트리의 모든 노드를 완료했어요."
+                  : "지금 추천할 노드가 없어요."}
+              </li>
+            )}
           </ul>
           {quests.length === 0 && (
             <p className="mt-2 text-sm text-ink/60">기회 카드에서 &lsquo;지원 퀘스트 시작&rsquo;을 누르면 준비 목록이 여기에 생겨요.</p>
