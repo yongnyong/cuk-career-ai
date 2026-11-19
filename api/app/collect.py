@@ -572,6 +572,13 @@ def save(db, Posting, pid: str, digest: str, data: dict | None, now: datetime, s
     db.commit()
 
 
+def kstartup_digest(x: dict) -> str:
+    """공고 내용이 바뀌었는지 판단하는 값. "id"는 응답 안에서의 순번이라 공고가 그대로여도 매번 달라지므로 뺀다.
+    (이 값을 넣었을 때는 6시간마다 모든 공고의 상세 화면을 다시 읽었다.)"""
+    stable = {k: v for k, v in x.items() if k != "id"}
+    return hashlib.sha256((BUILD_VERSION + "k4" + json.dumps(stable, sort_keys=True, ensure_ascii=False)).encode()).hexdigest()
+
+
 def run_kstartup() -> None:
     from .main import Posting, SessionLocal
 
@@ -589,7 +596,7 @@ def run_kstartup() -> None:
             if not data:
                 continue
             stats["kept"] += 1
-            digest = hashlib.sha256((BUILD_VERSION + "k3" + json.dumps(x, sort_keys=True, ensure_ascii=False)).encode()).hexdigest()
+            digest = kstartup_digest(x)
             row = db.get(Posting, data["id"])
             if row and row.raw_hash == digest:
                 continue

@@ -137,3 +137,9 @@ def test_degree_is_read_from_qualification_text_when_unclear():
     assert collect.degree_from_text("최종학력 고등학교 졸업 이상") == "high" and collect.degree_from_text("성실한 분") == "unknown"
     lines = chr(10).join(["- 4년제 대학교 졸업(예정)자", "- 학사 이상 학위 보유자", "- 교대근무 가능자입니다"])
     assert collect.qual_lines(lines) == ["교대근무 가능자입니다"]
+
+
+def test_kstartup_digest_ignores_row_order_but_sees_real_changes():
+    a = collect.kstartup_digest({**KST_ITEM, "id": 1})
+    assert a == collect.kstartup_digest({**KST_ITEM, "id": 57})
+    assert a != collect.kstartup_digest({**KST_ITEM, "id": 1, "pbanc_rcpt_end_dt": "20261220"})
