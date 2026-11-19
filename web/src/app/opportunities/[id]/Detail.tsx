@@ -4,6 +4,7 @@ import { useParams } from "next/navigation";
 import { ArrowUpRight, BellPlus, BellOff, CheckSquare, History, Square } from "lucide-react";
 import { RequireProfile } from "@/components/RequireProfile";
 import { ChatPanel } from "@/components/ChatPanel";
+import { ProcessView } from "@/components/ProcessView";
 import { AiNotice, DDay, Empty, SourceLine, TypeTag, VerdictBadge, VerdictIcon, VirtualTag, Warn } from "@/components/ui";
 import { useStore } from "@/lib/store";
 import { evaluate, fmt, latest } from "@/lib/engine";
@@ -122,6 +123,8 @@ function Body() {
             </>
           )}
         </div>
+
+        {!o.isVirtual && s.mode === "server" && <ProcessView key={o.id} opp={o} />}
 
         <div className="card p-5">
           <div className="flex items-center justify-between">

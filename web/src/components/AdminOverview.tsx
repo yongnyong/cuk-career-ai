@@ -1,8 +1,9 @@
 "use client";
 import { useEffect, useState } from "react";
-import { Database, GitBranch } from "lucide-react";
+import { ClipboardPaste, Database, GitBranch } from "lucide-react";
 import { useStore } from "@/lib/store";
 import { TrackEditor } from "./TrackEditor";
+import { ManualPostingForm } from "./ManualPostingForm";
 
 type Overview = {
   users: number;
@@ -57,6 +58,12 @@ export function AdminOverview() {
           <Database size={16} /> 서버 현황
         </h2>
         <ServerOverview />
+      </section>
+      <section className="card space-y-3 p-5">
+        <h2 className="flex items-center gap-1.5 font-bold">
+          <ClipboardPaste size={16} /> 직접 확인한 공고 등록 (서버 저장 · AI 구조화)
+        </h2>
+        <ManualPostingForm />
       </section>
       <section className="card space-y-3 p-5">
         <h2 className="flex items-center gap-1.5 font-bold">

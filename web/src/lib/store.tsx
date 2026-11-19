@@ -24,7 +24,7 @@ interface Account {
   hash: string; // 시연용 계정은 빈 문자열(비밀번호 없음)
   data: UserData;
 }
-const isCollected = (o: Opportunity) => /^(cuk|kst|w24)-/.test(o.id); // 서버 수집 공고(학교 공지·K-Startup·고용24)
+const isCollected = (o: Opportunity) => /^(cuk|kst|w24|man)-/.test(o.id); // 서버 수집 공고(학교 공지·K-Startup·고용24)
 // 실제 공고가 있으면 실제 계정에는 가상 공고를 보여주지 않는다(시연용 계정은 둘 다 본다)
 const visibleOpps = (s: { opportunities: Opportunity[]; session: string | null }, isAdmin: boolean) =>
   !isAdmin && !isDemo(s.session) && s.opportunities.some(isCollected) ? s.opportunities.filter((o) => !o.isVirtual) : s.opportunities;

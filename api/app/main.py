@@ -263,6 +263,10 @@ from .chat import make_router  # noqa: E402
 
 app.include_router(make_router(get_db, Posting))
 
+from .process import make_router as make_process_router  # noqa: E402
+
+app.include_router(make_process_router(get_db, current_user, lambda: ADMIN_IDS, Posting, Setting))
+
 
 # 만료된 세션 정리는 로그인 시점에 가볍게 수행
 @app.middleware("http")
