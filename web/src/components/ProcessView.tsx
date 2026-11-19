@@ -171,6 +171,12 @@ export function ProcessView({ opp }: { opp: Opportunity }) {
                 <Step n={4} title="규칙이 내 정보와 비교해 판정한다" note="판정은 AI가 하지 않아요. 통과한 조건을 규칙이 내 학년·학적·점수와 비교해요.">
                   <ul className="space-y-1.5">
                     {trace.final.length === 0 && <li className="text-sm text-slate-500">남은 조건이 없어요.</li>}
+                    {trace.checks.some((c) => c.ok && c.kind === "preferred") && (
+                      <li className="text-xs text-slate-500">
+                        우대 조건({trace.checks.filter((c) => c.ok && c.kind === "preferred").map((c) => c.label).join(", ")})은 판정하지 않고 핵심 정보의
+                        &lsquo;우대 사항&rsquo;에 표시해요.
+                      </li>
+                    )}
                     {trace.final.map((c, i) => {
                       const r = profile ? evaluateCondition(c, profile) : null;
                       return (

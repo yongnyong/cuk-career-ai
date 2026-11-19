@@ -93,3 +93,11 @@ def test_no_startup_condition_when_unrestricted():
     assert tidy.startup_conditions(kst("예비창업자,1년미만,2년미만,3년미만,5년미만,7년미만,10년미만", ALL_AGE)) == []
     only = tidy.startup_conditions(kst("7년미만", ALL_AGE))
     assert [(c["key"], c["label"]) for c in only] == [("startup", "창업 단계: 창업 7년 미만")]
+
+
+def test_work_location_is_not_judged_as_residence_requirement():
+    p = posting()
+    p["sections"][0]["text"] = "[영업] 근무지: 경기"
+    ai = [{"category": "지역", "label": "경기 지역 근무", "kind": "required", "quote": "근무지: 경기", "regions": ["경기"]}]
+    out = tidy.tidy_batch([p], fake(ai))[0]
+    assert [(c["key"], c["label"]) for c in out["required"]] == [("other", "근무지: 경기 지역 근무")]

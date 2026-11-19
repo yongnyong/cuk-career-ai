@@ -141,6 +141,9 @@ def apply(posting: dict, conditions: list[dict]) -> dict:
     required, preferred, seen = [], [], set()
     for c in conditions[:10]:
         cond = to_condition(c, posting)
+        if cond and cond["key"] == "region" and not posting["id"].startswith("kst-"):
+            # 채용 공고의 지역은 근무지다. 거주지 제한이 아니므로 내 거주 지역과 비교해 판정하지 않는다
+            cond = {"key": "other", "label": cond["label"].replace("지역: ", "근무지: ", 1), "src": cond["src"]}
         if not cond or cond["label"] in seen:
             continue
         seen.add(cond["label"])
