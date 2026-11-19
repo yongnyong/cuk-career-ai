@@ -79,7 +79,7 @@ function Sheet() {
                 <tr key={n.skill} className="border-b border-neutral-300">
                   <td className="py-1.5">
                     {n.name}
-                    {n.required ? " (필수)" : ""}
+                    {n.required ? " (트랙 기본)" : ""}
                   </td>
                   <td>{n.kind}</td>
                   <td>{n.state === "none" ? "미완료" : "완료"}</td>

@@ -13,6 +13,22 @@ if (-not (Test-Path -LiteralPath $nextPath)) {
     throw 'Install web dependencies first (cd web; npm ci). See docs/LOCAL_DEVELOPMENT.md.'
 }
 
+# Windows can hold Next's dev lock exclusively. Identify the listener by its CLI parent.
+$devLock = Join-Path $webRoot '.next\dev\lock'
+if ((Test-Path -LiteralPath $devLock) -and -not $PSBoundParameters.ContainsKey('ApiPort')) {
+    $listeners = Get-NetTCPConnection -State Listen -LocalPort $Port -ErrorAction SilentlyContinue |
+        Where-Object { $_.LocalAddress -in @('127.0.0.1', '0.0.0.0') }
+    foreach ($listener in $listeners) {
+        $server = Get-CimInstance Win32_Process -Filter "ProcessId = $($listener.OwningProcess)" -ErrorAction SilentlyContinue
+        if ($server.Name -ne 'node.exe') { continue }
+        $cli = Get-CimInstance Win32_Process -Filter "ProcessId = $($server.ParentProcessId)" -ErrorAction SilentlyContinue
+        if ($cli.CommandLine -match '\sdev(?:\s|$)' -and $cli.CommandLine.IndexOf($nextPath, [StringComparison]::OrdinalIgnoreCase) -ge 0) {
+            Write-Host "CUK Career AI is already running: http://127.0.0.1:$Port/tree"
+            return
+        }
+    }
+}
+
 $nodeCommand = Get-Command node -ErrorAction SilentlyContinue
 if ($nodeCommand) {
     $nodePath = $nodeCommand.Source

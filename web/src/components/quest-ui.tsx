@@ -20,6 +20,8 @@ export function NodeBox({ node, isNew, now, proof, recommended }: {
   const st = STATUS[nodeStatus(node)];
   const opps = node.opportunities;
   const soonest = opps.length ? Math.min(...opps.map((o) => dday(o, now))) : null;
+  const hasPosting = node.evidence?.some(s => s.reference.scope === "role" && (s.basis === "required" || s.basis === "preferred"));
+  const source = hasPosting ? "공고 근거" : node.practice ? "직무 연습" : node.evidence?.some(s => s.basis === "activity") ? "연계 활동" : undefined;
   return (
     <div className={`w-48 overflow-hidden rounded-md border-2 bg-panel text-left ${st.box} ${isNew ? "unlock" : ""}`}>
       <div className="flex items-center gap-2 px-2 py-2">
@@ -31,7 +33,8 @@ export function NodeBox({ node, isNew, now, proof, recommended }: {
           {recommended && <span className="block text-[11px] font-bold text-go">추천 퀘스트</span>}
           <span className="block text-[11px] opacity-70">
             {node.state === "none" ? st.label : node.score ? `완료 · ${formatScore(node.skill, node.score)}` : node.state === "verified" ? "완료 · 검증됨" : "완료 · 자기 보고"}
-            {node.required ? " · 필수" : ""}
+            {node.required ? " · 트랙 기본" : ""}
+            {source && ` · ${source}`}
             {proof ? " · 증빙 첨부" : ""}
           </span>
         </span>

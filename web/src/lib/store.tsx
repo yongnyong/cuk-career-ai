@@ -5,12 +5,24 @@
 // 공고 목록과 가상 시계는 아직 브라우저에만 있다.
 import { createContext, useCallback, useContext, useEffect, useMemo, useRef, useState } from "react";
 import { SEED_OPPORTUNITIES } from "./data/opportunities";
-import { applyOverrides, type CatalogOverrides } from "./data/catalog";
+import { applyOverrides, jobById, type CatalogOverrides } from "./data/catalog";
 import { buildCareerPath, evaluate, latest, syncNotices, fmt } from "./engine";
 import type { Notice, Opportunity, Profile, SkillState, TreeSignal } from "./types";
 
 export const DEMO_START = "2026-11-16T09:00:00+09:00";
 const KEY = "cuk-career-ai:v2";
+
+function recordSkill(profile: Profile, skill: string, value: SkillState, inTree: boolean): Profile {
+  const updated = { ...profile, skills: { ...profile.skills, [skill]: value } };
+  const saved = profile.completedPreparation?.[profile.jobId] ?? [];
+  if (value !== "none" && inTree && !saved.includes(skill) && !jobById(profile.jobId)?.nodes.some((node) => node.skill === skill)) {
+    updated.completedPreparation = { ...profile.completedPreparation, [profile.jobId]: [...saved, skill] };
+  } else if (value === "none" && profile.completedPreparation) {
+    updated.completedPreparation = Object.fromEntries(Object.entries(profile.completedPreparation)
+      .map(([jobId, ids]) => [jobId, ids.filter((id) => id !== skill)]));
+  }
+  return updated;
+}
 
 interface UserData {
   profile: Profile | null;
@@ -333,11 +345,12 @@ export function StoreProvider({ children }: { children: React.ReactNode }) {
           if (value) scores[skill] = value;
           else delete scores[skill];
           const cur = s.profile.skills[skill] ?? "none";
-          const skills = { ...s.profile.skills, [skill]: value ? (cur === "none" ? "self" : cur) : cur };
-          return { ...s, profile: { ...s.profile, skills, scores } };
+          const status = value && cur === "none" ? "self" : cur;
+          const inTree = !!careerPath?.tree.some((node) => node.skill === skill);
+          return { ...s, profile: { ...recordSkill(s.profile, skill, status, inTree), scores } };
         }),
       setSkill: (skill, st) =>
-        update((s) => (s.profile ? { ...s, profile: { ...s.profile, skills: { ...s.profile.skills, [skill]: st } } } : s)),
+        update((s) => (s.profile ? { ...s, profile: recordSkill(s.profile, skill, st, !!careerPath?.tree.some((node) => node.skill === skill)) } : s)),
       follow: (id) => update((s) => (s.followed.includes(id) ? s : { ...s, followed: [...s.followed, id] })),
       unfollow: (id) =>
         update((s) => ({

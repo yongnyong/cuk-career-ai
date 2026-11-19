@@ -1,6 +1,9 @@
 // 직무·역량 사전 (설명용 초안). 시험·자격 정보는 등록 시 공식 안내를 다시 확인한다.
 import type { Job, Skill } from "../types";
 import { DEPT_JOBS, DEPT_SKILLS } from "./deptTracks";
+import { PRACTICE } from "./practice";
+import { POSTING_PROJECTS } from "./postingProjects";
+import { CAMPUS_NODES } from "./campusNodes";
 
 const s = (id: string, name: string, kind: Skill["kind"], verifiable = false, officialUrl?: string): Skill => ({
   id,
@@ -15,8 +18,16 @@ const DATAQ = "https://www.dataq.or.kr/";
 
 export const SKILLS: Skill[] = [
   ...DEPT_SKILLS,
+  ...PRACTICE.map(({ id, name }) => s(id, name, "프로젝트")),
+  ...POSTING_PROJECTS.map(({ id, name }) => s(id, name, "프로젝트")),
+  ...CAMPUS_NODES.map(({ id, name, url }) => s(id, name, "경험", false, url)),
   // 공통
   s("SK-TOEIC", "TOEIC", "어학", true, "https://exam.toeic.co.kr/"),
+  s("SK-TOEIC-SPEAKING", "TOEIC Speaking", "어학", true),
+  s("SK-FINANCE-MANAGER", "재경관리사", "자격증", true),
+  s("SK-NURSING-LICENSE", "간호사 면허", "자격증", true),
+  s("SK-CHILDCARE-2", "보육교사 2급", "자격증", true),
+  s("SK-KOREAN-TEACHER-2", "한국어교원 2급", "자격증", true),
   s("SK-OPIC", "OPIc", "어학", true, "https://www.opic.or.kr/"),
   s("SK-JLPT", "JLPT", "어학", true, "https://www.jlpt.or.kr/"),
   s("SK-HSK", "HSK", "어학", true, "https://www.hsk.or.kr/"),
@@ -25,6 +36,18 @@ export const SKILLS: Skill[] = [
   s("SK-PORT", "포트폴리오 정리", "프로젝트"),
   s("SK-RESUME", "이력서·자기소개서", "역량"),
   s("SK-PPT", "기획서·발표", "역량"),
+  // 직무 공고에 근거가 있을 때 스킬트리에 추가하는 결과물
+  s("SK-SQL-PROJECT", "SQL 분석 쿼리와 결과표", "프로젝트"),
+  s("SK-ANALYSIS-REPORT", "데이터 분석 보고서", "프로젝트"),
+  s("SK-PRESENTATION-SAMPLE", "발표 자료", "프로젝트"),
+  s("SK-PROPOSAL", "기획서·제안서 작성", "프로젝트"),
+  s("SK-WRITING-SAMPLE", "글쓰기 작업물", "프로젝트"),
+  s("SK-CAD-DRAWING", "CAD 도면", "프로젝트"),
+  s("SK-BRIEF", "업무 보고서", "프로젝트"),
+  s("SK-SPREADSHEET", "엑셀 분석표", "프로젝트"),
+  s("SK-HYGIENIST", "위생사", "자격증", true),
+  s("SK-FOOD-ENGINEER", "식품기사", "자격증", true, QNET),
+  s("SK-FOOD-INDUSTRIAL", "식품산업기사", "자격증", true, QNET),
   // ICT
   s("SK-PY-01", "Python 기초", "교육"),
   s("SK-DA", "데이터 분석(pandas)", "프로젝트"),
@@ -376,6 +399,7 @@ export const JOBS: Job[] = [
 export type Scale = { unit: string; min: number; max: number } | { grades: string[] }; // grades는 낮은 등급 → 높은 등급
 export const SCALES: Record<string, Scale> = {
   "SK-TOEIC": { unit: "점", min: 10, max: 990 },
+  "SK-TOEIC-SPEAKING": { grades: ["NL", "NM", "NH", "IL", "IM1", "IM2", "IM3", "IH", "AL", "AM", "AH"] },
   "SK-OPIC": { grades: ["NL", "NM", "NH", "IL", "IM1", "IM2", "IM3", "IH", "AL"] },
   "SK-JLPT": { grades: ["N5", "N4", "N3", "N2", "N1"] },
   "SK-HSK": { grades: ["1급", "2급", "3급", "4급", "5급", "6급"] },

@@ -35,7 +35,7 @@ PATHWAYS = {
     'clinical': ['간호', '의학'], 'content-planner': ['미디어·콘텐츠'],
     'overseas-sales': ['국제무역', '영업'], 'finance': ['경영·기획', '회계·세무', '금융'],
     'marketer': ['마케팅'], 'public-sector': ['행정'], 'legal': ['법률'],
-    'welfare': ['사회복지', '심리상담'], 'educator': ['특수교육', '아동·보육'],
+    'welfare': ['사회복지', '심리상담'], 'educator': ['특수교육', '아동·보육', '한국어 전문'],
     'designer': ['공간디자인', '패션·의류'], 'food': ['식품·영양'],
     'env-engineer': ['에너지·환경'], 'arts-planner': ['음악·공연', '미디어·콘텐츠'],
     'npo': ['신학·사목', '사회복지'],

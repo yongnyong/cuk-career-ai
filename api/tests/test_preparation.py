@@ -9,7 +9,7 @@ from fastapi.testclient import TestClient
 from starlette.requests import Request
 
 from app import ai_provider
-from app.preparation import StudentInput, adapt_profile, prepare, require_local_ai, router
+from app.preparation import SKILLS, StudentInput, adapt_profile, prepare, require_local_ai, router
 from app.career.tree_signals import build_tree_signals
 from app.career.recommender import recommend, parse_time
 
@@ -166,7 +166,7 @@ def test_catalog_cache_cannot_be_poisoned_by_returned_report():
     assert prepare(student(), use_ai=False, now=NOW)['plan'][0]['source_urls']
 
 
-def test_tree_signals_http_returns_track_ids_without_student_records(preparation_client):
+def test_tree_signals_http_returns_catalog_ids_without_student_records(preparation_client):
     value = student(departmentId='business', jobId='overseas-sales', grade=2,
                     skills={'SK-TOEIC': 'self'}, scores={'SK-TOEIC': '430'})
     response = preparation_client.post('/api/preparation/tree-signals', json={
@@ -176,8 +176,7 @@ def test_tree_signals_http_returns_track_ids_without_student_records(preparation
     body = response.json()
     assert body['version'] == '2026-11-18'
     assert any(signal['basis'] in ('required', 'preferred') for signal in body['signals'])
-    _, job = adapt_profile(value)
-    assert {signal['skillId'] for signal in body['signals']} <= {node['skill'] for node in job['nodes']}
+    assert {signal['skillId'] for signal in body['signals']} <= SKILLS.keys()
     assert all(signal['reference']['url'].startswith('https://') for signal in body['signals'])
     assert '430' not in response.text
 
@@ -194,6 +193,61 @@ def test_condition_signal_respects_valid_alternative_and_ignores_unmapped_names(
     signal = next(s for s in build_tree_signals(profile, job, skills, NOW)['signals'] if s['reference']['id'] == reference)
     assert signal['skillId'] == 'SK-TOEIC' and signal['reference']['historical'] is True
     assert not build_tree_signals(profile, {'nodes': []}, skills, NOW)['signals']
+
+
+def test_dietitian_evidence_survives_display_alias_and_preserves_planned_license():
+    profile, job = adapt_profile(student(departmentId='food-nutrition', jobId='food', skills={}))
+    signals = build_tree_signals(profile, job, SKILLS, NOW)['signals']
+    dietitian = [s for s in signals if s['skillId'] == 'SK-DIET']
+    assert any(s['reference']['organization'] == '부천시 어린이·사회복지급식관리지원센터' for s in dietitian)
+    planned = next(s for s in dietitian if s['reference']['organization'] == '현대그린푸드')
+    assert planned['status'] == 'unknown'
+    assert '취득예정' in planned['reference']['summary']
+    assert 'quote' not in planned['reference']
+    assert '대체 인정' in planned['preparation']['action']
+    assert 'SK-HYGIENIST' not in {node['skill'] for node in job['nodes']}
+    optional = next(s for s in signals if s['skillId'] == 'SK-HYGIENIST')
+    assert optional['reference']['scope'] == 'role' and optional['reference']['summary']
+    assert optional['basis'] == 'preferred'
+
+
+def test_only_eligible_role_linked_activities_can_expand_beyond_the_job_template():
+    for department, expected in [('ai', True), ('psychology', False)]:
+        profile, job = adapt_profile(student(departmentId=department, jobId='ai-engineer'))
+        assert 'SK-BMC' not in {node['skill'] for node in job['nodes']}
+        signals = build_tree_signals(profile, job, SKILLS, NOW)['signals']
+        activities = [s for s in signals if s['skillId'] == 'SK-BMC' and s['basis'] == 'activity']
+        assert bool(activities) == expected
+        if expected:
+            assert '비즈니스 모델' in activities[0]['reference']['summary']
+            assert activities[0]['reference']['scope'] == 'role'
+            later = build_tree_signals(profile, job, SKILLS, parse_time('2026-12-10T10:00:00+09:00'))
+            assert not any(s['skillId'] == 'SK-BMC' for s in later['signals'])
+
+
+def test_reviewed_events_are_separate_nodes_with_their_own_dates_and_eligibility():
+    event = 'ACT-cuk-ai-startup-277825'
+    for department, expected in [('ai', True), ('psychology', False)]:
+        profile, job = adapt_profile(student(departmentId=department, jobId='ai-engineer'))
+        signals = build_tree_signals(profile, job, SKILLS, NOW)['signals']
+        matches = [s for s in signals if s['skillId'] == event]
+        assert bool(matches) == expected
+        if matches:
+            assert matches[0]['reference']['title'] == SKILLS[event]['name']
+            assert matches[0]['reference']['scope'] == 'campus'
+        assert any(s['skillId'] == 'ACT-cuk-bootcamp-277842' for s in signals)
+        later = build_tree_signals(profile, job, SKILLS, parse_time('2026-12-10T10:00:00+09:00'))
+        assert not any(s['skillId'] == event for s in later['signals'])
+
+
+def test_new_credentials_are_resolved_from_actual_occupation_conditions():
+    for department, job_id, expected in [('business', 'finance', 'SK-FINANCE-MANAGER'),
+                                         ('nursing', 'clinical', 'SK-NURSING-LICENSE'),
+                                         ('psychology', 'educator', 'SK-CHILDCARE-2'),
+                                         ('psychology', 'educator', 'SK-KOREAN-TEACHER-2')]:
+        profile, job = adapt_profile(student(departmentId=department, jobId=job_id))
+        signals = build_tree_signals(profile, job, SKILLS, NOW)['signals']
+        assert any(s['skillId'] == expected and s['reference']['scope'] == 'role' for s in signals)
 
 
 def test_quest_action_http_uses_local_model_and_falls_back(preparation_client, monkeypatch):

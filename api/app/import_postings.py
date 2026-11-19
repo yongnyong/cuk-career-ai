@@ -8,7 +8,7 @@ from datetime import datetime, timezone, timedelta
 from pathlib import Path
 
 from .collect import with_history
-from .career.posting_skills import extract_skill_evidence
+from .career.posting_skills import attach_preparation_evidence, extract_skill_evidence, has_multiple_roles
 
 ROOT = Path(__file__).resolve().parents[2]
 KST = timezone(timedelta(hours=9))
@@ -75,13 +75,17 @@ def build_postings(database, catalog):
             quotes = []
             for item in evidence:
                 quotes.append(item['original_text'][:500])
-                skill = skills.get(item['item'].casefold())
-                # Only a reviewed exact credential match produces an atomic condition.
-                if skill and skill in known_skills and item['status'] == '우대':
-                    preferred.append(skill)
-            multi_role = bool(re.search(r'각\s*부문|부문별|직무별|각\s*분야|분야별|구매/재무', post['title'])
-                              or re.search(r'직무별\s*상[이세]', post['content_text']))
-            skill_evidence = [entry for entry in extract_skill_evidence(post['content_text'], evidence, multi_role=multi_role)
+            role_count = db.execute('SELECT COUNT(DISTINCT name) FROM roles WHERE posting_id=?',
+                                    (post['id'],)).fetchone()[0]
+            multi_role = role_count > 1 or has_multiple_roles(post['title'], post['content_text'])
+            # Some broad department clusters mapped named marketing roles only to overseas sales or design.
+            # For a single-role posting the advertised occupation takes precedence.
+            if not multi_role and 'marketer' in jobs and re.search(
+                    r'\bmarketing\s+(?:assistant|intern)\b|(?:주니어|브랜드|콘텐츠|퍼포먼스)\s*마케터', post['title'], re.I):
+                paths = {'마케팅'}
+                linked_jobs = {'marketer'} | {j['id'] for j in jobs.values() if j.get('base') == 'marketer'}
+            raw_text = '' if post['completeness'] == 'reviewed_excerpt' else post['content_text']
+            skill_evidence = [entry for entry in extract_skill_evidence(raw_text, evidence, multi_role=multi_role)
                               if entry['skill'] in known_skills]
             for index, entry in enumerate(skill_evidence):
                 entry['src'] = f'역량{index + 1}'
@@ -113,7 +117,8 @@ def build_postings(database, catalog):
                 'deadlineStatus': date_status,
                 'versions': [{'version': 1, 'checkedAt': stamp, 'deadline': deadline}],
             }
-            rows.append(data)
+            # The curated excerpts include editorial summaries, not employer quotations.
+            rows.append(attach_preparation_evidence(data, raw_text, evidence, multi_role=multi_role))
     finally:
         db.close()
     return rows
@@ -143,7 +148,8 @@ def import_postings(source, target):
     return {'total': len(postings), 'written': count,
             'with_deadline': sum(p['deadlineStatus'] != 'unknown' for p in postings),
             'with_jobs': sum(bool(p['jobs']) for p in postings),
-            'with_skill_evidence': sum(bool(p.get('skillEvidence')) for p in postings)}
+            'with_skill_evidence': sum(bool(p.get('skillEvidence')) for p in postings),
+            'with_preparation_evidence': sum(bool(p.get('preparationEvidence')) for p in postings)}
 
 
 if __name__ == '__main__':

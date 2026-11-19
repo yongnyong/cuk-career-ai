@@ -3453,11 +3453,573 @@
       "srcUrl": "https://socialwelfare.catholic.ac.kr/socialwelfare/info/career001.do"
     },
     {
+      "id": "PR-ROLE-COMPARISON",
+      "name": "목표 직무 공고 비교표",
+      "kind": "프로젝트",
+      "verifiable": false
+    },
+    {
+      "id": "PR-COURSE-EVIDENCE",
+      "name": "전공 과제와 직무 역량 연결표",
+      "kind": "프로젝트",
+      "verifiable": false
+    },
+    {
+      "id": "PR-LABEL-GUIDE",
+      "name": "학습 데이터 라벨링 지침",
+      "kind": "프로젝트",
+      "verifiable": false
+    },
+    {
+      "id": "PR-SPLIT-AUDIT",
+      "name": "학습·평가 데이터 누수 검사",
+      "kind": "프로젝트",
+      "verifiable": false
+    },
+    {
+      "id": "PR-TRAIN-REPLAY",
+      "name": "학습 실험 재현 스크립트",
+      "kind": "프로젝트",
+      "verifiable": false
+    },
+    {
+      "id": "PR-ERROR-TAXONOMY",
+      "name": "오분류 사례 원인 분석",
+      "kind": "프로젝트",
+      "verifiable": false
+    },
+    {
+      "id": "PR-INFERENCE-TESTS",
+      "name": "추론 입력 검증 테스트",
+      "kind": "프로젝트",
+      "verifiable": false
+    },
+    {
+      "id": "PR-DEPLOY-ROLLBACK",
+      "name": "모델 버전 교체·복구 실습",
+      "kind": "프로젝트",
+      "verifiable": false
+    },
+    {
+      "id": "PR-COUNSEL-CONSENT",
+      "name": "모의 상담 첫 회기 안내문",
+      "kind": "프로젝트",
+      "verifiable": false
+    },
+    {
+      "id": "PR-FOLLOWUP-QUESTIONS",
+      "name": "후속 질문 자기피드백",
+      "kind": "프로젝트",
+      "verifiable": false
+    },
+    {
+      "id": "PR-RESEARCH-PLAN",
+      "name": "연구 질문과 관찰 계획",
+      "kind": "프로젝트",
+      "verifiable": false
+    },
+    {
+      "id": "PR-BENEFICIARY-MAP",
+      "name": "수혜자·비용 부담자 관계도",
+      "kind": "프로젝트",
+      "verifiable": false
+    },
+    {
+      "id": "PR-PARTNER-PLAN",
+      "name": "지역 협력기관 제안서",
+      "kind": "프로젝트",
+      "verifiable": false
+    },
+    {
+      "id": "PR-PILOT-DECISION",
+      "name": "파일럿 계속·중단 결정표",
+      "kind": "프로젝트",
+      "verifiable": false
+    },
+    {
+      "id": "PR-SOURCE-COMPARE",
+      "name": "사료 이본 대조표",
+      "kind": "프로젝트",
+      "verifiable": false
+    },
+    {
+      "id": "PR-TRANSLATION",
+      "name": "고전 번역 대조본",
+      "kind": "프로젝트",
+      "verifiable": false
+    },
+    {
+      "id": "PR-CATALOGUING",
+      "name": "기록물 목록과 색인",
+      "kind": "프로젝트",
+      "verifiable": false
+    },
+    {
+      "id": "PR-ACCESSIBLE-LESSON",
+      "name": "수업 자료 접근성 점검",
+      "kind": "프로젝트",
+      "verifiable": false
+    },
+    {
+      "id": "PR-OBSERVATION",
+      "name": "가상 활동 관찰 기록지",
+      "kind": "프로젝트",
+      "verifiable": false
+    },
+    {
+      "id": "PR-PUBLIC-PROCESS",
+      "name": "행정 신청 절차 안내",
+      "kind": "프로젝트",
+      "verifiable": false
+    },
+    {
+      "id": "PR-ISSUE-MEMO",
+      "name": "쟁점·근거 검토 메모",
+      "kind": "프로젝트",
+      "verifiable": false
+    },
+    {
+      "id": "PR-RECONCILE",
+      "name": "거래 명세 대사표",
+      "kind": "프로젝트",
+      "verifiable": false
+    },
+    {
+      "id": "PR-ENV-SAMPLING",
+      "name": "환경 관측자료 수집 설계",
+      "kind": "프로젝트",
+      "verifiable": false
+    },
+    {
+      "id": "PR-REQUIREMENTS",
+      "name": "기능 요구사항·인수 조건",
+      "kind": "프로젝트",
+      "verifiable": false
+    },
+    {
+      "id": "PR-DESIGN-BRIEF",
+      "name": "디자인 브리프와 시안 비교",
+      "kind": "프로젝트",
+      "verifiable": false
+    },
+    {
+      "id": "PR-CUSTOMER-JOURNEY",
+      "name": "고객 여정·이탈 지점 지도",
+      "kind": "프로젝트",
+      "verifiable": false
+    },
+    {
+      "id": "PR-RECORD-TRACE",
+      "name": "기록 추적성 점검",
+      "kind": "프로젝트",
+      "verifiable": false
+    },
+    {
+      "id": "PR-DATA-CHECKS",
+      "name": "데이터 품질 자동 검사",
+      "kind": "프로젝트",
+      "verifiable": false
+    },
+    {
+      "id": "PR-MODEL-CARD",
+      "name": "모델 카드 작성",
+      "kind": "프로젝트",
+      "verifiable": false
+    },
+    {
+      "id": "PR-LATENCY",
+      "name": "추론 지연시간 측정",
+      "kind": "프로젝트",
+      "verifiable": false
+    },
+    {
+      "id": "PR-QUAL-CODING",
+      "name": "모의 면접 전사·코딩표",
+      "kind": "프로젝트",
+      "verifiable": false
+    },
+    {
+      "id": "PR-QUESTION-PILOT",
+      "name": "설문 문항 예비검토표",
+      "kind": "프로젝트",
+      "verifiable": false
+    },
+    {
+      "id": "PR-REFERRAL",
+      "name": "상담기관 의뢰 절차도",
+      "kind": "프로젝트",
+      "verifiable": false
+    },
+    {
+      "id": "PR-PILOT-BUDGET",
+      "name": "소셜벤처 파일럿 예산안",
+      "kind": "프로젝트",
+      "verifiable": false
+    },
+    {
+      "id": "PR-TEST-PROTOCOL",
+      "name": "시제품 사용성 테스트 기록",
+      "kind": "프로젝트",
+      "verifiable": false
+    },
+    {
+      "id": "PR-PROGRAM-LOGIC",
+      "name": "복지사업 논리모형",
+      "kind": "프로젝트",
+      "verifiable": false
+    },
+    {
+      "id": "PR-MODEL",
+      "name": "모델 성능 비교표",
+      "kind": "프로젝트",
+      "verifiable": false
+    },
+    {
+      "id": "PR-EDA",
+      "name": "탐색적 데이터 분석 노트북",
+      "kind": "프로젝트",
+      "verifiable": false
+    },
+    {
+      "id": "PR-DEMO",
+      "name": "서비스 실행 데모",
+      "kind": "프로젝트",
+      "verifiable": false
+    },
+    {
+      "id": "PR-SURVEY",
+      "name": "설문 분석 결과표",
+      "kind": "프로젝트",
+      "verifiable": false
+    },
+    {
+      "id": "PR-INTERVIEW",
+      "name": "모의 상담면접 질문지",
+      "kind": "프로젝트",
+      "verifiable": false
+    },
+    {
+      "id": "PR-SESSION",
+      "name": "집단 프로그램 진행안",
+      "kind": "프로젝트",
+      "verifiable": false
+    },
+    {
+      "id": "PR-DISCOVERY",
+      "name": "고객 인터뷰 기록지",
+      "kind": "프로젝트",
+      "verifiable": false
+    },
+    {
+      "id": "PR-ASSUMPTION",
+      "name": "사업모델 가설 검증표",
+      "kind": "프로젝트",
+      "verifiable": false
+    },
+    {
+      "id": "PR-IMPACT",
+      "name": "사회적 가치 측정표",
+      "kind": "프로젝트",
+      "verifiable": false
+    },
+    {
+      "id": "PR-CAMPAIGN",
+      "name": "캠페인 성과 측정안",
+      "kind": "프로젝트",
+      "verifiable": false
+    },
+    {
+      "id": "PR-STORYBOARD",
+      "name": "콘텐츠 스토리보드",
+      "kind": "프로젝트",
+      "verifiable": false
+    },
+    {
+      "id": "PR-COST",
+      "name": "원가·손익 분석표",
+      "kind": "프로젝트",
+      "verifiable": false
+    },
+    {
+      "id": "PR-TRADE",
+      "name": "해외 거래처 제안 메일",
+      "kind": "프로젝트",
+      "verifiable": false
+    },
+    {
+      "id": "PR-CIRCUIT",
+      "name": "회로 시뮬레이션 기록",
+      "kind": "프로젝트",
+      "verifiable": false
+    },
+    {
+      "id": "PR-TEST",
+      "name": "프로그램 테스트 케이스",
+      "kind": "프로젝트",
+      "verifiable": false
+    },
+    {
+      "id": "PR-QUALITY",
+      "name": "품질 점검 기록지",
+      "kind": "프로젝트",
+      "verifiable": false
+    },
+    {
+      "id": "PR-LITERATURE",
+      "name": "연구 논문 비교표",
+      "kind": "프로젝트",
+      "verifiable": false
+    },
+    {
+      "id": "PR-POLICY",
+      "name": "정책 대안 비교표",
+      "kind": "프로젝트",
+      "verifiable": false
+    },
+    {
+      "id": "PR-LESSON",
+      "name": "수업 활동지",
+      "kind": "프로젝트",
+      "verifiable": false
+    },
+    {
+      "id": "PR-SOURCES",
+      "name": "사료 주석 카드",
+      "kind": "프로젝트",
+      "verifiable": false
+    },
+    {
+      "id": "PR-SWATCH",
+      "name": "의류 소재·패턴 비교판",
+      "kind": "프로젝트",
+      "verifiable": false
+    },
+    {
+      "id": "PR-MONITOR",
+      "name": "환경 지표 추세표",
+      "kind": "프로젝트",
+      "verifiable": false
+    },
+    {
+      "id": "PR-RESOURCES",
+      "name": "지역 자원 안내 지도",
+      "kind": "프로젝트",
+      "verifiable": false
+    },
+    {
+      "id": "PR-RUNSHEET",
+      "name": "공연 운영 큐시트",
+      "kind": "프로젝트",
+      "verifiable": false
+    },
+    {
+      "id": "PR-IMAGE-RETOUCH",
+      "name": "포토샵 이미지 보정 시트",
+      "kind": "프로젝트",
+      "verifiable": false
+    },
+    {
+      "id": "PR-STORE-OPS",
+      "name": "자사몰 상품 운영 대장",
+      "kind": "프로젝트",
+      "verifiable": false
+    },
+    {
+      "id": "PR-NOTION",
+      "name": "Notion 협업 보드",
+      "kind": "프로젝트",
+      "verifiable": false
+    },
+    {
+      "id": "PR-SHARED-DOCS",
+      "name": "공동 문서 검토·승인 기록",
+      "kind": "프로젝트",
+      "verifiable": false
+    },
+    {
+      "id": "PR-CAM",
+      "name": "CAM 가공 경로 시뮬레이션",
+      "kind": "프로젝트",
+      "verifiable": false
+    },
+    {
+      "id": "PR-MARKET-RESEARCH",
+      "name": "경쟁 제품 시장조사표",
+      "kind": "프로젝트",
+      "verifiable": false
+    },
+    {
+      "id": "PR-TEAM-HANDOFF",
+      "name": "팀 업무 인수인계서",
+      "kind": "프로젝트",
+      "verifiable": false
+    },
+    {
+      "id": "PR-STAKEHOLDER",
+      "name": "이해관계자 소통 계획표",
+      "kind": "프로젝트",
+      "verifiable": false
+    },
+    {
+      "id": "PR-EVENT-OPS",
+      "name": "공간 운영 점검표",
+      "kind": "프로젝트",
+      "verifiable": false
+    },
+    {
+      "id": "PR-FRONT-DESK",
+      "name": "프런트데스크 응대 매뉴얼",
+      "kind": "프로젝트",
+      "verifiable": false
+    },
+    {
+      "id": "PR-SEARCH-LOG",
+      "name": "의학 문헌 검색식·검색 기록",
+      "kind": "프로젝트",
+      "verifiable": false
+    },
+    {
+      "id": "PR-EVIDENCE-APPRAISAL",
+      "name": "연구 근거 평가표",
+      "kind": "프로젝트",
+      "verifiable": false
+    },
+    {
+      "id": "PR-SCIENCE-BRIEF",
+      "name": "비전공자용 과학 해설문",
+      "kind": "프로젝트",
+      "verifiable": false
+    },
+    {
+      "id": "PR-FOREIGN-CALL",
+      "name": "외국어 업무 대화 녹음",
+      "kind": "프로젝트",
+      "verifiable": false
+    },
+    {
+      "id": "PR-EN-READING",
+      "name": "영문 자료 독해 주석본",
+      "kind": "프로젝트",
+      "verifiable": false
+    },
+    {
+      "id": "PR-WORD-TEMPLATE",
+      "name": "Word 업무 문서 서식",
+      "kind": "프로젝트",
+      "verifiable": false
+    },
+    {
+      "id": "PR-FIELD-EXPERIENCE",
+      "name": "직무 현장경험 기록",
+      "kind": "프로젝트",
+      "verifiable": false
+    },
+    {
+      "id": "ACT-cuk-ai-camp-273142",
+      "name": "AI활용 자기소개서 완성 취업캠프",
+      "kind": "경험",
+      "verifiable": false,
+      "officialUrl": "https://www.catholic.ac.kr/ko/campuslife/notice.do?articleNo=273142&mode=view"
+    },
+    {
+      "id": "ACT-cuk-ai-hackathon-277246",
+      "name": "2026 AI 융합 해커톤 추가모집",
+      "kind": "경험",
+      "verifiable": false,
+      "officialUrl": "https://business.catholic.ac.kr/business/community/notice.do?articleNo=277246&mode=view"
+    },
+    {
+      "id": "ACT-cuk-ai-startup-277825",
+      "name": "2026 CUK AI Startup Challenge AI 융합 창업경진대회",
+      "kind": "경험",
+      "verifiable": false,
+      "officialUrl": "https://business.catholic.ac.kr/business/community/notice.do?article.offset=0&articleLimit=10&articleNo=277825&mode=view"
+    },
+    {
+      "id": "ACT-cuk-bootcamp-277842",
+      "name": "2026학년도 동계 직무 부트캠프",
+      "kind": "경험",
+      "verifiable": false,
+      "officialUrl": "https://www.catholic.ac.kr/ko/campuslife/notice.do?articleNo=277842&mode=view"
+    },
+    {
+      "id": "ACT-cuk-enterprise-276247",
+      "name": "경기도 강소기업 발굴 공모전",
+      "kind": "경험",
+      "verifiable": false,
+      "officialUrl": "https://www.catholic.ac.kr/ko/campuslife/notice.do?articleNo=276247&mode=view"
+    },
+    {
+      "id": "ACT-cuk-hult-277684",
+      "name": "2026학년도 가톨릭대학교 글로벌 창업경진대회",
+      "kind": "경험",
+      "verifiable": false,
+      "officialUrl": "https://www.catholic.ac.kr/ko/campuslife/notice.do?article.offset=0&articleLimit=10&articleNo=277684&mode=view"
+    },
+    {
+      "id": "ACT-cuk-lunch-277848",
+      "name": "11월 수요 커리어 런치 챗 기업리스트 만들기",
+      "kind": "경험",
+      "verifiable": false,
+      "officialUrl": "https://www.catholic.ac.kr/ko/campuslife/notice.do?articleNo=277848&mode=view"
+    },
+    {
+      "id": "ACT-cuk-python-273043",
+      "name": "AI를 활용한 파이썬 데이터분석 실습 6차",
+      "kind": "경험",
+      "verifiable": false,
+      "officialUrl": "https://www.catholic.ac.kr/ko/campuslife/notice.do?articleNo=273043&mode=view"
+    },
+    {
+      "id": "ACT-cuk-r-267403",
+      "name": "CALL 11차 R프로그램 기초",
+      "kind": "경험",
+      "verifiable": false,
+      "officialUrl": "https://www.catholic.ac.kr/ko/campuslife/notice.do?articleNo=267403&mode=view"
+    },
+    {
+      "id": "ACT-cuk-tax-277410",
+      "name": "세무사 준비 과정·업무 취업특강",
+      "kind": "경험",
+      "verifiable": false,
+      "officialUrl": "https://accounting.catholic.ac.kr/accounting/community/notice.do?articleNo=277410&mode=view"
+    },
+    {
       "id": "SK-TOEIC",
       "name": "TOEIC",
       "kind": "어학",
       "verifiable": true,
       "officialUrl": "https://exam.toeic.co.kr/"
+    },
+    {
+      "id": "SK-TOEIC-SPEAKING",
+      "name": "TOEIC Speaking",
+      "kind": "어학",
+      "verifiable": true
+    },
+    {
+      "id": "SK-FINANCE-MANAGER",
+      "name": "재경관리사",
+      "kind": "자격증",
+      "verifiable": true
+    },
+    {
+      "id": "SK-NURSING-LICENSE",
+      "name": "간호사 면허",
+      "kind": "자격증",
+      "verifiable": true
+    },
+    {
+      "id": "SK-CHILDCARE-2",
+      "name": "보육교사 2급",
+      "kind": "자격증",
+      "verifiable": true
+    },
+    {
+      "id": "SK-KOREAN-TEACHER-2",
+      "name": "한국어교원 2급",
+      "kind": "자격증",
+      "verifiable": true
     },
     {
       "id": "SK-OPIC",
@@ -3510,6 +4072,74 @@
       "name": "기획서·발표",
       "kind": "역량",
       "verifiable": false
+    },
+    {
+      "id": "SK-SQL-PROJECT",
+      "name": "SQL 분석 쿼리와 결과표",
+      "kind": "프로젝트",
+      "verifiable": false
+    },
+    {
+      "id": "SK-ANALYSIS-REPORT",
+      "name": "데이터 분석 보고서",
+      "kind": "프로젝트",
+      "verifiable": false
+    },
+    {
+      "id": "SK-PRESENTATION-SAMPLE",
+      "name": "발표 자료",
+      "kind": "프로젝트",
+      "verifiable": false
+    },
+    {
+      "id": "SK-PROPOSAL",
+      "name": "기획서·제안서 작성",
+      "kind": "프로젝트",
+      "verifiable": false
+    },
+    {
+      "id": "SK-WRITING-SAMPLE",
+      "name": "글쓰기 작업물",
+      "kind": "프로젝트",
+      "verifiable": false
+    },
+    {
+      "id": "SK-CAD-DRAWING",
+      "name": "CAD 도면",
+      "kind": "프로젝트",
+      "verifiable": false
+    },
+    {
+      "id": "SK-BRIEF",
+      "name": "업무 보고서",
+      "kind": "프로젝트",
+      "verifiable": false
+    },
+    {
+      "id": "SK-SPREADSHEET",
+      "name": "엑셀 분석표",
+      "kind": "프로젝트",
+      "verifiable": false
+    },
+    {
+      "id": "SK-HYGIENIST",
+      "name": "위생사",
+      "kind": "자격증",
+      "verifiable": true
+    },
+    {
+      "id": "SK-FOOD-ENGINEER",
+      "name": "식품기사",
+      "kind": "자격증",
+      "verifiable": true,
+      "officialUrl": "https://www.q-net.or.kr/"
+    },
+    {
+      "id": "SK-FOOD-INDUSTRIAL",
+      "name": "식품산업기사",
+      "kind": "자격증",
+      "verifiable": true,
+      "officialUrl": "https://www.q-net.or.kr/"
     },
     {
       "id": "SK-PY-01",
@@ -3879,6 +4509,21 @@
       "min": 10,
       "max": 990
     },
+    "SK-TOEIC-SPEAKING": {
+      "grades": [
+        "NL",
+        "NM",
+        "NH",
+        "IL",
+        "IM1",
+        "IM2",
+        "IM3",
+        "IH",
+        "AL",
+        "AM",
+        "AH"
+      ]
+    },
     "SK-OPIC": {
       "grades": [
         "NL",
@@ -3956,5 +4601,24 @@
         "1급"
       ]
     }
+  },
+  "postingProjectPatterns": {
+    "PR-IMAGE-RETOUCH": "포토샵|Photoshop",
+    "PR-STORE-OPS": "자사몰\\s*운영",
+    "PR-NOTION": "(?<![A-Za-z])Notion(?![A-Za-z])|노션",
+    "PR-SHARED-DOCS": "G[ -]?Suite|Google\\s+Workspace|구글\\s*워크스페이스",
+    "PR-CAM": "CAD\\s*/\\s*CAM|(?<![A-Za-z])CAM\\s*프로그램",
+    "PR-MARKET-RESEARCH": "통계\\s*분석\\s*[·ㆍ]\\s*리서치|시장\\s*조사\\s*(?:능력|역량|경험)",
+    "PR-TEAM-HANDOFF": "커뮤니케이션\\s*및\\s*협업\\s*능력|업무\\s*인수인계\\s*경험",
+    "PR-STAKEHOLDER": "이해관계자\\s*관리",
+    "PR-EVENT-OPS": "공간\\s*운영\\s*및\\s*기획|공간\\s*운영\\s*경험",
+    "PR-FRONT-DESK": "프[론런]트\\s*데스크.{0,10}경험",
+    "PR-SEARCH-LOG": "PubMed|Embase|Cochrane\\s+Library",
+    "PR-EVIDENCE-APPRAISAL": "근거\\s*평가.{0,12}문헌\\s*해석",
+    "PR-SCIENCE-BRIEF": "과학적\\s*글쓰기|과학적\\s*데이터를.{0,28}비즈니스",
+    "PR-FOREIGN-CALL": "(?:영어|일본어|중국어|독일어|베트남어)\\s*(?:가능자|능통자)|Fluency\\s+in\\s+English|English\\s+communication\\s+skill",
+    "PR-EN-READING": "영어\\s*독해\\s*(?:가능|역량|능력)",
+    "PR-WORD-TEMPLATE": "워드\\s*프로세서|워드\\s*및\\s*파워포인트|(?<![A-Za-z])Word(?![A-Za-z])",
+    "PR-FIELD-EXPERIENCE": "유관업무\\s*경험자\\s*\\(인턴[·ㆍ]알바\\)"
   }
 }

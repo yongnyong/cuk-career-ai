@@ -1,7 +1,7 @@
 import assert from "node:assert/strict";
 import { registerHooks } from "node:module";
 import { test } from "node:test";
-import { buildPersonalizedTree, groupTreeSignals, selectRecommendedQuest } from "../src/lib/skillTree.ts";
+import { groupTreeSignals, selectRecommendedQuest } from "../src/lib/skillTree.ts";
 
 const sql = { skill: "SK-SQL", kind: "역량", required: true, state: "none", locked: false };
 const sqld = { skill: "SK-SQLD", kind: "자격증", required: false, prereq: [sql.skill], state: "none", locked: true };
@@ -11,11 +11,9 @@ const signal = (skillId, id = "posting-1", status = "gap") => ({
   reference: { id, title: id, url: `https://example.org/${id}`, historical: true },
 });
 
-test("chooses relevant branches and takes the SQL prerequisite before SQLD", () => {
+test("selects one relevant next step from the full graph and takes prerequisites first", () => {
   const signals = groupTreeSignals([signal(sqld.skill)]);
-  const tree = buildPersonalizedTree([sql, sqld, adsp], signals, []);
-  assert.deepEqual(tree.map((node) => node.skill), [sql.skill, sqld.skill]);
-  assert.deepEqual(tree[1].prereq, [sql.skill]);
+  const tree = [sql, sqld, adsp];
   const recommended = selectRecommendedQuest(tree, signals, [], new Set());
   assert.equal(recommended.skillId, sql.skill);
   assert.equal(recommended.targetSkill, sqld.skill);
@@ -25,16 +23,7 @@ test("chooses relevant branches and takes the SQL prerequisite before SQLD", () 
   assert.equal(selectRecommendedQuest(afterSql, signals, [], new Set()).skillId, sqld.skill);
 
   const newSignals = groupTreeSignals([signal(adsp.skill, "posting-2")]);
-  assert.deepEqual(buildPersonalizedTree([sql, sqld, adsp], newSignals, []).map((node) => node.skill),
-    [sql.skill, adsp.skill]);
-});
-
-test("retains completed nodes and all prerequisites when selecting up to two branches", () => {
-  const completed = { skill: "SK-PY-01", kind: "교육", required: false, state: "verified", locked: false };
-  const branch = { ...adsp, skill: "another-option" };
-  const signals = groupTreeSignals([signal(sqld.skill), signal(adsp.skill), signal(branch.skill)]);
-  assert.deepEqual(buildPersonalizedTree([sql, sqld, adsp, completed, branch], signals, [])
-    .map((node) => node.skill), [sql.skill, sqld.skill, adsp.skill, completed.skill]);
+  assert.equal(selectRecommendedQuest(tree, newSignals, [], new Set()).skillId, adsp.skill);
 });
 
 test("separates already matched, unconfirmed, and below-target scores", () => {
