@@ -2,6 +2,7 @@ import os
 import tempfile
 
 os.environ["DATABASE_URL"] = "sqlite:///" + os.path.join(tempfile.mkdtemp(), "test.db").replace("\\", "/")
+os.environ["CAREER_DATABASE_URL"] = "sqlite:///" + os.path.join(tempfile.mkdtemp(), "career.db").replace("\\", "/")
 
 from fastapi.testclient import TestClient  # noqa: E402
 

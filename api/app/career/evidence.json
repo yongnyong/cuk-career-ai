@@ -1,0 +1,2212 @@
+{
+  "departments": {
+    "AI의공학과": [
+      "의료기기"
+    ],
+    "IT파이낸스학과": [
+      "핀테크"
+    ],
+    "간호학과": [
+      "간호"
+    ],
+    "경영학과": [
+      "경영·기획",
+      "마케팅",
+      "물류·구매",
+      "보험",
+      "영업",
+      "인사·조직",
+      "회계·세무"
+    ],
+    "경제학과": [
+      "금융",
+      "보험"
+    ],
+    "공간디자인·소비자학과": [
+      "공간디자인"
+    ],
+    "국사학과": [
+      "미디어·콘텐츠",
+      "학예·기록",
+      "행정"
+    ],
+    "국어국문학과": [
+      "미디어·콘텐츠"
+    ],
+    "국제경영학과": [
+      "국제무역"
+    ],
+    "국제학부": [
+      "국제무역"
+    ],
+    "글로벌경영학과": [
+      "국제무역"
+    ],
+    "글로벌미래경영학과": [
+      "경영·기획"
+    ],
+    "데이터사이언스학과": [
+      "수학·통계",
+      "인공지능·데이터",
+      "핀테크"
+    ],
+    "물리학과": [
+      "전자·반도체"
+    ],
+    "미디어기술콘텐츠학과": [
+      "마케팅",
+      "미디어·콘텐츠",
+      "시각·제품디자인"
+    ],
+    "바이오로직스공학부": [
+      "바이오·제약",
+      "약학"
+    ],
+    "바이오메디컬소프트웨어학과": [
+      "의료기기"
+    ],
+    "바이오메디컬화학공학과": [
+      "바이오·제약",
+      "화학·소재"
+    ],
+    "법학과": [
+      "법률"
+    ],
+    "사회복지학과": [
+      "사회복지"
+    ],
+    "사회학과": [
+      "마케팅",
+      "미디어·콘텐츠",
+      "사회조사·연구",
+      "행정"
+    ],
+    "생명공학과": [
+      "바이오·제약"
+    ],
+    "성악과": [
+      "음악·공연"
+    ],
+    "세무회계금융학과": [
+      "금융",
+      "회계·세무"
+    ],
+    "수학과": [
+      "수학·통계"
+    ],
+    "식품영양학과": [
+      "식품·영양"
+    ],
+    "신학과": [
+      "신학·사목"
+    ],
+    "심리학과": [
+      "심리상담",
+      "인사·조직"
+    ],
+    "아동학과": [
+      "아동·보육"
+    ],
+    "약학과": [
+      "약학"
+    ],
+    "에너지환경공학과": [
+      "에너지·환경"
+    ],
+    "영어영문학부": [
+      "영어 전문"
+    ],
+    "예술미디어융합학과": [
+      "미디어·콘텐츠",
+      "시각·제품디자인",
+      "음악·공연"
+    ],
+    "음악과": [
+      "음악·공연"
+    ],
+    "의류학과": [
+      "패션·의류"
+    ],
+    "의생명과학과": [
+      "바이오·제약"
+    ],
+    "의예과": [
+      "의학"
+    ],
+    "의학과": [
+      "의학"
+    ],
+    "인공지능학과": [
+      "인공지능·데이터"
+    ],
+    "일어일본문화학과": [
+      "일본어 전문"
+    ],
+    "정보통신전자공학부": [
+      "전자·반도체",
+      "정보보안·인프라",
+      "제어·설비"
+    ],
+    "중국언어문화학과": [
+      "중국어 전문"
+    ],
+    "철학과": [
+      "경영·기획",
+      "금융",
+      "심리상담"
+    ],
+    "컴퓨터정보공학부": [
+      "소프트웨어 개발",
+      "인공지능·데이터",
+      "정보보안·인프라"
+    ],
+    "특수교육과": [
+      "특수교육"
+    ],
+    "프랑스어문화학과": [
+      "프랑스어 전문"
+    ],
+    "한국어문화학과": [
+      "한국어 전문"
+    ],
+    "행정학과": [
+      "행정"
+    ],
+    "화학과": [
+      "에너지·환경",
+      "화학·소재"
+    ],
+    "회계학과": [
+      "회계·세무"
+    ]
+  },
+  "pathways": [
+    "간호",
+    "경영·기획",
+    "공간디자인",
+    "국제무역",
+    "금융",
+    "마케팅",
+    "물류·구매",
+    "미디어·콘텐츠",
+    "바이오·제약",
+    "법률",
+    "보험",
+    "사회복지",
+    "사회조사·연구",
+    "소프트웨어 개발",
+    "수학·통계",
+    "시각·제품디자인",
+    "식품·영양",
+    "신학·사목",
+    "심리상담",
+    "아동·보육",
+    "약학",
+    "에너지·환경",
+    "영어 전문",
+    "영업",
+    "음악·공연",
+    "의료기기",
+    "의학",
+    "인공지능·데이터",
+    "인사·조직",
+    "일본어 전문",
+    "전자·반도체",
+    "정보보안·인프라",
+    "제어·설비",
+    "중국어 전문",
+    "특수교육",
+    "패션·의류",
+    "프랑스어 전문",
+    "핀테크",
+    "학예·기록",
+    "한국어 전문",
+    "행정",
+    "화학·소재",
+    "회계·세무"
+  ],
+  "aliases": {
+    "toeic": "toeic",
+    "토익": "toeic",
+    "toeic speaking": "toeic speaking",
+    "토스": "toeic speaking",
+    "토익스피킹": "toeic speaking",
+    "jlpt": "jlpt",
+    "sjpt": "sjpt",
+    "재경관리사": "재경관리사",
+    "공인회계사 1차 합격": "공인회계사 1차 합격",
+    "세무사 1차 합격": "세무사 1차 합격",
+    "공인회계사": "공인회계사",
+    "세무사": "세무사",
+    "전산회계 1급": "전산회계 1급",
+    "전산세무 2급": "전산세무 2급",
+    "영양사": "영양사",
+    "위생사": "위생사",
+    "식품기사": "식품기사",
+    "식품산업기사": "식품산업기사",
+    "사회복지사 1급": "사회복지사 1급",
+    "사회복지사 2급": "사회복지사 2급",
+    "정보처리기사": "정보처리기사",
+    "임상심리사 1급": "임상심리사 1급",
+    "임상심리사 2급": "임상심리사 2급",
+    "특수학교 정교사 2급": "특수학교 정교사 2급",
+    "유아특수 정교사 2급": "유아특수 정교사 2급",
+    "보육교사 1급": "보육교사 1급",
+    "한국어교원 1급": "한국어교원 1급",
+    "한국어교원 2급": "한국어교원 2급",
+    "간호사": "간호사",
+    "teps(원문 버전 미지정)": "teps(원문 버전 미지정)",
+    "toefl(원문 버전 미지정)": "toefl(원문 버전 미지정)",
+    "opic": "opic",
+    "보육교사 2급": "보육교사 2급",
+    "의료기기 ra 전문가(등급 미지정)": "의료기기 ra 전문가(등급 미지정)"
+  },
+  "groups": [
+    {
+      "id": "amkor-2026h2:condition:0:0",
+      "role_id": "amkor-2026h2:role:0",
+      "evidence_id": "amkor-2026h2:role:0:evidence",
+      "category": "어학점수",
+      "status": "required",
+      "logic": "any",
+      "human_alternative": null,
+      "note": "YBM 재게시 정보. 기업 원문 재확인 필요.",
+      "role": "구매",
+      "company": "앰코테크놀로지코리아",
+      "role_deadline_date": "2026-07-23",
+      "posting_deadline_date": "2026-07-23",
+      "original_text": "YBM 재게시 정보에서 구매와 물류의 영어 기준이 다르다. 구매는 TOEIC 800 또는 Speaking IH 이상, 물류는 TOEIC 700 또는 Speaking IM3 이상이다. 공통 자격과 성적 유효기간은 기업 원문 확인 대상이다.",
+      "text_type": "summary",
+      "source_url": "https://exam.toeic.co.kr/recruit/recruitView.php?jobsCode=15139",
+      "source_kind": "platform_repost",
+      "verified_on": "2026-11-17",
+      "options": [
+        {
+          "credential": "TOEIC",
+          "kind": "test",
+          "comparator": "gte",
+          "numeric_value": 800.0,
+          "text_value": null
+        },
+        {
+          "credential": "TOEIC Speaking",
+          "kind": "test",
+          "comparator": "grade_gte",
+          "numeric_value": null,
+          "text_value": "IH"
+        }
+      ]
+    },
+    {
+      "id": "amkor-2026h2:condition:1:0",
+      "role_id": "amkor-2026h2:role:1",
+      "evidence_id": "amkor-2026h2:role:1:evidence",
+      "category": "어학점수",
+      "status": "required",
+      "logic": "any",
+      "human_alternative": null,
+      "note": "YBM 재게시 정보. 구매팀과 다른 기준을 적용.",
+      "role": "물류",
+      "company": "앰코테크놀로지코리아",
+      "role_deadline_date": "2026-07-23",
+      "posting_deadline_date": "2026-07-23",
+      "original_text": "YBM 재게시 정보에서 구매와 물류의 영어 기준이 다르다. 구매는 TOEIC 800 또는 Speaking IH 이상, 물류는 TOEIC 700 또는 Speaking IM3 이상이다. 공통 자격과 성적 유효기간은 기업 원문 확인 대상이다.",
+      "text_type": "summary",
+      "source_url": "https://exam.toeic.co.kr/recruit/recruitView.php?jobsCode=15139",
+      "source_kind": "platform_repost",
+      "verified_on": "2026-11-17",
+      "options": [
+        {
+          "credential": "TOEIC",
+          "kind": "test",
+          "comparator": "gte",
+          "numeric_value": 700.0,
+          "text_value": null
+        },
+        {
+          "credential": "TOEIC Speaking",
+          "kind": "test",
+          "comparator": "grade_gte",
+          "numeric_value": null,
+          "text_value": "IM3"
+        }
+      ]
+    },
+    {
+      "id": "asan-nurse-2027extra:condition:0:0",
+      "role_id": "asan-nurse-2027extra:role:0",
+      "evidence_id": "asan-nurse-2027extra:role:0:evidence",
+      "category": "자격증",
+      "status": "required",
+      "logic": "any",
+      "human_alternative": null,
+      "note": "기졸업 면허 보유자 대상. 졸업예정자 전형으로 적용 금지.",
+      "role": "기졸업 신입 간호사",
+      "company": "서울아산병원",
+      "role_deadline_date": "2026-11-16",
+      "posting_deadline_date": "2026-11-16",
+      "original_text": "기졸업 간호사 면허 보유자를 대상으로 영어 점수를 요구한다. 대학 재게시 본문은 TOEIC 700, TEPS 265, TOEFL 80, OPIc IM2, Speaking IM3(130)을 대체 기준으로 안내한다. 병원 원문에서 시험 버전·유효기간을 재확인해야 한다.",
+      "text_type": "summary",
+      "source_url": "https://grad.joongbu.ac.kr/board.es?act=view&bid=0025&list_no=358858&mid=a10504050000",
+      "source_kind": "institutional_repost",
+      "verified_on": "2026-11-17",
+      "options": [
+        {
+          "credential": "간호사",
+          "kind": "certificate",
+          "comparator": "held",
+          "numeric_value": null,
+          "text_value": null
+        }
+      ]
+    },
+    {
+      "id": "asan-nurse-2027extra:condition:0:1",
+      "role_id": "asan-nurse-2027extra:role:0",
+      "evidence_id": "asan-nurse-2027extra:role:0:evidence",
+      "category": "어학점수",
+      "status": "required",
+      "logic": "any",
+      "human_alternative": null,
+      "note": "대학 재게시 근거. TEPS와 TOEFL 시험 버전이 명시되지 않아 기업 원문 확인 필요.",
+      "role": "기졸업 신입 간호사",
+      "company": "서울아산병원",
+      "role_deadline_date": "2026-11-16",
+      "posting_deadline_date": "2026-11-16",
+      "original_text": "기졸업 간호사 면허 보유자를 대상으로 영어 점수를 요구한다. 대학 재게시 본문은 TOEIC 700, TEPS 265, TOEFL 80, OPIc IM2, Speaking IM3(130)을 대체 기준으로 안내한다. 병원 원문에서 시험 버전·유효기간을 재확인해야 한다.",
+      "text_type": "summary",
+      "source_url": "https://grad.joongbu.ac.kr/board.es?act=view&bid=0025&list_no=358858&mid=a10504050000",
+      "source_kind": "institutional_repost",
+      "verified_on": "2026-11-17",
+      "options": [
+        {
+          "credential": "OPIc",
+          "kind": "test",
+          "comparator": "grade_gte",
+          "numeric_value": null,
+          "text_value": "IM2"
+        },
+        {
+          "credential": "TEPS(원문 버전 미지정)",
+          "kind": "test",
+          "comparator": "gte",
+          "numeric_value": 265.0,
+          "text_value": null
+        },
+        {
+          "credential": "TOEFL(원문 버전 미지정)",
+          "kind": "test",
+          "comparator": "gte",
+          "numeric_value": 80.0,
+          "text_value": null
+        },
+        {
+          "credential": "TOEIC",
+          "kind": "test",
+          "comparator": "gte",
+          "numeric_value": 700.0,
+          "text_value": null
+        },
+        {
+          "credential": "TOEIC Speaking",
+          "kind": "test",
+          "comparator": "grade_gte",
+          "numeric_value": null,
+          "text_value": "IM3"
+        }
+      ]
+    },
+    {
+      "id": "bucheon-food-246073:condition:0:0",
+      "role_id": "bucheon-food-246073:role:0",
+      "evidence_id": "bucheon-food-246073:role:0:evidence",
+      "category": "자격증",
+      "status": "required",
+      "logic": "any",
+      "human_alternative": null,
+      "note": "공통 결격사유와 관련 분야 확인 필요.",
+      "role": "급식관리지원센터 팀원",
+      "company": "부천시 어린이·사회복지급식관리지원센터",
+      "role_deadline_date": null,
+      "posting_deadline_date": null,
+      "original_text": "팀원 4명을 채용하며 영양사 면허를 필수로 제시한다. 위생사와 식품기사 또는 식품산업기사를 우대한다. 배치 팀은 채용 후 결정하며 접수 마감일은 별도 확인해야 한다.",
+      "text_type": "summary",
+      "source_url": "https://bc.ac.kr/bcu/pr/notice05.do?articleNo=246073&mode=view",
+      "source_kind": "employer",
+      "verified_on": "2026-11-17",
+      "options": [
+        {
+          "credential": "영양사",
+          "kind": "certificate",
+          "comparator": "held",
+          "numeric_value": null,
+          "text_value": null
+        }
+      ]
+    },
+    {
+      "id": "bucheon-food-246073:condition:0:1",
+      "role_id": "bucheon-food-246073:role:0",
+      "evidence_id": "bucheon-food-246073:role:0:evidence",
+      "category": "자격증",
+      "status": "preferred",
+      "logic": "any",
+      "human_alternative": null,
+      "note": "",
+      "role": "급식관리지원센터 팀원",
+      "company": "부천시 어린이·사회복지급식관리지원센터",
+      "role_deadline_date": null,
+      "posting_deadline_date": null,
+      "original_text": "팀원 4명을 채용하며 영양사 면허를 필수로 제시한다. 위생사와 식품기사 또는 식품산업기사를 우대한다. 배치 팀은 채용 후 결정하며 접수 마감일은 별도 확인해야 한다.",
+      "text_type": "summary",
+      "source_url": "https://bc.ac.kr/bcu/pr/notice05.do?articleNo=246073&mode=view",
+      "source_kind": "employer",
+      "verified_on": "2026-11-17",
+      "options": [
+        {
+          "credential": "식품기사",
+          "kind": "certificate",
+          "comparator": "held",
+          "numeric_value": null,
+          "text_value": null
+        },
+        {
+          "credential": "식품산업기사",
+          "kind": "certificate",
+          "comparator": "held",
+          "numeric_value": null,
+          "text_value": null
+        },
+        {
+          "credential": "위생사",
+          "kind": "certificate",
+          "comparator": "held",
+          "numeric_value": null,
+          "text_value": null
+        }
+      ]
+    },
+    {
+      "id": "chungbuk-child-2026012:condition:0:0",
+      "role_id": "chungbuk-child-2026012:role:0",
+      "evidence_id": "chungbuk-child-2026012:role:0:evidence",
+      "category": "자격증",
+      "status": "preferred",
+      "logic": "any",
+      "human_alternative": null,
+      "note": "상담·심리 학사 또는 상담 자격 등 별도 필수 지원경로 확인. 임상심리사 자격만으로 지원 가능 여부 판정 금지.",
+      "role": "상담전문요원",
+      "company": "충청북도육아종합지원센터",
+      "role_deadline_date": "2026-03-25",
+      "posting_deadline_date": "2026-03-25",
+      "original_text": "상담전문요원은 관련 학사 또는 상담 관련 자격 경로가 있고 임상심리사 2급 이상을 우대한다. 유아특수교사 분야는 교원 자격과 보육교사 경력·교육 경로가 복합적으로 기재돼 있다.",
+      "text_type": "summary",
+      "source_url": "https://chungbuk.childcare.go.kr/ccef/community/common/DownloadBoardFile.jsp?ATCHMNFLSEQ=3&BBSGB=47&BID=214279",
+      "source_kind": "employer",
+      "verified_on": "2026-11-17",
+      "options": [
+        {
+          "credential": "임상심리사 1급",
+          "kind": "certificate",
+          "comparator": "held",
+          "numeric_value": null,
+          "text_value": null
+        },
+        {
+          "credential": "임상심리사 2급",
+          "kind": "certificate",
+          "comparator": "held",
+          "numeric_value": null,
+          "text_value": null
+        }
+      ]
+    },
+    {
+      "id": "chungbuk-child-2026012:condition:1:0",
+      "role_id": "chungbuk-child-2026012:role:1",
+      "evidence_id": "chungbuk-child-2026012:role:1:evidence",
+      "category": "자격증",
+      "status": "required",
+      "logic": "review",
+      "human_alternative": null,
+      "note": "특수교사 자격과 보육교사 경력·장애아 직무교육 경로의 관계를 원문에서 확인해야 함.",
+      "role": "유아특수교사",
+      "company": "충청북도육아종합지원센터",
+      "role_deadline_date": "2026-03-25",
+      "posting_deadline_date": "2026-03-25",
+      "original_text": "상담전문요원은 관련 학사 또는 상담 관련 자격 경로가 있고 임상심리사 2급 이상을 우대한다. 유아특수교사 분야는 교원 자격과 보육교사 경력·교육 경로가 복합적으로 기재돼 있다.",
+      "text_type": "summary",
+      "source_url": "https://chungbuk.childcare.go.kr/ccef/community/common/DownloadBoardFile.jsp?ATCHMNFLSEQ=3&BBSGB=47&BID=214279",
+      "source_kind": "employer",
+      "verified_on": "2026-11-17",
+      "options": [
+        {
+          "credential": "보육교사 1급",
+          "kind": "certificate",
+          "comparator": "held",
+          "numeric_value": null,
+          "text_value": null
+        },
+        {
+          "credential": "유아특수 정교사 2급",
+          "kind": "certificate",
+          "comparator": "held",
+          "numeric_value": null,
+          "text_value": null
+        },
+        {
+          "credential": "특수학교 정교사 2급",
+          "kind": "certificate",
+          "comparator": "held",
+          "numeric_value": null,
+          "text_value": null
+        }
+      ]
+    },
+    {
+      "id": "cj-2026h2:condition:0:0",
+      "role_id": "cj-2026h2:role:0",
+      "evidence_id": "cj-2026h2:role:0:evidence",
+      "category": "어학점수",
+      "status": "required",
+      "logic": "any",
+      "human_alternative": null,
+      "note": "구매 직무 한정. YBM 재게시이며 기업 원문 재확인 필요.",
+      "role": "경영지원 구매",
+      "company": "CJ제일제당",
+      "role_deadline_date": "2026-09-30",
+      "posting_deadline_date": "2026-09-30",
+      "original_text": "YBM 재게시 정보의 경영지원 인사·구매 항목은 Speaking AL 이상을 제시한다. 이를 재경 등 다른 경영지원 모집분야에 확장 적용하지 않는다. 공통 요건과 성적 유효기간은 기업 원문 확인 대상이다.",
+      "text_type": "summary",
+      "source_url": "https://m.toeic.co.kr/recruit/recruitView.php?jobsCode=15496&myJob=&prev=&selectDate=",
+      "source_kind": "platform_repost",
+      "verified_on": "2026-11-17",
+      "options": [
+        {
+          "credential": "TOEIC Speaking",
+          "kind": "test",
+          "comparator": "grade_gte",
+          "numeric_value": null,
+          "text_value": "AL"
+        }
+      ]
+    },
+    {
+      "id": "cuk-staff-270342:condition:0:0",
+      "role_id": "cuk-staff-270342:role:0",
+      "evidence_id": "cuk-staff-270342:role:0:evidence",
+      "category": "자격증",
+      "status": "preferred",
+      "logic": "any",
+      "human_alternative": null,
+      "note": "명시된 자격의 일부를 구조화. 원문은 관련 자격과 경력도 우대한다.",
+      "role": "일반직 회계",
+      "company": "가톨릭대학교",
+      "role_deadline_date": "2026-04-22",
+      "posting_deadline_date": "2026-04-22",
+      "original_text": "회계 분야에서 재무·회계 경력 및 관련 자격을 우대하며 회계사와 세무사를 명시한다. 컴퓨터 활용능력도 우대한다. 공통 자격기준과 다른 분야 조건은 원문을 확인해야 한다.",
+      "text_type": "summary",
+      "source_url": "https://www.catholic.ac.kr/ko/service/Job-posting.do?article.offset=30&articleLimit=10&articleNo=270342&mode=view",
+      "source_kind": "employer",
+      "verified_on": "2026-11-17",
+      "options": [
+        {
+          "credential": "공인회계사",
+          "kind": "certificate",
+          "comparator": "held",
+          "numeric_value": null,
+          "text_value": null
+        },
+        {
+          "credential": "세무사",
+          "kind": "certificate",
+          "comparator": "held",
+          "numeric_value": null,
+          "text_value": null
+        }
+      ]
+    },
+    {
+      "id": "gwanak-social-202610:condition:0:0",
+      "role_id": "gwanak-social-202610:role:0",
+      "evidence_id": "gwanak-social-202610:role:0:evidence",
+      "category": "자격증",
+      "status": "required",
+      "logic": "any",
+      "human_alternative": null,
+      "note": "사회복지 전공 학위와 결격사유를 함께 확인. 자격 조건만 구조화.",
+      "role": "사례지원 사회복지사",
+      "company": "관악구장애인종합복지관",
+      "role_deadline_date": "2026-11-10",
+      "posting_deadline_date": "2026-11-10",
+      "original_text": "사회복지사 2급 이상과 4년제 대학 사회복지 전공을 요구한다. 사례관리 경력은 우대다. 11월 10일 오후 5시 도착 마감이며 날짜와 요일 표기가 달라 날짜 기준을 보존했다.",
+      "text_type": "summary",
+      "source_url": "https://www.work24.go.kr/wk/a/b/1500/empDetailAuthView.do?infoTypeCd=VALIDATION&infoTypeGroup=tb_workinfoworknet&wantedAuthNo=K120612610270015",
+      "source_kind": "public_portal",
+      "verified_on": "2026-11-17",
+      "options": [
+        {
+          "credential": "사회복지사 1급",
+          "kind": "certificate",
+          "comparator": "held",
+          "numeric_value": null,
+          "text_value": null
+        },
+        {
+          "credential": "사회복지사 2급",
+          "kind": "certificate",
+          "comparator": "held",
+          "numeric_value": null,
+          "text_value": null
+        }
+      ]
+    },
+    {
+      "id": "hanshin-korean-202602:condition:0:0",
+      "role_id": "hanshin-korean-202602:role:0",
+      "evidence_id": "hanshin-korean-202602:role:0:evidence",
+      "category": "자격증",
+      "status": "required",
+      "logic": "any",
+      "human_alternative": null,
+      "note": "대졸 이상 학력과 공통 결격사유 확인 필요.",
+      "role": "한국어학당 교원",
+      "company": "한신대학교 국제교류원",
+      "role_deadline_date": "2026-02-20",
+      "posting_deadline_date": "2026-02-20",
+      "original_text": "한국어교원 1급 또는 2급과 대졸 이상 학력을 요구한다. 석사와 대학 한국어교육·외국인지도 경력은 우대다. 지원은 2월 20일 13시까지다.",
+      "text_type": "summary",
+      "source_url": "https://www.hs.ac.kr/bbs/kor/24/64536/download.do",
+      "source_kind": "employer",
+      "verified_on": "2026-11-17",
+      "options": [
+        {
+          "credential": "한국어교원 1급",
+          "kind": "certificate",
+          "comparator": "held",
+          "numeric_value": null,
+          "text_value": null
+        },
+        {
+          "credential": "한국어교원 2급",
+          "kind": "certificate",
+          "comparator": "held",
+          "numeric_value": null,
+          "text_value": null
+        }
+      ]
+    },
+    {
+      "id": "hyundai-greenfood-2026h2:condition:0:0",
+      "role_id": "hyundai-greenfood-2026h2:role:0",
+      "evidence_id": "hyundai-greenfood-2026h2:role:0:evidence",
+      "category": "자격증",
+      "status": "required",
+      "logic": "any",
+      "human_alternative": "면허 취득예정도 허용하므로 미보유만으로 미충족 단정 금지",
+      "note": "관련 졸업 요건과 해외여행 결격 여부도 확인. 면허 취득예정자 허용.",
+      "role": "신입영양사",
+      "company": "현대그린푸드",
+      "role_deadline_date": "2026-10-06",
+      "posting_deadline_date": "2026-10-06",
+      "original_text": "기졸업 또는 2027년 2월 졸업예정 영양사를 모집하며 면허 취득예정자도 허용한다. 조리기능사·위생사 등 식품 관련 자격을 우대한다. 신체검사와 약 9주 현장실습 등 전형을 거친다.",
+      "text_type": "summary",
+      "source_url": "https://recruit.ehyundai.com/recruit-info/announcement/view.nhd?hireId=2026568",
+      "source_kind": "employer",
+      "verified_on": "2026-11-17",
+      "options": [
+        {
+          "credential": "영양사",
+          "kind": "certificate",
+          "comparator": "held",
+          "numeric_value": null,
+          "text_value": null
+        }
+      ]
+    },
+    {
+      "id": "hyundai-greenfood-2026h2:condition:0:1",
+      "role_id": "hyundai-greenfood-2026h2:role:0",
+      "evidence_id": "hyundai-greenfood-2026h2:role:0:evidence",
+      "category": "자격증",
+      "status": "preferred",
+      "logic": "any",
+      "human_alternative": null,
+      "note": "명시된 식품 관련 우대자격의 일부. 조리기능사 및 기타 식품 자격도 원문 확인.",
+      "role": "신입영양사",
+      "company": "현대그린푸드",
+      "role_deadline_date": "2026-10-06",
+      "posting_deadline_date": "2026-10-06",
+      "original_text": "기졸업 또는 2027년 2월 졸업예정 영양사를 모집하며 면허 취득예정자도 허용한다. 조리기능사·위생사 등 식품 관련 자격을 우대한다. 신체검사와 약 9주 현장실습 등 전형을 거친다.",
+      "text_type": "summary",
+      "source_url": "https://recruit.ehyundai.com/recruit-info/announcement/view.nhd?hireId=2026568",
+      "source_kind": "employer",
+      "verified_on": "2026-11-17",
+      "options": [
+        {
+          "credential": "위생사",
+          "kind": "certificate",
+          "comparator": "held",
+          "numeric_value": null,
+          "text_value": null
+        }
+      ]
+    },
+    {
+      "id": "kai-2026h2:condition:0:0",
+      "role_id": "kai-2026h2:role:0",
+      "evidence_id": "kai-2026h2:role:0:evidence",
+      "category": "어학점수",
+      "status": "required",
+      "logic": "any",
+      "human_alternative": null,
+      "note": "YBM 재게시 정보 확인. 기업 원문 재확인 필요. Speaking 등급은 점수로 임의 환산하지 않음.",
+      "role": "구매",
+      "company": "한국항공우주산업",
+      "role_deadline_date": "2026-09-21",
+      "posting_deadline_date": "2026-09-21",
+      "original_text": "YBM이 재게시한 기업 채용정보에서 구매·사업·경영에는 TOEIC 815 또는 Speaking IM3 이상을 요구한다. 다른 직무에 제시된 720·IM2 기준과 구별한다. 기업 원문에서 유효기간과 공통 자격을 재확인해야 한다.",
+      "text_type": "summary",
+      "source_url": "https://exam.toeic.co.kr/recruit/recruitView.php?jobsCode=15346",
+      "source_kind": "platform_repost",
+      "verified_on": "2026-11-17",
+      "options": [
+        {
+          "credential": "TOEIC",
+          "kind": "test",
+          "comparator": "gte",
+          "numeric_value": 815.0,
+          "text_value": null
+        },
+        {
+          "credential": "TOEIC Speaking",
+          "kind": "test",
+          "comparator": "grade_gte",
+          "numeric_value": null,
+          "text_value": "IM3"
+        }
+      ]
+    },
+    {
+      "id": "kau-research-202601:condition:0:0",
+      "role_id": "kau-research-202601:role:0",
+      "evidence_id": "kau-research-202601:role:0:evidence",
+      "category": "어학점수",
+      "status": "required",
+      "logic": "any",
+      "human_alternative": null,
+      "note": "2026-01-22 기준 최근 2년 성적. 다른 공인시험은 본교 내부 환산표 확인.",
+      "role": "연구행정직 구매·연구행정",
+      "company": "한국항공대학교 산학협력단",
+      "role_deadline_date": "2026-02-08",
+      "posting_deadline_date": "2026-02-08",
+      "original_text": "구매 등을 담당할 연구행정직은 TOEIC 700 또는 Speaking 110 이상을 제시한다. 2026년 1월 22일 기준 최근 2년 성적을 인정하며 다른 시험은 내부 환산을 적용한다. 학사 학위 등 공통 자격도 있다.",
+      "text_type": "summary",
+      "source_url": "https://kau.ac.kr/upfile/2026/01/21/20260121093020-7397.pdf",
+      "source_kind": "employer",
+      "verified_on": "2026-11-17",
+      "options": [
+        {
+          "credential": "TOEIC",
+          "kind": "test",
+          "comparator": "gte",
+          "numeric_value": 700.0,
+          "text_value": null
+        },
+        {
+          "credential": "TOEIC Speaking",
+          "kind": "test",
+          "comparator": "gte",
+          "numeric_value": 110.0,
+          "text_value": null
+        }
+      ]
+    },
+    {
+      "id": "nids-2026001:condition:0:0",
+      "role_id": "nids-2026001:role:0",
+      "evidence_id": "nids-2026001:role:0:evidence",
+      "category": "자격증",
+      "status": "preferred",
+      "logic": "review",
+      "human_alternative": null,
+      "note": "원문이 급수를 특정하지 않음. 응시 직급별 공통 자격과 함께 확인.",
+      "role": "의료기기 교육 기획·운영 5급",
+      "company": "한국의료기기안전정보원",
+      "role_deadline_date": "2026-01-23",
+      "posting_deadline_date": "2026-01-23",
+      "original_text": "5급 의료기기 교육 기획·운영과 6급 의료기기 인증·갱신·품질심사 분야에서 RA 자격을 우대한다. 공고가 자격 급수를 특정하지 않아 정확한 인정범위는 추가 확인 대상이다.",
+      "text_type": "summary",
+      "source_url": "https://www.alio.go.kr/download/download.json?fileNo=3019018",
+      "source_kind": "employer",
+      "verified_on": "2026-11-17",
+      "options": [
+        {
+          "credential": "의료기기 RA 전문가(등급 미지정)",
+          "kind": "certificate",
+          "comparator": "held",
+          "numeric_value": null,
+          "text_value": null
+        }
+      ]
+    },
+    {
+      "id": "nids-2026001:condition:1:0",
+      "role_id": "nids-2026001:role:1",
+      "evidence_id": "nids-2026001:role:1:evidence",
+      "category": "자격증",
+      "status": "preferred",
+      "logic": "review",
+      "human_alternative": null,
+      "note": "원문이 급수를 특정하지 않음. 응시 직급별 공통 자격과 함께 확인.",
+      "role": "의료기기 인증·갱신·품질심사 6급",
+      "company": "한국의료기기안전정보원",
+      "role_deadline_date": "2026-01-23",
+      "posting_deadline_date": "2026-01-23",
+      "original_text": "5급 의료기기 교육 기획·운영과 6급 의료기기 인증·갱신·품질심사 분야에서 RA 자격을 우대한다. 공고가 자격 급수를 특정하지 않아 정확한 인정범위는 추가 확인 대상이다.",
+      "text_type": "summary",
+      "source_url": "https://www.alio.go.kr/download/download.json?fileNo=3019018",
+      "source_kind": "employer",
+      "verified_on": "2026-11-17",
+      "options": [
+        {
+          "credential": "의료기기 RA 전문가(등급 미지정)",
+          "kind": "certificate",
+          "comparator": "held",
+          "numeric_value": null,
+          "text_value": null
+        }
+      ]
+    },
+    {
+      "id": "nmc-it-2026029:condition:0:0",
+      "role_id": "nmc-it-2026029:role:0",
+      "evidence_id": "nmc-it-2026029:role:0:evidence",
+      "category": "자격증",
+      "status": "required",
+      "logic": "any",
+      "human_alternative": null,
+      "note": "서류정량에 직무관련 전공과목 성적·영어성적·자격 평가도 있어 원문 기준을 함께 확인.",
+      "role": "모자의료지원팀 전산행정",
+      "company": "국립중앙의료원",
+      "role_deadline_date": "2026-01-26",
+      "posting_deadline_date": "2026-01-26",
+      "original_text": "모자의료 정보시스템의 구축·운영을 담당할 전산행정 계약직에 정보처리기사를 필수로 제시한다. 웹 개발·사업관리·EMR 개발 경력은 우대다. 마감은 1월 26일 오전 10시다.",
+      "text_type": "summary",
+      "source_url": "https://www.alio.go.kr/download/download.json?fileNo=3018737",
+      "source_kind": "employer",
+      "verified_on": "2026-11-17",
+      "options": [
+        {
+          "credential": "정보처리기사",
+          "kind": "certificate",
+          "comparator": "held",
+          "numeric_value": null,
+          "text_value": null
+        }
+      ]
+    },
+    {
+      "id": "pohang-anchor-202611:condition:0:0",
+      "role_id": "pohang-anchor-202611:role:0",
+      "evidence_id": "pohang-anchor-202611:role:0:evidence",
+      "category": "자격증",
+      "status": "preferred",
+      "logic": "review",
+      "human_alternative": null,
+      "note": "원문의 자격 사이 AND/OR 관계가 불명확하여 자동 충족 판정 보류.",
+      "role": "앵커사업단 회계",
+      "company": "포항대학교 산학협력단",
+      "role_deadline_date": "2026-11-18",
+      "posting_deadline_date": "2026-11-18",
+      "original_text": "회계 담당 계약직 1명을 모집한다. 전산회계 1급과 전산세무 2급 이상을 우대 항목에 제시하지만 두 자격 간 선택·동시 보유 관계는 명확하지 않다. 공통 학력과 업무 가능 여부도 확인해야 한다.",
+      "text_type": "summary",
+      "source_url": "https://www.pohang.ac.kr/main/board/boardFile/download/F82RuJaOjG6/2905/0/3.do",
+      "source_kind": "employer",
+      "verified_on": "2026-11-17",
+      "options": [
+        {
+          "credential": "전산세무 2급",
+          "kind": "certificate",
+          "comparator": "held",
+          "numeric_value": null,
+          "text_value": null
+        },
+        {
+          "credential": "전산회계 1급",
+          "kind": "certificate",
+          "comparator": "held",
+          "numeric_value": null,
+          "text_value": null
+        }
+      ]
+    },
+    {
+      "id": "seoul-daycare-202609:condition:0:0",
+      "role_id": "seoul-daycare-202609:role:0",
+      "evidence_id": "seoul-daycare-202609:role:0:evidence",
+      "category": "자격증",
+      "status": "required",
+      "logic": "any",
+      "human_alternative": null,
+      "note": "공통 결격사유와 근무 가능 시간 확인 필요.",
+      "role": "보조교사·연장전담교사",
+      "company": "서울시청직장어린이집",
+      "role_deadline_date": "2026-09-18",
+      "posting_deadline_date": "2026-09-18",
+      "original_text": "보조교사 및 연장전담교사 계약직 1명을 모집하며 보육교사 2급 이상 자격을 요구한다. 9월 18일까지 접수하고 10월 1일부터 근무한다.",
+      "text_type": "summary",
+      "source_url": "https://www.seoul.go.kr/news/news_employ.do?nttNo=465147",
+      "source_kind": "employer",
+      "verified_on": "2026-11-17",
+      "options": [
+        {
+          "credential": "보육교사 1급",
+          "kind": "certificate",
+          "comparator": "held",
+          "numeric_value": null,
+          "text_value": null
+        },
+        {
+          "credential": "보육교사 2급",
+          "kind": "certificate",
+          "comparator": "held",
+          "numeric_value": null,
+          "text_value": null
+        }
+      ]
+    },
+    {
+      "id": "standard:구매1팀",
+      "role_id": "role:8c6722c085be860b4c8f",
+      "evidence_id": "legacy-evidence:001",
+      "category": "어학점수",
+      "status": "required",
+      "logic": "any",
+      "human_alternative": "다른 공인시험 환산, 유학·어학연수 등 경험의 대체 인정은 채용 담당자 확인 필요",
+      "note": "조건 일부의 충족 판정. 전 공고 지원자격 충족을 의미하지 않음. 유효 성적 여부 확인 필요.",
+      "role": "구매1팀",
+      "company": "스탠다드인터내셔널 주식회사",
+      "role_deadline_date": null,
+      "posting_deadline_date": "2026-11-12",
+      "original_text": "- 군필자 (남자의 경우) - 영어 어학 능력 우수자 - TOEIC 850점 이상 또는 TOEIC Speaking 150점 이상 등 영어 어학 성적 우수자 (그 외 공인 어학 시험의 경우 환산 점수 기재) (어학 점수 미달이어도 유학, 어학연수 등 대체 가능한 경우)",
+      "text_type": "extracted",
+      "source_url": "https://career.catholic.ac.kr/Upload/File/Recruit/20261030161911_5ji3v9_[스탠다드인터내셔널(주)]_구매1팀(안산).pdf",
+      "source_kind": "unknown",
+      "verified_on": "2026-11-17",
+      "options": [
+        {
+          "credential": "TOEIC",
+          "kind": "test",
+          "comparator": "gte",
+          "numeric_value": 850.0,
+          "text_value": null
+        },
+        {
+          "credential": "TOEIC Speaking",
+          "kind": "test",
+          "comparator": "gte",
+          "numeric_value": 150.0,
+          "text_value": null
+        }
+      ]
+    },
+    {
+      "id": "standard:구매2팀",
+      "role_id": "role:dc382e29c19dca4adf60",
+      "evidence_id": "legacy-evidence:006",
+      "category": "어학점수",
+      "status": "required",
+      "logic": "any",
+      "human_alternative": "다른 공인시험 환산, 유학·어학연수 등 경험의 대체 인정은 채용 담당자 확인 필요",
+      "note": "조건 일부의 충족 판정. 전 공고 지원자격 충족을 의미하지 않음. 유효 성적 여부 확인 필요.",
+      "role": "구매2팀",
+      "company": "스탠다드인터내셔널 주식회사",
+      "role_deadline_date": null,
+      "posting_deadline_date": "2026-11-12",
+      "original_text": "- 군필자 (남자의 경우) - 일본어 어학 능력 우수자 - JLPT N1 또는 SJPT 레벨8 이상 등 일본어 어학 성적 우수자 (그 외 공인 어학 시험의 경우 환산 점수 기재) (어학 점수 미달이어도 유학, 어학연수 등 대체 가능한 경우)",
+      "text_type": "extracted",
+      "source_url": "https://career.catholic.ac.kr/Upload/File/Recruit/20261030161911_ad1901_[스탠다드인터내셔널(주)]_구매2팀(강남).pdf",
+      "source_kind": "unknown",
+      "verified_on": "2026-11-17",
+      "options": [
+        {
+          "credential": "JLPT",
+          "kind": "test",
+          "comparator": "eq",
+          "numeric_value": null,
+          "text_value": "N1"
+        },
+        {
+          "credential": "SJPT",
+          "kind": "test",
+          "comparator": "gte",
+          "numeric_value": 8.0,
+          "text_value": null
+        }
+      ]
+    },
+    {
+      "id": "standard:재무팀",
+      "role_id": "role:adec62bfbf132e9a2027",
+      "evidence_id": "legacy-evidence:011",
+      "category": "자격증",
+      "status": "required",
+      "logic": "any",
+      "human_alternative": "그 외 재무·회계 자격의 인정 범위는 담당자 확인 필요",
+      "note": "등으로 기재된 비완전 목록",
+      "role": "재무팀",
+      "company": "스탠다드인터내셔널 주식회사",
+      "role_deadline_date": null,
+      "posting_deadline_date": "2026-11-12",
+      "original_text": "3,500만원 + 연 4회 성과금 지급 지원자격 [자격 요건] - 재경관리사, 회계사·세무사 1차 합격 등 재무/회계 자격증 보유자 전형절차 - 대졸 4년제 학사 이상(졸업예정자 가능) 제출서류 - 관련 학과 전공 우대 - 군필자 (남자의 경우)",
+      "text_type": "extracted",
+      "source_url": "https://career.catholic.ac.kr/Upload/File/Recruit/20261030161911_z7xqlz_[스탠다드인터내셔널(주)]_재무팀(강남).pdf",
+      "source_kind": "unknown",
+      "verified_on": "2026-11-17",
+      "options": [
+        {
+          "credential": "공인회계사 1차 합격",
+          "kind": "exam_stage",
+          "comparator": "held",
+          "numeric_value": null,
+          "text_value": null
+        },
+        {
+          "credential": "세무사 1차 합격",
+          "kind": "exam_stage",
+          "comparator": "held",
+          "numeric_value": null,
+          "text_value": null
+        },
+        {
+          "credential": "재경관리사",
+          "kind": "certificate",
+          "comparator": "held",
+          "numeric_value": null,
+          "text_value": null
+        }
+      ]
+    },
+    {
+      "id": "suwon-food-2026004:condition:0:0",
+      "role_id": "suwon-food-2026004:role:0",
+      "evidence_id": "suwon-food-2026004:role:0:evidence",
+      "category": "자격증",
+      "status": "required",
+      "logic": "any",
+      "human_alternative": null,
+      "note": "공고의 또는 관계를 유지. 학력·경력 등 다른 요건은 원문 확인.",
+      "role": "육아휴직 대체 팀원",
+      "company": "수원시 어린이·사회복지급식관리지원센터",
+      "role_deadline_date": "2026-09-14",
+      "posting_deadline_date": "2026-09-14",
+      "original_text": "육아휴직 대체 팀원은 영양사, 위생사, 식품기사, 식품산업기사 중 자격 하나를 인정한다. 컴퓨터 활용과 관련 경력 등도 우대한다. 접수는 9월 14일 18시까지다.",
+      "text_type": "summary",
+      "source_url": "https://ilec.dongnam.ac.kr/bbs/main/287/46823/artclView.do",
+      "source_kind": "employer",
+      "verified_on": "2026-11-17",
+      "options": [
+        {
+          "credential": "식품기사",
+          "kind": "certificate",
+          "comparator": "held",
+          "numeric_value": null,
+          "text_value": null
+        },
+        {
+          "credential": "식품산업기사",
+          "kind": "certificate",
+          "comparator": "held",
+          "numeric_value": null,
+          "text_value": null
+        },
+        {
+          "credential": "영양사",
+          "kind": "certificate",
+          "comparator": "held",
+          "numeric_value": null,
+          "text_value": null
+        },
+        {
+          "credential": "위생사",
+          "kind": "certificate",
+          "comparator": "held",
+          "numeric_value": null,
+          "text_value": null
+        }
+      ]
+    }
+  ],
+  "role_paths": {
+    "amkor-2026h2:role:0": [
+      "물류·구매"
+    ],
+    "amkor-2026h2:role:1": [
+      "물류·구매"
+    ],
+    "asan-nurse-2027extra:role:0": [
+      "간호"
+    ],
+    "bucheon-food-246073:role:0": [
+      "식품·영양"
+    ],
+    "chungbuk-child-2026012:role:0": [
+      "심리상담"
+    ],
+    "chungbuk-child-2026012:role:1": [
+      "특수교육"
+    ],
+    "cj-2026h2:role:0": [
+      "물류·구매"
+    ],
+    "cuk-staff-270342:role:0": [
+      "회계·세무"
+    ],
+    "gwanak-social-202610:role:0": [
+      "사회복지"
+    ],
+    "hanshin-korean-202602:role:0": [
+      "한국어 전문"
+    ],
+    "hyundai-greenfood-2026h2:role:0": [
+      "식품·영양"
+    ],
+    "kai-2026h2:role:0": [
+      "물류·구매"
+    ],
+    "kau-research-202601:role:0": [
+      "물류·구매"
+    ],
+    "nids-2026001:role:0": [
+      "의료기기"
+    ],
+    "nids-2026001:role:1": [
+      "의료기기"
+    ],
+    "nmc-it-2026029:role:0": [
+      "소프트웨어 개발"
+    ],
+    "pohang-anchor-202611:role:0": [
+      "회계·세무"
+    ],
+    "role:1b6e5322640810fce7b2": [
+      "영어 전문"
+    ],
+    "role:1e0d6e3a4d2f2a0f12ff": [
+      "마케팅"
+    ],
+    "role:2207a79a0d71d5b2594a": [
+      "국제무역",
+      "영업"
+    ],
+    "role:3bfa4c9d6521711f6044": [
+      "경영·기획"
+    ],
+    "role:69d3b8041054b31acf1e": [
+      "물류·구매",
+      "영업",
+      "회계·세무"
+    ],
+    "role:8c6722c085be860b4c8f": [
+      "국제무역",
+      "물류·구매"
+    ],
+    "role:9273485d132bb6cbf254": [
+      "마케팅",
+      "영업"
+    ],
+    "role:959d44ac24e922211ade": [
+      "경영·기획",
+      "영업"
+    ],
+    "role:adec62bfbf132e9a2027": [
+      "회계·세무"
+    ],
+    "role:b17364f02e1bc235633e": [
+      "마케팅",
+      "미디어·콘텐츠"
+    ],
+    "role:b942d56cc7a07920f987": [
+      "영어 전문"
+    ],
+    "role:d543e127c4ea31c382d9": [
+      "영업"
+    ],
+    "role:dc382e29c19dca4adf60": [
+      "국제무역",
+      "물류·구매"
+    ],
+    "role:e359aef4ac8bdda99161": [
+      "국제무역"
+    ],
+    "role:ebba7748492001abb05b": [
+      "마케팅"
+    ],
+    "role:f544484176b167766c63": [
+      "국제무역",
+      "영업"
+    ],
+    "seoul-daycare-202609:role:0": [
+      "아동·보육"
+    ],
+    "suwon-food-2026004:role:0": [
+      "식품·영양"
+    ]
+  },
+  "activities": [
+    {
+      "id": "campus-opportunity:1027",
+      "title": "[미국 인턴] AL 자동차 부품 전문 기업(기계팀, 보전팀, 회계/재무팀, 인사팀, 사업개발팀, IT팀)",
+      "kind": "인턴십·일경험",
+      "source_id": "source:0f7674c6b382cd573ec3",
+      "deadline_raw": "26-11-30",
+      "opens_on": null,
+      "closes_on": "2026-11-30",
+      "closes_at": null,
+      "ends_on": null,
+      "audience": null,
+      "eligibility_status": "unknown",
+      "min_year": null,
+      "max_year": null,
+      "min_team": null,
+      "max_team": null,
+      "prereq_text": null,
+      "outcome": null,
+      "application_url": null,
+      "evidence_summary": null,
+      "source_url": "https://career.catholic.ac.kr/Recruit/RecruitView.aspx?rcdx=wyiLYx6GFJVZ2Kd1TKAfUdUWHXR8dlteZmMlCxU0JEz&modalChk=Y",
+      "pathways": [
+        "영업",
+        "경영·기획",
+        "회계·세무"
+      ],
+      "departments": []
+    },
+    {
+      "id": "campus-opportunity:1097",
+      "title": "[딥다이브] D2C 커머스 AMD 인턴 (6개월 전환형)",
+      "kind": "인턴십·일경험",
+      "source_id": "source:2fe9fe38ef6f9135d5f2",
+      "deadline_raw": "26-11-27",
+      "opens_on": null,
+      "closes_on": "2026-11-27",
+      "closes_at": null,
+      "ends_on": null,
+      "audience": null,
+      "eligibility_status": "unknown",
+      "min_year": null,
+      "max_year": null,
+      "min_team": null,
+      "max_team": null,
+      "prereq_text": null,
+      "outcome": null,
+      "application_url": null,
+      "evidence_summary": null,
+      "source_url": "https://career.catholic.ac.kr/Recruit/RecruitView.aspx?rcdx=lMhSVakcpq3VXRG9piG0ch93zLRjvUR6t5Q1a4IK00G&modalChk=Y",
+      "pathways": [
+        "마케팅"
+      ],
+      "departments": []
+    },
+    {
+      "id": "campus-opportunity:1101",
+      "title": "[딥다이브] 재무회계 인턴 채용공고",
+      "kind": "인턴십·일경험",
+      "source_id": "source:501c22c848f5e8ef8959",
+      "deadline_raw": "26-12-04",
+      "opens_on": null,
+      "closes_on": "2026-12-04",
+      "closes_at": null,
+      "ends_on": null,
+      "audience": null,
+      "eligibility_status": "unknown",
+      "min_year": null,
+      "max_year": null,
+      "min_team": null,
+      "max_team": null,
+      "prereq_text": null,
+      "outcome": null,
+      "application_url": null,
+      "evidence_summary": null,
+      "source_url": "https://career.catholic.ac.kr/Recruit/RecruitView.aspx?rcdx=SVm5zdz9NJyMMDISEUyiMMWTJXeJbw1ejWubuyJSPMA&modalChk=Y",
+      "pathways": [
+        "회계·세무"
+      ],
+      "departments": []
+    },
+    {
+      "id": "campus-opportunity:1112",
+      "title": "리딩 글로벌 브랜드 로컬 PR 파트너,  “이오스커뮤니케이션스” 홍보마케팅 인턴 모집",
+      "kind": "인턴십·일경험",
+      "source_id": "source:bd11cfdd710c617615fc",
+      "deadline_raw": "26-12-31",
+      "opens_on": null,
+      "closes_on": "2026-12-31",
+      "closes_at": null,
+      "ends_on": null,
+      "audience": null,
+      "eligibility_status": "unknown",
+      "min_year": null,
+      "max_year": null,
+      "min_team": null,
+      "max_team": null,
+      "prereq_text": null,
+      "outcome": null,
+      "application_url": null,
+      "evidence_summary": null,
+      "source_url": "https://career.catholic.ac.kr/Recruit/RecruitView.aspx?rcdx=Pl0vqUywtdKTl3STnfZBqGjGMWWzwFN0U4X3a2JgFdF&modalChk=Y",
+      "pathways": [
+        "마케팅",
+        "미디어·콘텐츠"
+      ],
+      "departments": []
+    },
+    {
+      "id": "campus-opportunity:1114",
+      "title": "[NHN AD]2027년 상반기 인턴 채용",
+      "kind": "인턴십·일경험",
+      "source_id": "source:1811081c441a63b493b2",
+      "deadline_raw": "26-11-17",
+      "opens_on": null,
+      "closes_on": "2026-11-17",
+      "closes_at": null,
+      "ends_on": null,
+      "audience": null,
+      "eligibility_status": "unknown",
+      "min_year": null,
+      "max_year": null,
+      "min_team": null,
+      "max_team": null,
+      "prereq_text": null,
+      "outcome": null,
+      "application_url": null,
+      "evidence_summary": null,
+      "source_url": "https://career.catholic.ac.kr/Recruit/RecruitView.aspx?rcdx=HhWO9ujJiFRabIfzve178h1yuQPunrfiVaOIztltBm2&modalChk=Y",
+      "pathways": [],
+      "departments": []
+    },
+    {
+      "id": "campus-opportunity:1116",
+      "title": "[카카오게임즈] 부문별 체험형 인턴 모집",
+      "kind": "인턴십·일경험",
+      "source_id": "source:3b55522e678e5b83076f",
+      "deadline_raw": "26-11-23",
+      "opens_on": null,
+      "closes_on": "2026-11-23",
+      "closes_at": null,
+      "ends_on": null,
+      "audience": null,
+      "eligibility_status": "unknown",
+      "min_year": null,
+      "max_year": null,
+      "min_team": null,
+      "max_team": null,
+      "prereq_text": null,
+      "outcome": null,
+      "application_url": null,
+      "evidence_summary": null,
+      "source_url": "https://career.catholic.ac.kr/Recruit/RecruitView.aspx?rcdx=XYUGDQedcQSqA08bh7W2oPbp61MeDiudmtcQQSjmbEs&modalChk=Y",
+      "pathways": [],
+      "departments": []
+    },
+    {
+      "id": "campus-opportunity:1146",
+      "title": "[토스뱅크] 자산 담당자 (일반계약직) (2년 이하) (Asset Specialist)",
+      "kind": "인턴십·일경험",
+      "source_id": "source:130a43fdace2caf4f7c9",
+      "deadline_raw": "채용시까지",
+      "opens_on": null,
+      "closes_on": null,
+      "closes_at": null,
+      "ends_on": null,
+      "audience": null,
+      "eligibility_status": "unknown",
+      "min_year": null,
+      "max_year": null,
+      "min_team": null,
+      "max_team": null,
+      "prereq_text": null,
+      "outcome": null,
+      "application_url": null,
+      "evidence_summary": null,
+      "source_url": "https://career.catholic.ac.kr/Recruit/RecruitView.aspx?rcdx=QHqysckxVMFMFsK8Bp9ymHypHVSobj7CIM9HP3sddQM&modalChk=Y",
+      "pathways": [],
+      "departments": []
+    },
+    {
+      "id": "campus-opportunity:1147",
+      "title": "한국일자리지원재단 대한산업보건협회 5기 미래내일 일경험 프로그램",
+      "kind": "인턴십·일경험",
+      "source_id": "source:0e7fdf9a0f9c6a8570fa",
+      "deadline_raw": "26-11-18",
+      "opens_on": null,
+      "closes_on": "2026-11-18",
+      "closes_at": null,
+      "ends_on": null,
+      "audience": null,
+      "eligibility_status": "unknown",
+      "min_year": null,
+      "max_year": null,
+      "min_team": null,
+      "max_team": null,
+      "prereq_text": null,
+      "outcome": null,
+      "application_url": null,
+      "evidence_summary": null,
+      "source_url": "https://career.catholic.ac.kr/Recruit/RecruitView.aspx?rcdx=DdEIOyvFP0OoEec2TzrTpaoj0dtT4zBfMTwybGMFdBL&modalChk=Y",
+      "pathways": [],
+      "departments": []
+    },
+    {
+      "id": "campus-opportunity:1148",
+      "title": "[삼일회계법인] AX Node XBRL센터 - 신입 채용",
+      "kind": "인턴십·일경험",
+      "source_id": "source:0d0845c0b6aa968c53bc",
+      "deadline_raw": "채용시까지",
+      "opens_on": null,
+      "closes_on": null,
+      "closes_at": null,
+      "ends_on": null,
+      "audience": null,
+      "eligibility_status": "unknown",
+      "min_year": null,
+      "max_year": null,
+      "min_team": null,
+      "max_team": null,
+      "prereq_text": null,
+      "outcome": null,
+      "application_url": null,
+      "evidence_summary": null,
+      "source_url": "https://career.catholic.ac.kr/Recruit/RecruitView.aspx?rcdx=xg0XFDC9StgEriGYPvHIWGbSTYUNr9KnCbNPKY7qUUI&modalChk=Y",
+      "pathways": [
+        "회계·세무"
+      ],
+      "departments": []
+    },
+    {
+      "id": "campus-opportunity:1151",
+      "title": "2026 채용연계형 인턴 모집",
+      "kind": "인턴십·일경험",
+      "source_id": "source:16debcdb913eabafe2fb",
+      "deadline_raw": "26-11-22",
+      "opens_on": null,
+      "closes_on": "2026-11-22",
+      "closes_at": null,
+      "ends_on": null,
+      "audience": null,
+      "eligibility_status": "unknown",
+      "min_year": null,
+      "max_year": null,
+      "min_team": null,
+      "max_team": null,
+      "prereq_text": null,
+      "outcome": null,
+      "application_url": null,
+      "evidence_summary": null,
+      "source_url": "https://career.catholic.ac.kr/Recruit/RecruitView.aspx?rcdx=TPBzPpM2ettQiYa1GmlvnDxlRuN1HVy5yoBzCGuIff4&modalChk=Y",
+      "pathways": [],
+      "departments": []
+    },
+    {
+      "id": "campus-opportunity:1153",
+      "title": "윌로그 Product Manager 인턴",
+      "kind": "인턴십·일경험",
+      "source_id": "source:44c0262c95ad6e9c263b",
+      "deadline_raw": "채용시까지",
+      "opens_on": null,
+      "closes_on": null,
+      "closes_at": null,
+      "ends_on": null,
+      "audience": null,
+      "eligibility_status": "unknown",
+      "min_year": null,
+      "max_year": null,
+      "min_team": null,
+      "max_team": null,
+      "prereq_text": null,
+      "outcome": null,
+      "application_url": null,
+      "evidence_summary": null,
+      "source_url": "https://career.catholic.ac.kr/Recruit/RecruitView.aspx?rcdx=k07ggln7uLNzG4fixlZSrj2X6Cu6hCZQVvBs2hf2DBD&modalChk=Y",
+      "pathways": [
+        "경영·기획"
+      ],
+      "departments": []
+    },
+    {
+      "id": "campus-opportunity:1156",
+      "title": "ST인터내셔널 2027년 상반기 채용연계형 인턴 채용",
+      "kind": "인턴십·일경험",
+      "source_id": "source:8ef6fd11305daf30d1b1",
+      "deadline_raw": "26-11-30",
+      "opens_on": null,
+      "closes_on": "2026-11-30",
+      "closes_at": null,
+      "ends_on": null,
+      "audience": null,
+      "eligibility_status": "unknown",
+      "min_year": null,
+      "max_year": null,
+      "min_team": null,
+      "max_team": null,
+      "prereq_text": null,
+      "outcome": null,
+      "application_url": null,
+      "evidence_summary": null,
+      "source_url": "https://career.catholic.ac.kr/Recruit/RecruitView.aspx?rcdx=fHvRseOpn1zcwpRREIoauCLTBOmbnlXMVpkPksFUhSe&modalChk=Y",
+      "pathways": [],
+      "departments": []
+    },
+    {
+      "id": "campus-opportunity:1158",
+      "title": "데일리앤코 [클럭, 몽제] 마케팅팀 인턴 채용 (채용 연계형)",
+      "kind": "인턴십·일경험",
+      "source_id": "source:26687e70eec85fde8c10",
+      "deadline_raw": "26-11-23",
+      "opens_on": null,
+      "closes_on": "2026-11-23",
+      "closes_at": null,
+      "ends_on": null,
+      "audience": null,
+      "eligibility_status": "unknown",
+      "min_year": null,
+      "max_year": null,
+      "min_team": null,
+      "max_team": null,
+      "prereq_text": null,
+      "outcome": null,
+      "application_url": null,
+      "evidence_summary": null,
+      "source_url": "https://career.catholic.ac.kr/Recruit/RecruitView.aspx?rcdx=IHsHpctIad5YBCcX8wmESR2TjnkwWWAk9ONkAIGxOUk&modalChk=Y",
+      "pathways": [
+        "마케팅"
+      ],
+      "departments": []
+    },
+    {
+      "id": "campus-opportunity:1160",
+      "title": "「경기도 사회연대경제 청년 일경험 시범사업」 참여자 모집",
+      "kind": "인턴십·일경험",
+      "source_id": "source:a5bf69886cc91a626807",
+      "deadline_raw": "26-11-27",
+      "opens_on": null,
+      "closes_on": "2026-11-27",
+      "closes_at": null,
+      "ends_on": null,
+      "audience": null,
+      "eligibility_status": "unknown",
+      "min_year": null,
+      "max_year": null,
+      "min_team": null,
+      "max_team": null,
+      "prereq_text": null,
+      "outcome": null,
+      "application_url": null,
+      "evidence_summary": null,
+      "source_url": "https://career.catholic.ac.kr/Recruit/RecruitView.aspx?rcdx=8EdqNgU5KVtQphF9bxMNO2nEypD2ImsGgCSBJ5bJXw6&modalChk=Y",
+      "pathways": [],
+      "departments": []
+    },
+    {
+      "id": "campus-opportunity:1163",
+      "title": "[네오플]2027 네오플 채용연계형 인턴 모",
+      "kind": "인턴십·일경험",
+      "source_id": "source:ae22cd7b2fa3c8e444a5",
+      "deadline_raw": "26-11-30",
+      "opens_on": null,
+      "closes_on": "2026-11-30",
+      "closes_at": null,
+      "ends_on": null,
+      "audience": null,
+      "eligibility_status": "unknown",
+      "min_year": null,
+      "max_year": null,
+      "min_team": null,
+      "max_team": null,
+      "prereq_text": null,
+      "outcome": null,
+      "application_url": null,
+      "evidence_summary": null,
+      "source_url": "https://career.catholic.ac.kr/Recruit/RecruitView.aspx?rcdx=DBhsZQGPfKAd7kOTbhqncDaKeWn0GPByOouIln6JBYi&modalChk=Y",
+      "pathways": [],
+      "departments": []
+    },
+    {
+      "id": "cuk-ai-camp-273142",
+      "title": "AI활용 자기소개서 완성 취업캠프",
+      "kind": "직무·취업교육",
+      "source_id": "source:6e7fbbb028e29ad2664a",
+      "deadline_raw": null,
+      "opens_on": null,
+      "closes_on": "2026-07-10",
+      "closes_at": null,
+      "ends_on": "2026-07-16",
+      "audience": "가톨릭대 학생, 휴학생, 졸업생과 지역 청년",
+      "eligibility_status": "reviewed",
+      "min_year": null,
+      "max_year": null,
+      "min_team": null,
+      "max_team": null,
+      "prereq_text": null,
+      "outcome": "채용공고에 맞춘 자기소개서 작성 및 면접 대비",
+      "application_url": "https://www.catholic.ac.kr/ko/campuslife/notice.do?articleNo=273142&mode=view",
+      "evidence_summary": "7월 15~16일 교육. 선착순 40명이며 조기 마감 가능. 학년별 조건은 본문에 명시되지 않았다.",
+      "source_url": "https://www.catholic.ac.kr/ko/campuslife/notice.do?articleNo=273142&mode=view",
+      "pathways": [],
+      "departments": []
+    },
+    {
+      "id": "cuk-ai-hackathon-277246",
+      "title": "2026 AI 융합 해커톤 추가모집",
+      "kind": "공모전·프로젝트",
+      "source_id": "source:097467af0ad340c3554e",
+      "deadline_raw": null,
+      "opens_on": null,
+      "closes_on": "2026-11-02",
+      "closes_at": null,
+      "ends_on": "2026-11-20",
+      "audience": "경영대학 및 AI전자정보융합대학 소속 학부생, 2전공 포함",
+      "eligibility_status": "reviewed",
+      "min_year": null,
+      "max_year": null,
+      "min_team": null,
+      "max_team": null,
+      "prereq_text": null,
+      "outcome": "문제 정의, AI 솔루션 설계, 프로토타입, Demo Day",
+      "application_url": "https://business.catholic.ac.kr/business/community/notice.do?articleNo=277246&mode=view",
+      "evidence_summary": "모집은 11월 2일 오전 마감. 활동 종료일과 신청 마감일이 다르다. 활동은 매주 월요일 점검과 기술 멘토링으로 구성된다.",
+      "source_url": "https://business.catholic.ac.kr/business/community/notice.do?articleNo=277246&mode=view",
+      "pathways": [
+        "인공지능·데이터",
+        "경영·기획"
+      ],
+      "departments": [
+        "경영학과",
+        "데이터사이언스학과",
+        "미디어기술콘텐츠학과",
+        "인공지능학과",
+        "정보통신전자공학부",
+        "컴퓨터정보공학부",
+        "회계학과"
+      ]
+    },
+    {
+      "id": "cuk-ai-startup-277825",
+      "title": "2026 CUK AI Startup Challenge AI 융합 창업경진대회",
+      "kind": "공모전·프로젝트",
+      "source_id": "source:20d89fc4006c44f809ef",
+      "deadline_raw": null,
+      "opens_on": "2026-11-16",
+      "closes_on": "2026-11-23",
+      "closes_at": null,
+      "ends_on": "2026-12-03",
+      "audience": "경영대학 및 AI전자정보융합대학 소속 학부생. 2전공 참여 가능.",
+      "eligibility_status": "reviewed",
+      "min_year": null,
+      "max_year": null,
+      "min_team": 3,
+      "max_team": null,
+      "prereq_text": null,
+      "outcome": "AI 창업 아이디어의 비즈니스 모델과 발표자료. MVP는 선택 제출.",
+      "application_url": "https://business.catholic.ac.kr/business/community/notice.do?article.offset=0&articleLimit=10&articleNo=277825&mode=view",
+      "evidence_summary": "학과 계열과 팀 규모 조건이 있다. 참가 접수 후 11월 27일까지 발표자료 제출. 개별 신청시각과 추가 자격은 공지 확인.",
+      "source_url": "https://business.catholic.ac.kr/business/community/notice.do?article.offset=0&articleLimit=10&articleNo=277825&mode=view",
+      "pathways": [
+        "인공지능·데이터",
+        "경영·기획"
+      ],
+      "departments": [
+        "경영학과",
+        "데이터사이언스학과",
+        "미디어기술콘텐츠학과",
+        "인공지능학과",
+        "정보통신전자공학부",
+        "컴퓨터정보공학부",
+        "회계학과"
+      ]
+    },
+    {
+      "id": "cuk-bootcamp-277842",
+      "title": "2026학년도 동계 직무 부트캠프",
+      "kind": "직무·일경험교육",
+      "source_id": "source:5aafac57eaf36cfcb10f",
+      "deadline_raw": null,
+      "opens_on": null,
+      "closes_on": "2026-12-14",
+      "closes_at": null,
+      "ends_on": "2027-01-31",
+      "audience": "가톨릭대학교 재학생 전체",
+      "eligibility_status": "reviewed",
+      "min_year": null,
+      "max_year": null,
+      "min_team": null,
+      "max_team": null,
+      "prereq_text": "12월 18일 15시 온라인 OT 필참. 신청서로 선발하며 선착순 아님. 상세 직무별 일정 확인 필요.",
+      "outcome": "현직자 멘토와 직무 경험",
+      "application_url": "https://www.catholic.ac.kr/ko/campuslife/notice.do?articleNo=277842&mode=view",
+      "evidence_summary": "운영기간 12월 19일~1월 31일. 희망 직무와 참여 의지가 드러나는 신청서를 제출. 본문에 직무 목록이 없어 전 학과 공통 추천으로 자동 연결하지 않음.",
+      "source_url": "https://www.catholic.ac.kr/ko/campuslife/notice.do?articleNo=277842&mode=view",
+      "pathways": [],
+      "departments": []
+    },
+    {
+      "id": "cuk-enterprise-276247",
+      "title": "경기도 강소기업 발굴 공모전",
+      "kind": "공모전·프로젝트",
+      "source_id": "source:8f8582eff8b5060678b0",
+      "deadline_raw": null,
+      "opens_on": "2026-09-30",
+      "closes_on": "2026-10-16",
+      "closes_at": null,
+      "ends_on": null,
+      "audience": "가톨릭대학교 재학생",
+      "eligibility_status": "reviewed",
+      "min_year": null,
+      "max_year": null,
+      "min_team": null,
+      "max_team": null,
+      "prereq_text": null,
+      "outcome": "기업 발굴·분석 보고서, 현직자 인터뷰 및 발표",
+      "application_url": "https://www.catholic.ac.kr/ko/campuslife/notice.do?articleNo=276247&mode=view",
+      "evidence_summary": "25명 10개 팀 모집. 3명 내외 팀 신청은 우대 사항으로 필수 인원수로 처리하지 않음. 12월 발표 예정일은 일자 미정.",
+      "source_url": "https://www.catholic.ac.kr/ko/campuslife/notice.do?articleNo=276247&mode=view",
+      "pathways": [
+        "인공지능·데이터",
+        "경영·기획"
+      ],
+      "departments": []
+    },
+    {
+      "id": "cuk-hult-277684",
+      "title": "2026학년도 가톨릭대학교 글로벌 창업경진대회",
+      "kind": "공모전·프로젝트",
+      "source_id": "source:a24061f0336d00fbe268",
+      "deadline_raw": null,
+      "opens_on": "2026-11-09",
+      "closes_on": "2026-11-18",
+      "closes_at": "2026-11-18T23:59:00+09:00",
+      "ends_on": "2026-12-09",
+      "audience": "가톨릭대 재학생으로 구성한 팀. 전공·학년 제한 없음.",
+      "eligibility_status": "reviewed",
+      "min_year": 1,
+      "max_year": 6,
+      "min_team": 2,
+      "max_team": 4,
+      "prereq_text": null,
+      "outcome": "창업 아이디어, 사업계획서, 발표자료",
+      "application_url": "https://www.catholic.ac.kr/ko/campuslife/notice.do?article.offset=0&articleLimit=10&articleNo=277684&mode=view",
+      "evidence_summary": "2~4인 재학생 팀이 신청서와 사업계획서를 제출한다. 서류심사와 본선 발표를 진행한다.",
+      "source_url": "https://www.catholic.ac.kr/ko/campuslife/notice.do?article.offset=0&articleLimit=10&articleNo=277684&mode=view",
+      "pathways": [
+        "경영·기획"
+      ],
+      "departments": []
+    },
+    {
+      "id": "cuk-live-toeic-277840",
+      "title": "12월 실시간 Live 토익 특강 불라방",
+      "kind": "어학 교육",
+      "source_id": "source:3cdb44b0d92599a8b36c",
+      "deadline_raw": "11.29.(목) 자정. 2026년 달력 요일과 불일치하여 확인 필요.",
+      "opens_on": null,
+      "closes_on": null,
+      "closes_at": null,
+      "ends_on": null,
+      "audience": "학교 평생교육원 안내. 상세 대상·비용은 첨부 및 접수 사이트 확인.",
+      "eligibility_status": "unknown",
+      "min_year": null,
+      "max_year": null,
+      "min_team": null,
+      "max_team": null,
+      "prereq_text": null,
+      "outcome": "실시간 토익 강의",
+      "application_url": "https://www.catholic.ac.kr/ko/campuslife/notice.do?articleNo=277840&mode=view",
+      "evidence_summary": "접수 사이트 ybmuniv.com/class/ca2612. 본문 날짜·요일 불일치 때문에 확정 마감일을 NULL로 두고 검토 대상으로 보관.",
+      "source_url": "https://www.catholic.ac.kr/ko/campuslife/notice.do?articleNo=277840&mode=view",
+      "pathways": [],
+      "departments": []
+    },
+    {
+      "id": "cuk-lunch-277848",
+      "title": "11월 수요 커리어 런치 챗 기업리스트 만들기",
+      "kind": "진로·직무탐색",
+      "source_id": "source:cf143aac2f9e53b079cb",
+      "deadline_raw": null,
+      "opens_on": null,
+      "closes_on": "2026-11-23",
+      "closes_at": "2026-11-23T17:00:00+09:00",
+      "ends_on": "2026-11-25",
+      "audience": "가톨릭대학교 재학생·휴학생·졸업생 및 지역 청년",
+      "eligibility_status": "reviewed",
+      "min_year": null,
+      "max_year": null,
+      "min_team": null,
+      "max_team": null,
+      "prereq_text": null,
+      "outcome": "복지·연봉·성장을 고려한 관심 기업 목록 작성",
+      "application_url": "https://www.catholic.ac.kr/ko/campuslife/notice.do?articleNo=277848&mode=view",
+      "evidence_summary": "11월 25일 12~13시 전문 컨설턴트와 진행. 11월 23일 17시까지 신청하고 선착순 조기 마감 가능. 일반 반복 일정 설명과 다른 실제 11월 행사 날짜를 저장.",
+      "source_url": "https://www.catholic.ac.kr/ko/campuslife/notice.do?articleNo=277848&mode=view",
+      "pathways": [],
+      "departments": []
+    },
+    {
+      "id": "cuk-mocktoeic-277841",
+      "title": "12월 YBM 온라인 모의 토익·토익스피킹",
+      "kind": "어학 진단·연습",
+      "source_id": "source:5a8da9c46143d7775628",
+      "deadline_raw": null,
+      "opens_on": null,
+      "closes_on": null,
+      "closes_at": null,
+      "ends_on": null,
+      "audience": "재학생 모의시험 안내. 상세 대상·일정은 첨부 확인 필요.",
+      "eligibility_status": "unknown",
+      "min_year": null,
+      "max_year": null,
+      "min_team": null,
+      "max_team": null,
+      "prereq_text": null,
+      "outcome": "모의 시험을 통한 어학 준비 현황 점검",
+      "application_url": "https://www.catholic.ac.kr/ko/campuslife/notice.do?articleNo=277841&mode=view",
+      "evidence_summary": "신청 사이트는 토익 ybmvinu.com, 말하기 ybmuniv.com/class/cats2612. 모의시험 점수는 공인 성적으로 취급하지 않음. 이미지·첨부 상세 일정은 미확인.",
+      "source_url": "https://www.catholic.ac.kr/ko/campuslife/notice.do?articleNo=277841&mode=view",
+      "pathways": [],
+      "departments": []
+    },
+    {
+      "id": "cuk-python-273043",
+      "title": "AI를 활용한 파이썬 데이터분석 실습 6차",
+      "kind": "직무·기술교육",
+      "source_id": "source:38b4ad6e06b7c2064652",
+      "deadline_raw": null,
+      "opens_on": "2026-06-22",
+      "closes_on": "2026-07-23",
+      "closes_at": null,
+      "ends_on": "2026-07-31",
+      "audience": "가톨릭대학교 학생. 학년 제한 미기재.",
+      "eligibility_status": "reviewed",
+      "min_year": null,
+      "max_year": null,
+      "min_team": null,
+      "max_team": null,
+      "prereq_text": "7월 28~31일 4차시 모두 참여 가능. 과거 신청 후 미참석자는 제한 가능.",
+      "outcome": "파이썬 데이터분석 실습, 조건 충족 시 Portfolio 12시간 인정",
+      "application_url": "https://www.catholic.ac.kr/ko/campuslife/notice.do?articleNo=273043&mode=view",
+      "evidence_summary": "선착순 48명, AI코디 신청. 85% 이상 출석과 만족도조사 참여가 이수 조건.",
+      "source_url": "https://www.catholic.ac.kr/ko/campuslife/notice.do?articleNo=273043&mode=view",
+      "pathways": [
+        "인공지능·데이터",
+        "수학·통계"
+      ],
+      "departments": []
+    },
+    {
+      "id": "cuk-r-267403",
+      "title": "CALL 11차 R프로그램 기초",
+      "kind": "직무·기술교육",
+      "source_id": "source:dbd46df32b2984a9528c",
+      "deadline_raw": null,
+      "opens_on": "2025-12-29",
+      "closes_on": "2026-01-11",
+      "closes_at": "2026-01-11T23:59:00+09:00",
+      "ends_on": "2026-01-28",
+      "audience": "가톨릭대학교 학생. 학년 제한 미기재.",
+      "eligibility_status": "reviewed",
+      "min_year": null,
+      "max_year": null,
+      "min_team": null,
+      "max_team": null,
+      "prereq_text": "8차시 모두 출석 필수. 85% 이상 참여 및 만족도조사 참여가 이수 조건.",
+      "outcome": "R 데이터 시각화·기초 통계·기계학습 기초 실습",
+      "application_url": "https://www.catholic.ac.kr/ko/campuslife/notice.do?articleNo=267403&mode=view",
+      "evidence_summary": "선착순 48명. 잔여석이 있으면 마감 후에도 수강 가능하다고 안내하나 현재 모집 재개로 해석하지 않음.",
+      "source_url": "https://www.catholic.ac.kr/ko/campuslife/notice.do?articleNo=267403&mode=view",
+      "pathways": [
+        "사회조사·연구",
+        "인공지능·데이터",
+        "수학·통계"
+      ],
+      "departments": []
+    },
+    {
+      "id": "cuk-tax-277410",
+      "title": "세무사 준비 과정·업무 취업특강",
+      "kind": "진로·직무탐색",
+      "source_id": "source:8efcfa9f3793e549472d",
+      "deadline_raw": null,
+      "opens_on": null,
+      "closes_on": null,
+      "closes_at": null,
+      "ends_on": "2026-11-13",
+      "audience": "경영대학 소속 학부생(1·2전공), 자유전공학부생 및 계열생",
+      "eligibility_status": "reviewed",
+      "min_year": null,
+      "max_year": null,
+      "min_team": null,
+      "max_team": null,
+      "prereq_text": null,
+      "outcome": "세무사 시험 준비 과정과 직무 이해",
+      "application_url": "https://accounting.catholic.ac.kr/accounting/community/notice.do?articleNo=277410&mode=view",
+      "evidence_summary": "11월 13일 17~19시 K269 진행. 모집 마감일과 신청 방식은 본문에 따로 명시되지 않아 NULL로 보존.",
+      "source_url": "https://accounting.catholic.ac.kr/accounting/community/notice.do?articleNo=277410&mode=view",
+      "pathways": [
+        "회계·세무"
+      ],
+      "departments": []
+    }
+  ],
+  "roadmaps": [
+    {
+      "id": "roadmap:03ae94a566301bbf861c",
+      "direction": "패션 디자인 (스타일 디자이너/소재디자이너/ 그래픽디자이너/해외영업 R&D)",
+      "courses_raw": "의복과 인체(전공기초) / 패션일러스트레이션(전필) /여성복제작실습1(전필) / 졸업작품 과목 중 졸업컬렉션캡스톤디자인(필수), 패션쇼기획과연출캡스톤디자인(필수) / 패션컬러리스트입문 / AI와CAD패션디자인 / 패션과소비자행동 / 서양복식문화 / 의류소재과학 / 한복제작실습 / 의류학과 진로탐색 / 패션디자인프로세스 / 소재염색및표현기법 / 텍스타일디자인 / 현대패션디자인발상 / 패션드레이핑 / 남성복제작실습 / 여성복제작실습2 / 조형디자인스튜디오 / 니트웨어디자인과생산캡스톤디자인 / 디지털패션액서서리와 프로토타이핑",
+      "department": "의류학과",
+      "source_url": "https://clothing.catholic.ac.kr:443/clothing/info/career.do"
+    },
+    {
+      "id": "roadmap:03eb7c8feb758f219d04",
+      "direction": "공기업",
+      "courses_raw": "프로그래밍응용, 자료구조와 알고리즘, 객체지향 프로그래밍기초, 전자기학, 회로이론및실험, 논리회로및실험, 전자회로1및실험, 공학수학1/2, 신호및시스템, 정보암호화, 확률및통계 / 해당직렬에 따른 기본 전공 이수 + NCS직업기초역량실무",
+      "department": "정보통신전자공학부",
+      "source_url": "https://ice.catholic.ac.kr:443/ice/info/career001.do"
+    },
+    {
+      "id": "roadmap:05768e786ca801bf1e65",
+      "direction": "공기업 취업",
+      "courses_raw": "행정법 및 상법 등, 관심있는 특별법, NCS직업 기초역량실무",
+      "department": "법학과",
+      "source_url": "https://law.catholic.ac.kr:443/law/info/career.do"
+    },
+    {
+      "id": "roadmap:07f08bc77834a884178b",
+      "direction": "마케팅 (마케터/광고/홍보)",
+      "courses_raw": "의복과 인체(전공기초) / 패션일러스트레이션(전필) /여성복제작실습1(전필) / 졸업작품 과목 중 졸업컬렉션캡스톤디자인(필수), 패션쇼기획과연출캡스톤디자인(필수) / 패션컬러리스트입문 / AI와CAD패션디자인 / 패션과소비자행동 / 서양복식문화 / 의류소재과학 / 한복제작실습 / 의류학과 진로탐색 / 패션마케팅과 비즈니스모델 / 패션바잉과 머천다이징 / 패션 VMD 실습 / 패션소재기획 / 패션정보분석 / 글로벌패션비즈니스",
+      "department": "의류학과",
+      "source_url": "https://clothing.catholic.ac.kr:443/clothing/info/career.do"
+    },
+    {
+      "id": "roadmap:12c70b3bc70572f87654",
+      "direction": "네트워크 및 정보보안",
+      "courses_raw": "프로그래밍응용, 자료구조와 알고리즘, 객체지향 프로그래밍기초, 전자기학, 회로이론및실험, 논리회로및실험, 전자회로1및실험, 공학수학1/2, 신호및시스템, 정보암호화, 확률및통계 / 데이터 통신 컴퓨터 네트워킹 네트워크보안과 블록체인 보안시스템",
+      "department": "정보통신전자공학부",
+      "source_url": "https://ice.catholic.ac.kr:443/ice/info/career001.do"
+    },
+    {
+      "id": "roadmap:2d11a2b922fb5776004d",
+      "direction": "역사전문기자",
+      "courses_raw": "글로벌 역량 과목, 주제탐구 과목, 동아시아의 역사갈등과영토분쟁, 한국역사와국제관계",
+      "department": "국사학과",
+      "source_url": "https://koreanhistory.catholic.ac.kr:443/koreanhistory/info/career.do"
+    },
+    {
+      "id": "roadmap:4f1f411ed4e9ad46a50f",
+      "direction": "무선통신 시스템",
+      "courses_raw": "프로그래밍응용, 자료구조와 알고리즘, 객체지향 프로그래밍기초, 전자기학, 회로이론및실험, 논리회로및실험, 전자회로1및실험, 공학수학1/2, 신호및시스템, 정보암호화, 확률및통계 / 통신이론 디지털 통신 통신 부호화 이론 미래 이동통신",
+      "department": "정보통신전자공학부",
+      "source_url": "https://ice.catholic.ac.kr:443/ice/info/career001.do"
+    },
+    {
+      "id": "roadmap:5368bc97aaad85e2f97a",
+      "direction": "디지털 시스템 설계",
+      "courses_raw": "프로그래밍응용, 자료구조와 알고리즘, 객체지향 프로그래밍기초, 전자기학, 회로이론및실험, 논리회로및실험, 전자회로1및실험, 공학수학1/2, 신호및시스템, 정보암호화, 확률및통계 / 디지털 시스템 설계 실시간 운영체제 컴퓨터 구조 임베디드 시스템 지능형 시스템 디지털 VLSI 설계",
+      "department": "정보통신전자공학부",
+      "source_url": "https://ice.catholic.ac.kr:443/ice/info/career001.do"
+    },
+    {
+      "id": "roadmap:55341e63c18dd92316c9",
+      "direction": "대학원/기타",
+      "courses_raw": "의복과 인체(전공기초) / 패션일러스트레이션(전필) /여성복제작실습1(전필) / 졸업작품 과목 중 졸업컬렉션캡스톤디자인(필수), 패션쇼기획과연출캡스톤디자인(필수) / 패션컬러리스트입문 / AI와CAD패션디자인 / 패션과소비자행동 / 서양복식문화 / 의류소재과학 / 한복제작실습 / 의류학과 진로탐색 / 본인 목표에 해당 하는 전공과목 이수",
+      "department": "의류학과",
+      "source_url": "https://clothing.catholic.ac.kr:443/clothing/info/career.do"
+    },
+    {
+      "id": "roadmap:60ffc2b294d6acc2b6f9",
+      "direction": "일반행정직 공무원",
+      "courses_raw": "7급 헌법, 행정법, 경제학개론, 행정학개론 9급 행정법, 행정학개론",
+      "department": "법학과",
+      "source_url": "https://law.catholic.ac.kr:443/law/info/career.do"
+    },
+    {
+      "id": "roadmap:79265dc5532242789815",
+      "direction": "검찰직 공무원",
+      "courses_raw": "검찰직 공무원 시험과목 형법, 형사소송법",
+      "department": "법학과",
+      "source_url": "https://law.catholic.ac.kr:443/law/info/career.do"
+    },
+    {
+      "id": "roadmap:8566816adeda353c9929",
+      "direction": "공무원",
+      "courses_raw": "기록관리학의이해, 주제탐구 과목, 국사학현장실습",
+      "department": "국사학과",
+      "source_url": "https://koreanhistory.catholic.ac.kr:443/koreanhistory/info/career.do"
+    },
+    {
+      "id": "roadmap:865f3fd5f41b0ee26009",
+      "direction": "리테일/유통 (영업관리/VMD/ 물류)",
+      "courses_raw": "의복과 인체(전공기초) / 패션일러스트레이션(전필) /여성복제작실습1(전필) / 졸업작품 과목 중 졸업컬렉션캡스톤디자인(필수), 패션쇼기획과연출캡스톤디자인(필수) / 패션컬러리스트입문 / AI와CAD패션디자인 / 패션과소비자행동 / 서양복식문화 / 의류소재과학 / 한복제작실습 / 의류학과 진로탐색 / 패션마케팅과 비즈니스모델 / 패션바잉과 머천다이징 / 패션 VMD 실습 / 패션소재기획 / 패션정보분석 / 글로벌패션비즈니스",
+      "department": "의류학과",
+      "source_url": "https://clothing.catholic.ac.kr:443/clothing/info/career.do"
+    },
+    {
+      "id": "roadmap:8a58fc0d0a478dbb6652",
+      "direction": "일반대학원",
+      "courses_raw": "본인 목표에 해당하는 전공과목 모두, 기초법 등 기타 전공과목, 전공심화 추천",
+      "department": "법학과",
+      "source_url": "https://law.catholic.ac.kr:443/law/info/career.do"
+    },
+    {
+      "id": "roadmap:8c73c2f1b29eebbb488a",
+      "direction": "고전번역가",
+      "courses_raw": "한국사기초사료읽기, 사료로보는한국사",
+      "department": "국사학과",
+      "source_url": "https://koreanhistory.catholic.ac.kr:443/koreanhistory/info/career.do"
+    },
+    {
+      "id": "roadmap:901fbf2847d594b21286",
+      "direction": "법원직 공무원",
+      "courses_raw": "법원직공무원 시험과목 헌법, 민법, 형법, 민사소송법, 형사소송법",
+      "department": "법학과",
+      "source_url": "https://law.catholic.ac.kr:443/law/info/career.do"
+    },
+    {
+      "id": "roadmap:91849760ee35f1300362",
+      "direction": "역사교사 및 강사",
+      "courses_raw": "글로벌역량 과목, 강독 과목, 주제사 과목, 교직 과목, 전공심화 추천",
+      "department": "국사학과",
+      "source_url": "https://koreanhistory.catholic.ac.kr:443/koreanhistory/info/career.do"
+    },
+    {
+      "id": "roadmap:971aa3b1db0b50f87f70",
+      "direction": "법학전문 대학원",
+      "courses_raw": "최대한 많은 전공과목, 변호사시험 및 로스쿨 선행, 전공심화 추천",
+      "department": "법학과",
+      "source_url": "https://law.catholic.ac.kr:443/law/info/career.do"
+    },
+    {
+      "id": "roadmap:97f1f1f49ae69bf4b5f4",
+      "direction": "역사학자",
+      "courses_raw": "한국사기초사료읽기, 사료로보는한국사, 주제탐구과목, 전공심화 추천",
+      "department": "국사학과",
+      "source_url": "https://koreanhistory.catholic.ac.kr:443/koreanhistory/info/career.do"
+    },
+    {
+      "id": "roadmap:9aac535c7cd4096996b5",
+      "direction": "창업 (패션브랜드 CEO/ 온라인쇼핑몰 창업)",
+      "courses_raw": "의복과 인체(전공기초) / 패션일러스트레이션(전필) /여성복제작실습1(전필) / 졸업작품 과목 중 졸업컬렉션캡스톤디자인(필수), 패션쇼기획과연출캡스톤디자인(필수) / 패션컬러리스트입문 / AI와CAD패션디자인 / 패션과소비자행동 / 서양복식문화 / 의류소재과학 / 한복제작실습 / 의류학과 진로탐색 / 패션마케팅과 비즈니스모델 / 패션바잉과 머천다이징 / 패션 VMD 실습 / 패션소재기획 / 패션정보분석 / 글로벌패션비즈니스",
+      "department": "의류학과",
+      "source_url": "https://clothing.catholic.ac.kr:443/clothing/info/career.do"
+    },
+    {
+      "id": "roadmap:a698591e328980f8390d",
+      "direction": "진로 방향",
+      "courses_raw": "필수 / 기초 / 심화",
+      "department": "의류학과",
+      "source_url": "https://clothing.catholic.ac.kr:443/clothing/info/career.do"
+    },
+    {
+      "id": "roadmap:a768176628221d007a83",
+      "direction": "경찰직 공무원",
+      "courses_raw": "경찰직 공무원 시험과목 헌법, 형법, 형사소송법",
+      "department": "법학과",
+      "source_url": "https://law.catholic.ac.kr:443/law/info/career.do"
+    },
+    {
+      "id": "roadmap:b7f160f7eaf5efc3f5b3",
+      "direction": "아트디렉션 (아트디렉터, 에디터, 방송/무대의상/ 패션영상/스타일리스트)",
+      "courses_raw": "의복과 인체(전공기초) / 패션일러스트레이션(전필) /여성복제작실습1(전필) / 졸업작품 과목 중 졸업컬렉션캡스톤디자인(필수), 패션쇼기획과연출캡스톤디자인(필수) / 패션컬러리스트입문 / AI와CAD패션디자인 / 패션과소비자행동 / 서양복식문화 / 의류소재과학 / 한복제작실습 / 의류학과 진로탐색 / 동양복식문화/ 공연예술의상 / 패션한복 제작실습 / 패션크리에이티브 디렉션 / 패션화보와 영상 캡스톤디자인 / 이미지메이킹 및 코디네이션 종합설계",
+      "department": "의류학과",
+      "source_url": "https://clothing.catholic.ac.kr:443/clothing/info/career.do"
+    },
+    {
+      "id": "roadmap:ba11f0579eb5499de5a4",
+      "direction": "아날로그 회로설계",
+      "courses_raw": "프로그래밍응용, 자료구조와 알고리즘, 객체지향 프로그래밍기초, 전자기학, 회로이론및실험, 논리회로및실험, 전자회로1및실험, 공학수학1/2, 신호및시스템, 정보암호화, 확률및통계 / 센서 전자공학 전자회로2 및 실험 초고주파공학 아날로그 VLSI 설계 무선송수신기 시스템",
+      "department": "정보통신전자공학부",
+      "source_url": "https://ice.catholic.ac.kr:443/ice/info/career001.do"
+    },
+    {
+      "id": "roadmap:bd9eb75fb70ce0be3c03",
+      "direction": "기록관리사",
+      "courses_raw": "한국사 기초사료읽기, 사료로보는 한국사, 한국의역사가와 역사인식, 기록관리학의이해",
+      "department": "국사학과",
+      "source_url": "https://koreanhistory.catholic.ac.kr:443/koreanhistory/info/career.do"
+    },
+    {
+      "id": "roadmap:bdbf9bd21935b6275998",
+      "direction": "학예사",
+      "courses_raw": "강독 과목, 선사시대의 인간과문화, 한국예술사, 한국의문화유산, 문화예술경영전문가 융복합전공 추천",
+      "department": "국사학과",
+      "source_url": "https://koreanhistory.catholic.ac.kr:443/koreanhistory/info/career.do"
+    },
+    {
+      "id": "roadmap:ce6df266ea7250e69678",
+      "direction": "머천다이징 (상품기획·바잉· 영업·온라인 MD)",
+      "courses_raw": "의복과 인체(전공기초) / 패션일러스트레이션(전필) /여성복제작실습1(전필) / 졸업작품 과목 중 졸업컬렉션캡스톤디자인(필수), 패션쇼기획과연출캡스톤디자인(필수) / 패션컬러리스트입문 / AI와CAD패션디자인 / 패션과소비자행동 / 서양복식문화 / 의류소재과학 / 한복제작실습 / 의류학과 진로탐색 / 패션마케팅과 비즈니스모델 / 패션바잉과 머천다이징 / 패션 VMD 실습 / 패션소재기획 / 패션정보분석 / 글로벌패션비즈니스",
+      "department": "의류학과",
+      "source_url": "https://clothing.catholic.ac.kr:443/clothing/info/career.do"
+    },
+    {
+      "id": "roadmap:d82e804825e68a15492b",
+      "direction": "공인노무사",
+      "courses_raw": "공인노무사 시험과목 노동법, 민법총칙, 채권총론, 채권각론, 사회보장법, 행정소송법, 경제학개론, 경제학원론",
+      "department": "법학과",
+      "source_url": "https://law.catholic.ac.kr:443/law/info/career.do"
+    },
+    {
+      "id": "roadmap:dd6c8e75491fcdda4b87",
+      "direction": "패션 테크 & 소재 (3D디자이너/테크니컬디자이너/ 디지털기술/ 소재분석가)",
+      "courses_raw": "의복과 인체(전공기초) / 패션일러스트레이션(전필) /여성복제작실습1(전필) / 졸업작품 과목 중 졸업컬렉션캡스톤디자인(필수), 패션쇼기획과연출캡스톤디자인(필수) / 패션컬러리스트입문 / AI와CAD패션디자인 / 패션과소비자행동 / 서양복식문화 / 의류소재과학 / 한복제작실습 / 의류학과 진로탐색 / 패턴디자인과 CAD 패턴메이킹 / 디지털패션드로잉과 그래픽 디자인 / 3D가상의류 디자인 / 의류소재분석 / 첨단패션과기술융합 / 패션테크니컬디자인",
+      "department": "의류학과",
+      "source_url": "https://clothing.catholic.ac.kr:443/clothing/info/career.do"
+    },
+    {
+      "id": "roadmap:dea9d993c08a9ed0258c",
+      "direction": "역사콘텐츠 크리에이터",
+      "courses_raw": "역사콘텐츠 캡스톤디자인, 한국역사 문화콘텐츠종합설계, 다양한 주제사 과목",
+      "department": "국사학과",
+      "source_url": "https://koreanhistory.catholic.ac.kr:443/koreanhistory/info/career.do"
+    },
+    {
+      "id": "roadmap:e3f96745236b0df5b503",
+      "direction": "멀티미디어 통신",
+      "courses_raw": "프로그래밍응용, 자료구조와 알고리즘, 객체지향 프로그래밍기초, 전자기학, 회로이론및실험, 논리회로및실험, 전자회로1및실험, 공학수학1/2, 신호및시스템, 정보암호화, 확률및통계 / 선형대수 디지털 신호처리 영상처리 멀티미디어 통신",
+      "department": "정보통신전자공학부",
+      "source_url": "https://ice.catholic.ac.kr:443/ice/info/career001.do"
+    },
+    {
+      "id": "roadmap:e944fb5ce81b25d07957",
+      "direction": "국·내외/벤더 (영업, R&D)",
+      "courses_raw": "의복과 인체(전공기초) / 패션일러스트레이션(전필) /여성복제작실습1(전필) / 졸업작품 과목 중 졸업컬렉션캡스톤디자인(필수), 패션쇼기획과연출캡스톤디자인(필수) / 패션컬러리스트입문 / AI와CAD패션디자인 / 패션과소비자행동 / 서양복식문화 / 의류소재과학 / 한복제작실습 / 의류학과 진로탐색 / 패션마케팅과 비즈니스모델 / 패션바잉과 머천다이징 / 패션 VMD 실습 / 패션소재기획 / 패션정보분석 / 글로벌패션비즈니스",
+      "department": "의류학과",
+      "source_url": "https://clothing.catholic.ac.kr:443/clothing/info/career.do"
+    },
+    {
+      "id": "roadmap:eaf396c93b29ead8b924",
+      "direction": "반도체 소자 및 공정",
+      "courses_raw": "프로그래밍응용, 자료구조와 알고리즘, 객체지향 프로그래밍기초, 전자기학, 회로이론및실험, 논리회로및실험, 전자회로1및실험, 공학수학1/2, 신호및시스템, 정보암호화, 확률및통계 / 반도체 공학 반도체 프로세스 반도체 소자 나노 소자공학 반도체 제조기술",
+      "department": "정보통신전자공학부",
+      "source_url": "https://ice.catholic.ac.kr:443/ice/info/career001.do"
+    },
+    {
+      "id": "roadmap:f210c67ddea91518d39e",
+      "direction": "일반 기업체",
+      "courses_raw": "역사콘텐츠 캡스톤디자인, 한국역사 문화콘텐츠종합설계, 국사학현장실습",
+      "department": "국사학과",
+      "source_url": "https://koreanhistory.catholic.ac.kr:443/koreanhistory/info/career.do"
+    },
+    {
+      "id": "roadmap:f4b2c5f8d759c3796353",
+      "direction": "사기업 취업",
+      "courses_raw": "상법 및 민법 등, 관심있는 특별법, 기업실무",
+      "department": "법학과",
+      "source_url": "https://law.catholic.ac.kr:443/law/info/career.do"
+    }
+  ],
+  "provenance": {
+    "snapshot_on": "2026-11-18",
+    "source": "reviewed career.db",
+    "scope": "검수된 조건·활동·학과 진로표. 학생 테이블·합격수기·원문 전체는 제외."
+  }
+}

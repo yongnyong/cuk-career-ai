@@ -24,6 +24,7 @@ from pathlib import Path
 from urllib.robotparser import RobotFileParser
 
 from defusedxml.ElementTree import fromstring as parse_xml  # 외부 XML은 안전한 파서로만 읽는다
+from .career.posting_skills import attach_preparation_evidence, has_multiple_roles
 
 BASE = "https://www.catholic.ac.kr"
 LIST_URL = BASE + "/ko/campuslife/notice.do"
@@ -247,7 +248,7 @@ def build(item: dict, body: str, g: dict, now: datetime) -> dict | None:
     required += [{"key": "other", "label": scrub(o)[:80], "src": src} for o in (g.get("other") or [])[:5]]
     url = f"{LIST_URL}?mode=view&articleNo={item['no']}"
     confidence = max(0.0, min(1.0, float(g.get("confidence") or 0)))
-    return {
+    data = {
         "id": f"cuk-{item['no']}",
         "type": g["type"] if g.get("type") in TYPES else "비교과",
         "title": item["title"],
@@ -266,6 +267,9 @@ def build(item: dict, body: str, g: dict, now: datetime) -> dict | None:
         "confidence": confidence,
         "reviewed": confidence >= 0.8,
     }
+    if data['type'] in ('현장실습', '채용'):
+        attach_preparation_evidence(data, body, multi_role=has_multiple_roles(item['title'], body))
+    return data
 
 
 def with_history(old: dict | None, new: dict) -> dict:
@@ -505,7 +509,7 @@ def build_work24(d: ET.Element, now: datetime) -> dict | None:
     uniq = lambda tag: " · ".join(dict.fromkeys(clean(u.findtext(tag)) for u in units if u.findtext(tag)))  # noqa: E731
     url = d.findtext("empWantedHomepgDetail") or d.findtext("empWantedHomepg") or "https://www.work24.go.kr/"
     hint = [clean(u.findtext("empRecrNm")) for u in units] + [x.findtext("jobsCdKorNm") or "" for x in d.iter("empJobsListInfo")]
-    return {
+    data = {
         "id": f"w24-{d.findtext('empSeqno')}",
         "type": "채용",
         "title": clean(d.findtext("empWantedTitle")),
@@ -533,6 +537,10 @@ def build_work24(d: ET.Element, now: datetime) -> dict | None:
         "reviewed": True,
         "_hint": " / ".join(hint)[:300],  # 직무 연결용(저장 전에 지운다)
     }
+    source = "\n".join(f"{section['title']}\n{section['text']}" for section in sections
+                       if section['title'] in ('지원 자격', '제출 서류'))
+    pooled = len(list(d.iter("empRecrListInfo"))) > 1 or has_multiple_roles(data['title'], unit_text)
+    return attach_preparation_evidence(data, source, multi_role=pooled)
 
 
 def map_jobs(items: list[dict]) -> dict[str, list[str]]:
@@ -548,7 +556,7 @@ def map_jobs(items: list[dict]) -> dict[str, list[str]]:
 
 
 def run_work24() -> None:
-    from .main import Posting, SessionLocal
+    from .career_db import Posting, CareerSessionLocal as SessionLocal
 
     stats = {"seen": 0, "new": 0, "updated": 0, "errors": 0}
     fresh: list[tuple[str, dict]] = []
@@ -559,7 +567,7 @@ def run_work24() -> None:
             for x in root.iter("dhsOpenEmpInfo"):
                 stats["seen"] += 1
                 pid = f"w24-{x.findtext('empSeqno')}"
-                digest = hashlib.sha256(b"w3" + ET.tostring(x)).hexdigest()
+                digest = hashlib.sha256(b"w4" + ET.tostring(x)).hexdigest()
                 row = db.get(Posting, pid)
                 if row and row.raw_hash == digest:
                     continue  # 목록 내용이 그대로면 상세를 다시 부르지 않는다
@@ -616,7 +624,7 @@ def kstartup_digest(x: dict) -> str:
 
 
 def run_kstartup() -> None:
-    from .main import Posting, SessionLocal
+    from .career_db import Posting, CareerSessionLocal as SessionLocal
 
     stats = {"seen": 0, "new": 0, "updated": 0, "kept": 0, "detail": 0}
     try:
@@ -649,7 +657,7 @@ def run_kstartup() -> None:
 
 
 def run() -> None:
-    from .main import Posting, SessionLocal
+    from .career_db import Posting, CareerSessionLocal as SessionLocal
 
     robots = robots_for(BASE)
     if not robots.can_fetch(UA, LIST_URL):
@@ -667,7 +675,7 @@ def run() -> None:
                 time.sleep(INTERVAL)
                 try:
                     body = scrub(parse_body(fetch(f"{LIST_URL}?mode=view&articleNo={item['no']}")))
-                    digest = hashlib.sha256((BUILD_VERSION + item["title"] + body).encode()).hexdigest()
+                    digest = hashlib.sha256((BUILD_VERSION + "prep1" + item["title"] + body).encode()).hexdigest()
                     row = db.get(Posting, f"cuk-{item['no']}")
                     now = datetime.now(KST)
                     if row and row.raw_hash == digest:

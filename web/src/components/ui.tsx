@@ -30,6 +30,7 @@ export function TypeTag({ type }: { type: OppType }) {
 
 export function DDay({ opp, now }: { opp: Opportunity; now: Date }) {
   const d = dday(opp, now);
+  if (opp.deadlineStatus === "unknown") return <span className="chip bg-slate-100 text-slate-600">기한 확인</span>;
   if (d < 0) return <span className="chip bg-slate-200 text-slate-500">마감</span>;
   return (
     <span className={`chip ${d <= 3 ? "bg-danger text-white" : d <= 7 ? "bg-orange-100 text-orange-700" : "bg-slate-100 text-slate-600"}`}>

@@ -1,12 +1,12 @@
 "use client";
 import { useMemo } from "react";
 import Link from "next/link";
+import { useRouter } from "next/navigation";
 import { ChevronRight, KeyRound, Swords } from "lucide-react";
 import { useStore } from "@/lib/store";
 import { useMounted } from "@/lib/useMounted";
-import { buildTree, dday, nextNode, recommend } from "@/lib/engine";
+import { buildCareerPath, dday, recommend } from "@/lib/engine";
 import { DEPARTMENTS } from "@/lib/data/departments";
-import { SEED_OPPORTUNITIES } from "@/lib/data/opportunities";
 import { PERSONAS } from "@/lib/data/personas";
 import { skillById } from "@/lib/data/catalog";
 import { questProgress } from "@/lib/quest";
@@ -22,14 +22,15 @@ const STEPS = [
 
 function Landing() {
   const s = useStore();
+  const router = useRouter();
   const demo = PERSONAS[0];
   const now = s.nowDate;
   const rows = useMemo(() => {
-    const tree = buildTree(demo.profile, SEED_OPPORTUNITIES, now);
+    const { tree } = buildCareerPath(demo.profile, s.opportunities, now, []);
     const byDepth: (typeof tree)[] = [];
     for (const n of tree) (byDepth[n.depth] ??= []).push(n);
     return byDepth;
-  }, [demo, now]);
+  }, [demo, now, s.opportunities]);
 
   return (
     <div className="space-y-12">
@@ -48,7 +49,10 @@ function Landing() {
             <Link href={s.session ? "/onboarding" : "/signup"} className="btn-gold">
               내 스킬트리 만들기
             </Link>
-            <button className="btn-ghost" onClick={() => s.loginDemo(demo.id, demo.profile)}>
+            <button className="btn-ghost" onClick={() => {
+              s.loginDemo(demo.id, demo.profile);
+              router.push("/tree");
+            }}>
               {demo.label}의 트리로 둘러보기
             </button>
           </div>
@@ -61,7 +65,7 @@ function Landing() {
           </div>
           <div className="space-y-3 overflow-x-auto bg-paper p-4">
             {rows.map((row, i) => (
-              <div key={i} className="flex justify-center gap-3">
+              <div key={i} className="flex flex-wrap justify-center gap-3">
                 {row.map((n) => (
                   <NodeBox key={n.skill} node={n} now={now} />
                 ))}
@@ -96,7 +100,7 @@ function Today() {
   const now = s.nowDate;
   const recs = useMemo(() => recommend(s.opportunities, p, now), [s.opportunities, p, now]);
   const urgent = [...recs].sort((a, b) => dday(a.opp, now) - dday(b.opp, now)).slice(0, 3);
-  const next = nextNode(p);
+  const { recommendedQuest: next, treeProgress, tree } = s.careerPath!;
   const quests = s.followed
     .map((id) => s.opportunities.find((o) => o.id === id))
     .filter((o) => o !== undefined && dday(o, now) >= 0)
@@ -106,7 +110,7 @@ function Today() {
 
   return (
     <div className="space-y-8">
-      <StatusWindow profile={p}>
+      <StatusWindow profile={p} treeProgress={treeProgress}>
         <Link href="/tree" className="btn-primary">
           스킬트리 열기 <ChevronRight size={16} />
         </Link>
@@ -140,8 +144,8 @@ function Today() {
                     <Swords size={18} />
                   </span>
                   <span className="min-w-0 flex-1">
-                    <span className="block text-xs text-ink/60">다음에 깰 노드 · 주 {p.weeklyHours}시간 기준</span>
-                    <span className="block font-bold">{skillById(next.skill)?.name}</span>
+                    <span className="block text-xs text-ink/60">추천 퀘스트</span>
+                    <span className="block font-bold">{skillById(next.skillId)?.name}</span>
                   </span>
                   <ChevronRight size={18} className="text-ink/40" />
                 </Link>
@@ -169,7 +173,13 @@ function Today() {
                 </li>
               );
             })}
-            {!next && quests.length === 0 && <li className="py-3 text-sm text-ink/60">트리의 모든 노드를 완료했어요.</li>}
+            {!next && quests.length === 0 && (
+              <li className="py-3 text-sm text-ink/60">
+                {tree.length > 0 && tree.every((node) => node.state !== "none")
+                  ? "트리의 모든 노드를 완료했어요."
+                  : "지금 추천할 노드가 없어요."}
+              </li>
+            )}
           </ul>
           {quests.length === 0 && (
             <p className="mt-2 text-sm text-ink/60">기회 카드에서 &lsquo;지원 퀘스트 시작&rsquo;을 누르면 준비 목록이 여기에 생겨요.</p>

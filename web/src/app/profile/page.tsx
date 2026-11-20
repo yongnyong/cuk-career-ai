@@ -4,7 +4,6 @@ import { useRouter } from "next/navigation";
 import { Award, BadgeCheck, Trash2 } from "lucide-react";
 import { RequireProfile } from "@/components/RequireProfile";
 import { useStore } from "@/lib/store";
-import { progress } from "@/lib/engine";
 import { jobById, skillById } from "@/lib/data/catalog";
 import { getDepartment } from "@/lib/data/departments";
 import { questProgress } from "@/lib/quest";
@@ -15,7 +14,7 @@ function Body() {
   const p = s.profile!;
   const job = jobById(p.jobId)!;
   const dept = getDepartment(p.departmentId);
-  const prog = progress(p);
+  const prog = s.careerPath!.treeProgress;
   const held = Object.entries(p.skills).filter(([, st]) => st !== "none");
   const questBadges = s.followed
     .map((id) => s.opportunities.find((o) => o.id === id))

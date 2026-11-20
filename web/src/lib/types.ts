@@ -67,6 +67,21 @@ export interface Opportunity {
   jobs: string[]; // 연결 직무
   required: Condition[];
   preferred: string[]; // 우대 역량(skill id)
+  skillEvidence?: {
+    skill: string;
+    basis: "required" | "preferred";
+    quote: string;
+    src: string;
+    scope: "role" | "posting";
+    minimum?: string;
+  }[];
+  preparationEvidence?: {
+    key: string;
+    basis: "required" | "preferred";
+    quote: string;
+    src: string;
+    scope: "role" | "posting";
+  }[];
   documents: string[];
   applyUrl: string; // 공식 신청처
   period?: string; // 활동 기간
@@ -76,6 +91,7 @@ export interface Opportunity {
   versions: OppVersion[]; // 최신 버전이 마지막
   confidence: number; // AI 구조화 신뢰도 (0.8 미만이면 검수 대기)
   reviewed: boolean;
+  deadlineStatus?: "announced" | "date_only" | "unknown";
 }
 
 export type Verdict = "pass" | "fail" | "check";
@@ -87,6 +103,35 @@ export interface ConditionResult {
 }
 
 export type SkillState = "none" | "self" | "verified";
+
+export interface TreeSignal {
+  skillId: string;
+  basis: "required" | "preferred" | "school" | "activity";
+  status: "gap" | "unknown" | "matched";
+  minimum?: string;
+  preparation?: { kind: "direct" | "suggested"; action: string; completion: string };
+  reference: {
+    id: string;
+    title: string;
+    organization?: string;
+    url: string;
+    historical: boolean;
+    version?: number;
+    sectionId?: string;
+    sourceKind?: string;
+    quote?: string;
+    summary?: string; // 검수자의 요약. 공고 원문 인용과 구분한다.
+    scope?: "role" | "posting" | "campus";
+  };
+}
+
+export interface RecommendedQuest {
+  skillId: string;
+  actionKind: "start" | "improve" | "verify";
+  reasonCode: "prerequisite" | "evidence" | "score_target" | "track";
+  signals: TreeSignal[];
+  targetSkill?: string;
+}
 
 export interface Profile {
   pseudoId: string; // 로그인 아이디(가명) — 이름·연락처·학번 전체는 받지 않는다
@@ -100,6 +145,8 @@ export interface Profile {
   weeklyHours: number;
   targetTerm: string;
   skills: Record<string, SkillState>;
+  // 공고에서 새로 생긴 노드를 완료한 직무. 출처가 갱신돼도 완료 기록을 트리에 유지한다.
+  completedPreparation?: Record<string, string[]>;
   scores?: Record<string, string>;
   // 창업 공고 판정에만 쓰는 선택 정보. stage: none(계획 없음) | pre(예비창업자) | 1·3·7·10(창업 n년 미만)
   startup?: { stage?: string; region?: string; birthYear?: number }; // 점수제·등급제 자격의 내 점수·등급(자기 보고)

@@ -101,15 +101,15 @@ def manual_posting(body: ManualPosting, now: datetime, ask=gemini) -> dict | Non
     return data
 
 
-def make_router(get_db, current_user, admin_ids, Posting, Setting):
+def make_router(get_db, get_career_db, current_user, admin_ids, Posting, Setting):
     def require_admin(user=Depends(current_user)):
         if user.id not in admin_ids():
             raise HTTPException(403, "관리자만 할 수 있어요.")
         return user
 
     @router.get("/api/process/{posting_id}")
-    def process(posting_id: str, request: Request, db: Session = Depends(get_db)):
-        row = db.get(Posting, posting_id)
+    def process(posting_id: str, request: Request, db: Session = Depends(get_db), career: Session = Depends(get_career_db)):
+        row = career.get(Posting, posting_id)
         if not row or not row.data:
             raise HTTPException(404, "공고를 찾지 못했어요.")
         key = f"trace:{posting_id}"[:40]
@@ -128,7 +128,7 @@ def make_router(get_db, current_user, admin_ids, Posting, Setting):
         return trace
 
     @router.post("/api/admin/postings")
-    def add_posting(body: ManualPosting, user=Depends(require_admin), db: Session = Depends(get_db)):
+    def add_posting(body: ManualPosting, user=Depends(require_admin), db: Session = Depends(get_career_db)):
         now = datetime.now(KST)
         try:
             data = manual_posting(body, now)
@@ -142,7 +142,7 @@ def make_router(get_db, current_user, admin_ids, Posting, Setting):
         return data
 
     @router.delete("/api/admin/postings/{posting_id}")
-    def remove_posting(posting_id: str, user=Depends(require_admin), db: Session = Depends(get_db)):
+    def remove_posting(posting_id: str, user=Depends(require_admin), db: Session = Depends(get_career_db)):
         if not posting_id.startswith("man-"):
             raise HTTPException(400, "직접 등록한 공고만 지울 수 있어요.")
         row = db.get(Posting, posting_id)

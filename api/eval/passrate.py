@@ -11,7 +11,7 @@ from collections import Counter
 from sqlalchemy import select
 
 from app.collect import CATALOG, INTERVAL, STATUSES, gemini
-from app.main import Posting, SessionLocal
+from app.career_db import CareerSessionLocal as SessionLocal, Posting
 from app.tidy import BATCH, PROMPT, SCHEMA, SCORED, SIDO, source_text, to_condition
 
 

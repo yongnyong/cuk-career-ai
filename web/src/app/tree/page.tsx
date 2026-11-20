@@ -11,22 +11,135 @@ import { listProofs, type ProofMeta } from "@/lib/files";
 import { Legend, NodeBox, StatusWindow } from "@/components/quest-ui";
 import { AiNotice, DDay, TypeTag, VirtualTag } from "@/components/ui";
 import { useStore } from "@/lib/store";
-import { buildTree, dday, nextNode, recommend, type TreeNode } from "@/lib/engine";
+import { dday, recommend, type TreeNode } from "@/lib/engine";
+import type { RecommendedQuest, TreeSignal } from "@/lib/types";
 import { formatScore, meetsTarget, scaleOf, skillById } from "@/lib/data/catalog";
 import { questProgress } from "@/lib/quest";
 
-type SkillNodeData = { node: TreeNode; isNew: boolean; now: Date; proof: boolean };
+type SkillNodeData = { node: TreeNode; isNew: boolean; now: Date; proof: boolean; recommended: boolean };
 
 function SkillNode({ data }: NodeProps<Node<SkillNodeData>>) {
   return (
     <>
       <Handle type="target" position={Position.Top} className="!border-0 !bg-edge" />
-      <NodeBox node={data.node} isNew={data.isNew} now={data.now} proof={data.proof} />
+      <NodeBox node={data.node} isNew={data.isNew} now={data.now} proof={data.proof} recommended={data.recommended} />
       <Handle type="source" position={Position.Bottom} className="!border-0 !bg-edge" />
     </>
   );
 }
 const nodeTypes = { skill: SkillNode };
+
+const ACTION_TEXT: Record<string, string> = {
+  review_record: "보유 기록과 시험·자격의 인정 조건을 비교해 보세요.",
+  review_source: "원문에서 인정되는 선택지와 유효기간을 확인해 보세요.",
+  practice_gap: "부족한 영역의 연습 문제를 풀고 틀린 유형을 기록해 보세요.",
+  diagnose: "예제나 모의 문항으로 현재 준비 수준을 점검해 보세요.",
+  first_exercise: "입문 예제를 하나 골라 직접 끝까지 해 보세요.",
+  outline: "작은 실습이나 프로젝트 주제를 하나 정하고 첫 결과물의 범위를 적어 보세요.",
+  review_scope: "공식 안내에서 시험 범위와 응시 조건을 확인해 보세요.",
+  review_activity: "활동 원문에서 모집 대상과 진행 내용을 확인해 보세요.",
+};
+const BASIS_LABEL = { required: "공고 필수", preferred: "공고 우대", school: "학과 진로표", activity: "학습 활동" };
+
+function EvidenceLinks({ signals }: { signals: TreeSignal[] }) {
+  const [first, next] = signals;
+  if (!first) return null;
+  const firstEmployer = first.reference.organization?.trim();
+  const otherEmployer = firstEmployer && signals.find(({ reference }) =>
+    reference.organization?.trim() && reference.organization.trim() !== firstEmployer);
+  const second = otherEmployer || next;
+  return (second ? [first, second] : [first]).map(({ reference, basis }) => (
+    <div key={reference.id} className="space-y-0.5">
+      {reference.quote ? (
+        <>
+          <p className="font-semibold">{BASIS_LABEL[basis]} 원문</p>
+          <blockquote className="text-ink/75">“{reference.quote}”</blockquote>
+        </>
+      ) : reference.summary ? (
+        <>
+          <p className="font-semibold">{BASIS_LABEL[basis]} · 검수 요약</p>
+          <p className="text-ink/75">{reference.summary}</p>
+        </>
+      ) : null}
+      <a href={reference.url} target="_blank" rel="noreferrer" className="block break-words underline">
+        {reference.historical && "지난 공고 · "}
+        {reference.sourceKind === "platform_repost" && "재게시 · "}
+        {reference.organization && !reference.title.includes(reference.organization) && `${reference.organization} · `}
+        {reference.title}
+        {reference.sectionId && ` ${reference.sectionId}`}
+      </a>
+    </div>
+  ));
+}
+
+function PreparationDetail({ node, signals, quest }: {
+  node: TreeNode; signals: TreeSignal[]; quest?: RecommendedQuest;
+}) {
+  const source = signals[0];
+  const plan = source?.preparation;
+  if (!plan) return null;
+  const related = signals.filter((signal) => signal.preparation?.kind === plan.kind && signal.preparation.action === plan.action);
+  const employers = new Set(related.map((signal) => signal.reference.organization?.trim()).filter(Boolean));
+  const laterGoal = quest?.reasonCode === "prerequisite" ? skillById(quest.targetSkill!)?.name ?? "후속 역량" : undefined;
+  return (
+    <div className="mt-2 space-y-1 border-l-2 border-go pl-2 text-xs">
+      <p className="font-bold text-go">{quest ? "추천 퀘스트" : "공고 기반 준비 방법"}</p>
+      {laterGoal && <p>지금은 ‘{node.name}’부터 시작해요. ‘{laterGoal}’을 준비하는 데 필요한 선수 단계예요.</p>}
+      <EvidenceLinks signals={related} />
+      <p>{plan.kind === "direct"
+        ? "공고에 명시된 항목을 준비하는 과제예요."
+        : `공고에 나온 역량을 준비하는 방법으로 ‘${laterGoal ?? node.name}’을 추천해요.`}</p>
+      {employers.size > 1 && <p className="text-ink/70">이 준비 방법과 연결된 기업 {employers.size}곳</p>}
+      <dl className="space-y-1 pt-1">
+        <div>
+          <dt className="font-semibold">{laterGoal ? `‘${laterGoal}’ 단계에서 할 일` : "서비스가 제안하는 행동"}</dt>
+          <dd>{plan.action}</dd>
+        </div>
+        <div>
+          <dt className="font-semibold">{laterGoal ? "후속 단계 완료 기준" : "완료 기준"}</dt>
+          <dd>{plan.completion}</dd>
+        </div>
+      </dl>
+    </div>
+  );
+}
+
+function QuestDetail({ node, quest, loadAction, showAction }: {
+  node: TreeNode; quest: RecommendedQuest; loadAction: (() => Promise<string | undefined>) | null; showAction: boolean;
+}) {
+  const source = quest.signals[0];
+  const prerequisite = quest.reasonCode === "prerequisite";
+  const targetName = prerequisite ? skillById(quest.targetSkill!)?.name ?? "후속 역량" : node.name;
+  const [result, setResult] = useState<{ request: typeof loadAction; actionId?: string }>();
+  useEffect(() => {
+    if (!showAction || !loadAction) return;
+    let current = true;
+    void loadAction().then((actionId) => {
+      if (current) setResult({ request: loadAction, actionId });
+    });
+    return () => { current = false; };
+  }, [loadAction, showAction]);
+  const reason = prerequisite
+    ? `지금은 ‘${node.name}’부터 시작해요. 다음 목표는 ‘${targetName}’예요.`
+    : quest.reasonCode === "score_target"
+      ? `현재 기록이 학과 권장 기준(${formatScore(node.skill, node.target)})에 아직 못 미쳐요.`
+      : source?.minimum && quest.actionKind === "improve"
+        ? `현재 기록이 자료의 기준(${formatScore(node.skill, source.minimum)})에 아직 못 미쳐요.`
+        : source?.reference.scope === "posting" ? "여러 모집 부문의 공고에 나온 역량이에요. 목표 직무에 적용되는지 원문에서 확인해 보세요."
+          : source ? `${BASIS_LABEL[source.basis]} 자료에 이 역량이 나와요.` : "선택한 직무의 기본 준비 단계예요.";
+  const fallback = quest.actionKind === "verify" ? source?.basis === "activity" ? "review_activity" : "review_record"
+    : quest.actionKind === "improve" ? "practice_gap"
+    : node.kind === "어학" || node.kind === "자격증" ? "review_scope" : "first_exercise";
+  const actionId = result?.request === loadAction ? result?.actionId : undefined;
+  return (
+    <div className="mt-2 space-y-1 border-l-2 border-go pl-2 text-xs">
+      <p className="font-bold text-go">추천 퀘스트</p>
+      <p>{reason}</p>
+      <EvidenceLinks signals={quest.signals} />
+      {showAction && <p>{(actionId && Object.hasOwn(ACTION_TEXT, actionId) ? ACTION_TEXT[actionId] : undefined) ?? ACTION_TEXT[fallback]}</p>}
+    </div>
+  );
+}
 
 // 점수제(TOEIC 등)·등급제(OPIc, JLPT 등) 자격: 점수나 등급을 적으면 완료로 표시한다
 function ScoreField({ skill, value, target, onSave }: { skill: string; value?: string; target?: string; onSave: (v: string) => void }) {
@@ -70,11 +183,16 @@ function TreeView() {
   const s = useStore();
   const p = s.profile!;
   const now = s.nowDate;
-  const tree = useMemo(() => buildTree(p, s.opportunities, now), [p, s.opportunities, now]);
+  const { tree, recommendedQuest, treeProgress } = s.careerPath!;
+  const readyCount = tree.filter((node) => node.state === "none" && !node.locked).length;
   const recs = useMemo(() => recommend(s.opportunities, p, now), [s.opportunities, p, now]);
   const [sel, setSel] = useState<string | null>(null);
   const selNode = tree.find((n) => n.skill === sel);
-  const newSet = new Set(s.newOpps);
+  const selectedQuest = recommendedQuest?.skillId === sel ? recommendedQuest : null;
+  const routedQuest = selectedQuest?.signals[0]?.preparation ? selectedQuest : undefined;
+  const selectedRoutes = routedQuest?.signals ?? selNode?.preparationSignals;
+  const newSet = useMemo(() => new Set(s.newOpps), [s.newOpps]);
+  const questSkill = recommendedQuest?.skillId;
   // 증빙 파일 목록(이 브라우저에만 저장)
   const [proofs, setProofs] = useState<Record<string, ProofMeta>>({});
   const loadProofs = useCallback(() => {
@@ -84,25 +202,33 @@ function TreeView() {
   const cancel = (skill: string) => (s.setScore(skill, ""), s.setSkill(skill, "none"));
 
   const { nodes, edges } = useMemo(() => {
-    const perDepth: Record<number, number> = {};
+    const counts: number[] = [];
+    for (const n of tree) counts[n.depth] = (counts[n.depth] ?? 0) + 1;
+    const columns = 4;
+    const offsets: number[] = [0];
+    for (let depth = 0; depth < counts.length; depth++) {
+      offsets.push(offsets[depth] + Math.ceil(counts[depth] / columns));
+    }
+    const seen: number[] = [];
     const nodes: Node<SkillNodeData>[] = tree.map((n) => {
-      const row = (perDepth[n.depth] = (perDepth[n.depth] ?? -1) + 1);
+      const index = seen[n.depth] ?? 0;
+      seen[n.depth] = index + 1;
+      const row = Math.floor(index / columns);
+      const width = Math.min(columns, counts[n.depth] - row * columns);
       return {
         id: n.skill,
         type: "skill",
-        position: { x: row * 215, y: n.depth * 130 + 50 },
-        data: { node: n, isNew: n.opportunities.some((o) => newSet.has(o.id)), now, proof: !!proofs[n.skill] },
+        position: { x: (index % columns - (width - 1) / 2) * 207, y: (offsets[n.depth] + row) * 128 + 50 },
+        data: { node: n, isNew: n.opportunities.some((o) => newSet.has(o.id)), now, proof: !!proofs[n.skill], recommended: n.skill === questSkill },
       };
     });
     const edges: Edge[] = tree.flatMap((n) =>
       n.prereq.map((q) => ({ id: `${q}-${n.skill}`, source: q, target: n.skill, animated: n.state === "none" && !n.locked, style: { stroke: n.locked ? "#4a5078" : "#7c6cff", strokeWidth: 2 } })),
     );
     return { nodes, edges };
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [tree, s.newOpps, now, proofs]);
+  }, [tree, newSet, now, proofs, questSkill]);
 
   const newOpp = s.opportunities.find((o) => newSet.has(o.id) && tree.some((n) => n.opportunities.includes(o)));
-  const next = nextNode(p);
   const activeQuest = s.followed
     .map((id) => s.opportunities.find((o) => o.id === id)!)
     .filter((o) => o && dday(o, now) >= 0)
@@ -111,7 +237,7 @@ function TreeView() {
 
   return (
     <div className="space-y-4">
-      <StatusWindow profile={p}>
+      <StatusWindow profile={p} treeProgress={treeProgress}>
         {newOpp && (
           <Link
             href={`/opportunities/${newOpp.id}`}
@@ -124,32 +250,50 @@ function TreeView() {
       </StatusWindow>
 
       <div className="grid gap-4 lg:grid-cols-[1fr_340px]">
-        <div className="relative h-[620px] overflow-hidden rounded-lg border-2 border-edge bg-panel">
-          <ReactFlow
-            nodes={nodes}
-            edges={edges}
-            nodeTypes={nodeTypes}
-            fitView
-            fitViewOptions={{ padding: 0.12, maxZoom: 1.1 }}
-            onNodeClick={(_, n) => setSel(n.id)}
-            nodesDraggable={false}
-            colorMode="dark"
-          >
-            <Background gap={24} color="#2a2f52" />
-            <Controls showInteractive={false} />
-          </ReactFlow>
-          <div className="absolute inset-x-0 top-0 flex flex-wrap items-center justify-between gap-2 border-b border-line bg-panel/90 px-3 py-2">
+        <div className="relative flex h-[620px] min-w-0 flex-col overflow-hidden rounded-lg border-2 border-edge bg-panel">
+          <div className="flex flex-wrap items-center justify-between gap-2 border-b border-line px-3 py-2">
             <Legend />
-            <span className="text-xs text-ink/60">노드를 누르면 상태를 바꾸고 연결된 기회를 볼 수 있어요</span>
+            <span className="text-xs text-ink/60">전체 {tree.length}개 · 지금 도전 {readyCount}개</span>
+          </div>
+          <div className="min-h-0 flex-1">
+            <ReactFlow
+              key={nodes.map((node) => node.id).sort().join("|")}
+              nodes={nodes}
+              edges={edges}
+              nodeTypes={nodeTypes}
+              fitView
+              minZoom={0.2}
+              fitViewOptions={{ padding: 0.12, maxZoom: 1.1 }}
+              onNodeClick={(_, n) => setSel(n.id)}
+              nodesDraggable={false}
+              colorMode="dark"
+            >
+              <Background gap={24} color="#2a2f52" />
+              <Controls showInteractive={false} />
+            </ReactFlow>
           </div>
 
           {selNode && (
-            <div className="window absolute right-3 top-14 z-10 w-72 p-4">
+            <div className="window absolute right-3 top-14 z-10 max-h-[calc(100%_-_4.5rem)] w-72 overflow-y-auto p-4">
               <button className="absolute right-2 top-2 text-slate-400" onClick={() => setSel(null)} aria-label="닫기">
                 <X size={16} />
               </button>
               <p className="text-xs text-slate-500">{selNode.kind}</p>
               <h3 className="font-bold">{selNode.name}</h3>
+              {selectedQuest && !routedQuest && (
+                <QuestDetail key={selNode.skill} node={selNode} quest={selectedQuest} loadAction={s.getQuestAction} showAction={!selectedRoutes?.length && !selNode.practice} />
+              )}
+              {!!selectedRoutes?.length && <PreparationDetail node={selNode} signals={selectedRoutes} quest={routedQuest} />}
+              {!selectedQuest && !selectedRoutes?.length && !!selNode.evidence?.length && (
+                <div className="mt-2 space-y-1 text-xs"><EvidenceLinks signals={selNode.evidence} /></div>
+              )}
+              {selNode.practice && (
+                <div className="mt-2 space-y-1 border-l-2 border-line pl-2 text-xs">
+                  <p className="font-bold">직무 연습 제안{selNode.prereq.length > 0 && ` · ${skillById(selNode.prereq[0])?.name}`}</p>
+                  <p>{selNode.practice.action}</p>
+                  <p><strong>완료 기준</strong> {selNode.practice.completion}</p>
+                </div>
+              )}
               {skillById(selNode.skill)?.officialUrl && (
                 <a href={skillById(selNode.skill)!.officialUrl} target="_blank" rel="noreferrer" className="text-xs underline">
                   공식 안내 확인
@@ -223,7 +367,7 @@ function TreeView() {
                     <span className="font-semibold">{n.name}</span>
                     <span className="ml-1.5 text-xs text-ink/60">
                       {n.kind}
-                      {n.required && " · 필수"}
+                      {n.required && " · 트랙 기본"}
                       {n.score && ` · ${formatScore(n.skill, n.score)}`}
                       {proofs[n.skill] && " · 증빙 첨부"}
                       {!done && n.locked && " · 앞 단계를 먼저 권장"}
@@ -252,7 +396,7 @@ function TreeView() {
         <aside className="space-y-4 lg:col-start-2 lg:row-span-2 lg:row-start-1">
           <div className="card p-4">
             <h2 className="flex items-center gap-1.5 font-bold">
-              <Swords size={16} className="text-go" /> 오늘의 퀘스트
+              <Swords size={16} className="text-go" /> 퀘스트
             </h2>
             {activeQuest && qp ? (
               <Link href={`/opportunities/${activeQuest.id}`} className="mt-2 block rounded-md bg-paper p-3 text-sm hover:brightness-95">
@@ -270,10 +414,9 @@ function TreeView() {
             ) : (
               <p className="mt-2 text-sm text-slate-500">아래 기회 카드에서 &lsquo;지원 퀘스트 시작&rsquo;을 누르면 여기에 나타나요.</p>
             )}
-            {next && (
+            {questSkill && (
               <p className="mt-3 text-sm">
-                다음 노드: <b>{skillById(next.skill)?.name}</b>{" "}
-                <span className="text-xs text-slate-500">(주 {p.weeklyHours}시간 기준)</span>
+                추천 퀘스트 · <button type="button" className="font-bold hover:underline" onClick={() => setSel(questSkill)}>{skillById(questSkill)?.name}</button>
               </p>
             )}
             <p className="mt-3 flex items-center gap-1 text-xs text-slate-500">

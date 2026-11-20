@@ -19,6 +19,8 @@ services:
     restart: unless-stopped
     environment:
       DATABASE_URL: postgresql+psycopg://cuk:${POSTGRES_PASSWORD}@postgres:5432/cuk
+      # 공고 DB도 같은 Postgres를 쓴다(컨테이너 안 파일 DB는 다시 빌드하면 사라진다)
+      CAREER_DATABASE_URL: postgresql+psycopg://cuk:${POSTGRES_PASSWORD}@postgres:5432/cuk
       COOKIE_SECURE: ${COOKIE_SECURE:-1}
       GEMINI_API_KEY: ${GEMINI_API_KEY:-}
       KSTARTUP_API_KEY: ${KSTARTUP_API_KEY:-}

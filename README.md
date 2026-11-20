@@ -22,6 +22,8 @@
 
 처음 온 팀원은 **3. 실행 방법 → 6. Git 협업 방법 → 8. 배포와 운영** 순서로 읽으면 된다.
 
+Windows에서 웹·API를 모두 PC 안에서 개발하려면 [로컬 개발 안내](docs/LOCAL_DEVELOPMENT.md)의 PowerShell 실행 스크립트를 사용할 수 있다.
+
 ---
 
 ## 1. 지금 되는 것 / 안 되는 것
@@ -125,7 +127,7 @@ pip install -r requirements-dev.txt
 uvicorn app.main:app --port 8000
 ```
 
-웹의 `.env.local`은 `API_URL=http://127.0.0.1:8000`으로 둔다. DB는 `api/dev.db`(SQLite)가 자동으로 생긴다. API 문서는 http://localhost:8000/docs.
+웹의 `.env.local`은 `API_URL=http://127.0.0.1:8000`으로 둔다. 계정·세션·프로필은 `api/dev.db`(SQLite)에 저장하고, 수집 공고와 역량 근거는 저장소에 포함할 수 있는 `api/career.db`에서 읽는다. API 문서는 http://localhost:8000/docs.
 
 내 PC에서 수집기와 챗봇까지 돌리려면 API 키를 환경변수로 준 뒤 실행한다(키 받는 법은 8번).
 

@@ -21,6 +21,7 @@ from fastapi import Cookie, Depends, FastAPI, HTTPException, Response
 from pydantic import BaseModel, Field
 from sqlalchemy import JSON, BigInteger, ForeignKey, String, create_engine, delete, func, select
 from sqlalchemy.orm import DeclarativeBase, Mapped, Session, mapped_column, sessionmaker
+from .career_db import CareerSessionLocal, Posting, migrate_legacy_postings
 
 # 기본값: api/dev.db (실행 위치와 무관하게 같은 파일)
 DATABASE_URL = os.environ.get("DATABASE_URL") or f"sqlite:///{(Path(__file__).resolve().parent.parent / 'dev.db').as_posix()}"
@@ -62,17 +63,6 @@ class SessionRow(Base):
     expires_at: Mapped[int] = mapped_column(BigInteger)
 
 
-class Posting(Base):
-    """수집한 공개 공고. data는 웹의 Opportunity 구조(web/src/lib/types.ts)와 같다."""
-
-    __tablename__ = "postings"
-    id: Mapped[str] = mapped_column(String(40), primary_key=True)
-    raw_hash: Mapped[str] = mapped_column(String(64))
-    # 기회가 아닌 공지(결과 발표 등)나 마감일을 찾지 못한 공지는 data가 비어 있다
-    data: Mapped[dict[str, Any] | None] = mapped_column(JSON, nullable=True)
-    checked_at: Mapped[int] = mapped_column(BigInteger)
-
-
 class Setting(Base):
     """서비스 전체 설정. key="catalog": 관리자가 고친 직무·스킬(웹의 기본 사전 위에 덮어쓴다)."""
 
@@ -82,11 +72,17 @@ class Setting(Base):
 
 
 Base.metadata.create_all(engine)
+migrate_legacy_postings(DATABASE_URL)
 app = FastAPI(title="CUK Career AI API")
 
 
 def get_db():
     with SessionLocal() as db:
+        yield db
+
+
+def get_career_db():
+    with CareerSessionLocal() as db:
         yield db
 
 
@@ -139,7 +135,7 @@ def health():
 
 
 @app.get("/api/opportunities")
-def opportunities(db: Session = Depends(get_db)):
+def opportunities(db: Session = Depends(get_career_db)):
     rows = db.scalars(select(Posting).where(Posting.data.is_not(None))).all()
     return [r.data for r in rows if r.data]
 
@@ -214,11 +210,12 @@ def save_catalog(body: CatalogBody, user: User = Depends(current_user), db: Sess
 
 
 @app.get("/api/admin/overview")
-def admin_overview(user: User = Depends(current_user), db: Session = Depends(get_db)):
+def admin_overview(user: User = Depends(current_user), db: Session = Depends(get_db),
+                   career_db: Session = Depends(get_career_db)):
     """관리자용 현황. 개수만 돌려주고 계정 아이디·내 데이터 같은 개인 단위 정보는 넣지 않는다."""
     if user.id not in ADMIN_IDS:
         raise HTTPException(403, "관리자만 볼 수 있어요.")
-    rows = db.scalars(select(Posting)).all()
+    rows = career_db.scalars(select(Posting)).all()
     data = [r.data for r in rows if r.data]
     now = datetime.now(timezone.utc)
     by_source: dict[str, int] = {}
@@ -261,11 +258,15 @@ def delete_me(response: Response, user: User = Depends(current_user), db: Sessio
 
 from .chat import make_router  # noqa: E402
 
-app.include_router(make_router(get_db, Posting))
+app.include_router(make_router(get_career_db, Posting))
+
+from .preparation import router as preparation_router  # noqa: E402
+
+app.include_router(preparation_router)
 
 from .process import make_router as make_process_router  # noqa: E402
 
-app.include_router(make_process_router(get_db, current_user, lambda: ADMIN_IDS, Posting, Setting))
+app.include_router(make_process_router(get_db, get_career_db, current_user, lambda: ADMIN_IDS, Posting, Setting))
 
 
 # 만료된 세션 정리는 로그인 시점에 가볍게 수행

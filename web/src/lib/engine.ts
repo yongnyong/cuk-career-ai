@@ -1,8 +1,11 @@
 // 규칙 엔진·추천·스킬트리·알림·근거 챗봇.
 // 원칙: 날짜·자격 판정은 AI가 아닌 코드가 한다. 근거가 없으면 답하지 않는다.
 // 서버(api/) 연결 전까지 브라우저에서 같은 로직으로 동작하며, 서버 구현도 이 규칙을 따른다.
-import { JOBS, SKILLS, formatScore, jobById, meetsTarget, skillById } from "./data/catalog";
+import { JOBS, SKILLS, formatScore, jobById, meetsTarget, scaleOf, skillById } from "./data/catalog";
 import { getDepartment } from "./data/departments";
+import { groupTreeSignals, selectRecommendedQuest } from "./skillTree";
+import { PRACTICE, type Practice } from "./data/practice";
+import { preparationSignals, replacedPreparationSignal } from "./preparationRoutes";
 import type {
   ChatAnswer,
   Condition,
@@ -11,6 +14,7 @@ import type {
   Opportunity,
   OppType,
   Profile,
+  TreeSignal,
   Verdict,
 } from "./types";
 
@@ -21,7 +25,8 @@ export function dday(o: Opportunity, now: Date) {
   const ms = deadlineOf(o).getTime() - now.getTime();
   return Math.ceil(ms / 86_400_000);
 }
-export const isOpen = (o: Opportunity, now: Date) => deadlineOf(o).getTime() > now.getTime();
+export const isOpen = (o: Opportunity, now: Date) =>
+  o.deadlineStatus !== "unknown" && deadlineOf(o).getTime() > now.getTime();
 export function fmt(isoStr: string, withTime = true) {
   const d = new Date(isoStr);
   const p = (n: number) => String(n).padStart(2, "0");
@@ -186,28 +191,39 @@ export interface TreeNode {
   opportunities: Opportunity[]; // 이 노드에서 열리는 실제 기회
   target?: string; // 학과 권장 점수·등급
   score?: string; // 내 점수·등급
+  preparationSignals?: TreeSignal[];
+  evidence?: TreeSignal[];
+  practice?: Practice;
 }
 
-export function buildTree(p: Profile, opps: Opportunity[], now: Date): TreeNode[] {
+export function buildTree(p: Profile, opps: Opportunity[], now: Date, extraSkills: readonly string[] = []): TreeNode[] {
   const job = jobById(p.jobId);
   if (!job) return [];
+  const definitions = new Map(job.nodes.map((node) => [node.skill, node]));
+  const trackSkills = new Set(definitions.keys());
+  const practices = new Map<string, Practice>();
+  for (const practice of PRACTICE) {
+    const anchor = practice.anchors.find((id) => trackSkills.has(id));
+    if (!trackSkills.size || (practice.anchors.length > 0 && !anchor) || definitions.has(practice.id)) continue;
+    definitions.set(practice.id, { skill: practice.id, required: false, prereq: anchor && !practice.independent ? [anchor] : [] });
+    practices.set(practice.id, practice);
+  }
+  for (const skill of new Set(extraSkills)) {
+    if (skillById(skill) && !definitions.has(skill)) definitions.set(skill, { skill, required: false });
+  }
+  const available = opps.filter((o) => o.versions.length && isOpen(o, now) && evaluate(o, p).overall !== "fail");
   const depth: Record<string, number> = {};
   const depthOf = (id: string): number => {
     if (depth[id] !== undefined) return depth[id];
-    const n = job.nodes.find((x) => x.skill === id);
+    const n = definitions.get(id);
     depth[id] = n?.prereq?.length ? Math.max(...n.prereq.map(depthOf)) + 1 : 0;
     return depth[id];
   };
-  return job.nodes.map((n) => {
+  return Array.from(definitions.values(), (n) => {
     const sk = skillById(n.skill)!;
     const state = p.skills[n.skill] ?? "none";
     const locked = (n.prereq ?? []).some((q) => (p.skills[q] ?? "none") === "none");
-    const linked = opps.filter(
-      (o) =>
-        isOpen(o, now) &&
-        (o.preferred.includes(n.skill) || o.required.some((c) => c.skill === n.skill)) &&
-        evaluate(o, p).overall !== "fail",
-    );
+    const linked = available.filter((o) => o.preferred.includes(n.skill) || o.required.some((c) => c.skill === n.skill));
     return {
       skill: n.skill,
       name: sk.name,
@@ -220,13 +236,12 @@ export function buildTree(p: Profile, opps: Opportunity[], now: Date): TreeNode[
       opportunities: linked,
       target: n.target,
       score: p.scores?.[n.skill],
+      practice: practices.get(n.skill),
     };
   });
 }
 
-export function progress(p: Profile) {
-  const job = jobById(p.jobId);
-  const nodes = job?.nodes ?? [];
+export function progress(p: Profile, nodes = jobById(p.jobId)?.nodes ?? []) {
   let exp = 0;
   for (const n of nodes) {
     const st = p.skills[n.skill] ?? "none";
@@ -236,12 +251,107 @@ export function progress(p: Profile) {
   return { exp, max, pct: Math.round((exp / max) * 100), level: 1 + Math.floor(exp / 40) };
 }
 
-// 오늘의 퀘스트: 가장 가까운 기회 하나 + 다음 노드 하나
-export function nextNode(p: Profile) {
+function recordedScoreCheck(p: Profile, skill: string, target?: string) {
+  const value = p.scores?.[skill]?.trim();
+  const scale = scaleOf(skill);
+  if (!scale || !value || !target) return null;
+  if (!("grades" in scale) && [value, target].some((v) => !/^\d+$/.test(v) || +v < scale.min || +v > scale.max)) {
+    return null;
+  }
+  return meetsTarget(skill, value, target);
+}
+
+function postingSignals(p: Profile, opps: Opportunity[], jobIds: string[], now: Date, templateSkills: ReadonlySet<string>): TreeSignal[] {
+  const latestPostings = new Map<string, Opportunity>();
+  for (const opp of opps) {
+    if (opp.isVirtual || !opp.versions.length) continue;
+    const previous = latestPostings.get(opp.id);
+    if (!previous || latest(previous).version < latest(opp).version) latestPostings.set(opp.id, opp);
+  }
+  const signals: TreeSignal[] = [];
+  for (const opp of latestPostings.values()) {
+    if (!opp.reviewed || !["채용", "현장실습"].includes(opp.type) || !opp.jobs.some((id) => jobIds.includes(id))) continue;
+    const reference = { id: opp.id, url: opp.source.url, title: opp.title, organization: opp.org, version: latest(opp).version, historical: !isOpen(opp, now) };
+    const requirements = new Set<string>();
+    const cited = new Set<string>();
+    const direct: TreeSignal[] = [];
+    for (const entry of opp.skillEvidence ?? []) {
+      const section = opp.sections?.find((s) => s.id === entry.src && s.text.includes(entry.quote));
+      if (!section || !entry.quote || !skillById(entry.skill)) continue;
+      cited.add(entry.skill);
+      const state = p.skills[entry.skill] ?? "none";
+      const scoreCheck = recordedScoreCheck(p, entry.skill, entry.minimum);
+      const status = entry.scope === "posting" ? "unknown"
+        : entry.minimum ? scoreCheck === true ? "matched" : scoreCheck === false ? "gap" : "unknown"
+          : state !== "none" ? "matched" : "gap";
+      direct.push({
+        skillId: entry.skill, basis: entry.basis, status,
+        minimum: entry.scope === "role" ? entry.minimum : undefined,
+        reference: { ...reference, sectionId: entry.src, quote: entry.quote, scope: entry.scope },
+      });
+    }
+    const routes = preparationSignals(p, opp, templateSkills, reference, direct);
+    signals.push(...routes, ...direct.filter((signal) => !replacedPreparationSignal(signal, routes)));
+    for (const condition of opp.required) {
+      const skill = condition.skill;
+      if (condition.key !== "skill" || !skill || cited.has(skill)) continue;
+      requirements.add(skill);
+      const hasRecord = !!p.skills[skill] && p.skills[skill] !== "none";
+      const meets = recordedScoreCheck(p, skill, condition.min);
+      const status = condition.min
+        ? meets === true ? "matched" : meets === false ? "gap" : hasRecord ? "unknown" : "gap"
+        : hasRecord ? "matched" : "gap";
+      signals.push({
+        skillId: skill, basis: "required", status, minimum: condition.min,
+        reference: { ...reference, sectionId: condition.src },
+      });
+    }
+    for (const skill of opp.preferred) {
+      if (requirements.has(skill) || cited.has(skill)) continue;
+      signals.push({
+        skillId: skill, basis: "preferred", status: p.skills[skill] && p.skills[skill] !== "none" ? "matched" : "gap", reference,
+      });
+    }
+  }
+  return signals;
+}
+
+export function buildCareerPath(p: Profile, opps: Opportunity[], now: Date, snapshotSignals: TreeSignal[]) {
   const job = jobById(p.jobId);
-  return job?.nodes.find(
-    (n) => (p.skills[n.skill] ?? "none") === "none" && (n.prereq ?? []).every((q) => (p.skills[q] ?? "none") !== "none"),
-  );
+  const templateSkills = new Set(job?.nodes.map((node) => node.skill));
+  const schoolSignals: TreeSignal[] = [];
+  if (job?.srcUrl && job.departments?.includes(p.departmentId)) {
+    for (const node of job.nodes) {
+      if (p.skills[node.skill] && p.skills[node.skill] !== "none") continue;
+      schoolSignals.push({
+        skillId: node.skill, basis: "school", status: "gap",
+        reference: { id: job.id, url: job.srcUrl, title: job.name, historical: false },
+      });
+    }
+  }
+  const signals = groupTreeSignals([
+    ...postingSignals(p, opps, job?.base ? [job.id, job.base] : [p.jobId], now, templateSkills),
+    ...snapshotSignals, ...schoolSignals,
+  ]);
+  const extraSkills = (p.completedPreparation?.[p.jobId] ?? []).filter((id) => p.skills[id] && p.skills[id] !== "none");
+  for (const [id, evidence] of signals) {
+    if (!templateSkills.has(id) && evidence.some((s) =>
+      (s.basis === "activity" && s.reference.scope === "campus") ||
+      (s.reference.scope === "role" && (s.basis === "activity" || !!s.reference.quote || !!s.reference.summary || !!s.preparation))
+    )) extraSkills.push(id);
+  }
+  const tree = buildTree(p, opps, now, extraSkills);
+  for (const node of tree) {
+    node.evidence = signals.get(node.skill);
+    const evidence = node.evidence?.filter((s) => s.preparation);
+    if (evidence?.length) node.preparationSignals = evidence;
+  }
+  const focus = gradeStage(p.grade)?.focus ?? [];
+  const belowTarget = new Set(tree.filter((node) => node.state !== "none" && (
+    recordedScoreCheck(p, node.skill, node.target) === false ||
+    signals.get(node.skill)?.some((signal) => signal.minimum && recordedScoreCheck(p, node.skill, signal.minimum) === false)
+  )).map((node) => node.skill));
+  return { tree, recommendedQuest: selectRecommendedQuest(tree, signals, focus, belowTarget), treeProgress: progress(p, tree) };
 }
 
 // 경로 초안 생성 — 서버 연결 시 Gemini가 경로 설명을 쓰고, 노드는 직무 그래프에서만 고른다(존재하는 노드 ID만 허용)

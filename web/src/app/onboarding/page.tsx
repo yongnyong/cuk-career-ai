@@ -1,7 +1,7 @@
 "use client";
 import { useEffect, useMemo, useState } from "react";
 import { useRouter } from "next/navigation";
-import { ClipboardCheck, Loader2, Sparkles } from "lucide-react";
+import { ClipboardCheck, Sparkles } from "lucide-react";
 import { COLLEGES, DEPARTMENTS, DEPARTMENT_SOURCE, getDepartment } from "@/lib/data/departments";
 import { jobById } from "@/lib/data/catalog";
 import { diagnosisItems, gradeStage, jobsFor, matchJobs } from "@/lib/engine";
@@ -31,7 +31,6 @@ function Form({ start }: { start: Profile }) {
   const { session, setProfile } = useStore();
   const router = useRouter();
   const [step, setStep] = useState(0);
-  const [loading, setLoading] = useState(false);
   const [college, setCollege] = useState("");
   const [f, setF] = useState<Profile>(start);
 
@@ -52,22 +51,9 @@ function Form({ start }: { start: Profile }) {
   };
 
   const finish = () => {
-    setLoading(true);
-    // 서버 연결 시: POST /api/profile → Gemini가 경로 설명 생성(노드는 직무 그래프 내 ID만 허용)
-    setTimeout(() => {
-      setProfile({ ...f, pseudoId: session ?? f.pseudoId, createdAt: f.createdAt || new Date().toISOString() });
-      router.push("/tree");
-    }, 1200);
+    setProfile({ ...f, pseudoId: session ?? f.pseudoId, createdAt: f.createdAt || new Date().toISOString() });
+    router.push("/tree");
   };
-
-  if (loading)
-    return (
-      <div className="card mx-auto mt-10 max-w-md p-10 text-center">
-        <Loader2 className="mx-auto animate-spin text-accent" size={32} />
-        <p className="mt-4 font-medium">AI가 경로 초안을 만들고 있어요</p>
-        <p className="mt-1 text-sm text-slate-500">목표 직무의 역량 그래프에서 노드를 고르고, 지금 열린 공고를 연결하는 중…</p>
-      </div>
-    );
 
   return (
     <div className="mx-auto max-w-3xl">
@@ -294,7 +280,7 @@ function Form({ start }: { start: Profile }) {
             </button>
           ) : (
             <button className="btn bg-accent text-white" onClick={finish}>
-              <Sparkles size={16} /> AI 경로 만들기
+              <Sparkles size={16} /> 스킬트리 만들기
             </button>
           )}
         </div>
