@@ -78,6 +78,7 @@ cuk-career-ai/
 ├─ scripts/server-setup.sh  새 서버 1회 설치 스크립트
 ├─ docs/DEPLOY.md        배포 구성 메모
 ├─ docs/DEPT_TECH_TREES.md  학과별 테크트리 설계안 (학과 홈페이지 조사, 미반영)
+├─ docs/EVALUATION.md    검증 계획(기획서 4.8 지표 6개 + AI·준수 지표 4개), 정답표 양식은 docs/eval/templates/
 ├─ docker-compose.yml    서버용 (Postgres + API + Caddy)
 └─ Caddyfile             HTTPS 리버스 프록시
 ```
@@ -305,7 +306,7 @@ git merge main          # 충돌이 나면 파일을 열어 고친 뒤 git add �
 2. **직무 보강** — 직무가 22개뿐이라 채용 공고 연결이 거칠다(예: 인사 → 재무). `catalog.ts`에 직무를 추가하면 `api/app/catalog.json`도 다시 만든다
 3. **K-Startup 기준 좁히기** — 119건 중 박람회·행사가 섞여 있다
 4. **관리자 공고 등록을 서버로** — 붙여넣은 본문을 Gemini로 구조화해 DB에 저장
-5. **평가**(기획서 4.8) — 공고 필드 정확도, 자격 오판, 챗봇 근거 일치, 추천 관련성, 탐색 시간, 알림 오발송. 아직 하나도 측정하지 않았다 (실측값만 발표)
+5. **평가**(기획서 4.8) — 설계는 `docs/EVALUATION.md`. 11/21 프롬프트 동결, 11/22~28 정답표·학생 세션, 11/30 `/evaluation` 공개. 아직 측정값 없음
 6. **제출물** — 발표자료 20장, 시연 영상 3분, 지원금 사용계획서
 7. 문서: `docs/DEPLOY.md`는 초기 계획 메모라 실제 구성과 다른 부분이 있다(Redis·워커 없음)
 
