@@ -1,0 +1,53 @@
+{
+ "measured_at": "2026-11-20 13:55",
+ "run": {
+  "school": {
+   "seen": 41,
+   "new": 1
+  },
+  "k-startup": {
+   "seen": 196,
+   "detail_refetch": 0
+  },
+  "work24": {
+   "seen": 311,
+   "new": 19
+  },
+  "tidy": {
+   "todo": 19,
+   "ai": 17
+  }
+ },
+ "compliance": {
+  "hosts": {
+   "www.catholic.ac.kr": {
+    "requests": 44,
+    "min_gap": 3.0
+   },
+   "www.k-startup.go.kr": {
+    "requests": 1,
+    "min_gap": null
+   },
+   "apis.data.go.kr": {
+    "requests": 2,
+    "min_gap": 3.0
+   },
+   "www.work24.go.kr": {
+    "requests": 54,
+    "min_gap": 3.0
+   }
+  },
+  "forbidden_attempts": 0,
+  "robots_checked": [
+   "www.catholic.ac.kr",
+   "www.k-startup.go.kr"
+  ]
+ },
+ "first_measurement_code_review": [
+  "학교 공지: 분류를 바꿀 때 목록 요청이 직전 본문 요청 직후에 나감(간격 약 0초)",
+  "학교 공지: robots.txt 요청 직후 첫 목록 요청(간격 약 0초)",
+  "K-Startup API: 페이지 사이 1초",
+  "고용24: 목록 페이지 사이 간격 없음, 상세 사이 1초"
+ ],
+ "note": "1차는 계수기가 없어 코드 검토로 기록, 수정 후 실제 수집 1회를 계측"
+}
