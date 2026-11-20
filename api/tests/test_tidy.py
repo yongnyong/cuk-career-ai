@@ -101,3 +101,12 @@ def test_work_location_is_not_judged_as_residence_requirement():
     ai = [{"category": "지역", "label": "경기 지역 근무", "kind": "required", "quote": "근무지: 경기", "regions": ["경기"]}]
     out = tidy.tidy_batch([p], fake(ai))[0]
     assert [(c["key"], c["label"]) for c in out["required"]] == [("other", "근무지: 경기 지역 근무")]
+
+
+def test_quote_with_a_changed_number_is_rejected():
+    p = posting()
+    p["sections"][1]["text"] = "- 창업 3년 이내 기업 또는 예비창업자"
+    fake = {"category": "창업 단계", "label": "창업 7년 이내", "kind": "required", "quote": "창업 7년 이내 기업 또는 예비창업자"}
+    real = {**fake, "label": "창업 3년 이내", "quote": "창업 3년 이내 기업 또는 예비 창업자"}
+    assert tidy.to_condition(fake, p) is None
+    assert tidy.to_condition(real, p) is not None

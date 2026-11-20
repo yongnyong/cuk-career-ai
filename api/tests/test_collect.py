@@ -143,3 +143,38 @@ def test_kstartup_digest_ignores_row_order_but_sees_real_changes():
     a = collect.kstartup_digest({**KST_ITEM, "id": 1})
     assert a == collect.kstartup_digest({**KST_ITEM, "id": 57})
     assert a != collect.kstartup_digest({**KST_ITEM, "id": 1, "pbanc_rcpt_end_dt": "20261220"})
+
+
+def test_scrub_removes_resident_registration_number():
+    assert collect.scrub("주민번호 990101-1234567") == "주민번호 [주민번호 삭제]"
+    assert collect.scrub("9901011234567") == "[주민번호 삭제]"
+    assert collect.scrub("마감 2026.12.10 18:00, 지원금 3,000만원") == "마감 2026.12.10 18:00, 지원금 3,000만원"
+
+
+def test_fetch_keeps_interval_and_refuses_attachment_paths(monkeypatch):
+    calls = []
+
+    class Resp:
+        def __enter__(self):
+            return self
+
+        def __exit__(self, *a):
+            return False
+
+        def read(self):
+            return b"ok"
+
+    monkeypatch.setattr(collect.urllib.request, "urlopen", lambda req, timeout=30: (calls.append(req.full_url), Resp())[1])
+    slept = []
+    monkeypatch.setattr(collect.time, "sleep", lambda s: slept.append(s))
+    collect._last_request.clear()
+    collect.COMPLIANCE.update(hosts={}, forbidden_attempts=0, robots_checked=[])
+    collect.fetch("https://example.ac.kr/a")
+    collect.fetch("https://example.ac.kr/b")
+    assert slept and slept[0] > 2.5  # 두 번째 요청 전에 간격을 둔다
+    try:
+        collect.fetch("https://example.ac.kr/_attach/file.pdf")
+        raise AssertionError("금지 경로를 요청했다")
+    except RuntimeError:
+        pass
+    assert collect.COMPLIANCE["forbidden_attempts"] == 1 and len(calls) == 2

@@ -258,11 +258,27 @@ export function suggestJobs(departmentId: string) {
 
 // ───────── 알림 (멱등키로 중복 방지, 정정 시 이전 알림 무효화)
 const DAY = 86_400_000;
-export function syncNotices(notices: Notice[], opps: Opportunity[], followed: string[], now: Date): Notice[] {
+export function syncNotices(
+  notices: Notice[],
+  opps: Opportunity[],
+  followed: string[],
+  now: Date,
+  quests: Record<string, Record<string, boolean>> = {},
+): Notice[] {
   const byKey = new Map(notices.map((n) => [n.idempotencyKey, { ...n }]));
+  const cancel = (id: string, keep: (n: Notice) => boolean = () => false) => {
+    for (const n of byKey.values()) if (n.oppId === id && n.status === "scheduled" && !keep(n)) n.status = "cancelled";
+  };
   for (const id of followed) {
     const o = opps.find((x) => x.id === id);
-    if (!o) continue;
+    // 공고가 목록에서 사라지면(삭제·수집 제외) 남은 예약을 취소한다
+    if (!o) {
+      cancel(id);
+      continue;
+    }
+    // 공식 신청처로 이동(지원 완료)했으면 남은 마감 알림은 보내지 않는다. 정정 알림은 그대로 둔다
+    const applied = !!quests[id]?.["공식 신청처 이동"];
+    if (applied) cancel(id, (n) => n.kind === "정정");
     const v = latest(o);
     // 이전 버전 예약 알림 무효화
     for (const n of byKey.values()) {
@@ -285,11 +301,17 @@ export function syncNotices(notices: Notice[], opps: Opportunity[], followed: st
         });
       }
     }
+    if (applied) continue;
     for (const k of [7, 3, 1] as const) {
       const key = `${id}:${v.version}:D-${k}`;
-      if (byKey.has(key)) continue;
       const dl = new Date(v.deadline);
       const fire = new Date(dl.getTime() - k * DAY);
+      const prev = byKey.get(key);
+      if (prev) {
+        // 팔로우를 해제했다가 다시 팔로우하면 같은 버전의 취소된 예약을 되살린다
+        if (prev.status === "cancelled" && fire.getTime() >= now.getTime()) prev.status = "scheduled";
+        continue;
+      }
       if (fire.getTime() < now.getTime()) continue; // 이미 지난 시점의 알림은 만들지 않음
       byKey.set(key, {
         id: key,

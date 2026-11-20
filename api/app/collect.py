@@ -59,10 +59,42 @@ def facts(pairs: list[tuple[str, str | None]]) -> list[dict]:
     return [{"label": k, "value": scrub(re.sub(r"\s+", " ", v)).strip()[:200]} for k, v in pairs if v and str(v).strip()]
 
 
+# 수집 준수 기록(M9): 사이트별 요청 수와 가장 짧았던 요청 간격, 금지 경로 시도, robots.txt 확인
+FORBIDDEN_PATH = re.compile(r"/_attach/|/_custom/|/_res/|/afile")
+COMPLIANCE: dict = {"hosts": {}, "forbidden_attempts": 0, "robots_checked": []}
+_last_request: dict[str, float] = {}
+
+
 def fetch(url: str) -> str:
+    """모든 외부 요청이 지나가는 곳. 같은 사이트에는 INTERVAL초 이상 간격을 두고, 첨부 경로는 요청하지 않는다."""
+    parts = urllib.parse.urlsplit(url)
+    host = parts.netloc
+    if FORBIDDEN_PATH.search(parts.path):
+        COMPLIANCE["forbidden_attempts"] += 1
+        raise RuntimeError(f"수집 금지 경로라 요청하지 않음: {parts.path[:40]}")
+    last = _last_request.get(host)
+    if last is not None:
+        wait = INTERVAL - (time.time() - last)
+        if wait > 0:
+            time.sleep(wait)
+    now = time.time()
+    stat = COMPLIANCE["hosts"].setdefault(host, {"requests": 0, "min_gap": None})
+    if last is not None:
+        gap = round(now - last, 2)
+        stat["min_gap"] = gap if stat["min_gap"] is None else min(stat["min_gap"], gap)
+    stat["requests"] += 1
+    _last_request[host] = now
     req = urllib.request.Request(url, headers={"User-Agent": UA})
     with urllib.request.urlopen(req, timeout=30) as r:
         return r.read().decode("utf-8", errors="replace")
+
+
+def robots_for(site: str) -> RobotFileParser:
+    """robots.txt도 같은 간격 규칙으로 받아 온다. 확인한 사이트를 기록한다."""
+    rp = RobotFileParser(site + "/robots.txt")
+    rp.parse(fetch(site + "/robots.txt").splitlines())
+    COMPLIANCE["robots_checked"].append(urllib.parse.urlsplit(site).netloc)
+    return rp
 
 
 def strip_tags(fragment: str) -> str:
@@ -100,8 +132,12 @@ def parse_body(page: str) -> str:
     return strip_tags(page[page.find(">", start) + 1 : min(ends) if ends else start + 20000])
 
 
+RRN = re.compile(r"(?<!\d)\d{6}-?[1-4]\d{6}(?!\d)")
+
+
 def scrub(text: str) -> str:
-    return STUDENT_NO.sub("[학번 삭제]", PHONE.sub("[전화번호 삭제]", text))
+    # 주민등록번호를 먼저 지운다(뒷자리가 전화번호 형태로 잘못 지워지는 것을 막는다)
+    return STUDENT_NO.sub("[학번 삭제]", PHONE.sub("[전화번호 삭제]", RRN.sub("[주민번호 삭제]", text)))
 
 
 def chunk(text: str, size: int = 350) -> list[dict]:
@@ -583,9 +619,8 @@ def run_kstartup() -> None:
     from .main import Posting, SessionLocal
 
     stats = {"seen": 0, "new": 0, "updated": 0, "kept": 0, "detail": 0}
-    robots = RobotFileParser("https://www.k-startup.go.kr/robots.txt")
     try:
-        robots.read()
+        robots = robots_for("https://www.k-startup.go.kr")
     except Exception:
         robots = None  # 확인하지 못하면 상세 화면은 읽지 않는다
     with SessionLocal() as db:
@@ -616,8 +651,7 @@ def run_kstartup() -> None:
 def run() -> None:
     from .main import Posting, SessionLocal
 
-    robots = RobotFileParser(BASE + "/robots.txt")
-    robots.read()
+    robots = robots_for(BASE)
     if not robots.can_fetch(UA, LIST_URL):
         sys.exit("robots.txt가 공지 목록 수집을 허용하지 않아 중단합니다.")
 
@@ -658,3 +692,4 @@ if __name__ == "__main__":
         from .tidy import run as run_tidy  # 조건 정리 에이전트: 새로 들어오거나 바뀐 공고만 처리
 
         run_tidy()
+    print("compliance", json.dumps(COMPLIANCE, ensure_ascii=False))

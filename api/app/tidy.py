@@ -91,10 +91,18 @@ def to_condition(c: dict, posting: dict) -> dict | None:
         return None
     src = next((s["id"] for s in posting["sections"] if quote in norm(s["text"])), None)
     if not src:
-        # 구절을 글자 그대로 옮기지 않은 경우: 구절의 낱말(숫자 포함)이 거의 모두 한 문단에 있으면 인정한다
+        # 구절을 글자 그대로 옮기지 않은 경우: 구절의 낱말이 거의 모두 한 문단에 있으면 인정한다.
+        # 단, 숫자는 하나도 빠짐없이 그 문단에 있어야 한다(숫자만 바꾼 구절 — 예: 3년 → 7년 — 이 통과하던 문제, 2026-11-20 검증에서 발견)
         words = re.findall(r"[가-힣A-Za-z0-9]{2,}", c.get("quote", ""))
+        numbers = set(re.findall(r"\d+", c.get("quote", "")))
         src = next(
-            (s["id"] for s in posting["sections"] if len(words) >= 2 and sum(w in norm(s["text"]) for w in words) >= 0.7 * len(words)),
+            (
+                s["id"]
+                for s in posting["sections"]
+                if len(words) >= 2
+                and sum(w in norm(s["text"]) for w in words) >= 0.7 * len(words)
+                and numbers <= set(re.findall(r"\d+", s["text"]))
+            ),
             None,
         )
     if not src:

@@ -1,0 +1,341 @@
+{
+ "m2": {
+  "total": 32,
+  "match": 32,
+  "falseExclude": 0,
+  "falseInclude": 0,
+  "checkShare": 0.3125,
+  "cases": [
+   {
+    "name": "학적 재학 대상 × 재학",
+    "expect": "pass",
+    "got": "pass",
+    "ok": true,
+    "kind": "일치"
+   },
+   {
+    "name": "학적 재학 대상 × 휴학",
+    "expect": "fail",
+    "got": "fail",
+    "ok": true,
+    "kind": "일치"
+   },
+   {
+    "name": "학적 재학 대상 × 졸업예정",
+    "expect": "fail",
+    "got": "fail",
+    "ok": true,
+    "kind": "일치"
+   },
+   {
+    "name": "학년 3·4 × 2학년",
+    "expect": "fail",
+    "got": "fail",
+    "ok": true,
+    "kind": "일치"
+   },
+   {
+    "name": "학년 3·4 × 3학년",
+    "expect": "pass",
+    "got": "pass",
+    "ok": true,
+    "kind": "일치"
+   },
+   {
+    "name": "학년 3·4 × 4학년",
+    "expect": "pass",
+    "got": "pass",
+    "ok": true,
+    "kind": "일치"
+   },
+   {
+    "name": "전공 ICT × 인공지능학과",
+    "expect": "pass",
+    "got": "pass",
+    "ok": true,
+    "kind": "일치"
+   },
+   {
+    "name": "전공 ICT × 심리학과",
+    "expect": "fail",
+    "got": "fail",
+    "ok": true,
+    "kind": "일치"
+   },
+   {
+    "name": "전공 ICT × 자유전공",
+    "expect": "check",
+    "got": "check",
+    "ok": true,
+    "kind": "일치"
+   },
+   {
+    "name": "학력 4년제 졸업(예정) × 재학 2학년",
+    "expect": "fail",
+    "got": "fail",
+    "ok": true,
+    "kind": "일치"
+   },
+   {
+    "name": "학력 4년제 졸업(예정) × 재학 4학년",
+    "expect": "check",
+    "got": "check",
+    "ok": true,
+    "kind": "일치"
+   },
+   {
+    "name": "학력 4년제 졸업(예정) × 졸업예정",
+    "expect": "pass",
+    "got": "pass",
+    "ok": true,
+    "kind": "일치"
+   },
+   {
+    "name": "학력 무관 × 1학년",
+    "expect": "pass",
+    "got": "pass",
+    "ok": true,
+    "kind": "일치"
+   },
+   {
+    "name": "학력 고졸 이상 × 2학년",
+    "expect": "pass",
+    "got": "pass",
+    "ok": true,
+    "kind": "일치"
+   },
+   {
+    "name": "학력 석사 이상 × 4학년",
+    "expect": "fail",
+    "got": "fail",
+    "ok": true,
+    "kind": "일치"
+   },
+   {
+    "name": "학력 전문대 졸업 이상 × 3학년",
+    "expect": "check",
+    "got": "check",
+    "ok": true,
+    "kind": "일치"
+   },
+   {
+    "name": "토익 700 × 미입력",
+    "expect": "check",
+    "got": "check",
+    "ok": true,
+    "kind": "일치"
+   },
+   {
+    "name": "토익 700 × 650점",
+    "expect": "fail",
+    "got": "fail",
+    "ok": true,
+    "kind": "일치"
+   },
+   {
+    "name": "토익 700 × 850점",
+    "expect": "pass",
+    "got": "pass",
+    "ok": true,
+    "kind": "일치"
+   },
+   {
+    "name": "창업 예비~3년 × 미입력",
+    "expect": "check",
+    "got": "check",
+    "ok": true,
+    "kind": "일치"
+   },
+   {
+    "name": "창업 예비~3년 × 예비창업자",
+    "expect": "pass",
+    "got": "pass",
+    "ok": true,
+    "kind": "일치"
+   },
+   {
+    "name": "창업 예비~3년 × 창업 3년 미만",
+    "expect": "pass",
+    "got": "pass",
+    "ok": true,
+    "kind": "일치"
+   },
+   {
+    "name": "창업 예비~3년 × 창업 7년 미만",
+    "expect": "fail",
+    "got": "fail",
+    "ok": true,
+    "kind": "일치"
+   },
+   {
+    "name": "연령 20~39 × 미입력",
+    "expect": "check",
+    "got": "check",
+    "ok": true,
+    "kind": "일치"
+   },
+   {
+    "name": "연령 20~39 × 23세",
+    "expect": "pass",
+    "got": "pass",
+    "ok": true,
+    "kind": "일치"
+   },
+   {
+    "name": "연령 20~39 × 45세",
+    "expect": "fail",
+    "got": "fail",
+    "ok": true,
+    "kind": "일치"
+   },
+   {
+    "name": "연령 20~39 × 경계 20세",
+    "expect": "check",
+    "got": "check",
+    "ok": true,
+    "kind": "일치"
+   },
+   {
+    "name": "지역 경기 × 미입력",
+    "expect": "check",
+    "got": "check",
+    "ok": true,
+    "kind": "일치"
+   },
+   {
+    "name": "지역 경기 × 경기 거주",
+    "expect": "check",
+    "got": "check",
+    "ok": true,
+    "kind": "일치"
+   },
+   {
+    "name": "지역 경기 × 서울 거주",
+    "expect": "fail",
+    "got": "fail",
+    "ok": true,
+    "kind": "일치"
+   },
+   {
+    "name": "기타 문장(병역필) × 아무 학생",
+    "expect": "check",
+    "got": "check",
+    "ok": true,
+    "kind": "일치"
+   },
+   {
+    "name": "충돌: 학년 충족 + 학적 미충족 → 전체",
+    "expect": "fail",
+    "got": "fail",
+    "ok": true,
+    "kind": "일치"
+   }
+  ]
+ },
+ "m6": {
+  "total": 20,
+  "pass": 20,
+  "cases": [
+   {
+    "name": "1 마감 10일 전 팔로우 → D-7·3·1 예약",
+    "ok": true,
+    "detail": "예약 D-7,D-3,D-1"
+   },
+   {
+    "name": "2 마감 2일 전 팔로우 → D-1만",
+    "ok": true,
+    "detail": "알림 D-1"
+   },
+   {
+    "name": "3 같은 상태로 두 번 동기화 → 변화 없음(멱등)",
+    "ok": true,
+    "detail": "3개"
+   },
+   {
+    "name": "4 D-7 시점 도래 → D-7만 발송",
+    "ok": true,
+    "detail": "발송 D-7"
+   },
+   {
+    "name": "5 마감 연장 정정 → 정정 1개, v1 예약 취소",
+    "ok": true,
+    "detail": "정정 1, v1 예약 0, v2 예약 3"
+   },
+   {
+    "name": "6 정정 후 다시 동기화 → 정정 알림 중복 없음",
+    "ok": true,
+    "detail": "정정 1"
+   },
+   {
+    "name": "7 v2→v3 연속 정정 → 정정 2개, v2 예약 취소",
+    "ok": true,
+    "detail": "정정 2, v2 예약 0"
+   },
+   {
+    "name": "8 마감 단축으로 D-3 시점이 이미 지남 → v2 D-3 없음",
+    "ok": true,
+    "detail": "v2 정정,D-1"
+   },
+   {
+    "name": "9 마감 23:59(KST) → D-1은 전날 23:59",
+    "ok": true,
+    "detail": "2026-12-09T14:59:00.000Z"
+   },
+   {
+    "name": "10 팔로우 해제 → 남은 예약 취소",
+    "ok": true,
+    "detail": "예약 0, 발송 0"
+   },
+   {
+    "name": "11 해제 후 다시 팔로우 → 새 예약",
+    "ok": true,
+    "detail": "예약 3"
+   },
+   {
+    "name": "12 발송된 알림이 있는 상태에서 정정 → 발송분 유지, 예약만 취소",
+    "ok": true,
+    "detail": "v1 발송 1, v1 예약 0"
+   },
+   {
+    "name": "13 마감 지난 공고 팔로우 → 알림 없음",
+    "ok": true,
+    "detail": "0개"
+   },
+   {
+    "name": "14 지원 완료(공식 신청처 이동) 후 → 남은 D-day 알림 중단",
+    "ok": true,
+    "detail": "완료 후 발송 "
+   },
+   {
+    "name": "15 공고 2개 동시 팔로우 → 공고별 독립",
+    "ok": true,
+    "detail": "a 3, b 3"
+   },
+   {
+    "name": "16 가상 시계를 되돌림 → 발송분이 다시 예약되지 않음",
+    "ok": true,
+    "detail": "sent"
+   },
+   {
+    "name": "17 저장 후 다른 기기에서 복원 → 중복 없음",
+    "ok": true,
+    "detail": "3개"
+   },
+   {
+    "name": "18 공고가 목록에서 사라짐 → 예약 취소",
+    "ok": true,
+    "detail": "예약 0, 발송 0"
+   },
+   {
+    "name": "19 마감 외 항목만 정정 → 정정 1개, D-day 예약 유지",
+    "ok": true,
+    "detail": "정정 1, D-day 예약 3"
+   },
+   {
+    "name": "20 같은 공고의 D-day 알림이 하루에 2개 이상 발송되지 않음",
+    "ok": true,
+    "detail": "{\"2026-12-03\":1,\"2026-12-08\":1,\"2026-12-10\":1}"
+   }
+  ]
+ }
+}

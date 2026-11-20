@@ -191,7 +191,7 @@ export function StoreProvider({ children }: { children: React.ReactNode }) {
   const update = useCallback((fn: (s: State) => State) => {
     setState((prev) => {
       let s = fn(prev);
-      s = { ...s, notices: syncNotices(s.notices, s.opportunities, s.followed, new Date(s.now)) };
+      s = { ...s, notices: syncNotices(s.notices, s.opportunities, s.followed, new Date(s.now), s.quests) };
       // 로그인 중이면 계정별 데이터에 반영
       if (s.session && s.users[s.session])
         s = { ...s, users: { ...s.users, [s.session]: { ...s.users[s.session], data: pickUser(s) } } };

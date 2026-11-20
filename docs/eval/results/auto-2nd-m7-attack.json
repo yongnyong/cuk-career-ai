@@ -1,0 +1,17 @@
+{
+ "measured_at": "2026-11-20 13:48",
+ "postings": 368,
+ "m7_attack": {
+  "attacks": 20,
+  "blocked": 20,
+  "by_type": {
+   "지어낸 문장": "10/10",
+   "숫자만 바꾼 원문 구절": "10/10"
+  },
+  "leaked": [],
+  "controls": {
+   "total": 10,
+   "passed": 10
+  }
+ }
+}
