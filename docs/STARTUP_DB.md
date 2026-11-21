@@ -1,0 +1,124 @@
+# 창업 시연 DB
+
+아이디어와 팀을 보유한 학생의 창업 준비를 위한 공개 공고 표본이다.
+가톨릭대 공고 7건과 기업마당 공고 9건을 실제 페이지에서 수집했다.
+2026년 모집 공고이며 마감된 공고도 시연·추출 검증에 포함한다.
+공고 후보 URL은 `api/app/startup_collect.py`의 `SAMPLE_URLS`에서 관리한다.
+
+## 파일과 실행
+
+DB 기본 경로는 `api/startup.db`이다. 계정과 취업 DB는 별도 저장소를 사용한다.
+필요한 패키지는 창업 수집 전용 목록으로 설치한다.
+
+```powershell
+cd "C:\Users\jhpar\Documents\New project\cuk-career-ai\api"
+.\.venv\Scripts\python.exe -m pip install -r requirements-startup.txt
+.\.venv\Scripts\python.exe -X utf8 -m app.startup_collect
+```
+
+저장된 자료의 현황을 확인하거나 네트워크 요청 없이 추출 규칙을 다시 적용할 수 있다.
+
+```powershell
+.\.venv\Scripts\python.exe -X utf8 -m app.startup_collect --summary
+.\.venv\Scripts\python.exe -X utf8 -m app.startup_collect --reextract
+```
+
+`--limit 5`는 앞의 공고 5건만 수집한다. `--skip-pdfs`는 HTML만 수집한다.
+`--db`로 별도 DB 파일 경로를 지정할 수 있다.
+`--summary --export startup-demo.json`으로 공개 자료를 JSON으로 내보낼 수 있다.
+DB는 기존 `*.db` 제외 규칙에 따라 로컬에 저장된다. 공유할 때는 DB 또는 내보낸 공개 자료를 함께 전달한다.
+
+## 테이블
+
+| 테이블 | 저장 내용 |
+| --- | --- |
+| `postings` | 원문 제목·링크·확인 시각, 공고 유형, 접수 기간과 상태, 대상·혜택 원문, 검토 과제 |
+| `sources` | HTML 본문, PDF 페이지 표식이 있는 추출문, 첨부 목록, 내용 해시와 이전 수집본 |
+| `attachments` | 원문 첨부 명칭과 안정적인 링크, 양식·참고자료 분류, 열람 상태 |
+| `submission_requirements` | 표준 제출물 명칭, 원문 명칭, 의무·단계·적용 조건·마감, 출처 ID·근거 문장·줄 번호 |
+| `startup_nodes` | 제출물·준비 과제를 통합한 공통 노드와 서비스에서 정한 완료 기준 |
+| `startup_node_evidence` | 노드별 공고·서류·양식·평가지표 근거, 적용 조건, 원문 줄 범위와 PDF 페이지 |
+| `startup_node_edges` | 해당 공고에서의 양식 구성과 심사 대비 준비 과제 연결 |
+
+같은 제출물을 여러 출처가 설명하면 근거별 행을 보존한다.
+`requirements`는 근거 행 수이고 `unique_requirement_groups`는 공고·서류·의무·단계의 조합 수이다.
+기존 화면과 관심사 분기는 후속 연결 대상이다.
+
+## 해석 기준
+
+- `required`는 명시적인 제출 안내에서 추출한 항목이다.
+- `optional`은 선택·자율 제출 표현이 확인된 항목이다.
+- `conditional`은 본선 진출, 최종 선발, 해당자, 사업자 유형 등 적용 조건이 있는 항목이다.
+- `needs_review`는 파일명만 확인됐거나 적용 대상이 불분명한 후보이다.
+- 모든 항목의 `review_status`는 초기값 `unreviewed`이다. 규칙 추출 결과에 대한 전수 수동 확정을 의미하지 않는다.
+
+`stage`는 `application`, `finalist`, `agreement`, `unknown` 중 하나이다.
+본문의 접수 마감과 개별 자료 제출 마감을 별도로 보관한다.
+정규화한 날짜의 정밀도는 일 단위이며, 시각과 세부 제출 방법은 원문과 근거 문장에서 확인한다.
+`within_announced_period`는 수집 당시 공고상 접수 기간에 해당한다는 뜻이다.
+예산 소진 여부, 수시모집, 당일 마감 시각은 `needs_review`로 처리한다.
+접수 상태는 마지막 수집 시점의 값이므로 실제 추천 시 현재 시각으로 재평가해야 한다.
+
+PDF 텍스트 추출 8건이 포함된다. HWP 18건, HWPX·ZIP·JPG 각 1건과 이미지형 PDF 1건은 추가 확인이 필요하다.
+매뉴얼·포스터·FAQ 등 참고 첨부 9건은 링크와 파일명을 보관한다.
+이미지에만 적힌 조건과 첨부 전용 제출 목록의 완전성은 아직 검증 대상이다.
+근거가 추출되지 않은 공고를 서류가 없는 공고로 해석하면 안 된다.
+
+수집은 공개 페이지를 대상으로 사이트별 간격을 두고 수행한다.
+기업마당 다운로드 버튼의 임시 토큰은 요청에만 쓰고 DB·JSON에는 저장하지 않는다.
+공고 단위 트랜잭션과 내용 해시를 이용해 재실행 시 중복을 방지하고 이전 출처를 보존한다.
+
+## 조회 예시
+
+```sql
+SELECT p.title, r.document_type, r.necessity, r.stage,
+       r.condition_text, r.deadline_date, r.evidence_quote
+FROM submission_requirements r
+JOIN postings p ON p.id = r.posting_id
+WHERE r.posting_id = 'cuk-277825';
+```
+
+```sql
+SELECT p.title, r.document_type, s.url, r.evidence_line, r.evidence_quote
+FROM submission_requirements r
+JOIN postings p ON p.id = r.posting_id
+JOIN sources s ON s.id = r.source_id
+WHERE r.necessity = 'needs_review';
+```
+
+```powershell
+.\.venv\Scripts\python.exe -X utf8 -m pytest tests/test_startup.py tests/test_collect.py tests/test_career_db.py -q
+```
+
+## 창업 노드 추출
+
+```powershell
+.\.venv\Scripts\python.exe -X utf8 -m app.startup_nodes --export startup_nodes.json
+.\.venv\Scripts\python.exe -X utf8 -m app.startup_nodes --posting cuk-277825
+.\.venv\Scripts\python.exe -X utf8 -m app.startup_nodes --include-review
+```
+
+수집과 `--reextract`를 실행하면 노드도 함께 재생성한다.
+`--posting`을 여러 번 지정하면 선택한 공고들의 근거만 조회할 수 있다.
+`--export`의 JSON에는 노드별 원문 근거와 공고별 조건, 연결 정보가 포함된다.
+
+공통 문서 명칭은 같은 노드로 묶고, 필수·선택·본선 진출 조건과 마감은 공고별 근거에 둔다.
+같은 공고에 PDF 자료가 여러 개 있어도 `posting_count`는 공고 하나로 센다.
+신청서·발급 증빙과 사업 준비 과제는 `kind`로 조회할 수 있다.
+사업자등록증 준비 노드는 공고의 해당자 조건을 확인해 필요한 증빙을 준비하는 과제이다.
+
+세부 준비 노드는 실제 신청 양식의 제목과 명시된 심사 항목에서 생성한다.
+예를 들어 시장진입 전략이라는 심사 항목을 시장 진입전략 수립이라는 준비 과제로 변환한다.
+노드 제목·완료 기준은 서비스가 정한 표현이며 원문 인용은 `quote`에 별도로 보관한다.
+`form_section`은 양식 항목, `evaluation`은 심사 대비 준비 과제이며 제출 의무는 `unspecified`이다.
+노드 연결은 문서 구성과 심사 대비 준비 과제의 연관성을 나타낸다.
+
+사전에 정규화하지 않은 사업 관련 양식 제목도 새 노드 후보로 저장한다.
+개인정보·동의·서약 등 행정 항목은 해당 후보 추출에서 제외한다.
+후보의 의미와 완료 기준은 추가 확인 대상으로 두고 `--include-review`에서 조회한다.
+알려진 개념도 원문 근거가 발견된 경우에만 노드에 포함한다.
+학생별 활용 시에는 관심 공고와 해당 공고의 적용 조건을 기준으로 노드를 선택한다.
+
+```powershell
+.\.venv\Scripts\python.exe -X utf8 -m pytest tests/test_startup_nodes.py tests/test_startup.py tests/test_collect.py tests/test_career_db.py -q
+```
