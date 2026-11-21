@@ -1,7 +1,7 @@
 "use client";
-import { useCallback, useEffect, useMemo, useState } from "react";
+import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import Link from "next/link";
-import { Background, Controls, Handle, Position, ReactFlow, type Edge, type Node, type NodeProps } from "@xyflow/react";
+import { Background, Controls, Handle, MarkerType, Position, ReactFlow, type Edge, type Node, type NodeProps, type ReactFlowInstance } from "@xyflow/react";
 import "@xyflow/react/dist/style.css";
 import { Award, Check, KeyRound, Printer, Swords, X } from "lucide-react";
 import { RequireProfile } from "@/components/RequireProfile";
@@ -15,6 +15,9 @@ import { dday, recommend, type TreeNode } from "@/lib/engine";
 import type { RecommendedQuest, TreeSignal } from "@/lib/types";
 import { formatScore, meetsTarget, scaleOf, skillById } from "@/lib/data/catalog";
 import { questProgress } from "@/lib/quest";
+import { questOutcome, recommendedTitle } from "@/lib/questOutcome";
+import { careerInterestOf } from "@/lib/interest";
+import { layoutProgression, progressionStage } from "@/lib/treeProgression";
 
 type SkillNodeData = { node: TreeNode; isNew: boolean; now: Date; proof: boolean; recommended: boolean };
 
@@ -27,7 +30,14 @@ function SkillNode({ data }: NodeProps<Node<SkillNodeData>>) {
     </>
   );
 }
-const nodeTypes = { skill: SkillNode };
+type StageData = { title: string; detail: string; width: number; count: number };
+function StageNode({ data }: NodeProps<Node<StageData>>) {
+  return <div style={{ width: data.width }} className="border-b border-go/40 bg-panel pb-3 text-ink">
+    <p className="text-base font-bold">{data.title} <span className="text-xs font-normal text-ink/60">{data.count}개</span></p>
+    <p className="mt-1 text-xs text-ink/65">{data.detail}</p>
+  </div>;
+}
+const nodeTypes = { skill: SkillNode, stage: StageNode };
 
 const ACTION_TEXT: Record<string, string> = {
   review_record: "보유 기록과 시험·자격의 인정 조건을 비교해 보세요.",
@@ -40,6 +50,28 @@ const ACTION_TEXT: Record<string, string> = {
   review_activity: "활동 원문에서 모집 대상과 진행 내용을 확인해 보세요.",
 };
 const BASIS_LABEL = { required: "공고 필수", preferred: "공고 우대", school: "학과 진로표", activity: "학습 활동" };
+
+function StartupDetail({ node, recommended }: { node: TreeNode; recommended: boolean }) {
+  const definition = node.startup!;
+  const labels: Record<string, string> = { required: '필수 제출', optional: '선택 제출', conditional: '조건부 제출', needs_review: '확인 필요' };
+  const stages: Record<string, string> = { application: '신청 단계', finalist: '본선·발표평가 단계', agreement: '선정·협약 단계' };
+  const refs = [...new Map(definition.references.map((r) => [`${r.posting_id}:${r.basis}:${r.necessity}:${r.stage}`, r])).values()];
+  const openIds = new Set(node.opportunities.map((o) => o.startup?.postingId));
+  refs.sort((a, b) => Number(openIds.has(b.posting_id)) - Number(openIds.has(a.posting_id)));
+  return <div className="mt-3 space-y-3 text-xs">
+    <p className="font-bold text-go">{recommended ? '추천 퀘스트' : '창업 준비 과제'}</p>
+    <p className="text-ink/60">양식 구성과 심사 대비에 활용하는 연결이에요. 공고마다 적용 조건을 확인해 주세요.</p>
+    {refs.map((r) => <div key={r.id} className="space-y-1 border-t border-line pt-2">
+      <p className="font-semibold">{r.basis === 'submission' ? labels[r.necessity] : r.basis === 'form_section' ? '신청 양식 항목' : '심사 대비 과제'}
+        {stages[r.stage] && ` · ${stages[r.stage]}`}</p>
+      {r.deadline_date && <p>자료 제출 기한 {r.deadline_date}</p>}
+      {r.condition_text && <p>{r.condition_text}</p>}
+      <blockquote className="whitespace-pre-line text-ink/75">{r.quote}</blockquote>
+      <a href={r.source_url} target="_blank" rel="noreferrer" className="block underline">{node.evidence?.find((e) => e.reference.id === r.posting_id)?.reference.historical && '지난 공고 · '}{r.posting_title}{r.source_page && ` · 첨부 ${r.source_page}쪽`}</a>
+      <Link href={`/opportunities/startup-${r.posting_id}`} className="block text-go underline">공고 상세와 제출물 보기</Link>
+    </div>)}
+  </div>;
+}
 
 function EvidenceLinks({ signals }: { signals: TreeSignal[] }) {
   const [first, next] = signals;
@@ -95,10 +127,7 @@ function PreparationDetail({ node, signals, quest }: {
           <dt className="font-semibold">{laterGoal ? `‘${laterGoal}’ 단계에서 할 일` : "서비스가 제안하는 행동"}</dt>
           <dd>{plan.action}</dd>
         </div>
-        <div>
-          <dt className="font-semibold">{laterGoal ? "후속 단계 완료 기준" : "완료 기준"}</dt>
-          <dd>{plan.completion}</dd>
-        </div>
+        {laterGoal && <div><dt className="font-semibold">후속 단계 완료 기준</dt><dd>{plan.completion}</dd></div>}
       </dl>
     </div>
   );
@@ -188,11 +217,27 @@ function TreeView() {
   const recs = useMemo(() => recommend(s.opportunities, p, now), [s.opportunities, p, now]);
   const [sel, setSel] = useState<string | null>(null);
   const selNode = tree.find((n) => n.skill === sel);
+  const outcome = selNode && questOutcome(selNode);
   const selectedQuest = recommendedQuest?.skillId === sel ? recommendedQuest : null;
   const routedQuest = selectedQuest?.signals[0]?.preparation ? selectedQuest : undefined;
   const selectedRoutes = routedQuest?.signals ?? selNode?.preparationSignals;
   const newSet = useMemo(() => new Set(s.newOpps), [s.newOpps]);
   const questSkill = recommendedQuest?.skillId;
+  const questNode = tree.find(n => n.skill === questSkill);
+  const mode = careerInterestOf(p);
+  const flow = useRef<ReactFlowInstance | null>(null);
+  const canvas = useRef<HTMLDivElement>(null);
+  const [columns, setColumns] = useState(3);
+  useEffect(() => {
+    const observer = new ResizeObserver(([entry]) => setColumns(entry.contentRect.width < 500 ? 1 : 3));
+    if (canvas.current) observer.observe(canvas.current);
+    return () => observer.disconnect();
+  }, []);
+  const layout = useMemo(() => layoutProgression(tree, columns), [tree, columns]);
+  const focusStage = (depth: number) => {
+    const band = layout.bands.find(b => b.depth === depth);
+    if (band) void flow.current?.fitView({ nodes: [{ id: `stage-${depth}` }, ...band.skills.slice(0, columns * 2).map(id => ({ id }))], padding: 0.15, maxZoom: 1, duration: 300 });
+  };
   // 증빙 파일 목록(이 브라우저에만 저장)
   const [proofs, setProofs] = useState<Record<string, ProofMeta>>({});
   const loadProofs = useCallback(() => {
@@ -202,31 +247,25 @@ function TreeView() {
   const cancel = (skill: string) => (s.setScore(skill, ""), s.setSkill(skill, "none"));
 
   const { nodes, edges } = useMemo(() => {
-    const counts: number[] = [];
-    for (const n of tree) counts[n.depth] = (counts[n.depth] ?? 0) + 1;
-    const columns = 4;
-    const offsets: number[] = [0];
-    for (let depth = 0; depth < counts.length; depth++) {
-      offsets.push(offsets[depth] + Math.ceil(counts[depth] / columns));
-    }
-    const seen: number[] = [];
-    const nodes: Node<SkillNodeData>[] = tree.map((n) => {
-      const index = seen[n.depth] ?? 0;
-      seen[n.depth] = index + 1;
-      const row = Math.floor(index / columns);
-      const width = Math.min(columns, counts[n.depth] - row * columns);
+    const nodes: Node[] = tree.map((n) => {
       return {
         id: n.skill,
         type: "skill",
-        position: { x: (index % columns - (width - 1) / 2) * 207, y: (offsets[n.depth] + row) * 128 + 50 },
+        position: layout.positions.get(n.skill)!,
         data: { node: n, isNew: n.opportunities.some((o) => newSet.has(o.id)), now, proof: !!proofs[n.skill], recommended: n.skill === questSkill },
       };
     });
+    nodes.push(...layout.bands.map(band => ({ id: `stage-${band.depth}`, type: "stage", position: { x: 0, y: band.y }, selectable: false, data: { ...progressionStage(band.depth, mode), width: band.width, count: band.skills.length } })));
     const edges: Edge[] = tree.flatMap((n) =>
-      n.prereq.map((q) => ({ id: `${q}-${n.skill}`, source: q, target: n.skill, animated: n.state === "none" && !n.locked, style: { stroke: n.locked ? "#4a5078" : "#7c6cff", strokeWidth: 2 } })),
+      [...n.prereq.map((q) => ({ id: `${q}-${n.skill}`, source: q, target: n.skill, animated: n.state === "none" && !n.locked, style: { stroke: n.locked ? "#4a5078" : "#7c6cff", strokeWidth: 2 } })),
+       ...(n.sequence ?? []).map((q) => ({ id: `startup-${q}-${n.skill}`, source: q, target: n.skill, style: { stroke: '#7c6cff', strokeWidth: 1.5, strokeDasharray: '5 4' } }))],
     );
+    for (const edge of edges) {
+      edge.markerEnd = { type: MarkerType.ArrowClosed, color: "#7c6cff" };
+      edge.style = { ...edge.style, opacity: sel ? (edge.source === sel || edge.target === sel ? 1 : 0.12) : 0.4 };
+    }
     return { nodes, edges };
-  }, [tree, newSet, now, proofs, questSkill]);
+  }, [tree, layout, mode, newSet, now, proofs, questSkill, sel]);
 
   const newOpp = s.opportunities.find((o) => newSet.has(o.id) && tree.some((n) => n.opportunities.includes(o)));
   const activeQuest = s.followed
@@ -255,43 +294,57 @@ function TreeView() {
             <Legend />
             <span className="text-xs text-ink/60">전체 {tree.length}개 · 지금 도전 {readyCount}개</span>
           </div>
-          <div className="min-h-0 flex-1">
-            <ReactFlow
-              key={nodes.map((node) => node.id).sort().join("|")}
+          <div className="space-y-2 border-b border-line px-3 py-2">
+            <p className="text-xs text-ink/70">위에서 아래로 기초 → 심화 · 수행 권장 순서{mode === "startup" && " · 점선은 권장 흐름"}</p>
+            <div className="flex flex-wrap gap-1" aria-label="준비 단계 이동">
+              {layout.bands.map((band, index) => <button key={band.depth} className="btn-ghost !px-2 !py-1 text-xs" onClick={() => focusStage(band.depth)}>{index + 1}. {progressionStage(band.depth, mode).title}</button>)}
+            </div>
+          </div>
+          <div ref={canvas} className="min-h-0 flex-1">
+            {tree.length === 0 ? <p className="p-5 text-sm text-ink/70">이 직무에 연결된 자격이나 작업물 퀘스트를 준비 중이에요.</p> : <ReactFlow
+              key={mode + columns + nodes.map((node) => node.id).sort().join("|")}
               nodes={nodes}
               edges={edges}
               nodeTypes={nodeTypes}
               fitView
               minZoom={0.2}
-              fitViewOptions={{ padding: 0.12, maxZoom: 1.1 }}
-              onNodeClick={(_, n) => setSel(n.id)}
+              fitViewOptions={{ nodes: nodes.filter(n => n.id === `stage-${layout.bands[0]?.depth}` || layout.bands[0]?.skills.slice(0, columns * 2).includes(n.id)), padding: 0.15, maxZoom: 1 }}
+              onInit={(instance) => { flow.current = instance; }}
+              panOnScroll
+              zoomOnScroll={false}
+              onNodeClick={(_, n) => { if (n.type === "skill") setSel(n.id); }}
               nodesDraggable={false}
               colorMode="dark"
             >
               <Background gap={24} color="#2a2f52" />
               <Controls showInteractive={false} />
-            </ReactFlow>
+            </ReactFlow>}
           </div>
 
-          {selNode && (
-            <div className="window absolute right-3 top-14 z-10 max-h-[calc(100%_-_4.5rem)] w-72 overflow-y-auto p-4">
+          {selNode && outcome && (
+            <div key={selNode.skill} className="window absolute bottom-3 right-3 z-10 max-h-[70%] w-72 overflow-y-auto p-4">
               <button className="absolute right-2 top-2 text-slate-400" onClick={() => setSel(null)} aria-label="닫기">
                 <X size={16} />
               </button>
-              <p className="text-xs text-slate-500">{selNode.kind}</p>
-              <h3 className="font-bold">{selNode.name}</h3>
-              {selectedQuest && !routedQuest && (
-                <QuestDetail key={selNode.skill} node={selNode} quest={selectedQuest} loadAction={s.getQuestAction} showAction={!selectedRoutes?.length && !selNode.practice} />
+              <p className="pr-4 text-xs text-slate-500">{selNode.name} · {outcome.label}</p>
+              <h3 className="font-bold">{outcome.title}</h3>
+              <p className="mt-2 text-xs"><strong>완료 기준</strong> {outcome.completion}</p>
+              {selNode.credentialOption && !selectedRoutes?.some(s => s.preparation?.action === selNode.credentialOption?.reason) &&
+                <p className="mt-2 text-xs"><strong>직무와의 연결</strong> {selNode.credentialOption.reason}</p>}
+              <p className="mt-1 text-xs text-go">{progressionStage(selNode.depth, mode).title}</p>
+              {!!selNode.sequence?.length && <p className="mt-2 text-xs text-ink/70">먼저 준비하면 좋은 과제: {selNode.sequence.map(id => tree.find(n => n.skill === id)?.name).join(", ")} · 지원 자격과는 별개인 권장 순서예요.</p>}
+              {selNode.startup && <StartupDetail node={selNode} recommended={!!selectedQuest} />}
+              {!selNode.startup && selectedQuest && !routedQuest && (
+                <QuestDetail node={selNode} quest={selectedQuest} loadAction={s.getQuestAction} showAction={!selectedRoutes?.length && !selNode.practice} />
               )}
-              {!!selectedRoutes?.length && <PreparationDetail node={selNode} signals={selectedRoutes} quest={routedQuest} />}
-              {!selectedQuest && !selectedRoutes?.length && !!selNode.evidence?.length && (
+              {!selNode.startup && !!selectedRoutes?.length && <PreparationDetail node={selNode} signals={selectedRoutes} quest={routedQuest} />}
+              {!selNode.startup && !selectedQuest && !selectedRoutes?.length && !!selNode.evidence?.length && (
                 <div className="mt-2 space-y-1 text-xs"><EvidenceLinks signals={selNode.evidence} /></div>
               )}
               {selNode.practice && (
                 <div className="mt-2 space-y-1 border-l-2 border-line pl-2 text-xs">
                   <p className="font-bold">직무 연습 제안{selNode.prereq.length > 0 && ` · ${skillById(selNode.prereq[0])?.name}`}</p>
                   <p>{selNode.practice.action}</p>
-                  <p><strong>완료 기준</strong> {selNode.practice.completion}</p>
                 </div>
               )}
               {skillById(selNode.skill)?.officialUrl && (
@@ -306,7 +359,6 @@ function TreeView() {
               )}
               {scaleOf(selNode.skill) && (
                 <ScoreField
-                  key={selNode.skill}
                   skill={selNode.skill}
                   value={selNode.score}
                   target={selNode.target}
@@ -322,14 +374,14 @@ function TreeView() {
               ) : (
                 <>
                   <p className="mt-3 flex items-center gap-1 rounded-md bg-emerald-100 px-2 py-1.5 text-sm font-bold text-emerald-700">
-                    <Check size={16} /> 완료한 노드예요
+                    <Check size={16} /> {proofs[selNode.skill] ? "완료 · 결과물 첨부" : "보유 역량으로 완료 처리됨"}
                   </p>
-                  <ProofField owner={p.pseudoId} skill={selNode.skill} proof={proofs[selNode.skill]} onChange={loadProofs} />
                   <button className="btn-ghost mt-2 !py-1 text-xs" onClick={() => cancel(selNode.skill)}>
                     완료 취소
                   </button>
                 </>
               )}
+              <ProofField owner={p.pseudoId} skill={selNode.skill} proof={proofs[selNode.skill]} onChange={loadProofs} />
               <p className="mt-1 text-[11px] text-slate-400">완료 표시는 자기 보고이며 검증된 자격과 구분돼요.</p>
               <h4 className="mt-3 text-xs font-bold text-slate-600">이 노드에서 열린 기회</h4>
               <ul className="mt-1 space-y-1">
@@ -356,15 +408,16 @@ function TreeView() {
             </Link>
           </div>
           <ul className="mt-2 divide-y divide-line">
-            {tree.map((n) => {
+            {tree.map((n, index) => {
               const done = n.state !== "none";
               return (
                 <li key={n.skill} className="flex flex-wrap items-center gap-2 py-2 text-sm">
+                  {(index === 0 || tree[index - 1].depth !== n.depth) && <p className="w-full py-2 font-bold text-go">{progressionStage(n.depth, mode).title}</p>}
                   <span className={`grid size-6 shrink-0 place-items-center rounded ${done ? "bg-ok text-white" : "border border-line"}`}>
                     {done && <Check size={14} />}
                   </span>
                   <button className="min-w-0 flex-1 text-left hover:underline" onClick={() => setSel(n.skill)}>
-                    <span className="font-semibold">{n.name}</span>
+                    <span className="font-semibold">{done && !proofs[n.skill] ? n.name : questOutcome(n)?.title ?? n.name}</span>
                     <span className="ml-1.5 text-xs text-ink/60">
                       {n.kind}
                       {n.required && " · 트랙 기본"}
@@ -390,7 +443,7 @@ function TreeView() {
               );
             })}
           </ul>
-          <p className="mt-2 text-xs text-ink/60">완료한 노드를 누르면 자격증·수료증 파일을 붙일 수 있어요.</p>
+          <p className="mt-2 text-xs text-ink/60">노드를 누르면 완료 기준을 확인하고 작업물이나 취득 증빙을 붙일 수 있어요.</p>
         </section>
 
         <aside className="space-y-4 lg:col-start-2 lg:row-span-2 lg:row-start-1">
@@ -414,9 +467,9 @@ function TreeView() {
             ) : (
               <p className="mt-2 text-sm text-slate-500">아래 기회 카드에서 &lsquo;지원 퀘스트 시작&rsquo;을 누르면 여기에 나타나요.</p>
             )}
-            {questSkill && (
+            {questNode && recommendedQuest && (
               <p className="mt-3 text-sm">
-                추천 퀘스트 · <button type="button" className="font-bold hover:underline" onClick={() => setSel(questSkill)}>{skillById(questSkill)?.name}</button>
+                추천 퀘스트 · <button type="button" className="font-bold hover:underline" onClick={() => setSel(questNode.skill)}>{recommendedTitle(questNode, recommendedQuest)}</button>
               </p>
             )}
             <p className="mt-3 flex items-center gap-1 text-xs text-slate-500">

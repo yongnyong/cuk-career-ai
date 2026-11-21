@@ -96,6 +96,7 @@ WHERE r.necessity = 'needs_review';
 .\.venv\Scripts\python.exe -X utf8 -m app.startup_nodes --export startup_nodes.json
 .\.venv\Scripts\python.exe -X utf8 -m app.startup_nodes --posting cuk-277825
 .\.venv\Scripts\python.exe -X utf8 -m app.startup_nodes --include-review
+.\.venv\Scripts\python.exe -X utf8 -m app.startup_nodes --web-export ../web/src/lib/data/startupCatalog.json
 ```
 
 수집과 `--reextract`를 실행하면 노드도 함께 재생성한다.
@@ -117,6 +118,23 @@ WHERE r.necessity = 'needs_review';
 개인정보·동의·서약 등 행정 항목은 해당 후보 추출에서 제외한다.
 후보의 의미와 완료 기준은 추가 확인 대상으로 두고 `--include-review`에서 조회한다.
 알려진 개념도 원문 근거가 발견된 경우에만 노드에 포함한다.
+
+## 회원가입과 화면 연결
+
+회원가입의 관심 분야에서 취업 또는 창업을 선택한다.
+선택값은 계정 상태에 저장되며 기본 정보 설정 후 프로필에도 저장된다.
+기존 프로필은 주 목표 직무가 창업가 또는 창업가 기반 경로이면 창업, 나머지는 취업으로 해석한다.
+내 정보의 목표·소속 다시 설정에서 관심 분야를 바꿀 수 있다.
+
+창업 화면에는 산출물 5개와 세부 준비 과제 17개를 표시한다.
+신청·발급 증빙은 공고 상세의 제출물 목록에서 안내한다.
+추천 퀘스트는 모집 기간에 해당하는 연결 공고가 있는 미완료 노드를 우선한다.
+마감 공고의 양식과 심사 기준은 근거 자료로 보존하고 지난 공고 표시를 붙인다.
+
+웹은 `/api/startup/catalog`에서 창업 DB 자료를 읽고, 연결 시연의 기본 자료로 `web/src/lib/data/startupCatalog.json`을 사용한다.
+DB를 갱신하면 위의 `--web-export` 명령으로 웹 기본 자료를 갱신한다.
+일 단위 마감은 한국 시간의 마감일까지 유효한 것으로 계산한다.
+지원 자격의 지역·소속·업력은 상세 원문 확인 대상으로 안내한다.
 학생별 활용 시에는 관심 공고와 해당 공고의 적용 조건을 기준으로 노드를 선택한다.
 
 ```powershell

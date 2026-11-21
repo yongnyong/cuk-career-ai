@@ -1,0 +1,4267 @@
+{
+  "extractor_version": "1",
+  "nodes": [
+    {
+      "id": "SU-DOC-application",
+      "title": "공고별 참가신청서 작성",
+      "kind": "application",
+      "completion": "해당 공고의 지정 양식 또는 온라인 신청 내용",
+      "related_skill_id": null,
+      "extractor_version": "1",
+      "posting_count": 8,
+      "references": [
+        {
+          "id": "3aeb9b93484cacca4a596e28c80c5c38dbf8132e2799b1ce7fb332f9ad390964",
+          "node_id": "SU-DOC-application",
+          "posting_id": "biz-PBLN_000000000119859",
+          "source_id": "b18eb3e8c92f4c54682d5528f732d9266ccc8d6118dabf80257a0322a052f4c7",
+          "requirement_id": "072bf0d12ac52b7f15fe2eac347b19ba867e6b2717805cecff958f94f931e6c9",
+          "basis": "submission",
+          "necessity": "required",
+          "stage": "application",
+          "condition_text": "",
+          "deadline_date": "2026-03-26",
+          "quote": "① 사업신청서 온라인 입력 -",
+          "start_line": 416,
+          "end_line": 416,
+          "source_page": 7,
+          "review_status": "unreviewed",
+          "posting_title": "2026년 2차 예비창업패키지 예비창업자 모집 수정 공고",
+          "source_url": "https://www.bizinfo.go.kr/sii/siia/selectSIIA200Detail.do?pblancId=PBLN_000000000119859",
+          "application_status": "closed",
+          "evidence_url": "https://www.bizinfo.go.kr/cmm/fms/fileDown.do?atchFileId=FILE_000000000748111&fileSn=1"
+        },
+        {
+          "id": "0f1e37583cfdbaf6f77ad73c21b8bd23f468273d118dfd069648998e6558b4e9",
+          "node_id": "SU-DOC-application",
+          "posting_id": "biz-PBLN_000000000122308",
+          "source_id": "cb8da19f2f741dd25ceb94cda695e2125f1d1257f55391703ffd2e51c98d71d7",
+          "requirement_id": "7373face3517b5a6c56a6f727c691af9cdfafdaa8fb2aa10c6e484f9dace30d2",
+          "basis": "submission",
+          "necessity": "required",
+          "stage": "application",
+          "condition_text": "",
+          "deadline_date": "2026-06-19",
+          "quote": "1 붙임1.사업신청서(필수) 공고문붙임문서활용,필수제출",
+          "start_line": 204,
+          "end_line": 204,
+          "source_page": 6,
+          "review_status": "unreviewed",
+          "posting_title": "2026년 경기도 동부권역 창업가 모집 공고(지역 가치 창업가 육성 지원사업)",
+          "source_url": "https://www.bizinfo.go.kr/sii/siia/selectSIIA200Detail.do?pblancId=PBLN_000000000122308",
+          "application_status": "closed",
+          "evidence_url": "https://www.bizinfo.go.kr/cmm/fms/fileDown.do?atchFileId=FILE_000000000756644&fileSn=0"
+        },
+        {
+          "id": "75b745bf4dbeb8d47bb5b42bb0ab67e2b35e93c8e0dd3cecab27f64885a8ad99",
+          "node_id": "SU-DOC-application",
+          "posting_id": "biz-PBLN_000000000122308",
+          "source_id": "fc08a810405bd84957fd2855d748f7d1dbc90f6ef105c787414d398f343a3ce0",
+          "requirement_id": "0c248be8fd7c97667235cf5fb052756e2504a7cd4031b77999feab900ecc7576",
+          "basis": "submission",
+          "necessity": "required",
+          "stage": "application",
+          "condition_text": "",
+          "deadline_date": "2026-06-19",
+          "quote": "1 붙임 1. 사업신청서(필수) 공고문 붙임문서 활용, 필수제출",
+          "start_line": 341,
+          "end_line": 341,
+          "source_page": 12,
+          "review_status": "unreviewed",
+          "posting_title": "2026년 경기도 동부권역 창업가 모집 공고(지역 가치 창업가 육성 지원사업)",
+          "source_url": "https://www.bizinfo.go.kr/sii/siia/selectSIIA200Detail.do?pblancId=PBLN_000000000122308",
+          "application_status": "closed",
+          "evidence_url": "https://www.bizinfo.go.kr/cmm/fms/fileDown.do?atchFileId=FILE_000000000756645&fileSn=0"
+        },
+        {
+          "id": "c310eb89c2de2d181213902fde9209f07478612ad42dd07f4ca463cb3d7664b5",
+          "node_id": "SU-DOC-application",
+          "posting_id": "biz-PBLN_000000000124885",
+          "source_id": "140ecfd730f4089d0b49ab49ddb603e87b7049aff5913065b6e12c1ef92bdd75",
+          "requirement_id": "a8678e43c307ed1d6059dd996183aa2c11d0e164961717fb6e7de5f24a12a307",
+          "basis": "submission",
+          "necessity": "required",
+          "stage": "application",
+          "condition_text": "",
+          "deadline_date": "2026-08-10",
+          "quote": "양식 프로그램 신청 통합서식1. [ ] 필수( ) HWP",
+          "start_line": 138,
+          "end_line": 138,
+          "source_page": 3,
+          "review_status": "unreviewed",
+          "posting_title": "2026년 예술분야 예비창업 프로그램 참여자 모집 공고",
+          "source_url": "https://www.bizinfo.go.kr/sii/siia/selectSIIA200Detail.do?pblancId=PBLN_000000000124885",
+          "application_status": "closed",
+          "evidence_url": "https://www.bizinfo.go.kr/cmm/fms/fileDown.do?atchFileId=FILE_000000000766757&fileSn=0"
+        },
+        {
+          "id": "7a5facb5c9074750580cfde326dcb967172bea943ff2d51e4b8408bf4bd40bf6",
+          "node_id": "SU-DOC-application",
+          "posting_id": "cuk-270222",
+          "source_id": "9d119d0e40fefbf1bdfc78b1a1f5c9513501c6e137c96ac66107da7699ec1d59",
+          "requirement_id": "789ca332f8c61e5c9525daac20267117c33ea32e4be1f985baa828002e75f188",
+          "basis": "submission",
+          "necessity": "required",
+          "stage": "application",
+          "condition_text": "",
+          "deadline_date": null,
+          "quote": "③ 온라인 신청서 작성 및 제출 후, 접수 결과 알림톡 수령 시 최종 접수 완료",
+          "start_line": 238,
+          "end_line": 238,
+          "source_page": 7,
+          "review_status": "unreviewed",
+          "posting_title": "[CUK창업지원단] 모두의 창업 프로젝트 모집 공고 안내",
+          "source_url": "https://www.catholic.ac.kr/ko/campuslife/notice.do?mode=view&articleNo=270222",
+          "application_status": "needs_review",
+          "evidence_url": "https://www.catholic.ac.kr/ko/campuslife/notice.do?mode=download&articleNo=270222&attachNo=219637"
+        },
+        {
+          "id": "ddf93e28cd7b1f9267b4de58d941fe808afb4be0641723ba78b38627b89ca2e9",
+          "node_id": "SU-DOC-application",
+          "posting_id": "cuk-270315",
+          "source_id": "29912da6b38ed3f05c997fb8ffd7bb446e47d6796570b1c7a1dcfc1240d9e716",
+          "requirement_id": "4871eb5af847f3573875f623afcca531d0d8dc36798c95503cc91944a63928cd",
+          "basis": "submission",
+          "necessity": "required",
+          "stage": "application",
+          "condition_text": "",
+          "deadline_date": "2026-04-15",
+          "quote": "step 1. 창업동아리 신청서 작성(양식 첨부파일 참조)",
+          "start_line": 19,
+          "end_line": 19,
+          "source_page": null,
+          "review_status": "unreviewed",
+          "posting_title": "[창업지원팀] 2026학년도 창업동아리 모집 안내",
+          "source_url": "https://www.catholic.ac.kr/ko/campuslife/notice.do?mode=view&articleNo=270315",
+          "application_status": "closed",
+          "evidence_url": "https://www.catholic.ac.kr/ko/campuslife/notice.do?mode=view&articleNo=270315"
+        },
+        {
+          "id": "640f382e3d5c7821aca94396670a1c71ef083acece51a3dca0bbc60fcc23a6cc",
+          "node_id": "SU-DOC-application",
+          "posting_id": "cuk-275912",
+          "source_id": "4588aacd07a87b43ff86cbb2383a7623b9dd47e7762677b5623d1cec328d6565",
+          "requirement_id": "594a70fecfc17b5f00538dcb8d4260ca85df34088c4e244a7ae5eb4d92079924",
+          "basis": "submission",
+          "necessity": "required",
+          "stage": "application",
+          "condition_text": "",
+          "deadline_date": "2026-09-30",
+          "quote": "step 1. 창업동아리 신청서 작성(양식 첨부파일 참조)",
+          "start_line": 13,
+          "end_line": 13,
+          "source_page": null,
+          "review_status": "unreviewed",
+          "posting_title": "[CUK창업지원단] 2026학년도 창업동아리 모집 안내",
+          "source_url": "https://www.catholic.ac.kr/ko/campuslife/notice.do?mode=view&articleNo=275912",
+          "application_status": "closed",
+          "evidence_url": "https://www.catholic.ac.kr/ko/campuslife/notice.do?mode=view&articleNo=275912"
+        },
+        {
+          "id": "fb9bdc42b8650495904b931945749c55549118b26356ded9040c1c7ce0800d2b",
+          "node_id": "SU-DOC-application",
+          "posting_id": "cuk-276113",
+          "source_id": "09501439981b73c9cd344532896ae14cdb5ecd344e7dfe22e68add96c1130a12",
+          "requirement_id": "73aa612216f229f38dddb6130c0e4f144bc6cf56612c3306ad72f7c0188d4ab6",
+          "basis": "submission",
+          "necessity": "required",
+          "stage": "application",
+          "condition_text": "",
+          "deadline_date": "2026-10-06",
+          "quote": "붙임 입주신청서, 사업계획서, 개인정보활용동의서 각 1부.",
+          "start_line": 61,
+          "end_line": 61,
+          "source_page": null,
+          "review_status": "unreviewed",
+          "posting_title": "★★ 2026년 가톨릭대학교 창업보육센터 입주기업 모집 공고 ★★",
+          "source_url": "https://www.catholic.ac.kr/ko/campuslife/notice.do?mode=view&articleNo=276113",
+          "application_status": "closed",
+          "evidence_url": "https://www.catholic.ac.kr/ko/campuslife/notice.do?mode=view&articleNo=276113"
+        },
+        {
+          "id": "9957626c99c0c4ce2eef8cc7fbadfce096e31740f4b78ac235f2845095612492",
+          "node_id": "SU-DOC-application",
+          "posting_id": "cuk-277684",
+          "source_id": "ab90a0933de126628c62c0d584b51c6803ded7b2cc7c096b29d77e0da42dc7fb",
+          "requirement_id": "5e3300a135f503ed0bcbc11e5a67fe6a3742ed45242de68acd145fca252d0518",
+          "basis": "submission",
+          "necessity": "required",
+          "stage": "application",
+          "condition_text": "",
+          "deadline_date": "2026-11-18",
+          "quote": "- 신청 방법 : 참가 신청서 및 사업계획서 작성 후 CU K창업지원단 이메일로 제출 (~11. 18 (수) 23:59)",
+          "start_line": 10,
+          "end_line": 10,
+          "source_page": null,
+          "review_status": "unreviewed",
+          "posting_title": "[CUK창업지원단] 글로벌 창업경진대회 안내",
+          "source_url": "https://www.catholic.ac.kr/ko/campuslife/notice.do?mode=view&articleNo=277684",
+          "application_status": "closed",
+          "evidence_url": "https://www.catholic.ac.kr/ko/campuslife/notice.do?mode=view&articleNo=277684"
+        }
+      ]
+    },
+    {
+      "id": "SU-DOC-business-plan",
+      "title": "사업계획서 작성",
+      "kind": "artifact",
+      "completion": "사업계획서 초안과 공고별 양식 점검",
+      "related_skill_id": "SK-BIZPLAN",
+      "extractor_version": "1",
+      "posting_count": 5,
+      "references": [
+        {
+          "id": "b17ca3a784df24ee679ad8353bdce862c02ec1bc698575859c7d55360aeb47cc",
+          "node_id": "SU-DOC-business-plan",
+          "posting_id": "biz-PBLN_000000000119859",
+          "source_id": "b18eb3e8c92f4c54682d5528f732d9266ccc8d6118dabf80257a0322a052f4c7",
+          "requirement_id": "d5249f380cd9b4f873dfaf7ea180b23829b4f6ac3d210167963b93656b2c7176",
+          "basis": "submission",
+          "necessity": "required",
+          "stage": "application",
+          "condition_text": "",
+          "deadline_date": "2026-03-26",
+          "quote": "◦사업계획서 1부 ([별첨 1]양식)",
+          "start_line": 357,
+          "end_line": 357,
+          "source_page": 5,
+          "review_status": "unreviewed",
+          "posting_title": "2026년 2차 예비창업패키지 예비창업자 모집 수정 공고",
+          "source_url": "https://www.bizinfo.go.kr/sii/siia/selectSIIA200Detail.do?pblancId=PBLN_000000000119859",
+          "application_status": "closed",
+          "evidence_url": "https://www.bizinfo.go.kr/cmm/fms/fileDown.do?atchFileId=FILE_000000000748111&fileSn=1"
+        },
+        {
+          "id": "6314cd96fd067fd16fc6cbf17ed79c1b347871aa8739f613cba48d2e0e0a2a22",
+          "node_id": "SU-DOC-business-plan",
+          "posting_id": "biz-PBLN_000000000122308",
+          "source_id": "fc08a810405bd84957fd2855d748f7d1dbc90f6ef105c787414d398f343a3ce0",
+          "requirement_id": "e5f05e5776e83954859902e9945100ee4fdeb843d17ba13ac17dfd257b8edc52",
+          "basis": "submission",
+          "necessity": "required",
+          "stage": "application",
+          "condition_text": "",
+          "deadline_date": "2026-06-19",
+          "quote": "2 붙임 2. 사업계획서(필수) 공고문 붙임문서 활용, 필수제출",
+          "start_line": 342,
+          "end_line": 342,
+          "source_page": 12,
+          "review_status": "unreviewed",
+          "posting_title": "2026년 경기도 동부권역 창업가 모집 공고(지역 가치 창업가 육성 지원사업)",
+          "source_url": "https://www.bizinfo.go.kr/sii/siia/selectSIIA200Detail.do?pblancId=PBLN_000000000122308",
+          "application_status": "closed",
+          "evidence_url": "https://www.bizinfo.go.kr/cmm/fms/fileDown.do?atchFileId=FILE_000000000756645&fileSn=0"
+        },
+        {
+          "id": "c909fdd3c240cfbf5ef1a0aacf8c816a2a4ddb3ac462305fa82e7625d7cc61e2",
+          "node_id": "SU-DOC-business-plan",
+          "posting_id": "biz-PBLN_000000000122308",
+          "source_id": "cb8da19f2f741dd25ceb94cda695e2125f1d1257f55391703ffd2e51c98d71d7",
+          "requirement_id": "8bc06014d94d13fca7a642caf21b5ea0a9f1770a656b3a44749f46cce8cbe451",
+          "basis": "submission",
+          "necessity": "required",
+          "stage": "application",
+          "condition_text": "",
+          "deadline_date": "2026-06-19",
+          "quote": "2 붙임2.사업계획서(필수) 공고문붙임문서활용,필수제출",
+          "start_line": 205,
+          "end_line": 205,
+          "source_page": 6,
+          "review_status": "unreviewed",
+          "posting_title": "2026년 경기도 동부권역 창업가 모집 공고(지역 가치 창업가 육성 지원사업)",
+          "source_url": "https://www.bizinfo.go.kr/sii/siia/selectSIIA200Detail.do?pblancId=PBLN_000000000122308",
+          "application_status": "closed",
+          "evidence_url": "https://www.bizinfo.go.kr/cmm/fms/fileDown.do?atchFileId=FILE_000000000756644&fileSn=0"
+        },
+        {
+          "id": "334ce1e031a976a045a7d95185d392632197fe1009e82bd5b5a3e9011b78ba81",
+          "node_id": "SU-DOC-business-plan",
+          "posting_id": "biz-PBLN_000000000123273",
+          "source_id": "9f0b3221cf9af45fb36e2fef1db1add6d011c5142dcec277164d31028567e3ad",
+          "requirement_id": "ef4952ea8ce6b895c1bb3fc871cc9969883dd759fba0674d1be7267854a55f88",
+          "basis": "submission",
+          "necessity": "required",
+          "stage": "application",
+          "condition_text": "",
+          "deadline_date": "2026-06-30",
+          "quote": "② 첨부2. 멘티 사업계획서(필수)",
+          "start_line": 169,
+          "end_line": 169,
+          "source_page": 5,
+          "review_status": "unreviewed",
+          "posting_title": "2026년 하반기 K-Global 창업멘토링 지원사업 참여 멘티(28기) 모집 공고",
+          "source_url": "https://www.bizinfo.go.kr/sii/siia/selectSIIA200Detail.do?pblancId=PBLN_000000000123273",
+          "application_status": "closed",
+          "evidence_url": "https://www.bizinfo.go.kr/cmm/fms/fileDown.do?atchFileId=FILE_000000000760264&fileSn=0"
+        },
+        {
+          "id": "6554dcf0382e6a6d1836856ce1b2d4d6a7607bdce2e4c7c1952fe3ee7aaffc5e",
+          "node_id": "SU-DOC-business-plan",
+          "posting_id": "cuk-276113",
+          "source_id": "09501439981b73c9cd344532896ae14cdb5ecd344e7dfe22e68add96c1130a12",
+          "requirement_id": "8657a9a8a6693cbc321477c2161e919bf8e63816422e77a60f7c9f691a9025d6",
+          "basis": "submission",
+          "necessity": "required",
+          "stage": "application",
+          "condition_text": "",
+          "deadline_date": "2026-10-06",
+          "quote": "붙임 입주신청서, 사업계획서, 개인정보활용동의서 각 1부.",
+          "start_line": 61,
+          "end_line": 61,
+          "source_page": null,
+          "review_status": "unreviewed",
+          "posting_title": "★★ 2026년 가톨릭대학교 창업보육센터 입주기업 모집 공고 ★★",
+          "source_url": "https://www.catholic.ac.kr/ko/campuslife/notice.do?mode=view&articleNo=276113",
+          "application_status": "closed",
+          "evidence_url": "https://www.catholic.ac.kr/ko/campuslife/notice.do?mode=view&articleNo=276113"
+        },
+        {
+          "id": "c274fc08f663eb5f17bc55776ca72571811b1fc5344f1540f75661d00163af4c",
+          "node_id": "SU-DOC-business-plan",
+          "posting_id": "cuk-277684",
+          "source_id": "ab90a0933de126628c62c0d584b51c6803ded7b2cc7c096b29d77e0da42dc7fb",
+          "requirement_id": "d500d466853056be2c4f8473209abf19a004bc83c94b4bd7d058f8ebf1e12b1e",
+          "basis": "submission",
+          "necessity": "required",
+          "stage": "application",
+          "condition_text": "",
+          "deadline_date": "2026-11-18",
+          "quote": "- 신청 방법 : 참가 신청서 및 사업계획서 작성 후 CU K창업지원단 이메일로 제출 (~11. 18 (수) 23:59)",
+          "start_line": 10,
+          "end_line": 10,
+          "source_page": null,
+          "review_status": "unreviewed",
+          "posting_title": "[CUK창업지원단] 글로벌 창업경진대회 안내",
+          "source_url": "https://www.catholic.ac.kr/ko/campuslife/notice.do?mode=view&articleNo=277684",
+          "application_status": "closed",
+          "evidence_url": "https://www.catholic.ac.kr/ko/campuslife/notice.do?mode=view&articleNo=277684"
+        }
+      ]
+    },
+    {
+      "id": "SU-DOC-pitch-deck",
+      "title": "발표자료·피치덱 제작",
+      "kind": "artifact",
+      "completion": "발표자료 파일과 해당 공고의 제출 규격 점검",
+      "related_skill_id": "SK-IR",
+      "extractor_version": "1",
+      "posting_count": 4,
+      "references": [
+        {
+          "id": "3309a93b3d6a63762fae50df62572a2e55ac4f68fc565615b0c87df79dd33714",
+          "node_id": "SU-DOC-pitch-deck",
+          "posting_id": "biz-PBLN_000000000120276",
+          "source_id": "5ba928e30f10bec2392770deab353aa649c6d75bb4656c9c79bc9f46fa051575",
+          "requirement_id": "509e68da0da95f5713e397fb01fb8e8738598b783460f403490e3f6e75c67647",
+          "basis": "submission",
+          "necessity": "required",
+          "stage": "application",
+          "condition_text": "",
+          "deadline_date": "2026-04-30",
+          "quote": "[첨부] 사업계획 발표자료",
+          "start_line": 116,
+          "end_line": 116,
+          "source_page": 4,
+          "review_status": "unreviewed",
+          "posting_title": "[서울] 2026년 서울기후테크산업지원센터 시제품 제작지원 사업 모집 공고",
+          "source_url": "https://www.bizinfo.go.kr/sii/siia/selectSIIA200Detail.do?pblancId=PBLN_000000000120276",
+          "application_status": "closed",
+          "evidence_url": "https://www.bizinfo.go.kr/cmm/fms/fileDown.do?atchFileId=FILE_000000000749560&fileSn=0"
+        },
+        {
+          "id": "2e51d8b173f4da0625f1ed492c732a29acee0f5c8337a3cb74aacabb4dc66c89",
+          "node_id": "SU-DOC-pitch-deck",
+          "posting_id": "biz-PBLN_000000000123273",
+          "source_id": "9f0b3221cf9af45fb36e2fef1db1add6d011c5142dcec277164d31028567e3ad",
+          "requirement_id": "f8e425bac053503b233e942675fc59d77705df990f0f99c43eef47457eb7a8bd",
+          "basis": "submission",
+          "necessity": "conditional",
+          "stage": "finalist",
+          "condition_text": "본선·발표평가 대상 시",
+          "deadline_date": null,
+          "quote": "온라인 서류심사 서류심사 결과 및 발표심사 일정 안내  온라인 발표심사 *발표자료 사전 제출",
+          "start_line": 197,
+          "end_line": 197,
+          "source_page": 5,
+          "review_status": "unreviewed",
+          "posting_title": "2026년 하반기 K-Global 창업멘토링 지원사업 참여 멘티(28기) 모집 공고",
+          "source_url": "https://www.bizinfo.go.kr/sii/siia/selectSIIA200Detail.do?pblancId=PBLN_000000000123273",
+          "application_status": "closed",
+          "evidence_url": "https://www.bizinfo.go.kr/cmm/fms/fileDown.do?atchFileId=FILE_000000000760264&fileSn=0"
+        },
+        {
+          "id": "1beaa660539e36ece7d7932c8933c50195c196ed27b1e28d6939a500203fb1d3",
+          "node_id": "SU-DOC-pitch-deck",
+          "posting_id": "cuk-277684",
+          "source_id": "ab90a0933de126628c62c0d584b51c6803ded7b2cc7c096b29d77e0da42dc7fb",
+          "requirement_id": "646058c413d50a389bcc023cc8b03aeb87581651294db64886b1b08f2cd2ee81",
+          "basis": "submission",
+          "necessity": "conditional",
+          "stage": "finalist",
+          "condition_text": "본선·발표평가 대상 시",
+          "deadline_date": "2026-12-04",
+          "quote": "- 본선 발표 자료 제출 : 12.4 (금)",
+          "start_line": 14,
+          "end_line": 14,
+          "source_page": null,
+          "review_status": "unreviewed",
+          "posting_title": "[CUK창업지원단] 글로벌 창업경진대회 안내",
+          "source_url": "https://www.catholic.ac.kr/ko/campuslife/notice.do?mode=view&articleNo=277684",
+          "application_status": "closed",
+          "evidence_url": "https://www.catholic.ac.kr/ko/campuslife/notice.do?mode=view&articleNo=277684"
+        },
+        {
+          "id": "c4ad491d382520acff4828742037fb893bf25a5d1ad276d5a33c8fb01949f592",
+          "node_id": "SU-DOC-pitch-deck",
+          "posting_id": "cuk-277825",
+          "source_id": "db48a06c790402ad33fc4b89f9e4fe6ee1243744e5d259ec4cb51958ac45a39e",
+          "requirement_id": "d56755d03fc4c876c954c5714970f850b772621b6003f9a6f3c1647235466f51",
+          "basis": "submission",
+          "necessity": "required",
+          "stage": "application",
+          "condition_text": "",
+          "deadline_date": "2026-11-27",
+          "quote": "- Pitch Deck(발표자료): 필수 제출 (붙임파일 및 발표자료 sobat 메일 제출)",
+          "start_line": 18,
+          "end_line": 18,
+          "source_page": null,
+          "review_status": "unreviewed",
+          "posting_title": "[모집] 2026 CUK AI Startup Challenge 「AI 융합 창업경진대회」 참가자 모집 안내",
+          "source_url": "https://business.catholic.ac.kr/business/community/notice.do?mode=view&articleNo=277825",
+          "application_status": "within_announced_period",
+          "evidence_url": "https://business.catholic.ac.kr/business/community/notice.do?mode=view&articleNo=277825"
+        }
+      ]
+    },
+    {
+      "id": "SU-DOC-portfolio",
+      "title": "사업 포트폴리오 정리",
+      "kind": "artifact",
+      "completion": "실제 수행한 프로젝트와 성과를 정리한 자료",
+      "related_skill_id": "SK-PORT",
+      "extractor_version": "1",
+      "posting_count": 1,
+      "references": [
+        {
+          "id": "a38ed3be887edfa6ef8a1e319ffec0bb2a28c6a6fabffe489dc86da499d15e41",
+          "node_id": "SU-DOC-portfolio",
+          "posting_id": "biz-PBLN_000000000124885",
+          "source_id": "140ecfd730f4089d0b49ab49ddb603e87b7049aff5913065b6e12c1ef92bdd75",
+          "requirement_id": "fdb038186e293c57d915a175465dee39381c2bd08ab14a2285a461709a0b8234",
+          "basis": "submission",
+          "necessity": "conditional",
+          "stage": "application",
+          "condition_text": "선택 해당 시 기업소개서 및 사업 포트폴리오 보유 시( ) 표지 포함 이하 파일로 제출- 10p PDF",
+          "deadline_date": "2026-08-10",
+          "quote": "선택 해당 시 기업소개서 및 사업 포트폴리오 보유 시( ) 표지 포함 이하 파일로 제출- 10p PDF",
+          "start_line": 161,
+          "end_line": 161,
+          "source_page": 3,
+          "review_status": "unreviewed",
+          "posting_title": "2026년 예술분야 예비창업 프로그램 참여자 모집 공고",
+          "source_url": "https://www.bizinfo.go.kr/sii/siia/selectSIIA200Detail.do?pblancId=PBLN_000000000124885",
+          "application_status": "closed",
+          "evidence_url": "https://www.bizinfo.go.kr/cmm/fms/fileDown.do?atchFileId=FILE_000000000766757&fileSn=0"
+        }
+      ]
+    },
+    {
+      "id": "SU-DOC-prototype",
+      "title": "시제품·MVP 제작",
+      "kind": "artifact",
+      "completion": "확인 가능한 시제품 또는 실행·시연 링크",
+      "related_skill_id": "SK-MVP",
+      "extractor_version": "1",
+      "posting_count": 1,
+      "references": [
+        {
+          "id": "a2d40b4b26d44abab4b6fd7b75bdcddb6f77ca3ac10f08f6e10e00467407544b",
+          "node_id": "SU-DOC-prototype",
+          "posting_id": "cuk-277825",
+          "source_id": "db48a06c790402ad33fc4b89f9e4fe6ee1243744e5d259ec4cb51958ac45a39e",
+          "requirement_id": "32a2f54e75da83ebc45c722d643cdc9c0ac25d01e98ca935dc68c8cf7e2bd31a",
+          "basis": "submission",
+          "necessity": "optional",
+          "stage": "application",
+          "condition_text": "",
+          "deadline_date": "2026-11-27",
+          "quote": "- 2026. 11. 23.(월) ~ 11. 27.(금): Pitch Deck 제출 (MVP 선택 제출)",
+          "start_line": 14,
+          "end_line": 14,
+          "source_page": null,
+          "review_status": "unreviewed",
+          "posting_title": "[모집] 2026 CUK AI Startup Challenge 「AI 융합 창업경진대회」 참가자 모집 안내",
+          "source_url": "https://business.catholic.ac.kr/business/community/notice.do?mode=view&articleNo=277825",
+          "application_status": "within_announced_period",
+          "evidence_url": "https://business.catholic.ac.kr/business/community/notice.do?mode=view&articleNo=277825"
+        }
+      ]
+    },
+    {
+      "id": "SU-DOC-team-introduction",
+      "title": "팀·기업 소개서 작성",
+      "kind": "artifact",
+      "completion": "팀 또는 기업 소개 자료",
+      "related_skill_id": null,
+      "extractor_version": "1",
+      "posting_count": 1,
+      "references": [
+        {
+          "id": "2c7af059c4dffc5a1ce6c5bef77c3fa0b922652ba61cd85b93405f7c2b5b0877",
+          "node_id": "SU-DOC-team-introduction",
+          "posting_id": "biz-PBLN_000000000124885",
+          "source_id": "140ecfd730f4089d0b49ab49ddb603e87b7049aff5913065b6e12c1ef92bdd75",
+          "requirement_id": "bd5f0b9d5106628bdd5e8164c94c990855df8e72fc2b22ce2a276b32305adff3",
+          "basis": "submission",
+          "necessity": "conditional",
+          "stage": "application",
+          "condition_text": "선택 해당 시 기업소개서 및 사업 포트폴리오 보유 시( ) 표지 포함 이하 파일로 제출- 10p PDF",
+          "deadline_date": "2026-08-10",
+          "quote": "선택 해당 시 기업소개서 및 사업 포트폴리오 보유 시( ) 표지 포함 이하 파일로 제출- 10p PDF",
+          "start_line": 161,
+          "end_line": 161,
+          "source_page": 3,
+          "review_status": "unreviewed",
+          "posting_title": "2026년 예술분야 예비창업 프로그램 참여자 모집 공고",
+          "source_url": "https://www.bizinfo.go.kr/sii/siia/selectSIIA200Detail.do?pblancId=PBLN_000000000124885",
+          "application_status": "closed",
+          "evidence_url": "https://www.bizinfo.go.kr/cmm/fms/fileDown.do?atchFileId=FILE_000000000766757&fileSn=0"
+        }
+      ]
+    },
+    {
+      "id": "SU-DOC-0172f1378d584a29",
+      "title": "사업자등록증 준비",
+      "kind": "certificate",
+      "completion": "해당 공고의 적용 대상과 발급·제출 기준을 확인한 서류",
+      "related_skill_id": null,
+      "extractor_version": "1",
+      "posting_count": 3,
+      "references": [
+        {
+          "id": "5ac83560b77e45314139ab53661a743c2d732f1b3778324096eefbcb57c76eb1",
+          "node_id": "SU-DOC-0172f1378d584a29",
+          "posting_id": "biz-PBLN_000000000122308",
+          "source_id": "fc08a810405bd84957fd2855d748f7d1dbc90f6ef105c787414d398f343a3ce0",
+          "requirement_id": "7990dc05e0f39dd715f2aa1bc5f4ca6f9747798509837cfad7af61643eb2a308",
+          "basis": "submission",
+          "necessity": "conditional",
+          "stage": "application",
+          "condition_text": "6 사업자등록증 ※ 기창업자일 경우 필수 해당 시 제출",
+          "deadline_date": "2026-06-19",
+          "quote": "6 사업자등록증 ※ 기창업자일 경우 필수 해당 시 제출",
+          "start_line": 351,
+          "end_line": 351,
+          "source_page": 12,
+          "review_status": "unreviewed",
+          "posting_title": "2026년 경기도 동부권역 창업가 모집 공고(지역 가치 창업가 육성 지원사업)",
+          "source_url": "https://www.bizinfo.go.kr/sii/siia/selectSIIA200Detail.do?pblancId=PBLN_000000000122308",
+          "application_status": "closed",
+          "evidence_url": "https://www.bizinfo.go.kr/cmm/fms/fileDown.do?atchFileId=FILE_000000000756645&fileSn=0"
+        },
+        {
+          "id": "a953360850c3cbfd021d0fb43e2ba993b09e0f150a430aaad76bf569889f9853",
+          "node_id": "SU-DOC-0172f1378d584a29",
+          "posting_id": "biz-PBLN_000000000122308",
+          "source_id": "cb8da19f2f741dd25ceb94cda695e2125f1d1257f55391703ffd2e51c98d71d7",
+          "requirement_id": "0e328351ac9e92ff8780151b3f9adb73781049ab5efbed7ef348c69a13418ce8",
+          "basis": "submission",
+          "necessity": "conditional",
+          "stage": "application",
+          "condition_text": "6 사업자등록증※기창업자일경우필수 해당시제출",
+          "deadline_date": "2026-06-19",
+          "quote": "6 사업자등록증※기창업자일경우필수 해당시제출",
+          "start_line": 213,
+          "end_line": 213,
+          "source_page": 6,
+          "review_status": "unreviewed",
+          "posting_title": "2026년 경기도 동부권역 창업가 모집 공고(지역 가치 창업가 육성 지원사업)",
+          "source_url": "https://www.bizinfo.go.kr/sii/siia/selectSIIA200Detail.do?pblancId=PBLN_000000000122308",
+          "application_status": "closed",
+          "evidence_url": "https://www.bizinfo.go.kr/cmm/fms/fileDown.do?atchFileId=FILE_000000000756644&fileSn=0"
+        },
+        {
+          "id": "6fa25f4622c24bd271f382f4ccf63b05a45c971068d0f0aa67b241c3de54ec2c",
+          "node_id": "SU-DOC-0172f1378d584a29",
+          "posting_id": "biz-PBLN_000000000123273",
+          "source_id": "9f0b3221cf9af45fb36e2fef1db1add6d011c5142dcec277164d31028567e3ad",
+          "requirement_id": "4ff12a8eac871af2636ce4c31777a1e7953a31eb0516777cd5bdbad68d48919a",
+          "basis": "submission",
+          "necessity": "conditional",
+          "stage": "agreement",
+          "condition_text": " ※ 창업기업의 사업자등록증 및 법인등기부등본, 창업기업확인서는 최종 선발 직후 제출 필수",
+          "deadline_date": null,
+          "quote": " ※ 창업기업의 사업자등록증 및 법인등기부등본, 창업기업확인서는 최종 선발 직후 제출 필수",
+          "start_line": 178,
+          "end_line": 178,
+          "source_page": 5,
+          "review_status": "unreviewed",
+          "posting_title": "2026년 하반기 K-Global 창업멘토링 지원사업 참여 멘티(28기) 모집 공고",
+          "source_url": "https://www.bizinfo.go.kr/sii/siia/selectSIIA200Detail.do?pblancId=PBLN_000000000123273",
+          "application_status": "closed",
+          "evidence_url": "https://www.bizinfo.go.kr/cmm/fms/fileDown.do?atchFileId=FILE_000000000760264&fileSn=0"
+        },
+        {
+          "id": "f6bc98fa0ab1d0756a44b8c028f59e727801302912174575546185b2ca8bd5d1",
+          "node_id": "SU-DOC-0172f1378d584a29",
+          "posting_id": "biz-PBLN_000000000124885",
+          "source_id": "140ecfd730f4089d0b49ab49ddb603e87b7049aff5913065b6e12c1ef92bdd75",
+          "requirement_id": "aaea00c8f40be074b8fe2fdfd3f203b2453e74cf17ee50e12f96119611ad5e41",
+          "basis": "submission",
+          "necessity": "conditional",
+          "stage": "application",
+          "condition_text": "개인및법인사업자",
+          "deadline_date": "2026-08-10",
+          "quote": "사업자등록증①",
+          "start_line": 150,
+          "end_line": 150,
+          "source_page": 3,
+          "review_status": "unreviewed",
+          "posting_title": "2026년 예술분야 예비창업 프로그램 참여자 모집 공고",
+          "source_url": "https://www.bizinfo.go.kr/sii/siia/selectSIIA200Detail.do?pblancId=PBLN_000000000124885",
+          "application_status": "closed",
+          "evidence_url": "https://www.bizinfo.go.kr/cmm/fms/fileDown.do?atchFileId=FILE_000000000766757&fileSn=0"
+        }
+      ]
+    },
+    {
+      "id": "SU-DOC-62ebcf8e71c88ed8",
+      "title": "서약서 준비",
+      "kind": "certificate",
+      "completion": "해당 공고의 적용 대상과 발급·제출 기준을 확인한 서류",
+      "related_skill_id": null,
+      "extractor_version": "1",
+      "posting_count": 1,
+      "references": [
+        {
+          "id": "8a0d5c8b6430138367650e3a258ff5b6ac222d768f493dbce037a70998c20c23",
+          "node_id": "SU-DOC-62ebcf8e71c88ed8",
+          "posting_id": "biz-PBLN_000000000122308",
+          "source_id": "fc08a810405bd84957fd2855d748f7d1dbc90f6ef105c787414d398f343a3ce0",
+          "requirement_id": "5eb7a218fa6cc526fcf9195625dc38341da3eafe53a472b3b04742058cde46cb",
+          "basis": "submission",
+          "necessity": "required",
+          "stage": "application",
+          "condition_text": "",
+          "deadline_date": "2026-06-19",
+          "quote": "4 붙임 4. 참가자 서약서(필수) 공고문 붙임문서 활용, 필수제출",
+          "start_line": 344,
+          "end_line": 344,
+          "source_page": 12,
+          "review_status": "unreviewed",
+          "posting_title": "2026년 경기도 동부권역 창업가 모집 공고(지역 가치 창업가 육성 지원사업)",
+          "source_url": "https://www.bizinfo.go.kr/sii/siia/selectSIIA200Detail.do?pblancId=PBLN_000000000122308",
+          "application_status": "closed",
+          "evidence_url": "https://www.bizinfo.go.kr/cmm/fms/fileDown.do?atchFileId=FILE_000000000756645&fileSn=0"
+        },
+        {
+          "id": "95e520283014345370293a1571197e859c927349dd431c1ee72cf27175b70582",
+          "node_id": "SU-DOC-62ebcf8e71c88ed8",
+          "posting_id": "biz-PBLN_000000000122308",
+          "source_id": "cb8da19f2f741dd25ceb94cda695e2125f1d1257f55391703ffd2e51c98d71d7",
+          "requirement_id": "c431ea40fb8254b00a5d5fe8cb1bf3ca768b5a52f513520f63e1519f27d9079f",
+          "basis": "submission",
+          "necessity": "required",
+          "stage": "application",
+          "condition_text": "",
+          "deadline_date": "2026-06-19",
+          "quote": "4 붙임4.참가자서약서(필수) 공고문붙임문서활용,필수제출",
+          "start_line": 207,
+          "end_line": 207,
+          "source_page": 6,
+          "review_status": "unreviewed",
+          "posting_title": "2026년 경기도 동부권역 창업가 모집 공고(지역 가치 창업가 육성 지원사업)",
+          "source_url": "https://www.bizinfo.go.kr/sii/siia/selectSIIA200Detail.do?pblancId=PBLN_000000000122308",
+          "application_status": "closed",
+          "evidence_url": "https://www.bizinfo.go.kr/cmm/fms/fileDown.do?atchFileId=FILE_000000000756644&fileSn=0"
+        }
+      ]
+    },
+    {
+      "id": "SU-DOC-62f3346c9106c588",
+      "title": "가점증빙 준비",
+      "kind": "certificate",
+      "completion": "해당 공고의 적용 대상과 발급·제출 기준을 확인한 서류",
+      "related_skill_id": null,
+      "extractor_version": "1",
+      "posting_count": 3,
+      "references": [
+        {
+          "id": "6d3d92506671830a76a3724df79ed7320e361f8fa035a8c8cf3f74094f860409",
+          "node_id": "SU-DOC-62f3346c9106c588",
+          "posting_id": "biz-PBLN_000000000119859",
+          "source_id": "b18eb3e8c92f4c54682d5528f732d9266ccc8d6118dabf80257a0322a052f4c7",
+          "requirement_id": "43a9922b82b2e5df81832e164aaf2fcfb188010df8bc110d7221e5c99bdd6850",
+          "basis": "submission",
+          "necessity": "conditional",
+          "stage": "application",
+          "condition_text": " ※ 가점 증빙서류는 사업 신청 시 제출하며, 미제출 시 가점으로 불인정",
+          "deadline_date": "2026-03-26",
+          "quote": " ※ 가점 증빙서류는 사업 신청 시 제출하며, 미제출 시 가점으로 불인정",
+          "start_line": 429,
+          "end_line": 429,
+          "source_page": 7,
+          "review_status": "unreviewed",
+          "posting_title": "2026년 2차 예비창업패키지 예비창업자 모집 수정 공고",
+          "source_url": "https://www.bizinfo.go.kr/sii/siia/selectSIIA200Detail.do?pblancId=PBLN_000000000119859",
+          "application_status": "closed",
+          "evidence_url": "https://www.bizinfo.go.kr/cmm/fms/fileDown.do?atchFileId=FILE_000000000748111&fileSn=1"
+        },
+        {
+          "id": "a8f22e921ab8f4c82d748bc3efa2518695062a9003cc23f6d47f3e9b248048e6",
+          "node_id": "SU-DOC-62f3346c9106c588",
+          "posting_id": "biz-PBLN_000000000120276",
+          "source_id": "5ba928e30f10bec2392770deab353aa649c6d75bb4656c9c79bc9f46fa051575",
+          "requirement_id": "86ce0672301aa711c1009063026580af89ea63fb8588923a7a614499a5d7acd5",
+          "basis": "submission",
+          "necessity": "conditional",
+          "stage": "application",
+          "condition_text": "[첨부] 가점 증빙서류",
+          "deadline_date": "2026-04-30",
+          "quote": "[첨부] 가점 증빙서류",
+          "start_line": 128,
+          "end_line": 128,
+          "source_page": 4,
+          "review_status": "unreviewed",
+          "posting_title": "[서울] 2026년 서울기후테크산업지원센터 시제품 제작지원 사업 모집 공고",
+          "source_url": "https://www.bizinfo.go.kr/sii/siia/selectSIIA200Detail.do?pblancId=PBLN_000000000120276",
+          "application_status": "closed",
+          "evidence_url": "https://www.bizinfo.go.kr/cmm/fms/fileDown.do?atchFileId=FILE_000000000749560&fileSn=0"
+        },
+        {
+          "id": "177bb9c65b58213bb1a927f4bde270ceb7b57667a8eb5ed02c56453abafd0327",
+          "node_id": "SU-DOC-62f3346c9106c588",
+          "posting_id": "biz-PBLN_000000000122308",
+          "source_id": "fc08a810405bd84957fd2855d748f7d1dbc90f6ef105c787414d398f343a3ce0",
+          "requirement_id": "7afec3d6bfc6a1518b181bd836d806583326e5df24a53eaa9d939c64d7a1ae72",
+          "basis": "submission",
+          "necessity": "optional",
+          "stage": "application",
+          "condition_text": "",
+          "deadline_date": "2026-06-19",
+          "quote": "붙임 5. 가점 확인 신청서(선택)",
+          "start_line": 346,
+          "end_line": 346,
+          "source_page": 12,
+          "review_status": "unreviewed",
+          "posting_title": "2026년 경기도 동부권역 창업가 모집 공고(지역 가치 창업가 육성 지원사업)",
+          "source_url": "https://www.bizinfo.go.kr/sii/siia/selectSIIA200Detail.do?pblancId=PBLN_000000000122308",
+          "application_status": "closed",
+          "evidence_url": "https://www.bizinfo.go.kr/cmm/fms/fileDown.do?atchFileId=FILE_000000000756645&fileSn=0"
+        },
+        {
+          "id": "e282c23d797876b3e48e61afa780ae0e9c587c21b410fbda6a0d11e012c0790b",
+          "node_id": "SU-DOC-62f3346c9106c588",
+          "posting_id": "biz-PBLN_000000000122308",
+          "source_id": "cb8da19f2f741dd25ceb94cda695e2125f1d1257f55391703ffd2e51c98d71d7",
+          "requirement_id": "2c1b1c6d7fcc430868a248ca6925ee2fef7a8e0f7129a3487a2e94445abff278",
+          "basis": "submission",
+          "necessity": "optional",
+          "stage": "application",
+          "condition_text": "",
+          "deadline_date": "2026-06-19",
+          "quote": "붙임5.가점확인신청서(선택)",
+          "start_line": 209,
+          "end_line": 209,
+          "source_page": 6,
+          "review_status": "unreviewed",
+          "posting_title": "2026년 경기도 동부권역 창업가 모집 공고(지역 가치 창업가 육성 지원사업)",
+          "source_url": "https://www.bizinfo.go.kr/sii/siia/selectSIIA200Detail.do?pblancId=PBLN_000000000122308",
+          "application_status": "closed",
+          "evidence_url": "https://www.bizinfo.go.kr/cmm/fms/fileDown.do?atchFileId=FILE_000000000756644&fileSn=0"
+        }
+      ]
+    },
+    {
+      "id": "SU-DOC-7489267a2d9dffd5",
+      "title": "주민등록초본 준비",
+      "kind": "certificate",
+      "completion": "해당 공고의 적용 대상과 발급·제출 기준을 확인한 서류",
+      "related_skill_id": null,
+      "extractor_version": "1",
+      "posting_count": 1,
+      "references": [
+        {
+          "id": "0ba4b2b4003bf44470a32585927efe1657647976bb3d6b0aa981a40f4822c41e",
+          "node_id": "SU-DOC-7489267a2d9dffd5",
+          "posting_id": "biz-PBLN_000000000122308",
+          "source_id": "fc08a810405bd84957fd2855d748f7d1dbc90f6ef105c787414d398f343a3ce0",
+          "requirement_id": "4a7b688b4347e94c5c625232f0066ae4d3f7ea310642512b136736f4630c042d",
+          "basis": "submission",
+          "necessity": "conditional",
+          "stage": "application",
+          "condition_text": "※ 해당 시, 주민등록등본 또는 장애인증명서",
+          "deadline_date": "2026-06-19",
+          "quote": "※ 해당 시, 주민등록등본 또는 장애인증명서",
+          "start_line": 347,
+          "end_line": 347,
+          "source_page": 12,
+          "review_status": "unreviewed",
+          "posting_title": "2026년 경기도 동부권역 창업가 모집 공고(지역 가치 창업가 육성 지원사업)",
+          "source_url": "https://www.bizinfo.go.kr/sii/siia/selectSIIA200Detail.do?pblancId=PBLN_000000000122308",
+          "application_status": "closed",
+          "evidence_url": "https://www.bizinfo.go.kr/cmm/fms/fileDown.do?atchFileId=FILE_000000000756645&fileSn=0"
+        },
+        {
+          "id": "52ee0ad44bda56152fb3141e51f029c07bc9f1b8867edec0888fe61c7c3af1e4",
+          "node_id": "SU-DOC-7489267a2d9dffd5",
+          "posting_id": "biz-PBLN_000000000122308",
+          "source_id": "cb8da19f2f741dd25ceb94cda695e2125f1d1257f55391703ffd2e51c98d71d7",
+          "requirement_id": "8e72963a7608fbba40966683070068e67687dd213a81aee6a11d5036fb0ed2fa",
+          "basis": "submission",
+          "necessity": "conditional",
+          "stage": "application",
+          "condition_text": "※해당시,주민등록등본또는장애인증명서제출",
+          "deadline_date": "2026-06-19",
+          "quote": "※해당시,주민등록등본또는장애인증명서제출",
+          "start_line": 210,
+          "end_line": 210,
+          "source_page": 6,
+          "review_status": "unreviewed",
+          "posting_title": "2026년 경기도 동부권역 창업가 모집 공고(지역 가치 창업가 육성 지원사업)",
+          "source_url": "https://www.bizinfo.go.kr/sii/siia/selectSIIA200Detail.do?pblancId=PBLN_000000000122308",
+          "application_status": "closed",
+          "evidence_url": "https://www.bizinfo.go.kr/cmm/fms/fileDown.do?atchFileId=FILE_000000000756644&fileSn=0"
+        }
+      ]
+    },
+    {
+      "id": "SU-DOC-aeef500543e813e4",
+      "title": "총사업자등록내역증명 준비",
+      "kind": "certificate",
+      "completion": "해당 공고의 적용 대상과 발급·제출 기준을 확인한 서류",
+      "related_skill_id": null,
+      "extractor_version": "1",
+      "posting_count": 1,
+      "references": [
+        {
+          "id": "7f5817169b5346a52c0c7e78fe56737b0c08d2e562cae20d9909a7a7bc333a85",
+          "node_id": "SU-DOC-aeef500543e813e4",
+          "posting_id": "biz-PBLN_000000000124885",
+          "source_id": "140ecfd730f4089d0b49ab49ddb603e87b7049aff5913065b6e12c1ef92bdd75",
+          "requirement_id": "1e3ee4a8b3e0f2f712100c324e653bfb526e3f8fe8e9dcd461e8ba6647db9ce2",
+          "basis": "submission",
+          "necessity": "conditional",
+          "stage": "application",
+          "condition_text": "개인및법인사업자",
+          "deadline_date": "2026-08-10",
+          "quote": "② 사실증명서 총사업자등록내역 ( )",
+          "start_line": 152,
+          "end_line": 152,
+          "source_page": 3,
+          "review_status": "unreviewed",
+          "posting_title": "2026년 예술분야 예비창업 프로그램 참여자 모집 공고",
+          "source_url": "https://www.bizinfo.go.kr/sii/siia/selectSIIA200Detail.do?pblancId=PBLN_000000000124885",
+          "application_status": "closed",
+          "evidence_url": "https://www.bizinfo.go.kr/cmm/fms/fileDown.do?atchFileId=FILE_000000000766757&fileSn=0"
+        }
+      ]
+    },
+    {
+      "id": "SU-DOC-b3fca2cc9a21b21f",
+      "title": "사업자등록사실여부증명 준비",
+      "kind": "certificate",
+      "completion": "해당 공고의 적용 대상과 발급·제출 기준을 확인한 서류",
+      "related_skill_id": null,
+      "extractor_version": "1",
+      "posting_count": 1,
+      "references": [
+        {
+          "id": "d3649fe18fff238d677b0b4f7a83346667ac43e04cb93224c20a289779c670d1",
+          "node_id": "SU-DOC-b3fca2cc9a21b21f",
+          "posting_id": "biz-PBLN_000000000124885",
+          "source_id": "140ecfd730f4089d0b49ab49ddb603e87b7049aff5913065b6e12c1ef92bdd75",
+          "requirement_id": "0143d744bd41ce23049ad010302e6bfa2c97f4db985fbedec3f025bce5c45734",
+          "basis": "submission",
+          "necessity": "conditional",
+          "stage": "application",
+          "condition_text": "예비창업자",
+          "deadline_date": "2026-08-10",
+          "quote": "① 사실증명서 사업자등록사실여부 ( )",
+          "start_line": 145,
+          "end_line": 145,
+          "source_page": 3,
+          "review_status": "unreviewed",
+          "posting_title": "2026년 예술분야 예비창업 프로그램 참여자 모집 공고",
+          "source_url": "https://www.bizinfo.go.kr/sii/siia/selectSIIA200Detail.do?pblancId=PBLN_000000000124885",
+          "application_status": "closed",
+          "evidence_url": "https://www.bizinfo.go.kr/cmm/fms/fileDown.do?atchFileId=FILE_000000000766757&fileSn=0"
+        }
+      ]
+    },
+    {
+      "id": "SU-DOC-b48f8be738cc4cbe",
+      "title": "개인정보동의서 준비",
+      "kind": "certificate",
+      "completion": "해당 공고의 적용 대상과 발급·제출 기준을 확인한 서류",
+      "related_skill_id": null,
+      "extractor_version": "1",
+      "posting_count": 2,
+      "references": [
+        {
+          "id": "a9245f8ab71cc35b0d7474d68332287f1a981eb5627002dfa938befb18f6d58d",
+          "node_id": "SU-DOC-b48f8be738cc4cbe",
+          "posting_id": "biz-PBLN_000000000122308",
+          "source_id": "fc08a810405bd84957fd2855d748f7d1dbc90f6ef105c787414d398f343a3ce0",
+          "requirement_id": "bad31c7d903f0e104911f9a0d9596b797d9a28c7cd4b4c2a905942aaac29a728",
+          "basis": "submission",
+          "necessity": "required",
+          "stage": "application",
+          "condition_text": "",
+          "deadline_date": "2026-06-19",
+          "quote": "3 붙임 3. 개인정보 수집·이용·제공 동의서(필수) 공고문 붙임문서 활용, 필수제출",
+          "start_line": 343,
+          "end_line": 343,
+          "source_page": 12,
+          "review_status": "unreviewed",
+          "posting_title": "2026년 경기도 동부권역 창업가 모집 공고(지역 가치 창업가 육성 지원사업)",
+          "source_url": "https://www.bizinfo.go.kr/sii/siia/selectSIIA200Detail.do?pblancId=PBLN_000000000122308",
+          "application_status": "closed",
+          "evidence_url": "https://www.bizinfo.go.kr/cmm/fms/fileDown.do?atchFileId=FILE_000000000756645&fileSn=0"
+        },
+        {
+          "id": "e3430af1ae8d2a20b6751243081af2f5e59b2af30632b144b233d0d2bbb5692e",
+          "node_id": "SU-DOC-b48f8be738cc4cbe",
+          "posting_id": "biz-PBLN_000000000122308",
+          "source_id": "cb8da19f2f741dd25ceb94cda695e2125f1d1257f55391703ffd2e51c98d71d7",
+          "requirement_id": "e511731f65321dbee067af9c3c1e7a6e9f1bc87ecd64d24ba485ed82452f4e83",
+          "basis": "submission",
+          "necessity": "required",
+          "stage": "application",
+          "condition_text": "",
+          "deadline_date": "2026-06-19",
+          "quote": "3 붙임3.개인정보수집·이용·제공동의서(필수) 공고문붙임문서활용,필수제출",
+          "start_line": 206,
+          "end_line": 206,
+          "source_page": 6,
+          "review_status": "unreviewed",
+          "posting_title": "2026년 경기도 동부권역 창업가 모집 공고(지역 가치 창업가 육성 지원사업)",
+          "source_url": "https://www.bizinfo.go.kr/sii/siia/selectSIIA200Detail.do?pblancId=PBLN_000000000122308",
+          "application_status": "closed",
+          "evidence_url": "https://www.bizinfo.go.kr/cmm/fms/fileDown.do?atchFileId=FILE_000000000756644&fileSn=0"
+        },
+        {
+          "id": "859700ded9a86c852c82dec2b66922e4c615124e91fba0dbd50ba076e107a64b",
+          "node_id": "SU-DOC-b48f8be738cc4cbe",
+          "posting_id": "cuk-276113",
+          "source_id": "09501439981b73c9cd344532896ae14cdb5ecd344e7dfe22e68add96c1130a12",
+          "requirement_id": "27d2c8f3bf62c1088d8feb4de6de8727f48cdc774dad55e2666e808b27355e35",
+          "basis": "submission",
+          "necessity": "required",
+          "stage": "application",
+          "condition_text": "",
+          "deadline_date": "2026-10-06",
+          "quote": "붙임 입주신청서, 사업계획서, 개인정보활용동의서 각 1부.",
+          "start_line": 61,
+          "end_line": 61,
+          "source_page": null,
+          "review_status": "unreviewed",
+          "posting_title": "★★ 2026년 가톨릭대학교 창업보육센터 입주기업 모집 공고 ★★",
+          "source_url": "https://www.catholic.ac.kr/ko/campuslife/notice.do?mode=view&articleNo=276113",
+          "application_status": "closed",
+          "evidence_url": "https://www.catholic.ac.kr/ko/campuslife/notice.do?mode=view&articleNo=276113"
+        }
+      ]
+    },
+    {
+      "id": "SU-DOC-e4b1a2a5334f6d99",
+      "title": "법인등기부등본 준비",
+      "kind": "certificate",
+      "completion": "해당 공고의 적용 대상과 발급·제출 기준을 확인한 서류",
+      "related_skill_id": null,
+      "extractor_version": "1",
+      "posting_count": 2,
+      "references": [
+        {
+          "id": "f35cc46b7b0946006ba8128c850f75f8e507c2eb999b0b9cff5b1dd13e73580f",
+          "node_id": "SU-DOC-e4b1a2a5334f6d99",
+          "posting_id": "biz-PBLN_000000000123273",
+          "source_id": "9f0b3221cf9af45fb36e2fef1db1add6d011c5142dcec277164d31028567e3ad",
+          "requirement_id": "039961a8b4b7006db1f9f5e8eaa59779ec83770add60abcce141e6c82016bf76",
+          "basis": "submission",
+          "necessity": "conditional",
+          "stage": "agreement",
+          "condition_text": " ※ 창업기업의 사업자등록증 및 법인등기부등본, 창업기업확인서는 최종 선발 직후 제출 필수",
+          "deadline_date": null,
+          "quote": " ※ 창업기업의 사업자등록증 및 법인등기부등본, 창업기업확인서는 최종 선발 직후 제출 필수",
+          "start_line": 178,
+          "end_line": 178,
+          "source_page": 5,
+          "review_status": "unreviewed",
+          "posting_title": "2026년 하반기 K-Global 창업멘토링 지원사업 참여 멘티(28기) 모집 공고",
+          "source_url": "https://www.bizinfo.go.kr/sii/siia/selectSIIA200Detail.do?pblancId=PBLN_000000000123273",
+          "application_status": "closed",
+          "evidence_url": "https://www.bizinfo.go.kr/cmm/fms/fileDown.do?atchFileId=FILE_000000000760264&fileSn=0"
+        },
+        {
+          "id": "0b18de77c3ca1a780ed695164a2bc5455bbb1d7ffb6361550a37be5d6d61c293",
+          "node_id": "SU-DOC-e4b1a2a5334f6d99",
+          "posting_id": "biz-PBLN_000000000124885",
+          "source_id": "140ecfd730f4089d0b49ab49ddb603e87b7049aff5913065b6e12c1ef92bdd75",
+          "requirement_id": "43393ca0dda043e1eab4002ae75bfd1b05676022165b2564f8f3828bff84bef8",
+          "basis": "submission",
+          "necessity": "conditional",
+          "stage": "application",
+          "condition_text": "개인및법인사업자",
+          "deadline_date": "2026-08-10",
+          "quote": "③ 법인등기부 등본 해당 시 ( )",
+          "start_line": 154,
+          "end_line": 154,
+          "source_page": 3,
+          "review_status": "unreviewed",
+          "posting_title": "2026년 예술분야 예비창업 프로그램 참여자 모집 공고",
+          "source_url": "https://www.bizinfo.go.kr/sii/siia/selectSIIA200Detail.do?pblancId=PBLN_000000000124885",
+          "application_status": "closed",
+          "evidence_url": "https://www.bizinfo.go.kr/cmm/fms/fileDown.do?atchFileId=FILE_000000000766757&fileSn=0"
+        }
+      ]
+    },
+    {
+      "id": "SU-PREP-budget",
+      "title": "사업비 사용계획 작성",
+      "kind": "preparation",
+      "completion": "지원금·자기부담금의 사용 항목과 배분표",
+      "related_skill_id": null,
+      "extractor_version": "1",
+      "posting_count": 2,
+      "references": [
+        {
+          "id": "c46aac3d49e397d0e11f01baa7f76c2a621e61b118a2e00fc879859d771d13cb",
+          "node_id": "SU-PREP-budget",
+          "posting_id": "biz-PBLN_000000000119859",
+          "source_id": "b18eb3e8c92f4c54682d5528f732d9266ccc8d6118dabf80257a0322a052f4c7",
+          "requirement_id": null,
+          "basis": "evaluation",
+          "necessity": "unspecified",
+          "stage": "unknown",
+          "condition_text": "",
+          "deadline_date": null,
+          "quote": "    * 예비창업자 선정 결과 및 사업비 사용계획의 적정성 등을 종합적으로 고려하여\n사업비 차등 배정\n - 평가위원회에서 현장 확인이 필요하다고 판단되는 경우, 해당 예비",
+          "start_line": 705,
+          "end_line": 707,
+          "source_page": 10,
+          "review_status": "unreviewed",
+          "posting_title": "2026년 2차 예비창업패키지 예비창업자 모집 수정 공고",
+          "source_url": "https://www.bizinfo.go.kr/sii/siia/selectSIIA200Detail.do?pblancId=PBLN_000000000119859",
+          "application_status": "closed",
+          "evidence_url": "https://www.bizinfo.go.kr/cmm/fms/fileDown.do?atchFileId=FILE_000000000748111&fileSn=1"
+        },
+        {
+          "id": "4511cbb07e474ff2fde29f4c47e9480dee6188eb76f6e27e5570bb3744b4538d",
+          "node_id": "SU-PREP-budget",
+          "posting_id": "biz-PBLN_000000000122308",
+          "source_id": "c7ca7c0e861666a7ce024da78be06e8fa2514487f57f5f75b661d0048ed888db",
+          "requirement_id": null,
+          "basis": "form_section",
+          "necessity": "unspecified",
+          "stage": "unknown",
+          "condition_text": "",
+          "deadline_date": null,
+          "quote": "9. 자금 집행 계획안\n※ 사업비 1000만원, 1700만원, 2500만원 예산별활용계획안을 구체적으로 기재\n1. 사업비 활용 계획안 ex)10,000,000원",
+          "start_line": 147,
+          "end_line": 149,
+          "source_page": 8,
+          "review_status": "unreviewed",
+          "posting_title": "2026년 경기도 동부권역 창업가 모집 공고(지역 가치 창업가 육성 지원사업)",
+          "source_url": "https://www.bizinfo.go.kr/sii/siia/selectSIIA200Detail.do?pblancId=PBLN_000000000122308",
+          "application_status": "closed",
+          "evidence_url": "https://www.bizinfo.go.kr/cmm/fms/fileDown.do?atchFileId=FILE_000000000756645&fileSn=3"
+        },
+        {
+          "id": "8e43c3c5e446aa73f329ca27fe304b0ac9ed4350807cf411356592568ec7f8ff",
+          "node_id": "SU-PREP-budget",
+          "posting_id": "biz-PBLN_000000000122308",
+          "source_id": "cb8da19f2f741dd25ceb94cda695e2125f1d1257f55391703ffd2e51c98d71d7",
+          "requirement_id": null,
+          "basis": "evaluation",
+          "necessity": "unspecified",
+          "stage": "unknown",
+          "condition_text": "",
+          "deadline_date": null,
+          "quote": "○심사기준:창업역량(40%),지역특화콘텐츠기획력(30%),창업자금운용및참여도(40%)\n※일정및내용은내부사정에따라변경될수있습니다.\nⅤ 지원 사항 및 활동 내용 (프로그램 추진일정)",
+          "start_line": 104,
+          "end_line": 106,
+          "source_page": 4,
+          "review_status": "unreviewed",
+          "posting_title": "2026년 경기도 동부권역 창업가 모집 공고(지역 가치 창업가 육성 지원사업)",
+          "source_url": "https://www.bizinfo.go.kr/sii/siia/selectSIIA200Detail.do?pblancId=PBLN_000000000122308",
+          "application_status": "closed",
+          "evidence_url": "https://www.bizinfo.go.kr/cmm/fms/fileDown.do?atchFileId=FILE_000000000756644&fileSn=0"
+        }
+      ]
+    },
+    {
+      "id": "SU-PREP-business-model",
+      "title": "수익모델·비즈니스 모델 정리",
+      "kind": "preparation",
+      "completion": "고객, 제공가치와 수익 발생 방식을 정리한 문서",
+      "related_skill_id": null,
+      "extractor_version": "1",
+      "posting_count": 2,
+      "references": [
+        {
+          "id": "5ed1a553cf4c6a2d9bd7caa583862a0cabb89d984ed2e28c66ad568ac9111405",
+          "node_id": "SU-PREP-business-model",
+          "posting_id": "biz-PBLN_000000000119859",
+          "source_id": "b18eb3e8c92f4c54682d5528f732d9266ccc8d6118dabf80257a0322a052f4c7",
+          "requirement_id": null,
+          "basis": "evaluation",
+          "necessity": "unspecified",
+          "stage": "unknown",
+          "condition_text": "",
+          "deadline_date": null,
+          "quote": "위한 차별성, 수익모델 등 성장전략, 대표자(신청자) 및 팀원의 보유\n역량등을종합적으로평가\n    ※ 주관기관별 선정 규모와 관계없이, 평가 단계(서류평가-발표평가)별 취득점수가 70점",
+          "start_line": 662,
+          "end_line": 664,
+          "source_page": 9,
+          "review_status": "unreviewed",
+          "posting_title": "2026년 2차 예비창업패키지 예비창업자 모집 수정 공고",
+          "source_url": "https://www.bizinfo.go.kr/sii/siia/selectSIIA200Detail.do?pblancId=PBLN_000000000119859",
+          "application_status": "closed",
+          "evidence_url": "https://www.bizinfo.go.kr/cmm/fms/fileDown.do?atchFileId=FILE_000000000748111&fileSn=1"
+        },
+        {
+          "id": "97c3d3b85fdb1b6aa5de0df751e34a2443a9fcf6fbdf243f07b2d0622e0d52c4",
+          "node_id": "SU-PREP-business-model",
+          "posting_id": "biz-PBLN_000000000123273",
+          "source_id": "9f0b3221cf9af45fb36e2fef1db1add6d011c5142dcec277164d31028567e3ad",
+          "requirement_id": null,
+          "basis": "evaluation",
+          "necessity": "unspecified",
+          "stage": "unknown",
+          "condition_text": "",
+          "deadline_date": null,
+          "quote": "- 제품·서비스 및 비즈니스모델(BM)의 구현 정도를 감안하여 개발(제작) 소요기간\n및 제작방법(자체*, 외주 등), 추진일정 등 사업의 실현가능성\n   * 자체 개발인 경우, 관련 경험 또는 기술보유 현황",
+          "start_line": 265,
+          "end_line": 267,
+          "source_page": 7,
+          "review_status": "unreviewed",
+          "posting_title": "2026년 하반기 K-Global 창업멘토링 지원사업 참여 멘티(28기) 모집 공고",
+          "source_url": "https://www.bizinfo.go.kr/sii/siia/selectSIIA200Detail.do?pblancId=PBLN_000000000123273",
+          "application_status": "closed",
+          "evidence_url": "https://www.bizinfo.go.kr/cmm/fms/fileDown.do?atchFileId=FILE_000000000760264&fileSn=0"
+        }
+      ]
+    },
+    {
+      "id": "SU-PREP-cost-breakdown",
+      "title": "비목별 예산 산출",
+      "kind": "preparation",
+      "completion": "비용 항목별 단가·수량과 산출 근거표",
+      "related_skill_id": null,
+      "extractor_version": "1",
+      "posting_count": 1,
+      "references": [
+        {
+          "id": "e7d6bdf97cda62fec3a610a589e47774d4192b0c662eb7631a980c7277b3a33d",
+          "node_id": "SU-PREP-cost-breakdown",
+          "posting_id": "biz-PBLN_000000000122308",
+          "source_id": "c7ca7c0e861666a7ce024da78be06e8fa2514487f57f5f75b661d0048ed888db",
+          "requirement_id": null,
+          "basis": "form_section",
+          "necessity": "unspecified",
+          "stage": "unknown",
+          "condition_text": "",
+          "deadline_date": null,
+          "quote": "1. 비목별 사업비 ※기재된 항목에 한하여 예산 산출 ex)10,000,000원\n비목 세목 산출내역 비율 (%) 사업비(단위 : 천원) 창업지원\n금",
+          "start_line": 163,
+          "end_line": 165,
+          "source_page": 10,
+          "review_status": "unreviewed",
+          "posting_title": "2026년 경기도 동부권역 창업가 모집 공고(지역 가치 창업가 육성 지원사업)",
+          "source_url": "https://www.bizinfo.go.kr/sii/siia/selectSIIA200Detail.do?pblancId=PBLN_000000000122308",
+          "application_status": "closed",
+          "evidence_url": "https://www.bizinfo.go.kr/cmm/fms/fileDown.do?atchFileId=FILE_000000000756645&fileSn=3"
+        }
+      ]
+    },
+    {
+      "id": "SU-PREP-customer-validation",
+      "title": "고객·시장 검증계획 작성",
+      "kind": "preparation",
+      "completion": "검증할 가설, 대상, 방법과 관찰 항목을 정리한 계획",
+      "related_skill_id": null,
+      "extractor_version": "1",
+      "posting_count": 1,
+      "references": [
+        {
+          "id": "8c1b04e4ffb65eb2386f6225f26d173d7b0033192d999b2cd5d14b8d1339151a",
+          "node_id": "SU-PREP-customer-validation",
+          "posting_id": "biz-PBLN_000000000124885",
+          "source_id": "140ecfd730f4089d0b49ab49ddb603e87b7049aff5913065b6e12c1ef92bdd75",
+          "requirement_id": null,
+          "basis": "evaluation",
+          "necessity": "unspecified",
+          "stage": "unknown",
+          "condition_text": "",
+          "deadline_date": null,
+          "quote": "창업 아이디어 및 문제인식 사업화 가능성 고객 시장검증 계획\n➊ ➋ ➌\n대표자 및 팀 역량 예술분야 연관성 및 기여도",
+          "start_line": 243,
+          "end_line": 245,
+          "source_page": 5,
+          "review_status": "unreviewed",
+          "posting_title": "2026년 예술분야 예비창업 프로그램 참여자 모집 공고",
+          "source_url": "https://www.bizinfo.go.kr/sii/siia/selectSIIA200Detail.do?pblancId=PBLN_000000000124885",
+          "application_status": "closed",
+          "evidence_url": "https://www.bizinfo.go.kr/cmm/fms/fileDown.do?atchFileId=FILE_000000000766757&fileSn=0"
+        }
+      ]
+    },
+    {
+      "id": "SU-PREP-differentiation",
+      "title": "제품·서비스 차별성 정리",
+      "kind": "preparation",
+      "completion": "경쟁 대안과 제품·서비스 차별점을 비교한 자료",
+      "related_skill_id": null,
+      "extractor_version": "1",
+      "posting_count": 3,
+      "references": [
+        {
+          "id": "6d753710f0a0e24c1fdf85055597c1dea5c1b0f22c1654973dccfd8cab21608e",
+          "node_id": "SU-PREP-differentiation",
+          "posting_id": "biz-PBLN_000000000119859",
+          "source_id": "b18eb3e8c92f4c54682d5528f732d9266ccc8d6118dabf80257a0322a052f4c7",
+          "requirement_id": null,
+          "basis": "evaluation",
+          "necessity": "unspecified",
+          "stage": "unknown",
+          "condition_text": "",
+          "deadline_date": null,
+          "quote": "위한 차별성, 수익모델 등 성장전략, 대표자(신청자) 및 팀원의 보유\n역량등을종합적으로평가\n    ※ 주관기관별 선정 규모와 관계없이, 평가 단계(서류평가-발표평가)별 취득점수가 70점",
+          "start_line": 662,
+          "end_line": 664,
+          "source_page": 9,
+          "review_status": "unreviewed",
+          "posting_title": "2026년 2차 예비창업패키지 예비창업자 모집 수정 공고",
+          "source_url": "https://www.bizinfo.go.kr/sii/siia/selectSIIA200Detail.do?pblancId=PBLN_000000000119859",
+          "application_status": "closed",
+          "evidence_url": "https://www.bizinfo.go.kr/cmm/fms/fileDown.do?atchFileId=FILE_000000000748111&fileSn=1"
+        },
+        {
+          "id": "9036b08cbdb40a37cb1a499c3d8dcd200f26a99cd50401c7499f49000e4c70dd",
+          "node_id": "SU-PREP-differentiation",
+          "posting_id": "biz-PBLN_000000000122308",
+          "source_id": "fc08a810405bd84957fd2855d748f7d1dbc90f6ef105c787414d398f343a3ce0",
+          "requirement_id": null,
+          "basis": "evaluation",
+          "necessity": "unspecified",
+          "stage": "unknown",
+          "condition_text": "",
+          "deadline_date": null,
+          "quote": "창업 아이템의 차별화 및 창의성 10점\n운영\n기업 지속 유지관리 방안의 적정성 10점",
+          "start_line": 112,
+          "end_line": 114,
+          "source_page": 6,
+          "review_status": "unreviewed",
+          "posting_title": "2026년 경기도 동부권역 창업가 모집 공고(지역 가치 창업가 육성 지원사업)",
+          "source_url": "https://www.bizinfo.go.kr/sii/siia/selectSIIA200Detail.do?pblancId=PBLN_000000000122308",
+          "application_status": "closed",
+          "evidence_url": "https://www.bizinfo.go.kr/cmm/fms/fileDown.do?atchFileId=FILE_000000000756645&fileSn=0"
+        },
+        {
+          "id": "8134de08bbb734620c122760b6fc333edc13af299c9668cb95991e0356e0dd62",
+          "node_id": "SU-PREP-differentiation",
+          "posting_id": "biz-PBLN_000000000123273",
+          "source_id": "9f0b3221cf9af45fb36e2fef1db1add6d011c5142dcec277164d31028567e3ad",
+          "requirement_id": null,
+          "basis": "evaluation",
+          "necessity": "unspecified",
+          "stage": "unknown",
+          "condition_text": "",
+          "deadline_date": null,
+          "quote": "및 차별화 전략에 대한 구체성\n- 소비자 또는 해당 분야의 전문가가 제시한 제품·서비스의 문제점 및 취약점\n등에 대해 구체적인 개선방안",
+          "start_line": 273,
+          "end_line": 275,
+          "source_page": 7,
+          "review_status": "unreviewed",
+          "posting_title": "2026년 하반기 K-Global 창업멘토링 지원사업 참여 멘티(28기) 모집 공고",
+          "source_url": "https://www.bizinfo.go.kr/sii/siia/selectSIIA200Detail.do?pblancId=PBLN_000000000123273",
+          "application_status": "closed",
+          "evidence_url": "https://www.bizinfo.go.kr/cmm/fms/fileDown.do?atchFileId=FILE_000000000760264&fileSn=0"
+        }
+      ]
+    },
+    {
+      "id": "SU-PREP-execution",
+      "title": "사업화 실행계획 작성",
+      "kind": "preparation",
+      "completion": "사업화를 위한 활동과 실행 방법을 정리한 계획",
+      "related_skill_id": null,
+      "extractor_version": "1",
+      "posting_count": 2,
+      "references": [
+        {
+          "id": "bc61ade6085b403146f2a752b5c8bd7d945b672e09489c625dc37f52eb85d46c",
+          "node_id": "SU-PREP-execution",
+          "posting_id": "biz-PBLN_000000000122308",
+          "source_id": "c7ca7c0e861666a7ce024da78be06e8fa2514487f57f5f75b661d0048ed888db",
+          "requirement_id": null,
+          "basis": "form_section",
+          "necessity": "unspecified",
+          "stage": "unknown",
+          "condition_text": "",
+          "deadline_date": null,
+          "quote": "5. 선정 이후 활동계획 및 사업화 전략\n ※ 선정이후창업계획을작성해주십시오. (선정이후단계별계획을상세히작성해주세요)\n(6월~7월): 오리엔테이션및집합교육참여, 전문가컨설팅을통한비즈니스모델고도화",
+          "start_line": 95,
+          "end_line": 97,
+          "source_page": 5,
+          "review_status": "unreviewed",
+          "posting_title": "2026년 경기도 동부권역 창업가 모집 공고(지역 가치 창업가 육성 지원사업)",
+          "source_url": "https://www.bizinfo.go.kr/sii/siia/selectSIIA200Detail.do?pblancId=PBLN_000000000122308",
+          "application_status": "closed",
+          "evidence_url": "https://www.bizinfo.go.kr/cmm/fms/fileDown.do?atchFileId=FILE_000000000756645&fileSn=3"
+        },
+        {
+          "id": "d0ab9c0713588373a8ea37c5c2a58e4d9c43ec4aea524d5ae5f243d94d1d3657",
+          "node_id": "SU-PREP-execution",
+          "posting_id": "biz-PBLN_000000000123273",
+          "source_id": "9f0b3221cf9af45fb36e2fef1db1add6d011c5142dcec277164d31028567e3ad",
+          "requirement_id": null,
+          "basis": "evaluation",
+          "necessity": "unspecified",
+          "stage": "unknown",
+          "condition_text": "",
+          "deadline_date": null,
+          "quote": "사업화 전략\n- 제품·서비스 및 비즈니스모델(BM)의 구현 정도를 감안하여 개발(제작) 소요기간\n및 제작방법(자체*, 외주 등), 추진일정 등 사업의 실현가능성",
+          "start_line": 264,
+          "end_line": 266,
+          "source_page": 7,
+          "review_status": "unreviewed",
+          "posting_title": "2026년 하반기 K-Global 창업멘토링 지원사업 참여 멘티(28기) 모집 공고",
+          "source_url": "https://www.bizinfo.go.kr/sii/siia/selectSIIA200Detail.do?pblancId=PBLN_000000000123273",
+          "application_status": "closed",
+          "evidence_url": "https://www.bizinfo.go.kr/cmm/fms/fileDown.do?atchFileId=FILE_000000000760264&fileSn=0"
+        }
+      ]
+    },
+    {
+      "id": "SU-PREP-feasibility",
+      "title": "제품 구현·개발계획 작성",
+      "kind": "preparation",
+      "completion": "제품·서비스의 개발 방법과 실행 가능성을 설명한 계획",
+      "related_skill_id": null,
+      "extractor_version": "1",
+      "posting_count": 2,
+      "references": [
+        {
+          "id": "529bb8b1f55f75998b3c89b6740375e4990bf1c6417303c74b4a3fd64a8b8f09",
+          "node_id": "SU-PREP-feasibility",
+          "posting_id": "biz-PBLN_000000000119859",
+          "source_id": "b18eb3e8c92f4c54682d5528f732d9266ccc8d6118dabf80257a0322a052f4c7",
+          "requirement_id": null,
+          "basis": "evaluation",
+          "necessity": "unspecified",
+          "stage": "unknown",
+          "condition_text": "",
+          "deadline_date": null,
+          "quote": "◦창업아이템의개발배경및필요성,사업기간내개발계획,사업화를\n위한 차별성, 수익모델 등 성장전략, 대표자(신청자) 및 팀원의 보유\n역량등을종합적으로평가",
+          "start_line": 661,
+          "end_line": 663,
+          "source_page": 9,
+          "review_status": "unreviewed",
+          "posting_title": "2026년 2차 예비창업패키지 예비창업자 모집 수정 공고",
+          "source_url": "https://www.bizinfo.go.kr/sii/siia/selectSIIA200Detail.do?pblancId=PBLN_000000000119859",
+          "application_status": "closed",
+          "evidence_url": "https://www.bizinfo.go.kr/cmm/fms/fileDown.do?atchFileId=FILE_000000000748111&fileSn=1"
+        },
+        {
+          "id": "898eeefb5ca1c11f8c36a00e001553f8d9aa7eb35426e578384a6b578e3b3a71",
+          "node_id": "SU-PREP-feasibility",
+          "posting_id": "biz-PBLN_000000000123273",
+          "source_id": "9f0b3221cf9af45fb36e2fef1db1add6d011c5142dcec277164d31028567e3ad",
+          "requirement_id": null,
+          "basis": "evaluation",
+          "necessity": "unspecified",
+          "stage": "unknown",
+          "condition_text": "",
+          "deadline_date": null,
+          "quote": "- 제품·서비스의 부재로 불편한 점, 국내·외 시장의 문제점 분석 및 실현가능성의 구체성\n창업아이템의\n목적 및 필요성",
+          "start_line": 254,
+          "end_line": 256,
+          "source_page": 7,
+          "review_status": "unreviewed",
+          "posting_title": "2026년 하반기 K-Global 창업멘토링 지원사업 참여 멘티(28기) 모집 공고",
+          "source_url": "https://www.bizinfo.go.kr/sii/siia/selectSIIA200Detail.do?pblancId=PBLN_000000000123273",
+          "application_status": "closed",
+          "evidence_url": "https://www.bizinfo.go.kr/cmm/fms/fileDown.do?atchFileId=FILE_000000000760264&fileSn=0"
+        }
+      ]
+    },
+    {
+      "id": "SU-PREP-funding",
+      "title": "자금조달 계획 작성",
+      "kind": "preparation",
+      "completion": "필요 자금과 조달 방법을 정리한 계획",
+      "related_skill_id": null,
+      "extractor_version": "1",
+      "posting_count": 1,
+      "references": [
+        {
+          "id": "7a9afe2b6605f017d9a8358330c7a1609a5edf5ef068bab061304daa32619ce9",
+          "node_id": "SU-PREP-funding",
+          "posting_id": "biz-PBLN_000000000119859",
+          "source_id": "b18eb3e8c92f4c54682d5528f732d9266ccc8d6118dabf80257a0322a052f4c7",
+          "requirement_id": null,
+          "basis": "evaluation",
+          "necessity": "unspecified",
+          "stage": "unknown",
+          "condition_text": "",
+          "deadline_date": null,
+          "quote": "성장전략 ▖창업아이템의 사업화를 위한 시장진입 전략, 자금조달 방안 등\n팀(기업) 구성 ▖대표자 및 고용 (예정)인력이 보유한 기술역량과 노하우 등\n▖1단계 선정 통보된 예비창업자는 ‘협약체결확약서’ 제출 요청일* 다음 영업일로부터 3일이내",
+          "start_line": 670,
+          "end_line": 672,
+          "source_page": 9,
+          "review_status": "unreviewed",
+          "posting_title": "2026년 2차 예비창업패키지 예비창업자 모집 수정 공고",
+          "source_url": "https://www.bizinfo.go.kr/sii/siia/selectSIIA200Detail.do?pblancId=PBLN_000000000119859",
+          "application_status": "closed",
+          "evidence_url": "https://www.bizinfo.go.kr/cmm/fms/fileDown.do?atchFileId=FILE_000000000748111&fileSn=1"
+        }
+      ]
+    },
+    {
+      "id": "SU-PREP-item",
+      "title": "창업 아이템 소개 작성",
+      "kind": "preparation",
+      "completion": "아이템명, 핵심가치와 제품·서비스 소개문",
+      "related_skill_id": null,
+      "extractor_version": "1",
+      "posting_count": 1,
+      "references": [
+        {
+          "id": "7d428e69c46184e06ba143cb3f496d2fdeeee3febc8123157d828c533d561449",
+          "node_id": "SU-PREP-item",
+          "posting_id": "biz-PBLN_000000000122308",
+          "source_id": "c7ca7c0e861666a7ce024da78be06e8fa2514487f57f5f75b661d0048ed888db",
+          "requirement_id": null,
+          "basis": "form_section",
+          "necessity": "unspecified",
+          "stage": "unknown",
+          "condition_text": "",
+          "deadline_date": null,
+          "quote": "3. 창업 아이템 소개\n[PDF page 5]\n ※ 아이템명, 핵심가치, 제품력중심으로작성해주십시오.(10줄내외로간략히작성)",
+          "start_line": 82,
+          "end_line": 84,
+          "source_page": 4,
+          "review_status": "unreviewed",
+          "posting_title": "2026년 경기도 동부권역 창업가 모집 공고(지역 가치 창업가 육성 지원사업)",
+          "source_url": "https://www.bizinfo.go.kr/sii/siia/selectSIIA200Detail.do?pblancId=PBLN_000000000122308",
+          "application_status": "closed",
+          "evidence_url": "https://www.bizinfo.go.kr/cmm/fms/fileDown.do?atchFileId=FILE_000000000756645&fileSn=3"
+        }
+      ]
+    },
+    {
+      "id": "SU-PREP-item-images",
+      "title": "아이템 이미지·비교자료 준비",
+      "kind": "preparation",
+      "completion": "아이템을 설명하는 이미지와 비교 자료",
+      "related_skill_id": null,
+      "extractor_version": "1",
+      "posting_count": 1,
+      "references": [
+        {
+          "id": "5bcd5ce0883400c66fd3ebd8327ea1f182425d28b9745b0bfb7aa7b07a371bf4",
+          "node_id": "SU-PREP-item-images",
+          "posting_id": "biz-PBLN_000000000122308",
+          "source_id": "c7ca7c0e861666a7ce024da78be06e8fa2514487f57f5f75b661d0048ed888db",
+          "requirement_id": null,
+          "basis": "form_section",
+          "necessity": "unspecified",
+          "stage": "unknown",
+          "condition_text": "",
+          "deadline_date": null,
+          "quote": "6. 아이템 이미지 및 유사 아이템 사진(설명)\n ※ 창업아이템(아이디어) 이미지첨부\n",
+          "start_line": 102,
+          "end_line": 104,
+          "source_page": 6,
+          "review_status": "unreviewed",
+          "posting_title": "2026년 경기도 동부권역 창업가 모집 공고(지역 가치 창업가 육성 지원사업)",
+          "source_url": "https://www.bizinfo.go.kr/sii/siia/selectSIIA200Detail.do?pblancId=PBLN_000000000122308",
+          "application_status": "closed",
+          "evidence_url": "https://www.bizinfo.go.kr/cmm/fms/fileDown.do?atchFileId=FILE_000000000756645&fileSn=3"
+        }
+      ]
+    },
+    {
+      "id": "SU-PREP-market",
+      "title": "시장·경쟁 현황 조사",
+      "kind": "preparation",
+      "completion": "출처가 포함된 시장·경쟁 현황 조사 자료",
+      "related_skill_id": null,
+      "extractor_version": "1",
+      "posting_count": 2,
+      "references": [
+        {
+          "id": "658d1e71a4a86701fbaf1fbc9aceecdbda2cdd33a2185110d6ff14d19bcf48c5",
+          "node_id": "SU-PREP-market",
+          "posting_id": "biz-PBLN_000000000122308",
+          "source_id": "fc08a810405bd84957fd2855d748f7d1dbc90f6ef105c787414d398f343a3ce0",
+          "requirement_id": null,
+          "basis": "evaluation",
+          "necessity": "unspecified",
+          "stage": "unknown",
+          "condition_text": "",
+          "deadline_date": null,
+          "quote": "상품 및 아이템 시장 분석의 적정성 10점\n    ※ 가점 : 청년(만19세~39세) 1점, 경기도민 1점, 장애인 1점 가점(최대\n3점) (팀 단위 접수의 경우, 팀 구성원 중에 해당사항 있을",
+          "start_line": 115,
+          "end_line": 117,
+          "source_page": 6,
+          "review_status": "unreviewed",
+          "posting_title": "2026년 경기도 동부권역 창업가 모집 공고(지역 가치 창업가 육성 지원사업)",
+          "source_url": "https://www.bizinfo.go.kr/sii/siia/selectSIIA200Detail.do?pblancId=PBLN_000000000122308",
+          "application_status": "closed",
+          "evidence_url": "https://www.bizinfo.go.kr/cmm/fms/fileDown.do?atchFileId=FILE_000000000756645&fileSn=0"
+        },
+        {
+          "id": "68dc9a5e75e4b39aef50116d0d3410f99304407080a55e8aab65f0556e615c09",
+          "node_id": "SU-PREP-market",
+          "posting_id": "biz-PBLN_000000000123273",
+          "source_id": "9f0b3221cf9af45fb36e2fef1db1add6d011c5142dcec277164d31028567e3ad",
+          "requirement_id": null,
+          "basis": "evaluation",
+          "necessity": "unspecified",
+          "stage": "unknown",
+          "condition_text": "",
+          "deadline_date": null,
+          "quote": "시장분석 및\n경쟁력\n확보방안",
+          "start_line": 269,
+          "end_line": 271,
+          "source_page": 7,
+          "review_status": "unreviewed",
+          "posting_title": "2026년 하반기 K-Global 창업멘토링 지원사업 참여 멘티(28기) 모집 공고",
+          "source_url": "https://www.bizinfo.go.kr/sii/siia/selectSIIA200Detail.do?pblancId=PBLN_000000000123273",
+          "application_status": "closed",
+          "evidence_url": "https://www.bizinfo.go.kr/cmm/fms/fileDown.do?atchFileId=FILE_000000000760264&fileSn=0"
+        }
+      ]
+    },
+    {
+      "id": "SU-PREP-market-entry",
+      "title": "시장 진입전략 수립",
+      "kind": "preparation",
+      "completion": "초기 고객 확보와 판매·유통 경로를 정리한 전략",
+      "related_skill_id": null,
+      "extractor_version": "1",
+      "posting_count": 2,
+      "references": [
+        {
+          "id": "ed3110360ed5120af0db71f8a14aa5ab0ab90275b662c1dd0883c6c22f913731",
+          "node_id": "SU-PREP-market-entry",
+          "posting_id": "biz-PBLN_000000000119859",
+          "source_id": "b18eb3e8c92f4c54682d5528f732d9266ccc8d6118dabf80257a0322a052f4c7",
+          "requirement_id": null,
+          "basis": "evaluation",
+          "necessity": "unspecified",
+          "stage": "unknown",
+          "condition_text": "",
+          "deadline_date": null,
+          "quote": "성장전략 ▖창업아이템의 사업화를 위한 시장진입 전략, 자금조달 방안 등\n팀(기업) 구성 ▖대표자 및 고용 (예정)인력이 보유한 기술역량과 노하우 등\n▖1단계 선정 통보된 예비창업자는 ‘협약체결확약서’ 제출 요청일* 다음 영업일로부터 3일이내",
+          "start_line": 670,
+          "end_line": 672,
+          "source_page": 9,
+          "review_status": "unreviewed",
+          "posting_title": "2026년 2차 예비창업패키지 예비창업자 모집 수정 공고",
+          "source_url": "https://www.bizinfo.go.kr/sii/siia/selectSIIA200Detail.do?pblancId=PBLN_000000000119859",
+          "application_status": "closed",
+          "evidence_url": "https://www.bizinfo.go.kr/cmm/fms/fileDown.do?atchFileId=FILE_000000000748111&fileSn=1"
+        },
+        {
+          "id": "8c62d22db9ac76a642d69f853cbfee118294dddc453bc3ff7fa3e5960df4e588",
+          "node_id": "SU-PREP-market-entry",
+          "posting_id": "biz-PBLN_000000000123273",
+          "source_id": "9f0b3221cf9af45fb36e2fef1db1add6d011c5142dcec277164d31028567e3ad",
+          "requirement_id": null,
+          "basis": "evaluation",
+          "necessity": "unspecified",
+          "stage": "unknown",
+          "condition_text": "",
+          "deadline_date": null,
+          "quote": "시장진입 및\n성과창출 전략\n- 내수 및 글로벌시장 진출(확장)을 위한 제품(서비스)의 포지셔닝, 해당 산업군의",
+          "start_line": 285,
+          "end_line": 287,
+          "source_page": 7,
+          "review_status": "unreviewed",
+          "posting_title": "2026년 하반기 K-Global 창업멘토링 지원사업 참여 멘티(28기) 모집 공고",
+          "source_url": "https://www.bizinfo.go.kr/sii/siia/selectSIIA200Detail.do?pblancId=PBLN_000000000123273",
+          "application_status": "closed",
+          "evidence_url": "https://www.bizinfo.go.kr/cmm/fms/fileDown.do?atchFileId=FILE_000000000760264&fileSn=0"
+        }
+      ]
+    },
+    {
+      "id": "SU-PREP-problem",
+      "title": "고객 문제·개발 필요성 정리",
+      "kind": "preparation",
+      "completion": "해결할 문제와 해결 필요성을 설명한 문서",
+      "related_skill_id": null,
+      "extractor_version": "1",
+      "posting_count": 3,
+      "references": [
+        {
+          "id": "b8406fdfce4043fa2ffd61dd658fc86940d6c31d4931e94cf743bab268026012",
+          "node_id": "SU-PREP-problem",
+          "posting_id": "biz-PBLN_000000000119859",
+          "source_id": "b18eb3e8c92f4c54682d5528f732d9266ccc8d6118dabf80257a0322a052f4c7",
+          "requirement_id": null,
+          "basis": "evaluation",
+          "necessity": "unspecified",
+          "stage": "unknown",
+          "condition_text": "",
+          "deadline_date": null,
+          "quote": "◦창업아이템의개발배경및필요성,사업기간내개발계획,사업화를\n위한 차별성, 수익모델 등 성장전략, 대표자(신청자) 및 팀원의 보유\n역량등을종합적으로평가",
+          "start_line": 661,
+          "end_line": 663,
+          "source_page": 9,
+          "review_status": "unreviewed",
+          "posting_title": "2026년 2차 예비창업패키지 예비창업자 모집 수정 공고",
+          "source_url": "https://www.bizinfo.go.kr/sii/siia/selectSIIA200Detail.do?pblancId=PBLN_000000000119859",
+          "application_status": "closed",
+          "evidence_url": "https://www.bizinfo.go.kr/cmm/fms/fileDown.do?atchFileId=FILE_000000000748111&fileSn=1"
+        },
+        {
+          "id": "bc250d8aa386b201574276af5f8271e823a8ee048897c4b48d20b2a6fe78ec5d",
+          "node_id": "SU-PREP-problem",
+          "posting_id": "biz-PBLN_000000000120276",
+          "source_id": "5ba928e30f10bec2392770deab353aa649c6d75bb4656c9c79bc9f46fa051575",
+          "requirement_id": null,
+          "basis": "evaluation",
+          "necessity": "unspecified",
+          "stage": "unknown",
+          "condition_text": "",
+          "deadline_date": null,
+          "quote": "제품 개발 필요성\n· (중요성) 대상 기후문제의 심각성 및 해결의 시급성(시의성)\n· (영향범위) 기후변화 대응 및 탄소중립 달성에 대한 기여도",
+          "start_line": 76,
+          "end_line": 78,
+          "source_page": 3,
+          "review_status": "unreviewed",
+          "posting_title": "[서울] 2026년 서울기후테크산업지원센터 시제품 제작지원 사업 모집 공고",
+          "source_url": "https://www.bizinfo.go.kr/sii/siia/selectSIIA200Detail.do?pblancId=PBLN_000000000120276",
+          "application_status": "closed",
+          "evidence_url": "https://www.bizinfo.go.kr/cmm/fms/fileDown.do?atchFileId=FILE_000000000749560&fileSn=0"
+        },
+        {
+          "id": "30aa7c63f0ed8e2502a08f48ca5f52efb40317b124631dba830623176b357b0e",
+          "node_id": "SU-PREP-problem",
+          "posting_id": "biz-PBLN_000000000124885",
+          "source_id": "140ecfd730f4089d0b49ab49ddb603e87b7049aff5913065b6e12c1ef92bdd75",
+          "requirement_id": null,
+          "basis": "evaluation",
+          "necessity": "unspecified",
+          "stage": "unknown",
+          "condition_text": "",
+          "deadline_date": null,
+          "quote": "창업 아이디어 및 문제인식 사업화 가능성 고객 시장검증 계획\n➊ ➋ ➌\n대표자 및 팀 역량 예술분야 연관성 및 기여도",
+          "start_line": 243,
+          "end_line": 245,
+          "source_page": 5,
+          "review_status": "unreviewed",
+          "posting_title": "2026년 예술분야 예비창업 프로그램 참여자 모집 공고",
+          "source_url": "https://www.bizinfo.go.kr/sii/siia/selectSIIA200Detail.do?pblancId=PBLN_000000000124885",
+          "application_status": "closed",
+          "evidence_url": "https://www.bizinfo.go.kr/cmm/fms/fileDown.do?atchFileId=FILE_000000000766757&fileSn=0"
+        }
+      ]
+    },
+    {
+      "id": "SU-PREP-regional-value",
+      "title": "지역자원·지원동기 정리",
+      "kind": "preparation",
+      "completion": "해당 지역자원의 활용 방안과 지원 동기를 설명한 문서",
+      "related_skill_id": null,
+      "extractor_version": "1",
+      "posting_count": 1,
+      "references": [
+        {
+          "id": "74067118e843fc76ac0445aa7166ad78c70cd8fa46a36d672415d3f5c56c4813",
+          "node_id": "SU-PREP-regional-value",
+          "posting_id": "biz-PBLN_000000000122308",
+          "source_id": "c7ca7c0e861666a7ce024da78be06e8fa2514487f57f5f75b661d0048ed888db",
+          "requirement_id": null,
+          "basis": "form_section",
+          "necessity": "unspecified",
+          "stage": "unknown",
+          "condition_text": "",
+          "deadline_date": null,
+          "quote": "4. 지역 이해도 및 지원 동기\n ※ 신청하신지역의특정자원이가진현재의잠재력및지역경제활성화에기여하고자하는\n    지원동기와본인의전문역량을작성해주십시오.(10줄내외로간략히작성)",
+          "start_line": 89,
+          "end_line": 91,
+          "source_page": 5,
+          "review_status": "unreviewed",
+          "posting_title": "2026년 경기도 동부권역 창업가 모집 공고(지역 가치 창업가 육성 지원사업)",
+          "source_url": "https://www.bizinfo.go.kr/sii/siia/selectSIIA200Detail.do?pblancId=PBLN_000000000122308",
+          "application_status": "closed",
+          "evidence_url": "https://www.bizinfo.go.kr/cmm/fms/fileDown.do?atchFileId=FILE_000000000756645&fileSn=3"
+        },
+        {
+          "id": "7e25538a83c18038b8e17890e4fe7c581c7e474f203b1abebc3c70bb4abfbaf0",
+          "node_id": "SU-PREP-regional-value",
+          "posting_id": "biz-PBLN_000000000122308",
+          "source_id": "cb8da19f2f741dd25ceb94cda695e2125f1d1257f55391703ffd2e51c98d71d7",
+          "requirement_id": null,
+          "basis": "evaluation",
+          "necessity": "unspecified",
+          "stage": "unknown",
+          "condition_text": "",
+          "deadline_date": null,
+          "quote": "6.평가항목:창업실행력,지역특화콘텐츠기획력,사업지속성및발전가능성등\n7.평가방법:심사위원단의지원신청서기반정성평가진행(지역별로고득점자부터순차선발)\n8.서류평가일정:2026년6월24일(수)예정",
+          "start_line": 31,
+          "end_line": 33,
+          "source_page": 2,
+          "review_status": "unreviewed",
+          "posting_title": "2026년 경기도 동부권역 창업가 모집 공고(지역 가치 창업가 육성 지원사업)",
+          "source_url": "https://www.bizinfo.go.kr/sii/siia/selectSIIA200Detail.do?pblancId=PBLN_000000000122308",
+          "application_status": "closed",
+          "evidence_url": "https://www.bizinfo.go.kr/cmm/fms/fileDown.do?atchFileId=FILE_000000000756644&fileSn=0"
+        },
+        {
+          "id": "8d61c11379fb24ccd1bba65c1fab8d3abe6b5e52edb9b9765f47943089bf57c0",
+          "node_id": "SU-PREP-regional-value",
+          "posting_id": "biz-PBLN_000000000122308",
+          "source_id": "fc08a810405bd84957fd2855d748f7d1dbc90f6ef105c787414d398f343a3ce0",
+          "requirement_id": null,
+          "basis": "evaluation",
+          "necessity": "unspecified",
+          "stage": "unknown",
+          "condition_text": "",
+          "deadline_date": null,
+          "quote": "지역 이해도 및 자원 활용도 10점\n사업화 이후 지역 내 파급 효과 10점\n가능성",
+          "start_line": 108,
+          "end_line": 110,
+          "source_page": 6,
+          "review_status": "unreviewed",
+          "posting_title": "2026년 경기도 동부권역 창업가 모집 공고(지역 가치 창업가 육성 지원사업)",
+          "source_url": "https://www.bizinfo.go.kr/sii/siia/selectSIIA200Detail.do?pblancId=PBLN_000000000122308",
+          "application_status": "closed",
+          "evidence_url": "https://www.bizinfo.go.kr/cmm/fms/fileDown.do?atchFileId=FILE_000000000756645&fileSn=0"
+        }
+      ]
+    },
+    {
+      "id": "SU-PREP-schedule",
+      "title": "개발·사업 추진일정 작성",
+      "kind": "preparation",
+      "completion": "단계별 활동과 일정이 담긴 추진표",
+      "related_skill_id": null,
+      "extractor_version": "1",
+      "posting_count": 2,
+      "references": [
+        {
+          "id": "d333df50f2df597b0bb09ea8ac95ef6773ac9a313e96eb54c0fa74e9d0e38112",
+          "node_id": "SU-PREP-schedule",
+          "posting_id": "biz-PBLN_000000000122308",
+          "source_id": "c7ca7c0e861666a7ce024da78be06e8fa2514487f57f5f75b661d0048ed888db",
+          "requirement_id": null,
+          "basis": "form_section",
+          "necessity": "unspecified",
+          "stage": "unknown",
+          "condition_text": "",
+          "deadline_date": null,
+          "quote": "8. 추진일정\n※ 제품(서비스) 구현정도, 제작소요기간및 제작방법(자체, 외주), 추진일정등사업 전체\n로드맵을포함한 협약기간 내사업계획(목표및달성방안)을 구체적으로 기재",
+          "start_line": 129,
+          "end_line": 131,
+          "source_page": 8,
+          "review_status": "unreviewed",
+          "posting_title": "2026년 경기도 동부권역 창업가 모집 공고(지역 가치 창업가 육성 지원사업)",
+          "source_url": "https://www.bizinfo.go.kr/sii/siia/selectSIIA200Detail.do?pblancId=PBLN_000000000122308",
+          "application_status": "closed",
+          "evidence_url": "https://www.bizinfo.go.kr/cmm/fms/fileDown.do?atchFileId=FILE_000000000756645&fileSn=3"
+        },
+        {
+          "id": "4c72b66c2bf6251232fe63cce02451316ddf60394ec44bbe8da38208701d2b1b",
+          "node_id": "SU-PREP-schedule",
+          "posting_id": "biz-PBLN_000000000123273",
+          "source_id": "9f0b3221cf9af45fb36e2fef1db1add6d011c5142dcec277164d31028567e3ad",
+          "requirement_id": null,
+          "basis": "evaluation",
+          "necessity": "unspecified",
+          "stage": "unknown",
+          "condition_text": "",
+          "deadline_date": null,
+          "quote": "및 제작방법(자체*, 외주 등), 추진일정 등 사업의 실현가능성\n   * 자체 개발인 경우, 관련 경험 또는 기술보유 현황\n- 사업계획(목표 및 달성방안)의 실현 가능성 및 적정성",
+          "start_line": 266,
+          "end_line": 268,
+          "source_page": 7,
+          "review_status": "unreviewed",
+          "posting_title": "2026년 하반기 K-Global 창업멘토링 지원사업 참여 멘티(28기) 모집 공고",
+          "source_url": "https://www.bizinfo.go.kr/sii/siia/selectSIIA200Detail.do?pblancId=PBLN_000000000123273",
+          "application_status": "closed",
+          "evidence_url": "https://www.bizinfo.go.kr/cmm/fms/fileDown.do?atchFileId=FILE_000000000760264&fileSn=0"
+        }
+      ]
+    },
+    {
+      "id": "SU-PREP-social-impact",
+      "title": "사회·환경 기여효과 정리",
+      "kind": "preparation",
+      "completion": "해당 사업이 요구하는 사회·환경 기여효과 설명 자료",
+      "related_skill_id": null,
+      "extractor_version": "1",
+      "posting_count": 1,
+      "references": [
+        {
+          "id": "4e5215c0de77f026f50b4e0a645ce86d823ebb32d30ff780ce41fc0e5111ccdc",
+          "node_id": "SU-PREP-social-impact",
+          "posting_id": "biz-PBLN_000000000120276",
+          "source_id": "5ba928e30f10bec2392770deab353aa649c6d75bb4656c9c79bc9f46fa051575",
+          "requirement_id": null,
+          "basis": "evaluation",
+          "necessity": "unspecified",
+          "stage": "unknown",
+          "condition_text": "",
+          "deadline_date": null,
+          "quote": "· (영향범위) 기후변화 대응 및 탄소중립 달성에 대한 기여도\n30\n사업화 가능성",
+          "start_line": 78,
+          "end_line": 80,
+          "source_page": 3,
+          "review_status": "unreviewed",
+          "posting_title": "[서울] 2026년 서울기후테크산업지원센터 시제품 제작지원 사업 모집 공고",
+          "source_url": "https://www.bizinfo.go.kr/sii/siia/selectSIIA200Detail.do?pblancId=PBLN_000000000120276",
+          "application_status": "closed",
+          "evidence_url": "https://www.bizinfo.go.kr/cmm/fms/fileDown.do?atchFileId=FILE_000000000749560&fileSn=0"
+        }
+      ]
+    },
+    {
+      "id": "SU-PREP-team-capability",
+      "title": "팀 역할·보유역량 정리",
+      "kind": "preparation",
+      "completion": "기존 팀원의 역할과 과제 수행 역량을 정리한 자료",
+      "related_skill_id": null,
+      "extractor_version": "1",
+      "posting_count": 3,
+      "references": [
+        {
+          "id": "6d3d4651f2244ef4feee3a715d27c382e4dae5c5b476a628b54bdec52d8449d1",
+          "node_id": "SU-PREP-team-capability",
+          "posting_id": "biz-PBLN_000000000119859",
+          "source_id": "b18eb3e8c92f4c54682d5528f732d9266ccc8d6118dabf80257a0322a052f4c7",
+          "requirement_id": null,
+          "basis": "evaluation",
+          "necessity": "unspecified",
+          "stage": "unknown",
+          "condition_text": "",
+          "deadline_date": null,
+          "quote": "팀(기업) 구성 ▖대표자 및 고용 (예정)인력이 보유한 기술역량과 노하우 등\n▖1단계 선정 통보된 예비창업자는 ‘협약체결확약서’ 제출 요청일* 다음 영업일로부터 3일이내\n(마지막 날 17시까지, 토요일 및 공휴일 제외) ｢예비창업패키지｣ ‘협약체결확약서’를 제출해야 함",
+          "start_line": 671,
+          "end_line": 673,
+          "source_page": 9,
+          "review_status": "unreviewed",
+          "posting_title": "2026년 2차 예비창업패키지 예비창업자 모집 수정 공고",
+          "source_url": "https://www.bizinfo.go.kr/sii/siia/selectSIIA200Detail.do?pblancId=PBLN_000000000119859",
+          "application_status": "closed",
+          "evidence_url": "https://www.bizinfo.go.kr/cmm/fms/fileDown.do?atchFileId=FILE_000000000748111&fileSn=1"
+        },
+        {
+          "id": "256943250f6ca9285961ef3ae8a3bdff8194e6eb005b976f266067c46bbba4ac",
+          "node_id": "SU-PREP-team-capability",
+          "posting_id": "biz-PBLN_000000000122308",
+          "source_id": "c7ca7c0e861666a7ce024da78be06e8fa2514487f57f5f75b661d0048ed888db",
+          "requirement_id": null,
+          "basis": "form_section",
+          "necessity": "unspecified",
+          "stage": "unknown",
+          "condition_text": "",
+          "deadline_date": null,
+          "quote": "7. 조직구성\n역할(직급) 성함 생년월일 전문분야/주요경력\n대표 000 0000,00,00",
+          "start_line": 109,
+          "end_line": 111,
+          "source_page": 7,
+          "review_status": "unreviewed",
+          "posting_title": "2026년 경기도 동부권역 창업가 모집 공고(지역 가치 창업가 육성 지원사업)",
+          "source_url": "https://www.bizinfo.go.kr/sii/siia/selectSIIA200Detail.do?pblancId=PBLN_000000000122308",
+          "application_status": "closed",
+          "evidence_url": "https://www.bizinfo.go.kr/cmm/fms/fileDown.do?atchFileId=FILE_000000000756645&fileSn=3"
+        },
+        {
+          "id": "7e3c6a6755c636d86432ae4d68c9b48e33577bb8e9a8add4890db964a312a22b",
+          "node_id": "SU-PREP-team-capability",
+          "posting_id": "biz-PBLN_000000000124885",
+          "source_id": "140ecfd730f4089d0b49ab49ddb603e87b7049aff5913065b6e12c1ef92bdd75",
+          "requirement_id": null,
+          "basis": "evaluation",
+          "necessity": "unspecified",
+          "stage": "unknown",
+          "condition_text": "",
+          "deadline_date": null,
+          "quote": "대표자 및 팀 역량 예술분야 연관성 및 기여도\n➍ ➎\nㅇ",
+          "start_line": 245,
+          "end_line": 247,
+          "source_page": 5,
+          "review_status": "unreviewed",
+          "posting_title": "2026년 예술분야 예비창업 프로그램 참여자 모집 공고",
+          "source_url": "https://www.bizinfo.go.kr/sii/siia/selectSIIA200Detail.do?pblancId=PBLN_000000000124885",
+          "application_status": "closed",
+          "evidence_url": "https://www.bizinfo.go.kr/cmm/fms/fileDown.do?atchFileId=FILE_000000000766757&fileSn=0"
+        }
+      ]
+    }
+  ],
+  "edges": [
+    {
+      "parent_id": "SU-DOC-application",
+      "child_id": "SU-PREP-budget",
+      "evidence_id": "4511cbb07e474ff2fde29f4c47e9480dee6188eb76f6e27e5570bb3744b4538d",
+      "relation": "form_section"
+    },
+    {
+      "parent_id": "SU-DOC-application",
+      "child_id": "SU-PREP-cost-breakdown",
+      "evidence_id": "e7d6bdf97cda62fec3a610a589e47774d4192b0c662eb7631a980c7277b3a33d",
+      "relation": "form_section"
+    },
+    {
+      "parent_id": "SU-DOC-application",
+      "child_id": "SU-PREP-customer-validation",
+      "evidence_id": "8c1b04e4ffb65eb2386f6225f26d173d7b0033192d999b2cd5d14b8d1339151a",
+      "relation": "evaluation_preparation"
+    },
+    {
+      "parent_id": "SU-DOC-application",
+      "child_id": "SU-PREP-execution",
+      "evidence_id": "bc61ade6085b403146f2a752b5c8bd7d945b672e09489c625dc37f52eb85d46c",
+      "relation": "form_section"
+    },
+    {
+      "parent_id": "SU-DOC-application",
+      "child_id": "SU-PREP-item",
+      "evidence_id": "7d428e69c46184e06ba143cb3f496d2fdeeee3febc8123157d828c533d561449",
+      "relation": "form_section"
+    },
+    {
+      "parent_id": "SU-DOC-application",
+      "child_id": "SU-PREP-item-images",
+      "evidence_id": "5bcd5ce0883400c66fd3ebd8327ea1f182425d28b9745b0bfb7aa7b07a371bf4",
+      "relation": "form_section"
+    },
+    {
+      "parent_id": "SU-DOC-application",
+      "child_id": "SU-PREP-problem",
+      "evidence_id": "30aa7c63f0ed8e2502a08f48ca5f52efb40317b124631dba830623176b357b0e",
+      "relation": "evaluation_preparation"
+    },
+    {
+      "parent_id": "SU-DOC-application",
+      "child_id": "SU-PREP-regional-value",
+      "evidence_id": "74067118e843fc76ac0445aa7166ad78c70cd8fa46a36d672415d3f5c56c4813",
+      "relation": "form_section"
+    },
+    {
+      "parent_id": "SU-DOC-application",
+      "child_id": "SU-PREP-schedule",
+      "evidence_id": "d333df50f2df597b0bb09ea8ac95ef6773ac9a313e96eb54c0fa74e9d0e38112",
+      "relation": "form_section"
+    },
+    {
+      "parent_id": "SU-DOC-application",
+      "child_id": "SU-PREP-team-capability",
+      "evidence_id": "256943250f6ca9285961ef3ae8a3bdff8194e6eb005b976f266067c46bbba4ac",
+      "relation": "form_section"
+    },
+    {
+      "parent_id": "SU-DOC-application",
+      "child_id": "SU-PREP-team-capability",
+      "evidence_id": "7e3c6a6755c636d86432ae4d68c9b48e33577bb8e9a8add4890db964a312a22b",
+      "relation": "evaluation_preparation"
+    },
+    {
+      "parent_id": "SU-DOC-business-plan",
+      "child_id": "SU-PREP-budget",
+      "evidence_id": "8e43c3c5e446aa73f329ca27fe304b0ac9ed4350807cf411356592568ec7f8ff",
+      "relation": "evaluation_preparation"
+    },
+    {
+      "parent_id": "SU-DOC-business-plan",
+      "child_id": "SU-PREP-budget",
+      "evidence_id": "c46aac3d49e397d0e11f01baa7f76c2a621e61b118a2e00fc879859d771d13cb",
+      "relation": "evaluation_preparation"
+    },
+    {
+      "parent_id": "SU-DOC-business-plan",
+      "child_id": "SU-PREP-business-model",
+      "evidence_id": "5ed1a553cf4c6a2d9bd7caa583862a0cabb89d984ed2e28c66ad568ac9111405",
+      "relation": "evaluation_preparation"
+    },
+    {
+      "parent_id": "SU-DOC-business-plan",
+      "child_id": "SU-PREP-business-model",
+      "evidence_id": "97c3d3b85fdb1b6aa5de0df751e34a2443a9fcf6fbdf243f07b2d0622e0d52c4",
+      "relation": "evaluation_preparation"
+    },
+    {
+      "parent_id": "SU-DOC-business-plan",
+      "child_id": "SU-PREP-differentiation",
+      "evidence_id": "6d753710f0a0e24c1fdf85055597c1dea5c1b0f22c1654973dccfd8cab21608e",
+      "relation": "evaluation_preparation"
+    },
+    {
+      "parent_id": "SU-DOC-business-plan",
+      "child_id": "SU-PREP-differentiation",
+      "evidence_id": "8134de08bbb734620c122760b6fc333edc13af299c9668cb95991e0356e0dd62",
+      "relation": "evaluation_preparation"
+    },
+    {
+      "parent_id": "SU-DOC-business-plan",
+      "child_id": "SU-PREP-differentiation",
+      "evidence_id": "9036b08cbdb40a37cb1a499c3d8dcd200f26a99cd50401c7499f49000e4c70dd",
+      "relation": "evaluation_preparation"
+    },
+    {
+      "parent_id": "SU-DOC-business-plan",
+      "child_id": "SU-PREP-execution",
+      "evidence_id": "d0ab9c0713588373a8ea37c5c2a58e4d9c43ec4aea524d5ae5f243d94d1d3657",
+      "relation": "evaluation_preparation"
+    },
+    {
+      "parent_id": "SU-DOC-business-plan",
+      "child_id": "SU-PREP-feasibility",
+      "evidence_id": "529bb8b1f55f75998b3c89b6740375e4990bf1c6417303c74b4a3fd64a8b8f09",
+      "relation": "evaluation_preparation"
+    },
+    {
+      "parent_id": "SU-DOC-business-plan",
+      "child_id": "SU-PREP-feasibility",
+      "evidence_id": "898eeefb5ca1c11f8c36a00e001553f8d9aa7eb35426e578384a6b578e3b3a71",
+      "relation": "evaluation_preparation"
+    },
+    {
+      "parent_id": "SU-DOC-business-plan",
+      "child_id": "SU-PREP-funding",
+      "evidence_id": "7a9afe2b6605f017d9a8358330c7a1609a5edf5ef068bab061304daa32619ce9",
+      "relation": "evaluation_preparation"
+    },
+    {
+      "parent_id": "SU-DOC-business-plan",
+      "child_id": "SU-PREP-market",
+      "evidence_id": "658d1e71a4a86701fbaf1fbc9aceecdbda2cdd33a2185110d6ff14d19bcf48c5",
+      "relation": "evaluation_preparation"
+    },
+    {
+      "parent_id": "SU-DOC-business-plan",
+      "child_id": "SU-PREP-market",
+      "evidence_id": "68dc9a5e75e4b39aef50116d0d3410f99304407080a55e8aab65f0556e615c09",
+      "relation": "evaluation_preparation"
+    },
+    {
+      "parent_id": "SU-DOC-business-plan",
+      "child_id": "SU-PREP-market-entry",
+      "evidence_id": "8c62d22db9ac76a642d69f853cbfee118294dddc453bc3ff7fa3e5960df4e588",
+      "relation": "evaluation_preparation"
+    },
+    {
+      "parent_id": "SU-DOC-business-plan",
+      "child_id": "SU-PREP-market-entry",
+      "evidence_id": "ed3110360ed5120af0db71f8a14aa5ab0ab90275b662c1dd0883c6c22f913731",
+      "relation": "evaluation_preparation"
+    },
+    {
+      "parent_id": "SU-DOC-business-plan",
+      "child_id": "SU-PREP-problem",
+      "evidence_id": "b8406fdfce4043fa2ffd61dd658fc86940d6c31d4931e94cf743bab268026012",
+      "relation": "evaluation_preparation"
+    },
+    {
+      "parent_id": "SU-DOC-business-plan",
+      "child_id": "SU-PREP-regional-value",
+      "evidence_id": "7e25538a83c18038b8e17890e4fe7c581c7e474f203b1abebc3c70bb4abfbaf0",
+      "relation": "evaluation_preparation"
+    },
+    {
+      "parent_id": "SU-DOC-business-plan",
+      "child_id": "SU-PREP-regional-value",
+      "evidence_id": "8d61c11379fb24ccd1bba65c1fab8d3abe6b5e52edb9b9765f47943089bf57c0",
+      "relation": "evaluation_preparation"
+    },
+    {
+      "parent_id": "SU-DOC-business-plan",
+      "child_id": "SU-PREP-schedule",
+      "evidence_id": "4c72b66c2bf6251232fe63cce02451316ddf60394ec44bbe8da38208701d2b1b",
+      "relation": "evaluation_preparation"
+    },
+    {
+      "parent_id": "SU-DOC-business-plan",
+      "child_id": "SU-PREP-team-capability",
+      "evidence_id": "6d3d4651f2244ef4feee3a715d27c382e4dae5c5b476a628b54bdec52d8449d1",
+      "relation": "evaluation_preparation"
+    },
+    {
+      "parent_id": "SU-DOC-pitch-deck",
+      "child_id": "SU-PREP-business-model",
+      "evidence_id": "97c3d3b85fdb1b6aa5de0df751e34a2443a9fcf6fbdf243f07b2d0622e0d52c4",
+      "relation": "evaluation_preparation"
+    },
+    {
+      "parent_id": "SU-DOC-pitch-deck",
+      "child_id": "SU-PREP-differentiation",
+      "evidence_id": "8134de08bbb734620c122760b6fc333edc13af299c9668cb95991e0356e0dd62",
+      "relation": "evaluation_preparation"
+    },
+    {
+      "parent_id": "SU-DOC-pitch-deck",
+      "child_id": "SU-PREP-execution",
+      "evidence_id": "d0ab9c0713588373a8ea37c5c2a58e4d9c43ec4aea524d5ae5f243d94d1d3657",
+      "relation": "evaluation_preparation"
+    },
+    {
+      "parent_id": "SU-DOC-pitch-deck",
+      "child_id": "SU-PREP-feasibility",
+      "evidence_id": "898eeefb5ca1c11f8c36a00e001553f8d9aa7eb35426e578384a6b578e3b3a71",
+      "relation": "evaluation_preparation"
+    },
+    {
+      "parent_id": "SU-DOC-pitch-deck",
+      "child_id": "SU-PREP-market",
+      "evidence_id": "68dc9a5e75e4b39aef50116d0d3410f99304407080a55e8aab65f0556e615c09",
+      "relation": "evaluation_preparation"
+    },
+    {
+      "parent_id": "SU-DOC-pitch-deck",
+      "child_id": "SU-PREP-market-entry",
+      "evidence_id": "8c62d22db9ac76a642d69f853cbfee118294dddc453bc3ff7fa3e5960df4e588",
+      "relation": "evaluation_preparation"
+    },
+    {
+      "parent_id": "SU-DOC-pitch-deck",
+      "child_id": "SU-PREP-problem",
+      "evidence_id": "bc250d8aa386b201574276af5f8271e823a8ee048897c4b48d20b2a6fe78ec5d",
+      "relation": "evaluation_preparation"
+    },
+    {
+      "parent_id": "SU-DOC-pitch-deck",
+      "child_id": "SU-PREP-schedule",
+      "evidence_id": "4c72b66c2bf6251232fe63cce02451316ddf60394ec44bbe8da38208701d2b1b",
+      "relation": "evaluation_preparation"
+    },
+    {
+      "parent_id": "SU-DOC-pitch-deck",
+      "child_id": "SU-PREP-social-impact",
+      "evidence_id": "4e5215c0de77f026f50b4e0a645ce86d823ebb32d30ff780ce41fc0e5111ccdc",
+      "relation": "evaluation_preparation"
+    }
+  ],
+  "summary": {
+    "nodes": 31,
+    "preparation_nodes": 17,
+    "evidence_records": 74,
+    "edges": 40,
+    "postings": 11
+  },
+  "opportunities": [
+    {
+      "id": "startup-biz-PBLN_000000000119021",
+      "type": "창업지원",
+      "title": "[경기] 2026 ICT 제조창업 시제품 제작 및 제품화 지원 모집공고",
+      "org": "기업마당",
+      "source": {
+        "name": "기업마당",
+        "url": "https://www.bizinfo.go.kr/sii/siia/selectSIIA200Detail.do?pblancId=PBLN_000000000119021"
+      },
+      "isVirtual": false,
+      "jobs": [
+        "founder"
+      ],
+      "required": [
+        {
+          "key": "other",
+          "label": "소속·지역·창업 단계 등 원문 지원 자격 확인",
+          "src": "startup-body"
+        }
+      ],
+      "preferred": [],
+      "documents": [],
+      "applyUrl": "https://www.bizinfo.go.kr/sii/siia/selectSIIA200Detail.do?pblancId=PBLN_000000000119021",
+      "sections": [
+        {
+          "id": "startup-body",
+          "title": "공고 본문",
+          "text": "소관부처·지자체\n경기도\n사업수행기관\n차세대융합기술연구원\n신청기간\n2026.03.06 ~\n2026.03.19\n사업개요\n차세대융합기술연구원 '메이커스페이스 접문랩-경기스케일업팩토리'에서「2026 경기도 ICT 재조창업 시제품 제작 및 제품화 지원사업 모집공고」를 통해 경기도 내 (예비)창업기업 중 중소기업을 모집하오니 많은 참여 바랍니다.\n☞ 도내 거주 제조 분야 (예비)창업자 또는 소재지 창업 7년 이내의 중소기업\n- 신산업분야 (시스템반도체, 바이오헬스, 미래 모빌리티, 친환경 에너지, 로봇, AI빅데이터 등) 창업 10년 이내 중소기업\n☞ 도내 중소기업 기술개발 및 ICT 융합기술을 적용한 시제품 제작(HW)지원\n- 시제품 제작을 통한 제품화 지원 컨설팅을 통한 ICT 제조분야 개발 방향 제시 및 기술 고도화 지원\n사업신청 방법\n온라인 접수(차세대융합기술연구원 메이커스페이스 전문랩)\n사업신청 사이트\n온라인신청 바로가기\n문의처\n차세대융합기술연구원 연구기획실 메이커스페이스 전문랩 경기스케일업팩토리 031-888-9555"
+        }
+      ],
+      "versions": [
+        {
+          "version": 1,
+          "checkedAt": "2026-11-21T06:16:22.676819+00:00",
+          "deadline": "2026-03-19"
+        }
+      ],
+      "confidence": 1,
+      "reviewed": false,
+      "deadlineStatus": "date_only",
+      "facts": [
+        {
+          "label": "지원 유형",
+          "value": "시제품·제작"
+        }
+      ],
+      "startup": {
+        "postingId": "biz-PBLN_000000000119021",
+        "category": "시제품·제작",
+        "status": "closed",
+        "eligibility": "☞ 도내 거주 제조 분야 (예비)창업자 또는 소재지 창업 7년 이내의 중소기업",
+        "support": "차세대융합기술연구원 '메이커스페이스 접문랩-경기스케일업팩토리'에서「2026 경기도 ICT 재조창업 시제품 제작 및 제품화 지원사업 모집공고」를 통해 경기도 내 (예비)창업기업 중 중소기업을 모집하오니 많은 참여 바랍니다.\n☞ 도내 중소기업 기술개발 및 ICT 융합기술을 적용한 시제품 제작(HW)지원\n- 시제품 제작을 통한 제품화 지원 컨설팅을 통한 ICT 제조분야 개발 방향 제시 및 기술 고도화 지원",
+        "reviewNotes": [
+          "미열람 첨부가 있어 제출서류 목록의 완전성 확인 필요",
+          "기업마당 요약 공고. 최종 자격·제출 기준은 수행기관 원문 확인 필요",
+          "본문에서 명시적 제출물 미추출. 서류 없음으로 해석하지 않음"
+        ],
+        "requirements": []
+      }
+    },
+    {
+      "id": "startup-biz-PBLN_000000000119859",
+      "type": "창업지원",
+      "title": "2026년 2차 예비창업패키지 예비창업자 모집 수정 공고",
+      "org": "기업마당",
+      "source": {
+        "name": "기업마당",
+        "url": "https://www.bizinfo.go.kr/sii/siia/selectSIIA200Detail.do?pblancId=PBLN_000000000119859"
+      },
+      "isVirtual": false,
+      "jobs": [
+        "founder"
+      ],
+      "required": [
+        {
+          "key": "other",
+          "label": "소속·지역·창업 단계 등 원문 지원 자격 확인",
+          "src": "startup-body"
+        }
+      ],
+      "preferred": [],
+      "documents": [
+        "사업계획서",
+        "참가신청서"
+      ],
+      "applyUrl": "https://www.bizinfo.go.kr/sii/siia/selectSIIA200Detail.do?pblancId=PBLN_000000000119859",
+      "sections": [
+        {
+          "id": "startup-body",
+          "title": "공고 본문",
+          "text": "소관부처·지자체\n중소벤처기업부\n사업수행기관\n창업진흥원\n신청기간\n2026.03.06 ~\n2026.03.26\n사업개요\n혁신적인 기술과 사업모델(BM)을 보유한 예비창업자를 발굴ㆍ지원하기위한 「2026년도 예비창업패키지」참여자를 다음과 같이 수정 모집 공고합니다.\n☞ 신청자 명의의 사업자등록증을 보유하고 있지 않으며, 법인의 법률상 대표권을 가지고 있지 않은 예비창업자(기준일 : ’26.1.22.)\n※ 자세한 지원대상 공고문 참조\n☞ 사업화 자금, 창업프로그램 등 지원\n※ 자세한 지원내용 공고문 참조\n사업신청 방법\n온라인 접수 (K-Startup 누리집)\n사업신청 사이트\n온라인신청 바로가기\n문의처\n중소기업통합콜센터 국번없이1357 및 주관기관 담당자 문의처 공고문 17-18p 참조"
+        },
+        {
+          "id": "43a9922b82b2e5df81832e164aaf2fcfb188010df8bc110d7221e5c99bdd6850",
+          "title": "가점증빙",
+          "text": " ※ 가점 증빙서류는 사업 신청 시 제출하며, 미제출 시 가점으로 불인정"
+        },
+        {
+          "id": "d5249f380cd9b4f873dfaf7ea180b23829b4f6ac3d210167963b93656b2c7176",
+          "title": "사업계획서",
+          "text": "◦사업계획서 1부 ([별첨 1]양식)"
+        },
+        {
+          "id": "072bf0d12ac52b7f15fe2eac347b19ba867e6b2717805cecff958f94f931e6c9",
+          "title": "참가신청서",
+          "text": "① 사업신청서 온라인 입력 -"
+        }
+      ],
+      "versions": [
+        {
+          "version": 1,
+          "checkedAt": "2026-11-21T06:16:12.241463+00:00",
+          "deadline": "2026-03-26"
+        }
+      ],
+      "confidence": 1,
+      "reviewed": false,
+      "deadlineStatus": "date_only",
+      "facts": [
+        {
+          "label": "지원 유형",
+          "value": "사업화·활동비"
+        }
+      ],
+      "startup": {
+        "postingId": "biz-PBLN_000000000119859",
+        "category": "사업화·활동비",
+        "status": "closed",
+        "eligibility": "혁신적인 기술과 사업모델(BM)을 보유한 예비창업자를 발굴ㆍ지원하기위한 「2026년도 예비창업패키지」참여자를 다음과 같이 수정 모집 공고합니다.\n☞ 신청자 명의의 사업자등록증을 보유하고 있지 않으며, 법인의 법률상 대표권을 가지고 있지 않은 예비창업자(기준일 : ’26.1.22.)\n※ 자세한 지원대상 공고문 참조",
+        "support": "혁신적인 기술과 사업모델(BM)을 보유한 예비창업자를 발굴ㆍ지원하기위한 「2026년도 예비창업패키지」참여자를 다음과 같이 수정 모집 공고합니다.\n※ 자세한 지원대상 공고문 참조\n☞ 사업화 자금, 창업프로그램 등 지원\n※ 자세한 지원내용 공고문 참조",
+        "reviewNotes": [
+          "미열람 첨부가 있어 제출서류 목록의 완전성 확인 필요",
+          "기업마당 요약 공고. 최종 자격·제출 기준은 수행기관 원문 확인 필요"
+        ],
+        "requirements": [
+          {
+            "id": "43a9922b82b2e5df81832e164aaf2fcfb188010df8bc110d7221e5c99bdd6850",
+            "posting_id": "biz-PBLN_000000000119859",
+            "source_id": "b18eb3e8c92f4c54682d5528f732d9266ccc8d6118dabf80257a0322a052f4c7",
+            "document_type": "가점증빙",
+            "original_name": "가점 증빙서류",
+            "necessity": "conditional",
+            "stage": "application",
+            "condition_text": " ※ 가점 증빙서류는 사업 신청 시 제출하며, 미제출 시 가점으로 불인정",
+            "deadline_text": "신청기간 2026.03.06 ~ 2026.03.26",
+            "deadline_date": "2026-03-26",
+            "deadline_precision": "day",
+            "evidence_quote": " ※ 가점 증빙서류는 사업 신청 시 제출하며, 미제출 시 가점으로 불인정",
+            "evidence_line": 429,
+            "template_url": null,
+            "extraction_method": "submission_rule",
+            "review_status": "unreviewed",
+            "evidence_url": "https://www.bizinfo.go.kr/cmm/fms/fileDown.do?atchFileId=FILE_000000000748111&fileSn=1"
+          },
+          {
+            "id": "d5249f380cd9b4f873dfaf7ea180b23829b4f6ac3d210167963b93656b2c7176",
+            "posting_id": "biz-PBLN_000000000119859",
+            "source_id": "b18eb3e8c92f4c54682d5528f732d9266ccc8d6118dabf80257a0322a052f4c7",
+            "document_type": "사업계획서",
+            "original_name": "사업계획서",
+            "necessity": "required",
+            "stage": "application",
+            "condition_text": "",
+            "deadline_text": "신청기간 2026.03.06 ~ 2026.03.26",
+            "deadline_date": "2026-03-26",
+            "deadline_precision": "day",
+            "evidence_quote": "◦사업계획서 1부 ([별첨 1]양식)",
+            "evidence_line": 357,
+            "template_url": "https://www.bizinfo.go.kr/cmm/fms/fileDown.do?atchFileId=FILE_000000000748112&fileSn=2",
+            "extraction_method": "submission_rule",
+            "review_status": "unreviewed",
+            "evidence_url": "https://www.bizinfo.go.kr/cmm/fms/fileDown.do?atchFileId=FILE_000000000748111&fileSn=1"
+          },
+          {
+            "id": "072bf0d12ac52b7f15fe2eac347b19ba867e6b2717805cecff958f94f931e6c9",
+            "posting_id": "biz-PBLN_000000000119859",
+            "source_id": "b18eb3e8c92f4c54682d5528f732d9266ccc8d6118dabf80257a0322a052f4c7",
+            "document_type": "참가신청서",
+            "original_name": "사업신청서",
+            "necessity": "required",
+            "stage": "application",
+            "condition_text": "",
+            "deadline_text": "신청기간 2026.03.06 ~ 2026.03.26",
+            "deadline_date": "2026-03-26",
+            "deadline_precision": "day",
+            "evidence_quote": "① 사업신청서 온라인 입력 -",
+            "evidence_line": 416,
+            "template_url": null,
+            "extraction_method": "submission_rule",
+            "review_status": "unreviewed",
+            "evidence_url": "https://www.bizinfo.go.kr/cmm/fms/fileDown.do?atchFileId=FILE_000000000748111&fileSn=1"
+          }
+        ]
+      }
+    },
+    {
+      "id": "startup-biz-PBLN_000000000120276",
+      "type": "창업지원",
+      "title": "[서울] 2026년 서울기후테크산업지원센터 시제품 제작지원 사업 모집 공고",
+      "org": "기업마당",
+      "source": {
+        "name": "기업마당",
+        "url": "https://www.bizinfo.go.kr/sii/siia/selectSIIA200Detail.do?pblancId=PBLN_000000000120276"
+      },
+      "isVirtual": false,
+      "jobs": [
+        "founder"
+      ],
+      "required": [
+        {
+          "key": "other",
+          "label": "소속·지역·창업 단계 등 원문 지원 자격 확인",
+          "src": "startup-body"
+        }
+      ],
+      "preferred": [],
+      "documents": [
+        "발표자료"
+      ],
+      "applyUrl": "https://www.bizinfo.go.kr/sii/siia/selectSIIA200Detail.do?pblancId=PBLN_000000000120276",
+      "sections": [
+        {
+          "id": "startup-body",
+          "title": "공고 본문",
+          "text": "소관부처·지자체\n서울특별시\n사업수행기관\n국가녹색기술연구소\n신청기간\n2026.04.01 ~\n2026.04.30\n사업개요\n국가녹색기술연구소 서울기후테크산업지원센터에서는 서울시 소재 기후테크 기술 및 제품을 보유한 중소기업/예비창업자 대상으로 사업화ㆍ상용화 단계의 시제품 제작을 지원하여 기술사업화를 촉진하고, 상용화에 기여하고자 하오니 많은 참여 부탁드립니다.\n☞ 서울시 소재 기후테크 기술 또는 제품을 보유하며, 제품의 사업화ㆍ상용화를 앞두고 있는 중소기업ㆍ예비창업자\n☞ 사업화ㆍ상용화 단계의 기후테크 및 시제품 제작비용(기업당 최대 500만원) 지원\n사업신청 방법\n이메일 접수 (shapeall@shapewayskorea.com)\n문의처\n국가녹색기술연구소 서울기후테크산업지원센터 02-3393-3947"
+        },
+        {
+          "id": "86ce0672301aa711c1009063026580af89ea63fb8588923a7a614499a5d7acd5",
+          "title": "가점증빙",
+          "text": "[첨부] 가점 증빙서류"
+        },
+        {
+          "id": "509e68da0da95f5713e397fb01fb8e8738598b783460f403490e3f6e75c67647",
+          "title": "발표자료",
+          "text": "[첨부] 사업계획 발표자료"
+        },
+        {
+          "id": "ef223ad6e064bcd436a3d366951adaeab104ff8e455686752691aa0749834832",
+          "title": "법인등기부등본",
+          "text": "[첨부] 법인 등기부등본 또는 신분증 사본"
+        },
+        {
+          "id": "76a891359a780267574cff6521373fe7df670a70f470bb73375dbb720030b6b8",
+          "title": "사업자등록증",
+          "text": "[첨부] 사업자등록증"
+        }
+      ],
+      "versions": [
+        {
+          "version": 1,
+          "checkedAt": "2026-11-21T06:16:25.663707+00:00",
+          "deadline": "2026-04-30"
+        }
+      ],
+      "confidence": 1,
+      "reviewed": false,
+      "deadlineStatus": "date_only",
+      "facts": [
+        {
+          "label": "지원 유형",
+          "value": "시제품·제작"
+        }
+      ],
+      "startup": {
+        "postingId": "biz-PBLN_000000000120276",
+        "category": "시제품·제작",
+        "status": "closed",
+        "eligibility": "국가녹색기술연구소 서울기후테크산업지원센터에서는 서울시 소재 기후테크 기술 및 제품을 보유한 중소기업/예비창업자 대상으로 사업화ㆍ상용화 단계의 시제품 제작을 지원하여 기술사업화를 촉진하고, 상용화에 기여하고자 하오니 많은 참여 부탁드립니다.\n☞ 서울시 소재 기후테크 기술 또는 제품을 보유하며, 제품의 사업화ㆍ상용화를 앞두고 있는 중소기업ㆍ예비창업자",
+        "support": "국가녹색기술연구소 서울기후테크산업지원센터에서는 서울시 소재 기후테크 기술 및 제품을 보유한 중소기업/예비창업자 대상으로 사업화ㆍ상용화 단계의 시제품 제작을 지원하여 기술사업화를 촉진하고, 상용화에 기여하고자 하오니 많은 참여 부탁드립니다.\n☞ 사업화ㆍ상용화 단계의 기후테크 및 시제품 제작비용(기업당 최대 500만원) 지원\n국가녹색기술연구소 서울기후테크산업지원센터 02-3393-3947",
+        "reviewNotes": [
+          "미열람 첨부가 있어 제출서류 목록의 완전성 확인 필요",
+          "기업마당 요약 공고. 최종 자격·제출 기준은 수행기관 원문 확인 필요"
+        ],
+        "requirements": [
+          {
+            "id": "86ce0672301aa711c1009063026580af89ea63fb8588923a7a614499a5d7acd5",
+            "posting_id": "biz-PBLN_000000000120276",
+            "source_id": "5ba928e30f10bec2392770deab353aa649c6d75bb4656c9c79bc9f46fa051575",
+            "document_type": "가점증빙",
+            "original_name": "가점 증빙서류",
+            "necessity": "conditional",
+            "stage": "application",
+            "condition_text": "[첨부] 가점 증빙서류",
+            "deadline_text": "신청기간 2026.04.01 ~ 2026.04.30",
+            "deadline_date": "2026-04-30",
+            "deadline_precision": "day",
+            "evidence_quote": "[첨부] 가점 증빙서류",
+            "evidence_line": 128,
+            "template_url": null,
+            "extraction_method": "submission_rule",
+            "review_status": "unreviewed",
+            "evidence_url": "https://www.bizinfo.go.kr/cmm/fms/fileDown.do?atchFileId=FILE_000000000749560&fileSn=0"
+          },
+          {
+            "id": "509e68da0da95f5713e397fb01fb8e8738598b783460f403490e3f6e75c67647",
+            "posting_id": "biz-PBLN_000000000120276",
+            "source_id": "5ba928e30f10bec2392770deab353aa649c6d75bb4656c9c79bc9f46fa051575",
+            "document_type": "발표자료",
+            "original_name": "발표자료",
+            "necessity": "required",
+            "stage": "application",
+            "condition_text": "",
+            "deadline_text": "신청기간 2026.04.01 ~ 2026.04.30",
+            "deadline_date": "2026-04-30",
+            "deadline_precision": "day",
+            "evidence_quote": "[첨부] 사업계획 발표자료",
+            "evidence_line": 116,
+            "template_url": null,
+            "extraction_method": "submission_rule",
+            "review_status": "unreviewed",
+            "evidence_url": "https://www.bizinfo.go.kr/cmm/fms/fileDown.do?atchFileId=FILE_000000000749560&fileSn=0"
+          },
+          {
+            "id": "ef223ad6e064bcd436a3d366951adaeab104ff8e455686752691aa0749834832",
+            "posting_id": "biz-PBLN_000000000120276",
+            "source_id": "5ba928e30f10bec2392770deab353aa649c6d75bb4656c9c79bc9f46fa051575",
+            "document_type": "법인등기부등본",
+            "original_name": "법인 등기부등본",
+            "necessity": "needs_review",
+            "stage": "application",
+            "condition_text": "증빙서류의 적용 대상 확인 필요",
+            "deadline_text": "신청기간 2026.04.01 ~ 2026.04.30",
+            "deadline_date": "2026-04-30",
+            "deadline_precision": "day",
+            "evidence_quote": "[첨부] 법인 등기부등본 또는 신분증 사본",
+            "evidence_line": 123,
+            "template_url": null,
+            "extraction_method": "submission_rule",
+            "review_status": "unreviewed",
+            "evidence_url": "https://www.bizinfo.go.kr/cmm/fms/fileDown.do?atchFileId=FILE_000000000749560&fileSn=0"
+          },
+          {
+            "id": "76a891359a780267574cff6521373fe7df670a70f470bb73375dbb720030b6b8",
+            "posting_id": "biz-PBLN_000000000120276",
+            "source_id": "5ba928e30f10bec2392770deab353aa649c6d75bb4656c9c79bc9f46fa051575",
+            "document_type": "사업자등록증",
+            "original_name": "사업자등록증",
+            "necessity": "needs_review",
+            "stage": "application",
+            "condition_text": "증빙서류의 적용 대상 확인 필요",
+            "deadline_text": "신청기간 2026.04.01 ~ 2026.04.30",
+            "deadline_date": "2026-04-30",
+            "deadline_precision": "day",
+            "evidence_quote": "[첨부] 사업자등록증",
+            "evidence_line": 119,
+            "template_url": null,
+            "extraction_method": "submission_rule",
+            "review_status": "unreviewed",
+            "evidence_url": "https://www.bizinfo.go.kr/cmm/fms/fileDown.do?atchFileId=FILE_000000000749560&fileSn=0"
+          }
+        ]
+      }
+    },
+    {
+      "id": "startup-biz-PBLN_000000000121634",
+      "type": "창업지원",
+      "title": "[경기] 용인시 2026년 창업 멘토링(1:1) 희망기업 모집 공고",
+      "org": "기업마당",
+      "source": {
+        "name": "기업마당",
+        "url": "https://www.bizinfo.go.kr/sii/siia/selectSIIA200Detail.do?pblancId=PBLN_000000000121634"
+      },
+      "isVirtual": false,
+      "jobs": [
+        "founder"
+      ],
+      "required": [
+        {
+          "key": "other",
+          "label": "소속·지역·창업 단계 등 원문 지원 자격 확인",
+          "src": "startup-body"
+        }
+      ],
+      "preferred": [],
+      "documents": [],
+      "applyUrl": "https://www.bizinfo.go.kr/sii/siia/selectSIIA200Detail.do?pblancId=PBLN_000000000121634",
+      "sections": [
+        {
+          "id": "startup-body",
+          "title": "공고 본문",
+          "text": "소관부처·지자체\n경기도\n사업수행기관\n용인시산업진흥원\n신청기간\n수시모집\n사업개요\n용인시산업진흥원에서는 관내 예비창업자 및 창업기업의 경쟁력 제고 및 애로사항 해결을 위한 멘토링 희망 기업을 다음과 같이 모집하오니 많은 관심과 참여 바랍니다\n☞ 용인시 관내 예비창업자 및 창업 7년 미만 기업\n☞ 경영전략, 세무·회계, 기술개발, 비즈니스모델 개선, 인증ㆍ특허 등 사업운영 전반에 걸친 1:1 전문가 멘토링\n사업신청 방법\n온라인 접수 (용인기업지원시스템)\n사업신청 사이트\n온라인신청 바로가기\n문의처\n용인시산업진흥원 창업지원팀 031-890-7842, jwjang@ypa.or.kr"
+        }
+      ],
+      "versions": [
+        {
+          "version": 1,
+          "checkedAt": "2026-11-21T06:16:49.800102+00:00",
+          "deadline": ""
+        }
+      ],
+      "confidence": 1,
+      "reviewed": false,
+      "deadlineStatus": "unknown",
+      "facts": [
+        {
+          "label": "지원 유형",
+          "value": "교육·멘토링"
+        }
+      ],
+      "startup": {
+        "postingId": "biz-PBLN_000000000121634",
+        "category": "교육·멘토링",
+        "status": "needs_review",
+        "eligibility": "용인시산업진흥원에서는 관내 예비창업자 및 창업기업의 경쟁력 제고 및 애로사항 해결을 위한 멘토링 희망 기업을 다음과 같이 모집하오니 많은 관심과 참여 바랍니다\n☞ 용인시 관내 예비창업자 및 창업 7년 미만 기업",
+        "support": "용인시산업진흥원에서는 관내 예비창업자 및 창업기업의 경쟁력 제고 및 애로사항 해결을 위한 멘토링 희망 기업을 다음과 같이 모집하오니 많은 관심과 참여 바랍니다\n☞ 경영전략, 세무·회계, 기술개발, 비즈니스모델 개선, 인증ㆍ특허 등 사업운영 전반에 걸친 1:1 전문가 멘토링\n온라인 접수 (용인기업지원시스템)\n용인시산업진흥원 창업지원팀 031-890-7842, jwjang@ypa.or.kr",
+        "reviewNotes": [
+          "미열람 첨부가 있어 제출서류 목록의 완전성 확인 필요",
+          "기업마당 요약 공고. 최종 자격·제출 기준은 수행기관 원문 확인 필요",
+          "본문에서 명시적 제출물 미추출. 서류 없음으로 해석하지 않음"
+        ],
+        "requirements": []
+      }
+    },
+    {
+      "id": "startup-biz-PBLN_000000000122308",
+      "type": "창업지원",
+      "title": "2026년 경기도 동부권역 창업가 모집 공고(지역 가치 창업가 육성 지원사업)",
+      "org": "기업마당",
+      "source": {
+        "name": "기업마당",
+        "url": "https://www.bizinfo.go.kr/sii/siia/selectSIIA200Detail.do?pblancId=PBLN_000000000122308"
+      },
+      "isVirtual": false,
+      "jobs": [
+        "founder"
+      ],
+      "required": [
+        {
+          "key": "other",
+          "label": "소속·지역·창업 단계 등 원문 지원 자격 확인",
+          "src": "startup-body"
+        }
+      ],
+      "preferred": [],
+      "documents": [
+        "개인정보동의서",
+        "사업계획서",
+        "서약서",
+        "참가신청서"
+      ],
+      "applyUrl": "https://www.bizinfo.go.kr/sii/siia/selectSIIA200Detail.do?pblancId=PBLN_000000000122308",
+      "sections": [
+        {
+          "id": "startup-body",
+          "title": "공고 본문",
+          "text": "소관부처·지자체\n경기도\n사업수행기관\n경기콘텐츠진흥원\n신청기간\n2026.05.22 ~\n2026.06.19\n사업개요\n경기도와 여주시, 경기콘텐츠진흥원은 경기 동부권역의 풍부한 지역 자원을 발굴하고, 창의적인 아이디어를 접목하여 지역 경제 활성화를 이끌어갈 ‘2026 지역가치 창업가‘를 아래와 같이 모집하오니 많은 관심과 지원을 바랍니다.\n☞ 경기도 동부권역 (예비)창업자, 기창업자\n- (예비창업자) 경기도 동부권역 ‘지역가치 창업가’로 창업을 희망하는 (예비)창업자, 사업자등록증 상 2026년 1월 1일 이후 창업한 기 창업자\n- (기창업자) 기존 사업의 2차 브랜드로써 지역자원을 활용하여 콘텐츠 장르와 연계한 사업을 경기 동부권역으로 확장하고자 하는 기창업자\n※ 기창업자: 2023. 1. 1. ~2025. 12. 31. 창업을 한 기창업자\n※ 동부권역: 가평, 광주, 구리, 남양주, 양평, 여주, 이천, 하남\n☞ 집합 교육(2일)ㆍ온라인 교육(1일), 아이디어 워크샵(1일), 선진지 견학(1일) 지원\n- 창업 지원금지원, 창업 활동 운영, 멘토링 지원\n사업신청 방법\n이메일 접수 (ask@myshoponshop.co.kr)\n문의처\n2026년 지역가치 창업가 육성 사업운영 사무국 1544-8152, ask@myshoponshop.co.kr"
+        },
+        {
+          "id": "2c1b1c6d7fcc430868a248ca6925ee2fef7a8e0f7129a3487a2e94445abff278",
+          "title": "가점증빙",
+          "text": "붙임5.가점확인신청서(선택)"
+        },
+        {
+          "id": "7afec3d6bfc6a1518b181bd836d806583326e5df24a53eaa9d939c64d7a1ae72",
+          "title": "가점증빙",
+          "text": "붙임 5. 가점 확인 신청서(선택)"
+        },
+        {
+          "id": "bad31c7d903f0e104911f9a0d9596b797d9a28c7cd4b4c2a905942aaac29a728",
+          "title": "개인정보동의서",
+          "text": "3 붙임 3. 개인정보 수집·이용·제공 동의서(필수) 공고문 붙임문서 활용, 필수제출"
+        },
+        {
+          "id": "e511731f65321dbee067af9c3c1e7a6e9f1bc87ecd64d24ba485ed82452f4e83",
+          "title": "개인정보동의서",
+          "text": "3 붙임3.개인정보수집·이용·제공동의서(필수) 공고문붙임문서활용,필수제출"
+        },
+        {
+          "id": "b7d153ea7ede3a49d07509ff9f31215b0c81c64f3a89066ef1db69d2d69b7a00",
+          "title": "납세증명서",
+          "text": "  ④ 국세 완납증명서 1부"
+        },
+        {
+          "id": "647841a969f2d1ca9b6f4773a5f4dbf749e6893ae35bfaa038ca0bd419c8dbe6",
+          "title": "법인등기부등본",
+          "text": "  ② 법인등기부등본 1부"
+        },
+        {
+          "id": "8bc06014d94d13fca7a642caf21b5ea0a9f1770a656b3a44749f46cce8cbe451",
+          "title": "사업계획서",
+          "text": "2 붙임2.사업계획서(필수) 공고문붙임문서활용,필수제출"
+        },
+        {
+          "id": "e5f05e5776e83954859902e9945100ee4fdeb843d17ba13ac17dfd257b8edc52",
+          "title": "사업계획서",
+          "text": "2 붙임 2. 사업계획서(필수) 공고문 붙임문서 활용, 필수제출"
+        },
+        {
+          "id": "0e328351ac9e92ff8780151b3f9adb73781049ab5efbed7ef348c69a13418ce8",
+          "title": "사업자등록증",
+          "text": "6 사업자등록증※기창업자일경우필수 해당시제출"
+        },
+        {
+          "id": "7990dc05e0f39dd715f2aa1bc5f4ca6f9747798509837cfad7af61643eb2a308",
+          "title": "사업자등록증",
+          "text": "6 사업자등록증 ※ 기창업자일 경우 필수 해당 시 제출"
+        },
+        {
+          "id": "5eb7a218fa6cc526fcf9195625dc38341da3eafe53a472b3b04742058cde46cb",
+          "title": "서약서",
+          "text": "4 붙임 4. 참가자 서약서(필수) 공고문 붙임문서 활용, 필수제출"
+        },
+        {
+          "id": "c431ea40fb8254b00a5d5fe8cb1bf3ca768b5a52f513520f63e1519f27d9079f",
+          "title": "서약서",
+          "text": "4 붙임4.참가자서약서(필수) 공고문붙임문서활용,필수제출"
+        },
+        {
+          "id": "4a7b688b4347e94c5c625232f0066ae4d3f7ea310642512b136736f4630c042d",
+          "title": "주민등록초본",
+          "text": "※ 해당 시, 주민등록등본 또는 장애인증명서"
+        },
+        {
+          "id": "8e72963a7608fbba40966683070068e67687dd213a81aee6a11d5036fb0ed2fa",
+          "title": "주민등록초본",
+          "text": "※해당시,주민등록등본또는장애인증명서제출"
+        },
+        {
+          "id": "0c248be8fd7c97667235cf5fb052756e2504a7cd4031b77999feab900ecc7576",
+          "title": "참가신청서",
+          "text": "1 붙임 1. 사업신청서(필수) 공고문 붙임문서 활용, 필수제출"
+        },
+        {
+          "id": "7373face3517b5a6c56a6f727c691af9cdfafdaa8fb2aa10c6e484f9dace30d2",
+          "title": "참가신청서",
+          "text": "1 붙임1.사업신청서(필수) 공고문붙임문서활용,필수제출"
+        }
+      ],
+      "versions": [
+        {
+          "version": 1,
+          "checkedAt": "2026-11-21T06:16:52.826973+00:00",
+          "deadline": "2026-06-19"
+        }
+      ],
+      "confidence": 1,
+      "reviewed": false,
+      "deadlineStatus": "date_only",
+      "facts": [
+        {
+          "label": "지원 유형",
+          "value": "사업화·활동비"
+        }
+      ],
+      "startup": {
+        "postingId": "biz-PBLN_000000000122308",
+        "category": "사업화·활동비",
+        "status": "closed",
+        "eligibility": "- (예비창업자) 경기도 동부권역 ‘지역가치 창업가’로 창업을 희망하는 (예비)창업자, 사업자등록증 상 2026년 1월 1일 이후 창업한 기 창업자",
+        "support": "경기도와 여주시, 경기콘텐츠진흥원은 경기 동부권역의 풍부한 지역 자원을 발굴하고, 창의적인 아이디어를 접목하여 지역 경제 활성화를 이끌어갈 ‘2026 지역가치 창업가‘를 아래와 같이 모집하오니 많은 관심과 지원을 바랍니다.\n☞ 집합 교육(2일)ㆍ온라인 교육(1일), 아이디어 워크샵(1일), 선진지 견학(1일) 지원\n- 창업 지원금지원, 창업 활동 운영, 멘토링 지원",
+        "reviewNotes": [
+          "미열람 첨부가 있어 제출서류 목록의 완전성 확인 필요",
+          "기업마당 요약 공고. 최종 자격·제출 기준은 수행기관 원문 확인 필요"
+        ],
+        "requirements": [
+          {
+            "id": "2c1b1c6d7fcc430868a248ca6925ee2fef7a8e0f7129a3487a2e94445abff278",
+            "posting_id": "biz-PBLN_000000000122308",
+            "source_id": "cb8da19f2f741dd25ceb94cda695e2125f1d1257f55391703ffd2e51c98d71d7",
+            "document_type": "가점증빙",
+            "original_name": "가점확인신청서",
+            "necessity": "optional",
+            "stage": "application",
+            "condition_text": "",
+            "deadline_text": "신청기간 2026.05.22 ~ 2026.06.19",
+            "deadline_date": "2026-06-19",
+            "deadline_precision": "day",
+            "evidence_quote": "붙임5.가점확인신청서(선택)",
+            "evidence_line": 209,
+            "template_url": null,
+            "extraction_method": "submission_rule",
+            "review_status": "unreviewed",
+            "evidence_url": "https://www.bizinfo.go.kr/cmm/fms/fileDown.do?atchFileId=FILE_000000000756644&fileSn=0"
+          },
+          {
+            "id": "7afec3d6bfc6a1518b181bd836d806583326e5df24a53eaa9d939c64d7a1ae72",
+            "posting_id": "biz-PBLN_000000000122308",
+            "source_id": "fc08a810405bd84957fd2855d748f7d1dbc90f6ef105c787414d398f343a3ce0",
+            "document_type": "가점증빙",
+            "original_name": "가점 확인 신청서",
+            "necessity": "optional",
+            "stage": "application",
+            "condition_text": "",
+            "deadline_text": "신청기간 2026.05.22 ~ 2026.06.19",
+            "deadline_date": "2026-06-19",
+            "deadline_precision": "day",
+            "evidence_quote": "붙임 5. 가점 확인 신청서(선택)",
+            "evidence_line": 346,
+            "template_url": null,
+            "extraction_method": "submission_rule",
+            "review_status": "unreviewed",
+            "evidence_url": "https://www.bizinfo.go.kr/cmm/fms/fileDown.do?atchFileId=FILE_000000000756645&fileSn=0"
+          },
+          {
+            "id": "bad31c7d903f0e104911f9a0d9596b797d9a28c7cd4b4c2a905942aaac29a728",
+            "posting_id": "biz-PBLN_000000000122308",
+            "source_id": "fc08a810405bd84957fd2855d748f7d1dbc90f6ef105c787414d398f343a3ce0",
+            "document_type": "개인정보동의서",
+            "original_name": "개인정보 수집·이용·제공 동의서",
+            "necessity": "required",
+            "stage": "application",
+            "condition_text": "",
+            "deadline_text": "신청기간 2026.05.22 ~ 2026.06.19",
+            "deadline_date": "2026-06-19",
+            "deadline_precision": "day",
+            "evidence_quote": "3 붙임 3. 개인정보 수집·이용·제공 동의서(필수) 공고문 붙임문서 활용, 필수제출",
+            "evidence_line": 343,
+            "template_url": null,
+            "extraction_method": "submission_rule",
+            "review_status": "unreviewed",
+            "evidence_url": "https://www.bizinfo.go.kr/cmm/fms/fileDown.do?atchFileId=FILE_000000000756645&fileSn=0"
+          },
+          {
+            "id": "e511731f65321dbee067af9c3c1e7a6e9f1bc87ecd64d24ba485ed82452f4e83",
+            "posting_id": "biz-PBLN_000000000122308",
+            "source_id": "cb8da19f2f741dd25ceb94cda695e2125f1d1257f55391703ffd2e51c98d71d7",
+            "document_type": "개인정보동의서",
+            "original_name": "개인정보수집·이용·제공동의서",
+            "necessity": "required",
+            "stage": "application",
+            "condition_text": "",
+            "deadline_text": "신청기간 2026.05.22 ~ 2026.06.19",
+            "deadline_date": "2026-06-19",
+            "deadline_precision": "day",
+            "evidence_quote": "3 붙임3.개인정보수집·이용·제공동의서(필수) 공고문붙임문서활용,필수제출",
+            "evidence_line": 206,
+            "template_url": null,
+            "extraction_method": "submission_rule",
+            "review_status": "unreviewed",
+            "evidence_url": "https://www.bizinfo.go.kr/cmm/fms/fileDown.do?atchFileId=FILE_000000000756644&fileSn=0"
+          },
+          {
+            "id": "b7d153ea7ede3a49d07509ff9f31215b0c81c64f3a89066ef1db69d2d69b7a00",
+            "posting_id": "biz-PBLN_000000000122308",
+            "source_id": "fc08a810405bd84957fd2855d748f7d1dbc90f6ef105c787414d398f343a3ce0",
+            "document_type": "납세증명서",
+            "original_name": "국세 완납증명서",
+            "necessity": "needs_review",
+            "stage": "application",
+            "condition_text": "증빙서류의 적용 대상 확인 필요",
+            "deadline_text": "신청기간 2026.05.22 ~ 2026.06.19",
+            "deadline_date": "2026-06-19",
+            "deadline_precision": "day",
+            "evidence_quote": "  ④ 국세 완납증명서 1부",
+            "evidence_line": 363,
+            "template_url": null,
+            "extraction_method": "submission_rule",
+            "review_status": "unreviewed",
+            "evidence_url": "https://www.bizinfo.go.kr/cmm/fms/fileDown.do?atchFileId=FILE_000000000756645&fileSn=0"
+          },
+          {
+            "id": "647841a969f2d1ca9b6f4773a5f4dbf749e6893ae35bfaa038ca0bd419c8dbe6",
+            "posting_id": "biz-PBLN_000000000122308",
+            "source_id": "fc08a810405bd84957fd2855d748f7d1dbc90f6ef105c787414d398f343a3ce0",
+            "document_type": "법인등기부등본",
+            "original_name": "법인등기부등본",
+            "necessity": "needs_review",
+            "stage": "application",
+            "condition_text": "증빙서류의 적용 대상 확인 필요",
+            "deadline_text": "신청기간 2026.05.22 ~ 2026.06.19",
+            "deadline_date": "2026-06-19",
+            "deadline_precision": "day",
+            "evidence_quote": "  ② 법인등기부등본 1부",
+            "evidence_line": 361,
+            "template_url": null,
+            "extraction_method": "submission_rule",
+            "review_status": "unreviewed",
+            "evidence_url": "https://www.bizinfo.go.kr/cmm/fms/fileDown.do?atchFileId=FILE_000000000756645&fileSn=0"
+          },
+          {
+            "id": "8bc06014d94d13fca7a642caf21b5ea0a9f1770a656b3a44749f46cce8cbe451",
+            "posting_id": "biz-PBLN_000000000122308",
+            "source_id": "cb8da19f2f741dd25ceb94cda695e2125f1d1257f55391703ffd2e51c98d71d7",
+            "document_type": "사업계획서",
+            "original_name": "사업계획서",
+            "necessity": "required",
+            "stage": "application",
+            "condition_text": "",
+            "deadline_text": "신청기간 2026.05.22 ~ 2026.06.19",
+            "deadline_date": "2026-06-19",
+            "deadline_precision": "day",
+            "evidence_quote": "2 붙임2.사업계획서(필수) 공고문붙임문서활용,필수제출",
+            "evidence_line": 205,
+            "template_url": null,
+            "extraction_method": "submission_rule",
+            "review_status": "unreviewed",
+            "evidence_url": "https://www.bizinfo.go.kr/cmm/fms/fileDown.do?atchFileId=FILE_000000000756644&fileSn=0"
+          },
+          {
+            "id": "e5f05e5776e83954859902e9945100ee4fdeb843d17ba13ac17dfd257b8edc52",
+            "posting_id": "biz-PBLN_000000000122308",
+            "source_id": "fc08a810405bd84957fd2855d748f7d1dbc90f6ef105c787414d398f343a3ce0",
+            "document_type": "사업계획서",
+            "original_name": "사업계획서",
+            "necessity": "required",
+            "stage": "application",
+            "condition_text": "",
+            "deadline_text": "신청기간 2026.05.22 ~ 2026.06.19",
+            "deadline_date": "2026-06-19",
+            "deadline_precision": "day",
+            "evidence_quote": "2 붙임 2. 사업계획서(필수) 공고문 붙임문서 활용, 필수제출",
+            "evidence_line": 342,
+            "template_url": null,
+            "extraction_method": "submission_rule",
+            "review_status": "unreviewed",
+            "evidence_url": "https://www.bizinfo.go.kr/cmm/fms/fileDown.do?atchFileId=FILE_000000000756645&fileSn=0"
+          },
+          {
+            "id": "0e328351ac9e92ff8780151b3f9adb73781049ab5efbed7ef348c69a13418ce8",
+            "posting_id": "biz-PBLN_000000000122308",
+            "source_id": "cb8da19f2f741dd25ceb94cda695e2125f1d1257f55391703ffd2e51c98d71d7",
+            "document_type": "사업자등록증",
+            "original_name": "사업자등록증",
+            "necessity": "conditional",
+            "stage": "application",
+            "condition_text": "6 사업자등록증※기창업자일경우필수 해당시제출",
+            "deadline_text": "신청기간 2026.05.22 ~ 2026.06.19",
+            "deadline_date": "2026-06-19",
+            "deadline_precision": "day",
+            "evidence_quote": "6 사업자등록증※기창업자일경우필수 해당시제출",
+            "evidence_line": 213,
+            "template_url": null,
+            "extraction_method": "submission_rule",
+            "review_status": "unreviewed",
+            "evidence_url": "https://www.bizinfo.go.kr/cmm/fms/fileDown.do?atchFileId=FILE_000000000756644&fileSn=0"
+          },
+          {
+            "id": "7990dc05e0f39dd715f2aa1bc5f4ca6f9747798509837cfad7af61643eb2a308",
+            "posting_id": "biz-PBLN_000000000122308",
+            "source_id": "fc08a810405bd84957fd2855d748f7d1dbc90f6ef105c787414d398f343a3ce0",
+            "document_type": "사업자등록증",
+            "original_name": "사업자등록증",
+            "necessity": "conditional",
+            "stage": "application",
+            "condition_text": "6 사업자등록증 ※ 기창업자일 경우 필수 해당 시 제출",
+            "deadline_text": "신청기간 2026.05.22 ~ 2026.06.19",
+            "deadline_date": "2026-06-19",
+            "deadline_precision": "day",
+            "evidence_quote": "6 사업자등록증 ※ 기창업자일 경우 필수 해당 시 제출",
+            "evidence_line": 351,
+            "template_url": null,
+            "extraction_method": "submission_rule",
+            "review_status": "unreviewed",
+            "evidence_url": "https://www.bizinfo.go.kr/cmm/fms/fileDown.do?atchFileId=FILE_000000000756645&fileSn=0"
+          },
+          {
+            "id": "5eb7a218fa6cc526fcf9195625dc38341da3eafe53a472b3b04742058cde46cb",
+            "posting_id": "biz-PBLN_000000000122308",
+            "source_id": "fc08a810405bd84957fd2855d748f7d1dbc90f6ef105c787414d398f343a3ce0",
+            "document_type": "서약서",
+            "original_name": "서약서",
+            "necessity": "required",
+            "stage": "application",
+            "condition_text": "",
+            "deadline_text": "신청기간 2026.05.22 ~ 2026.06.19",
+            "deadline_date": "2026-06-19",
+            "deadline_precision": "day",
+            "evidence_quote": "4 붙임 4. 참가자 서약서(필수) 공고문 붙임문서 활용, 필수제출",
+            "evidence_line": 344,
+            "template_url": null,
+            "extraction_method": "submission_rule",
+            "review_status": "unreviewed",
+            "evidence_url": "https://www.bizinfo.go.kr/cmm/fms/fileDown.do?atchFileId=FILE_000000000756645&fileSn=0"
+          },
+          {
+            "id": "c431ea40fb8254b00a5d5fe8cb1bf3ca768b5a52f513520f63e1519f27d9079f",
+            "posting_id": "biz-PBLN_000000000122308",
+            "source_id": "cb8da19f2f741dd25ceb94cda695e2125f1d1257f55391703ffd2e51c98d71d7",
+            "document_type": "서약서",
+            "original_name": "서약서",
+            "necessity": "required",
+            "stage": "application",
+            "condition_text": "",
+            "deadline_text": "신청기간 2026.05.22 ~ 2026.06.19",
+            "deadline_date": "2026-06-19",
+            "deadline_precision": "day",
+            "evidence_quote": "4 붙임4.참가자서약서(필수) 공고문붙임문서활용,필수제출",
+            "evidence_line": 207,
+            "template_url": null,
+            "extraction_method": "submission_rule",
+            "review_status": "unreviewed",
+            "evidence_url": "https://www.bizinfo.go.kr/cmm/fms/fileDown.do?atchFileId=FILE_000000000756644&fileSn=0"
+          },
+          {
+            "id": "4a7b688b4347e94c5c625232f0066ae4d3f7ea310642512b136736f4630c042d",
+            "posting_id": "biz-PBLN_000000000122308",
+            "source_id": "fc08a810405bd84957fd2855d748f7d1dbc90f6ef105c787414d398f343a3ce0",
+            "document_type": "주민등록초본",
+            "original_name": "주민등록등본",
+            "necessity": "conditional",
+            "stage": "application",
+            "condition_text": "※ 해당 시, 주민등록등본 또는 장애인증명서",
+            "deadline_text": "신청기간 2026.05.22 ~ 2026.06.19",
+            "deadline_date": "2026-06-19",
+            "deadline_precision": "day",
+            "evidence_quote": "※ 해당 시, 주민등록등본 또는 장애인증명서",
+            "evidence_line": 347,
+            "template_url": null,
+            "extraction_method": "submission_rule",
+            "review_status": "unreviewed",
+            "evidence_url": "https://www.bizinfo.go.kr/cmm/fms/fileDown.do?atchFileId=FILE_000000000756645&fileSn=0"
+          },
+          {
+            "id": "8e72963a7608fbba40966683070068e67687dd213a81aee6a11d5036fb0ed2fa",
+            "posting_id": "biz-PBLN_000000000122308",
+            "source_id": "cb8da19f2f741dd25ceb94cda695e2125f1d1257f55391703ffd2e51c98d71d7",
+            "document_type": "주민등록초본",
+            "original_name": "주민등록등본",
+            "necessity": "conditional",
+            "stage": "application",
+            "condition_text": "※해당시,주민등록등본또는장애인증명서제출",
+            "deadline_text": "신청기간 2026.05.22 ~ 2026.06.19",
+            "deadline_date": "2026-06-19",
+            "deadline_precision": "day",
+            "evidence_quote": "※해당시,주민등록등본또는장애인증명서제출",
+            "evidence_line": 210,
+            "template_url": null,
+            "extraction_method": "submission_rule",
+            "review_status": "unreviewed",
+            "evidence_url": "https://www.bizinfo.go.kr/cmm/fms/fileDown.do?atchFileId=FILE_000000000756644&fileSn=0"
+          },
+          {
+            "id": "0c248be8fd7c97667235cf5fb052756e2504a7cd4031b77999feab900ecc7576",
+            "posting_id": "biz-PBLN_000000000122308",
+            "source_id": "fc08a810405bd84957fd2855d748f7d1dbc90f6ef105c787414d398f343a3ce0",
+            "document_type": "참가신청서",
+            "original_name": "사업신청서",
+            "necessity": "required",
+            "stage": "application",
+            "condition_text": "",
+            "deadline_text": "신청기간 2026.05.22 ~ 2026.06.19",
+            "deadline_date": "2026-06-19",
+            "deadline_precision": "day",
+            "evidence_quote": "1 붙임 1. 사업신청서(필수) 공고문 붙임문서 활용, 필수제출",
+            "evidence_line": 341,
+            "template_url": "https://www.bizinfo.go.kr/cmm/fms/fileDown.do?atchFileId=FILE_000000000756645&fileSn=2",
+            "extraction_method": "submission_rule",
+            "review_status": "unreviewed",
+            "evidence_url": "https://www.bizinfo.go.kr/cmm/fms/fileDown.do?atchFileId=FILE_000000000756645&fileSn=0"
+          },
+          {
+            "id": "7373face3517b5a6c56a6f727c691af9cdfafdaa8fb2aa10c6e484f9dace30d2",
+            "posting_id": "biz-PBLN_000000000122308",
+            "source_id": "cb8da19f2f741dd25ceb94cda695e2125f1d1257f55391703ffd2e51c98d71d7",
+            "document_type": "참가신청서",
+            "original_name": "사업신청서",
+            "necessity": "required",
+            "stage": "application",
+            "condition_text": "",
+            "deadline_text": "신청기간 2026.05.22 ~ 2026.06.19",
+            "deadline_date": "2026-06-19",
+            "deadline_precision": "day",
+            "evidence_quote": "1 붙임1.사업신청서(필수) 공고문붙임문서활용,필수제출",
+            "evidence_line": 204,
+            "template_url": "https://www.bizinfo.go.kr/cmm/fms/fileDown.do?atchFileId=FILE_000000000756645&fileSn=2",
+            "extraction_method": "submission_rule",
+            "review_status": "unreviewed",
+            "evidence_url": "https://www.bizinfo.go.kr/cmm/fms/fileDown.do?atchFileId=FILE_000000000756644&fileSn=0"
+          }
+        ]
+      }
+    },
+    {
+      "id": "startup-biz-PBLN_000000000123273",
+      "type": "창업지원",
+      "title": "2026년 하반기 K-Global 창업멘토링 지원사업 참여 멘티(28기) 모집 공고",
+      "org": "기업마당",
+      "source": {
+        "name": "기업마당",
+        "url": "https://www.bizinfo.go.kr/sii/siia/selectSIIA200Detail.do?pblancId=PBLN_000000000123273"
+      },
+      "isVirtual": false,
+      "jobs": [
+        "founder"
+      ],
+      "required": [
+        {
+          "key": "other",
+          "label": "소속·지역·창업 단계 등 원문 지원 자격 확인",
+          "src": "startup-body"
+        }
+      ],
+      "preferred": [],
+      "documents": [
+        "사업계획서"
+      ],
+      "applyUrl": "https://www.bizinfo.go.kr/sii/siia/selectSIIA200Detail.do?pblancId=PBLN_000000000123273",
+      "sections": [
+        {
+          "id": "startup-body",
+          "title": "공고 본문",
+          "text": "소관부처·지자체\n과학기술정보통신부\n사업수행기관\n한국청년기업가정신재단\n신청기간\n2026.06.15 ~\n2026.06.30\n사업개요\nAIㆍ디지털 기술 기반 ICT 예비창업자와 창업·벤처기업의 창업활동 및 성장을 지원하는「K-Global 창업멘토링 지원사업」에 참여할 2026년 하반기 멘티를 모집하오니 많은 관심과 지원 바랍니다.\n☞ AIㆍ디지털 기술 기반 ICT 예비창업자 및 7년 이내 창업기업\n- 예비창업자 : 창업에 대한 명확하고 뚜렷한 의지가 있으며 1년 이내 창업을 목표로 하는 자\n- 창업기업 :「중소기업창업 지원법」상 창업기업\n☞ (멘토링) 멘티 성장단계를 고려한 전담형 멘토링과 필요에 따라 제공되는 특정 분야 선택형 멘토링 동시 지원\n- (ICT경영실무 자문) 법률,지식재산권(IP),세무ㆍ회계 등 창업 경영 실무 관련 애로사항 해소를 위한 공인전문가 1:1자문 지원\n- (AX스타트업 교육) 생성형 AI를 활용한 마케팅,투자유치 전략 등AX전환을 위한 4가지 실습형 교육과정 선택\n- (투자유치 프로그램)스케일업 단계 참여 멘티 대상 유망 창업기업의 성공적인 초기 투자유치 및 경쟁력 제고 목적 프로그램 지원\n- (창업문화 행사) 결연식 및 OT, 성과공유회, 동문 네트워킹, 우수멘티 홍보\n사업신청 방법\n온라인 접수 (K-ICT창업멘토링센터)\n사업신청 사이트\n온라인신청 바로가기\n문의처\n한국청년기업가정신재단 K-ICT창업멘토링센터 02-6953-1759, 1658, 1748 / k-ict@gomentoring.or.kr 카카오채널(권장) http://pf.kakao.com/_xfxnPSG"
+        },
+        {
+          "id": "f8e425bac053503b233e942675fc59d77705df990f0f99c43eef47457eb7a8bd",
+          "title": "발표자료",
+          "text": "온라인 서류심사 서류심사 결과 및 발표심사 일정 안내  온라인 발표심사 *발표자료 사전 제출"
+        },
+        {
+          "id": "039961a8b4b7006db1f9f5e8eaa59779ec83770add60abcce141e6c82016bf76",
+          "title": "법인등기부등본",
+          "text": " ※ 창업기업의 사업자등록증 및 법인등기부등본, 창업기업확인서는 최종 선발 직후 제출 필수"
+        },
+        {
+          "id": "ef4952ea8ce6b895c1bb3fc871cc9969883dd759fba0674d1be7267854a55f88",
+          "title": "사업계획서",
+          "text": "② 첨부2. 멘티 사업계획서(필수)"
+        },
+        {
+          "id": "4ff12a8eac871af2636ce4c31777a1e7953a31eb0516777cd5bdbad68d48919a",
+          "title": "사업자등록증",
+          "text": " ※ 창업기업의 사업자등록증 및 법인등기부등본, 창업기업확인서는 최종 선발 직후 제출 필수"
+        },
+        {
+          "id": "ade2cb82f829db9b5a74c84ffdaececf564a1966d20ed00c75c3ea07774cc7b5",
+          "title": "참가신청서",
+          "text": "붙임2-1. (예비창업자) 28기 멘티 참가 신청서_신청자명 (1).hwp"
+        }
+      ],
+      "versions": [
+        {
+          "version": 1,
+          "checkedAt": "2026-11-21T06:16:31.735335+00:00",
+          "deadline": "2026-06-30"
+        }
+      ],
+      "confidence": 1,
+      "reviewed": false,
+      "deadlineStatus": "date_only",
+      "facts": [
+        {
+          "label": "지원 유형",
+          "value": "교육·멘토링"
+        }
+      ],
+      "startup": {
+        "postingId": "biz-PBLN_000000000123273",
+        "category": "교육·멘토링",
+        "status": "closed",
+        "eligibility": "AIㆍ디지털 기술 기반 ICT 예비창업자와 창업·벤처기업의 창업활동 및 성장을 지원하는「K-Global 창업멘토링 지원사업」에 참여할 2026년 하반기 멘티를 모집하오니 많은 관심과 지원 바랍니다.\n☞ AIㆍ디지털 기술 기반 ICT 예비창업자 및 7년 이내 창업기업\n- 예비창업자 : 창업에 대한 명확하고 뚜렷한 의지가 있으며 1년 이내 창업을 목표로 하는 자\n- (투자유치 프로그램)스케일업 단계 참여 멘티 대상 유망 창업기업의 성공적인 초기 투자유치 및 경쟁력 제고 목적 프로그램 지원",
+        "support": "AIㆍ디지털 기술 기반 ICT 예비창업자와 창업·벤처기업의 창업활동 및 성장을 지원하는「K-Global 창업멘토링 지원사업」에 참여할 2026년 하반기 멘티를 모집하오니 많은 관심과 지원 바랍니다.\n- 창업기업 :「중소기업창업 지원법」상 창업기업\n☞ (멘토링) 멘티 성장단계를 고려한 전담형 멘토링과 필요에 따라 제공되는 특정 분야 선택형 멘토링 동시 지원\n- (ICT경영실무 자문) 법률,지식재산권(IP),세무ㆍ회계 등 창업 경영 실무 관련 애로사항 해소를 위한 공인전문가 1:1자문 지원\n- (투자유치 프로그램)스케일업 단계 참여 멘티 대상 유망 창업기업의 성공적인 초기 투자유치 및 경쟁력 제고 목적 프로그램 지원\n온라인 접수 (K-ICT창업멘토링센터)\n한국청년기업가정신재단 K-ICT창업멘토링센터 02-6953-1759, 1658, 1748 / k-ict@gomentoring.or.kr 카카오채널(권장) http://pf.kakao.com/_xfxnPSG",
+        "reviewNotes": [
+          "미열람 첨부가 있어 제출서류 목록의 완전성 확인 필요",
+          "기업마당 요약 공고. 최종 자격·제출 기준은 수행기관 원문 확인 필요"
+        ],
+        "requirements": [
+          {
+            "id": "f8e425bac053503b233e942675fc59d77705df990f0f99c43eef47457eb7a8bd",
+            "posting_id": "biz-PBLN_000000000123273",
+            "source_id": "9f0b3221cf9af45fb36e2fef1db1add6d011c5142dcec277164d31028567e3ad",
+            "document_type": "발표자료",
+            "original_name": "발표자료",
+            "necessity": "conditional",
+            "stage": "finalist",
+            "condition_text": "본선·발표평가 대상 시",
+            "deadline_text": null,
+            "deadline_date": null,
+            "deadline_precision": null,
+            "evidence_quote": "온라인 서류심사 서류심사 결과 및 발표심사 일정 안내  온라인 발표심사 *발표자료 사전 제출",
+            "evidence_line": 197,
+            "template_url": null,
+            "extraction_method": "submission_rule",
+            "review_status": "unreviewed",
+            "evidence_url": "https://www.bizinfo.go.kr/cmm/fms/fileDown.do?atchFileId=FILE_000000000760264&fileSn=0"
+          },
+          {
+            "id": "039961a8b4b7006db1f9f5e8eaa59779ec83770add60abcce141e6c82016bf76",
+            "posting_id": "biz-PBLN_000000000123273",
+            "source_id": "9f0b3221cf9af45fb36e2fef1db1add6d011c5142dcec277164d31028567e3ad",
+            "document_type": "법인등기부등본",
+            "original_name": "법인등기부등본",
+            "necessity": "conditional",
+            "stage": "agreement",
+            "condition_text": " ※ 창업기업의 사업자등록증 및 법인등기부등본, 창업기업확인서는 최종 선발 직후 제출 필수",
+            "deadline_text": null,
+            "deadline_date": null,
+            "deadline_precision": null,
+            "evidence_quote": " ※ 창업기업의 사업자등록증 및 법인등기부등본, 창업기업확인서는 최종 선발 직후 제출 필수",
+            "evidence_line": 178,
+            "template_url": null,
+            "extraction_method": "submission_rule",
+            "review_status": "unreviewed",
+            "evidence_url": "https://www.bizinfo.go.kr/cmm/fms/fileDown.do?atchFileId=FILE_000000000760264&fileSn=0"
+          },
+          {
+            "id": "ef4952ea8ce6b895c1bb3fc871cc9969883dd759fba0674d1be7267854a55f88",
+            "posting_id": "biz-PBLN_000000000123273",
+            "source_id": "9f0b3221cf9af45fb36e2fef1db1add6d011c5142dcec277164d31028567e3ad",
+            "document_type": "사업계획서",
+            "original_name": "사업계획서",
+            "necessity": "required",
+            "stage": "application",
+            "condition_text": "",
+            "deadline_text": "신청기간 2026.06.15 ~ 2026.06.30",
+            "deadline_date": "2026-06-30",
+            "deadline_precision": "day",
+            "evidence_quote": "② 첨부2. 멘티 사업계획서(필수)",
+            "evidence_line": 169,
+            "template_url": null,
+            "extraction_method": "submission_rule",
+            "review_status": "unreviewed",
+            "evidence_url": "https://www.bizinfo.go.kr/cmm/fms/fileDown.do?atchFileId=FILE_000000000760264&fileSn=0"
+          },
+          {
+            "id": "4ff12a8eac871af2636ce4c31777a1e7953a31eb0516777cd5bdbad68d48919a",
+            "posting_id": "biz-PBLN_000000000123273",
+            "source_id": "9f0b3221cf9af45fb36e2fef1db1add6d011c5142dcec277164d31028567e3ad",
+            "document_type": "사업자등록증",
+            "original_name": "사업자등록증",
+            "necessity": "conditional",
+            "stage": "agreement",
+            "condition_text": " ※ 창업기업의 사업자등록증 및 법인등기부등본, 창업기업확인서는 최종 선발 직후 제출 필수",
+            "deadline_text": null,
+            "deadline_date": null,
+            "deadline_precision": null,
+            "evidence_quote": " ※ 창업기업의 사업자등록증 및 법인등기부등본, 창업기업확인서는 최종 선발 직후 제출 필수",
+            "evidence_line": 178,
+            "template_url": null,
+            "extraction_method": "submission_rule",
+            "review_status": "unreviewed",
+            "evidence_url": "https://www.bizinfo.go.kr/cmm/fms/fileDown.do?atchFileId=FILE_000000000760264&fileSn=0"
+          },
+          {
+            "id": "ade2cb82f829db9b5a74c84ffdaececf564a1966d20ed00c75c3ea07774cc7b5",
+            "posting_id": "biz-PBLN_000000000123273",
+            "source_id": "e9ae525331bfb4ce4eee1d6ba2c2406bd3aada0e0761688217c0e5552b36c6cd",
+            "document_type": "참가신청서",
+            "original_name": "참가 신청서",
+            "necessity": "needs_review",
+            "stage": "unknown",
+            "condition_text": "첨부 양식의 적용 대상·제출 의무 확인 필요",
+            "deadline_text": "붙임2-1. (예비창업자) 28기 멘티 참가 신청서_신청자명 (1).hwp",
+            "deadline_date": "2026-02-01",
+            "deadline_precision": "day",
+            "evidence_quote": "붙임2-1. (예비창업자) 28기 멘티 참가 신청서_신청자명 (1).hwp",
+            "evidence_line": 1,
+            "template_url": "https://www.bizinfo.go.kr/cmm/fms/fileDown.do?atchFileId=FILE_000000000760265&fileSn=0",
+            "extraction_method": "filename_candidate",
+            "review_status": "unreviewed",
+            "evidence_url": "https://www.bizinfo.go.kr/sii/siia/selectSIIA200Detail.do?pblancId=PBLN_000000000123273"
+          }
+        ]
+      }
+    },
+    {
+      "id": "startup-biz-PBLN_000000000123352",
+      "type": "창업지원",
+      "title": "[인천] 2026년 시제품 제작터 지원 공고",
+      "org": "기업마당",
+      "source": {
+        "name": "기업마당",
+        "url": "https://www.bizinfo.go.kr/sii/siia/selectSIIA200Detail.do?pblancId=PBLN_000000000123352"
+      },
+      "isVirtual": false,
+      "jobs": [
+        "founder"
+      ],
+      "required": [
+        {
+          "key": "other",
+          "label": "소속·지역·창업 단계 등 원문 지원 자격 확인",
+          "src": "startup-body"
+        }
+      ],
+      "preferred": [],
+      "documents": [],
+      "applyUrl": "https://www.bizinfo.go.kr/sii/siia/selectSIIA200Detail.do?pblancId=PBLN_000000000123352",
+      "sections": [
+        {
+          "id": "startup-body",
+          "title": "공고 본문",
+          "text": "소관부처·지자체\n인천광역시\n사업수행기관\n인천창조경제혁신센터\n신청기간\n예산 소진시까지\n사업개요\n인천지역 내 (예비)창업자분의 아이디어 제품화를 통해 빠른 시장 진입 기회를 제공하기 위해 시제품 제작 지원 사업을 운영합니다. 시제품 제작이 필요한 (예비) 창업자분들의 적극적인 참여 바랍니다. 자세한 문의사항이나 참여를 희망하시는 경우, 아래 접수처로 연락해 주시기 바랍니다.\n☞ 인천 지역 내 (예비)창업자, 인천창조경제혁신센터 보육기업\n☞ 시제품 제작 지원(3D 프린터, 레이저 커터, UV프린터)\n사업신청 방법\n온라인 접수(구글폼)\n사업신청 사이트\n온라인신청 바로가기\n문의처\n연세대학교 메이커스페이스단 032-749-3902"
+        }
+      ],
+      "versions": [
+        {
+          "version": 1,
+          "checkedAt": "2026-11-21T06:16:19.634031+00:00",
+          "deadline": ""
+        }
+      ],
+      "confidence": 1,
+      "reviewed": false,
+      "deadlineStatus": "unknown",
+      "facts": [
+        {
+          "label": "지원 유형",
+          "value": "시제품·제작"
+        }
+      ],
+      "startup": {
+        "postingId": "biz-PBLN_000000000123352",
+        "category": "시제품·제작",
+        "status": "needs_review",
+        "eligibility": "",
+        "support": "인천지역 내 (예비)창업자분의 아이디어 제품화를 통해 빠른 시장 진입 기회를 제공하기 위해 시제품 제작 지원 사업을 운영합니다. 시제품 제작이 필요한 (예비) 창업자분들의 적극적인 참여 바랍니다. 자세한 문의사항이나 참여를 희망하시는 경우, 아래 접수처로 연락해 주시기 바랍니다.\n☞ 인천 지역 내 (예비)창업자, 인천창조경제혁신센터 보육기업\n☞ 시제품 제작 지원(3D 프린터, 레이저 커터, UV프린터)",
+        "reviewNotes": [
+          "기업마당 요약 공고. 최종 자격·제출 기준은 수행기관 원문 확인 필요",
+          "본문에서 명시적 제출물 미추출. 서류 없음으로 해석하지 않음"
+        ],
+        "requirements": []
+      }
+    },
+    {
+      "id": "startup-biz-PBLN_000000000124885",
+      "type": "창업지원",
+      "title": "2026년 예술분야 예비창업 프로그램 참여자 모집 공고",
+      "org": "기업마당",
+      "source": {
+        "name": "기업마당",
+        "url": "https://www.bizinfo.go.kr/sii/siia/selectSIIA200Detail.do?pblancId=PBLN_000000000124885"
+      },
+      "isVirtual": false,
+      "jobs": [
+        "founder"
+      ],
+      "required": [
+        {
+          "key": "other",
+          "label": "소속·지역·창업 단계 등 원문 지원 자격 확인",
+          "src": "startup-body"
+        }
+      ],
+      "preferred": [],
+      "documents": [
+        "참가신청서"
+      ],
+      "applyUrl": "https://www.bizinfo.go.kr/sii/siia/selectSIIA200Detail.do?pblancId=PBLN_000000000124885",
+      "sections": [
+        {
+          "id": "startup-body",
+          "title": "공고 본문",
+          "text": "소관부처·지자체\n문화체육관광부\n사업수행기관\n예술경영지원센터\n신청기간\n2026.07.27 ~\n2026.08.10\n사업개요\n문화체육관광부와 (재)예술경영지원센터는 예술분야 예비창업자ㆍ초기기업을 대상으로 비즈니스모델의 시장검증 기반 사업역량을 강화하고, 체계적 지원을 통해 예술기업을 육성하는 <2026 예술분야 예비창업 프로그램>을 진행합니다. 예술 전문성 및 적극적인 실행능력을 겸비한 예비 창업자 및 예술분야 창업기업을 다음과 같이 모집하오니 많은 관심과 참여 바랍니다.\n☞ 공고일 기준('26.7.27(월)) 예술분야 예비창업자 또는 업력 3년 미만의 예술분야 창업기업(개인 및 법인사업자)\n☞ 고객x시장검증 간접 지원(5백만원 상당) 및 역량 강화 교육, 멘토링ㆍ컨설팅\n※ 자세한 지원내용 공고문 참조\n사업신청 방법\n이메일 접수 (jhmoon@sigong-ip.com)\n문의처\n예술경영지원센터 2026 예술분야 예비창업 프로그램 운영국 02-6925-3357, 02-6453-9161 / jhmoon@sigong-ip.com"
+        },
+        {
+          "id": "43393ca0dda043e1eab4002ae75bfd1b05676022165b2564f8f3828bff84bef8",
+          "title": "법인등기부등본",
+          "text": "③ 법인등기부 등본 해당 시 ( )"
+        },
+        {
+          "id": "0143d744bd41ce23049ad010302e6bfa2c97f4db985fbedec3f025bce5c45734",
+          "title": "사업자등록사실여부증명",
+          "text": "① 사실증명서 사업자등록사실여부 ( )"
+        },
+        {
+          "id": "aaea00c8f40be074b8fe2fdfd3f203b2453e74cf17ee50e12f96119611ad5e41",
+          "title": "사업자등록증",
+          "text": "사업자등록증①"
+        },
+        {
+          "id": "a8678e43c307ed1d6059dd996183aa2c11d0e164961717fb6e7de5f24a12a307",
+          "title": "참가신청서",
+          "text": "양식 프로그램 신청 통합서식1. [ ] 필수( ) HWP"
+        },
+        {
+          "id": "1e3ee4a8b3e0f2f712100c324e653bfb526e3f8fe8e9dcd461e8ba6647db9ce2",
+          "title": "총사업자등록내역증명",
+          "text": "② 사실증명서 총사업자등록내역 ( )"
+        },
+        {
+          "id": "bd5f0b9d5106628bdd5e8164c94c990855df8e72fc2b22ce2a276b32305adff3",
+          "title": "팀소개서",
+          "text": "선택 해당 시 기업소개서 및 사업 포트폴리오 보유 시( ) 표지 포함 이하 파일로 제출- 10p PDF"
+        },
+        {
+          "id": "fdb038186e293c57d915a175465dee39381c2bd08ab14a2285a461709a0b8234",
+          "title": "포트폴리오",
+          "text": "선택 해당 시 기업소개서 및 사업 포트폴리오 보유 시( ) 표지 포함 이하 파일로 제출- 10p PDF"
+        }
+      ],
+      "versions": [
+        {
+          "version": 1,
+          "checkedAt": "2026-11-21T06:16:40.810985+00:00",
+          "deadline": "2026-08-10"
+        }
+      ],
+      "confidence": 1,
+      "reviewed": false,
+      "deadlineStatus": "date_only",
+      "facts": [
+        {
+          "label": "지원 유형",
+          "value": "교육·멘토링"
+        }
+      ],
+      "startup": {
+        "postingId": "biz-PBLN_000000000124885",
+        "category": "교육·멘토링",
+        "status": "closed",
+        "eligibility": "문화체육관광부와 (재)예술경영지원센터는 예술분야 예비창업자ㆍ초기기업을 대상으로 비즈니스모델의 시장검증 기반 사업역량을 강화하고, 체계적 지원을 통해 예술기업을 육성하는 <2026 예술분야 예비창업 프로그램>을 진행합니다. 예술 전문성 및 적극적인 실행능력을 겸비한 예비 창업자 및 예술분야 창업기업을 다음과 같이 모집하오니 많은 관심과 참여 바랍니다.\n☞ 공고일 기준('26.7.27(월)) 예술분야 예비창업자 또는 업력 3년 미만의 예술분야 창업기업(개인 및 법인사업자)\n예술경영지원센터 2026 예술분야 예비창업 프로그램 운영국 02-6925-3357, 02-6453-9161 / jhmoon@sigong-ip.com",
+        "support": "예술경영지원센터\n문화체육관광부와 (재)예술경영지원센터는 예술분야 예비창업자ㆍ초기기업을 대상으로 비즈니스모델의 시장검증 기반 사업역량을 강화하고, 체계적 지원을 통해 예술기업을 육성하는 <2026 예술분야 예비창업 프로그램>을 진행합니다. 예술 전문성 및 적극적인 실행능력을 겸비한 예비 창업자 및 예술분야 창업기업을 다음과 같이 모집하오니 많은 관심과 참여 바랍니다.\n☞ 고객x시장검증 간접 지원(5백만원 상당) 및 역량 강화 교육, 멘토링ㆍ컨설팅\n※ 자세한 지원내용 공고문 참조\n예술경영지원센터 2026 예술분야 예비창업 프로그램 운영국 02-6925-3357, 02-6453-9161 / jhmoon@sigong-ip.com",
+        "reviewNotes": [
+          "미열람 첨부가 있어 제출서류 목록의 완전성 확인 필요",
+          "기업마당 요약 공고. 최종 자격·제출 기준은 수행기관 원문 확인 필요"
+        ],
+        "requirements": [
+          {
+            "id": "43393ca0dda043e1eab4002ae75bfd1b05676022165b2564f8f3828bff84bef8",
+            "posting_id": "biz-PBLN_000000000124885",
+            "source_id": "140ecfd730f4089d0b49ab49ddb603e87b7049aff5913065b6e12c1ef92bdd75",
+            "document_type": "법인등기부등본",
+            "original_name": "법인등기부 등본",
+            "necessity": "conditional",
+            "stage": "application",
+            "condition_text": "개인및법인사업자",
+            "deadline_text": "신청기간 2026.07.27 ~ 2026.08.10",
+            "deadline_date": "2026-08-10",
+            "deadline_precision": "day",
+            "evidence_quote": "③ 법인등기부 등본 해당 시 ( )",
+            "evidence_line": 154,
+            "template_url": null,
+            "extraction_method": "submission_rule",
+            "review_status": "unreviewed",
+            "evidence_url": "https://www.bizinfo.go.kr/cmm/fms/fileDown.do?atchFileId=FILE_000000000766757&fileSn=0"
+          },
+          {
+            "id": "0143d744bd41ce23049ad010302e6bfa2c97f4db985fbedec3f025bce5c45734",
+            "posting_id": "biz-PBLN_000000000124885",
+            "source_id": "140ecfd730f4089d0b49ab49ddb603e87b7049aff5913065b6e12c1ef92bdd75",
+            "document_type": "사업자등록사실여부증명",
+            "original_name": "사실증명",
+            "necessity": "conditional",
+            "stage": "application",
+            "condition_text": "예비창업자",
+            "deadline_text": "신청기간 2026.07.27 ~ 2026.08.10",
+            "deadline_date": "2026-08-10",
+            "deadline_precision": "day",
+            "evidence_quote": "① 사실증명서 사업자등록사실여부 ( )",
+            "evidence_line": 145,
+            "template_url": null,
+            "extraction_method": "submission_rule",
+            "review_status": "unreviewed",
+            "evidence_url": "https://www.bizinfo.go.kr/cmm/fms/fileDown.do?atchFileId=FILE_000000000766757&fileSn=0"
+          },
+          {
+            "id": "aaea00c8f40be074b8fe2fdfd3f203b2453e74cf17ee50e12f96119611ad5e41",
+            "posting_id": "biz-PBLN_000000000124885",
+            "source_id": "140ecfd730f4089d0b49ab49ddb603e87b7049aff5913065b6e12c1ef92bdd75",
+            "document_type": "사업자등록증",
+            "original_name": "사업자등록증",
+            "necessity": "conditional",
+            "stage": "application",
+            "condition_text": "개인및법인사업자",
+            "deadline_text": "신청기간 2026.07.27 ~ 2026.08.10",
+            "deadline_date": "2026-08-10",
+            "deadline_precision": "day",
+            "evidence_quote": "사업자등록증①",
+            "evidence_line": 150,
+            "template_url": null,
+            "extraction_method": "submission_rule",
+            "review_status": "unreviewed",
+            "evidence_url": "https://www.bizinfo.go.kr/cmm/fms/fileDown.do?atchFileId=FILE_000000000766757&fileSn=0"
+          },
+          {
+            "id": "a8678e43c307ed1d6059dd996183aa2c11d0e164961717fb6e7de5f24a12a307",
+            "posting_id": "biz-PBLN_000000000124885",
+            "source_id": "140ecfd730f4089d0b49ab49ddb603e87b7049aff5913065b6e12c1ef92bdd75",
+            "document_type": "참가신청서",
+            "original_name": "신청 통합서식",
+            "necessity": "required",
+            "stage": "application",
+            "condition_text": "",
+            "deadline_text": "신청기간 2026.07.27 ~ 2026.08.10",
+            "deadline_date": "2026-08-10",
+            "deadline_precision": "day",
+            "evidence_quote": "양식 프로그램 신청 통합서식1. [ ] 필수( ) HWP",
+            "evidence_line": 138,
+            "template_url": "https://www.bizinfo.go.kr/cmm/fms/fileDown.do?atchFileId=FILE_000000000766758&fileSn=0",
+            "extraction_method": "submission_rule",
+            "review_status": "unreviewed",
+            "evidence_url": "https://www.bizinfo.go.kr/cmm/fms/fileDown.do?atchFileId=FILE_000000000766757&fileSn=0"
+          },
+          {
+            "id": "1e3ee4a8b3e0f2f712100c324e653bfb526e3f8fe8e9dcd461e8ba6647db9ce2",
+            "posting_id": "biz-PBLN_000000000124885",
+            "source_id": "140ecfd730f4089d0b49ab49ddb603e87b7049aff5913065b6e12c1ef92bdd75",
+            "document_type": "총사업자등록내역증명",
+            "original_name": "사실증명",
+            "necessity": "conditional",
+            "stage": "application",
+            "condition_text": "개인및법인사업자",
+            "deadline_text": "신청기간 2026.07.27 ~ 2026.08.10",
+            "deadline_date": "2026-08-10",
+            "deadline_precision": "day",
+            "evidence_quote": "② 사실증명서 총사업자등록내역 ( )",
+            "evidence_line": 152,
+            "template_url": null,
+            "extraction_method": "submission_rule",
+            "review_status": "unreviewed",
+            "evidence_url": "https://www.bizinfo.go.kr/cmm/fms/fileDown.do?atchFileId=FILE_000000000766757&fileSn=0"
+          },
+          {
+            "id": "bd5f0b9d5106628bdd5e8164c94c990855df8e72fc2b22ce2a276b32305adff3",
+            "posting_id": "biz-PBLN_000000000124885",
+            "source_id": "140ecfd730f4089d0b49ab49ddb603e87b7049aff5913065b6e12c1ef92bdd75",
+            "document_type": "팀소개서",
+            "original_name": "기업소개서",
+            "necessity": "conditional",
+            "stage": "application",
+            "condition_text": "선택 해당 시 기업소개서 및 사업 포트폴리오 보유 시( ) 표지 포함 이하 파일로 제출- 10p PDF",
+            "deadline_text": "신청기간 2026.07.27 ~ 2026.08.10",
+            "deadline_date": "2026-08-10",
+            "deadline_precision": "day",
+            "evidence_quote": "선택 해당 시 기업소개서 및 사업 포트폴리오 보유 시( ) 표지 포함 이하 파일로 제출- 10p PDF",
+            "evidence_line": 161,
+            "template_url": null,
+            "extraction_method": "submission_rule",
+            "review_status": "unreviewed",
+            "evidence_url": "https://www.bizinfo.go.kr/cmm/fms/fileDown.do?atchFileId=FILE_000000000766757&fileSn=0"
+          },
+          {
+            "id": "fdb038186e293c57d915a175465dee39381c2bd08ab14a2285a461709a0b8234",
+            "posting_id": "biz-PBLN_000000000124885",
+            "source_id": "140ecfd730f4089d0b49ab49ddb603e87b7049aff5913065b6e12c1ef92bdd75",
+            "document_type": "포트폴리오",
+            "original_name": "포트폴리오",
+            "necessity": "conditional",
+            "stage": "application",
+            "condition_text": "선택 해당 시 기업소개서 및 사업 포트폴리오 보유 시( ) 표지 포함 이하 파일로 제출- 10p PDF",
+            "deadline_text": "신청기간 2026.07.27 ~ 2026.08.10",
+            "deadline_date": "2026-08-10",
+            "deadline_precision": "day",
+            "evidence_quote": "선택 해당 시 기업소개서 및 사업 포트폴리오 보유 시( ) 표지 포함 이하 파일로 제출- 10p PDF",
+            "evidence_line": 161,
+            "template_url": null,
+            "extraction_method": "submission_rule",
+            "review_status": "unreviewed",
+            "evidence_url": "https://www.bizinfo.go.kr/cmm/fms/fileDown.do?atchFileId=FILE_000000000766757&fileSn=0"
+          }
+        ]
+      }
+    },
+    {
+      "id": "startup-biz-PBLN_000000000126774",
+      "type": "창업지원",
+      "title": "[경기] 파주시 2026년 파주청년창업지원센터 청년창업 멘토링 지원 참여기업ㆍ팀 모집 공고",
+      "org": "기업마당",
+      "source": {
+        "name": "기업마당",
+        "url": "https://www.bizinfo.go.kr/sii/siia/selectSIIA200Detail.do?pblancId=PBLN_000000000126774"
+      },
+      "isVirtual": false,
+      "jobs": [
+        "founder"
+      ],
+      "required": [
+        {
+          "key": "other",
+          "label": "소속·지역·창업 단계 등 원문 지원 자격 확인",
+          "src": "startup-body"
+        }
+      ],
+      "preferred": [],
+      "documents": [],
+      "applyUrl": "https://www.bizinfo.go.kr/sii/siia/selectSIIA200Detail.do?pblancId=PBLN_000000000126774",
+      "sections": [
+        {
+          "id": "startup-body",
+          "title": "공고 본문",
+          "text": "소관부처·지자체\n경기도\n사업수행기관\n경기테크노파크\n신청기간\n예산 소진시까지\n사업개요\n파주시와 (재)경기테크노파크에서는 파주청년창업지원센터 입주기업 및 파주시 관내 예비ㆍ초기창업자의 성공 창업을 지원하기 위하여 각 분야 전문가와의 멘토링을 지원하고자 하오니 많은 관심과 참여 바랍니다.\n☞ 공고일 기준 파주청년창업지원센터 입주기업 및 만 39세 이하의 청년으로, 거주지와 사업자등록증상의 사업장 소재지가 모두 파주시로 되어 있는 3년 미만의 예비ㆍ초기창업자\n☞ 청년창업 컨설팅ㆍ멘토링 지원 (기업 당 1백만원, 4회 기준)\n사업신청 방법\n이메일 접수 (youni1004@gtp.or.kr)\n문의처\n경기테크노파크 파주청년창업지원센터 운영실 031-940-9796, 9797"
+        },
+        {
+          "id": "f5bd7f703a595d368db5d881fe5104eabcc6a2c5aae88fe929da97cce639a11e",
+          "title": "참가신청서",
+          "text": "(붙임2)청년창업 멘토링 신청서.hwp"
+        }
+      ],
+      "versions": [
+        {
+          "version": 1,
+          "checkedAt": "2026-11-21T06:16:46.793498+00:00",
+          "deadline": ""
+        }
+      ],
+      "confidence": 1,
+      "reviewed": false,
+      "deadlineStatus": "unknown",
+      "facts": [
+        {
+          "label": "지원 유형",
+          "value": "교육·멘토링"
+        }
+      ],
+      "startup": {
+        "postingId": "biz-PBLN_000000000126774",
+        "category": "교육·멘토링",
+        "status": "needs_review",
+        "eligibility": "☞ 공고일 기준 파주청년창업지원센터 입주기업 및 만 39세 이하의 청년으로, 거주지와 사업자등록증상의 사업장 소재지가 모두 파주시로 되어 있는 3년 미만의 예비ㆍ초기창업자",
+        "support": "파주시와 (재)경기테크노파크에서는 파주청년창업지원센터 입주기업 및 파주시 관내 예비ㆍ초기창업자의 성공 창업을 지원하기 위하여 각 분야 전문가와의 멘토링을 지원하고자 하오니 많은 관심과 참여 바랍니다.\n☞ 공고일 기준 파주청년창업지원센터 입주기업 및 만 39세 이하의 청년으로, 거주지와 사업자등록증상의 사업장 소재지가 모두 파주시로 되어 있는 3년 미만의 예비ㆍ초기창업자\n☞ 청년창업 컨설팅ㆍ멘토링 지원 (기업 당 1백만원, 4회 기준)\n경기테크노파크 파주청년창업지원센터 운영실 031-940-9796, 9797",
+        "reviewNotes": [
+          "미열람 첨부가 있어 제출서류 목록의 완전성 확인 필요",
+          "기업마당 요약 공고. 최종 자격·제출 기준은 수행기관 원문 확인 필요",
+          "본문에서 명시적 제출물 미추출. 서류 없음으로 해석하지 않음"
+        ],
+        "requirements": [
+          {
+            "id": "f5bd7f703a595d368db5d881fe5104eabcc6a2c5aae88fe929da97cce639a11e",
+            "posting_id": "biz-PBLN_000000000126774",
+            "source_id": "6675bfed5eaa621992c5ae5b8b9de7d414fe51aa615381a009cd0887ef5ec831",
+            "document_type": "참가신청서",
+            "original_name": "멘토링 신청서",
+            "necessity": "needs_review",
+            "stage": "unknown",
+            "condition_text": "첨부 양식의 적용 대상·제출 의무 확인 필요",
+            "deadline_text": null,
+            "deadline_date": null,
+            "deadline_precision": null,
+            "evidence_quote": "(붙임2)청년창업 멘토링 신청서.hwp",
+            "evidence_line": 1,
+            "template_url": "https://www.bizinfo.go.kr/cmm/fms/fileDown.do?atchFileId=FILE_000000000774657&fileSn=0",
+            "extraction_method": "filename_candidate",
+            "review_status": "unreviewed",
+            "evidence_url": "https://www.bizinfo.go.kr/sii/siia/selectSIIA200Detail.do?pblancId=PBLN_000000000126774"
+          }
+        ]
+      }
+    },
+    {
+      "id": "startup-cuk-270222",
+      "type": "창업지원",
+      "title": "[CUK창업지원단] 모두의 창업 프로젝트 모집 공고 안내",
+      "org": "가톨릭대학교",
+      "source": {
+        "name": "가톨릭대학교",
+        "url": "https://www.catholic.ac.kr/ko/campuslife/notice.do?mode=view&articleNo=270222"
+      },
+      "isVirtual": false,
+      "jobs": [
+        "founder"
+      ],
+      "required": [
+        {
+          "key": "other",
+          "label": "소속·지역·창업 단계 등 원문 지원 자격 확인",
+          "src": "startup-body"
+        }
+      ],
+      "preferred": [],
+      "documents": [
+        "참가신청서"
+      ],
+      "applyUrl": "https://www.catholic.ac.kr/ko/campuslife/notice.do?mode=view&articleNo=270222",
+      "sections": [
+        {
+          "id": "startup-body",
+          "title": "공고 본문",
+          "text": "중소벤처기업부에서 혁신 인재의 창업 촉진을 위해 「모두의 창업 프로젝트」를 운영하오니 학생들의 많은 참여를 바랍니다.\n접수일정 : 26.3.26.(목) ~ 26.5.15.(금) 16:00\n지원대상 : 전 국민 누구나\n주요내용\n- 일반/기술트랙 : 창의적 아이디어, 기술 등을 활용·융합을 통해 불편을 해소하고 새로운 가치를 창출\n- 로컬트랙 : 지역자원을 기반으로 창의성과 혁신성을 결합하여 새로운 가치를 창출\n신청방법 : 모두의 창업 프로젝트 홈페이지\n* URL: https://www.modoo.or.kr/\n※ 참가 희망 학생 대상 CUK창업지원단 창업지원팀 사업계획서 멘토링 지원 ※\n자세한 사항은 첨부된 모집공고문을 확인하시기 바랍니다."
+        },
+        {
+          "id": "789ca332f8c61e5c9525daac20267117c33ea32e4be1f985baa828002e75f188",
+          "title": "참가신청서",
+          "text": "③ 온라인 신청서 작성 및 제출 후, 접수 결과 알림톡 수령 시 최종 접수 완료"
+        }
+      ],
+      "versions": [
+        {
+          "version": 1,
+          "checkedAt": "2026-11-21T06:15:58.832654+00:00",
+          "deadline": ""
+        }
+      ],
+      "confidence": 1,
+      "reviewed": false,
+      "deadlineStatus": "unknown",
+      "facts": [
+        {
+          "label": "지원 유형",
+          "value": "사업화·활동비"
+        }
+      ],
+      "startup": {
+        "postingId": "cuk-270222",
+        "category": "사업화·활동비",
+        "status": "needs_review",
+        "eligibility": "지원대상 : 전 국민 누구나\n※ 참가 희망 학생 대상 CUK창업지원단 창업지원팀 사업계획서 멘토링 지원 ※",
+        "support": "지원대상 : 전 국민 누구나\n※ 참가 희망 학생 대상 CUK창업지원단 창업지원팀 사업계획서 멘토링 지원 ※",
+        "reviewNotes": [
+          "접수 기간 확인 필요",
+          "본문에 이미지가 있어 이미지 내 조건·서류 확인 필요"
+        ],
+        "requirements": [
+          {
+            "id": "789ca332f8c61e5c9525daac20267117c33ea32e4be1f985baa828002e75f188",
+            "posting_id": "cuk-270222",
+            "source_id": "9d119d0e40fefbf1bdfc78b1a1f5c9513501c6e137c96ac66107da7699ec1d59",
+            "document_type": "참가신청서",
+            "original_name": "온라인 신청서",
+            "necessity": "required",
+            "stage": "application",
+            "condition_text": "",
+            "deadline_text": null,
+            "deadline_date": null,
+            "deadline_precision": null,
+            "evidence_quote": "③ 온라인 신청서 작성 및 제출 후, 접수 결과 알림톡 수령 시 최종 접수 완료",
+            "evidence_line": 238,
+            "template_url": null,
+            "extraction_method": "submission_rule",
+            "review_status": "unreviewed",
+            "evidence_url": "https://www.catholic.ac.kr/ko/campuslife/notice.do?mode=download&articleNo=270222&attachNo=219637"
+          }
+        ]
+      }
+    },
+    {
+      "id": "startup-cuk-270315",
+      "type": "창업지원",
+      "title": "[창업지원팀] 2026학년도 창업동아리 모집 안내",
+      "org": "가톨릭대학교",
+      "source": {
+        "name": "가톨릭대학교",
+        "url": "https://www.catholic.ac.kr/ko/campuslife/notice.do?mode=view&articleNo=270315"
+      },
+      "isVirtual": false,
+      "jobs": [
+        "founder"
+      ],
+      "required": [
+        {
+          "key": "other",
+          "label": "소속·지역·창업 단계 등 원문 지원 자격 확인",
+          "src": "startup-body"
+        }
+      ],
+      "preferred": [],
+      "documents": [
+        "참가신청서"
+      ],
+      "applyUrl": "https://www.catholic.ac.kr/ko/campuslife/notice.do?mode=view&articleNo=270315",
+      "sections": [
+        {
+          "id": "startup-body",
+          "title": "공고 본문",
+          "text": "안녕하세요 가톨릭대학교 창업지원팀입니다.\n2026학년도 창업동아리 모집을 다음과 같이 안내하오니 재학생 여러분의 많은 관심과 참여 바랍니다.\n1. 모집 개요\n가. 지원 자격: 창업 아이템을 보유한 본교 재학생 2인 이상의 팀\n(팀장은 반드시 재학생, 휴학생은 팀원으로 참여 가능)\n나. 모집 규모: 총 10팀 선발 (S/A/B/C/D 등급 부여)\n2. 지원 내용\n가. 창업 활동비 지원: 아이템 개발비 및 기술정보활동비 지급\n나. 등급별 차등 지원 내역:\n1) S등급: 최대 100만 원\n2) A등급: 최대 70만 원\n3) B등급: 최대 50만 원\n4) C등급: 최대 40만 원\n5) D등급: 최대 30만 원\n3. 신청 안내\n가. 접수 기간: 2026.04.07.(화) ~ 04.15.(수)\n나. 결과 발표: 2026.04.16.(목) 예정\n다. 신청 방법\nstep 1. 창업동아리 신청서 작성(양식 첨부파일 참조)\nstep 2. 구글 폼(https://forms.gle/aCtZtQjQCnhjoqZ88) 작성 및 신청서 첨부 제출\n4. 유의 사항\n가. 제출 서류 서면 심사로 진행되며 별도의 면접 심사는 없습니다.\n나. 세부 사항은 첨부된 모집 공고문을 반드시 확인해 주시기 바랍니다.\n5. 문의처\n가. 가톨릭대학교 창업지원팀 (02-2164-4175, 4734)"
+        },
+        {
+          "id": "4871eb5af847f3573875f623afcca531d0d8dc36798c95503cc91944a63928cd",
+          "title": "참가신청서",
+          "text": "step 1. 창업동아리 신청서 작성(양식 첨부파일 참조)"
+        }
+      ],
+      "versions": [
+        {
+          "version": 1,
+          "checkedAt": "2026-11-21T06:16:05.896724+00:00",
+          "deadline": "2026-04-15"
+        }
+      ],
+      "confidence": 1,
+      "reviewed": false,
+      "deadlineStatus": "date_only",
+      "facts": [
+        {
+          "label": "지원 유형",
+          "value": "창업동아리"
+        }
+      ],
+      "startup": {
+        "postingId": "cuk-270315",
+        "category": "창업동아리",
+        "status": "closed",
+        "eligibility": "2026학년도 창업동아리 모집을 다음과 같이 안내하오니 재학생 여러분의 많은 관심과 참여 바랍니다.\n가. 지원 자격: 창업 아이템을 보유한 본교 재학생 2인 이상의 팀\n(팀장은 반드시 재학생, 휴학생은 팀원으로 참여 가능)",
+        "support": "안녕하세요 가톨릭대학교 창업지원팀입니다.\n가. 지원 자격: 창업 아이템을 보유한 본교 재학생 2인 이상의 팀\n2. 지원 내용\n가. 창업 활동비 지원: 아이템 개발비 및 기술정보활동비 지급\n나. 등급별 차등 지원 내역:\n가. 가톨릭대학교 창업지원팀 (02-2164-4175, 4734)",
+        "reviewNotes": [
+          "미열람 첨부가 있어 제출서류 목록의 완전성 확인 필요",
+          "본문에 이미지가 있어 이미지 내 조건·서류 확인 필요"
+        ],
+        "requirements": [
+          {
+            "id": "4871eb5af847f3573875f623afcca531d0d8dc36798c95503cc91944a63928cd",
+            "posting_id": "cuk-270315",
+            "source_id": "29912da6b38ed3f05c997fb8ffd7bb446e47d6796570b1c7a1dcfc1240d9e716",
+            "document_type": "참가신청서",
+            "original_name": "창업동아리 신청서",
+            "necessity": "required",
+            "stage": "application",
+            "condition_text": "",
+            "deadline_text": "가. 접수 기간: 2026.04.07.(화) ~ 04.15.(수)",
+            "deadline_date": "2026-04-15",
+            "deadline_precision": "day",
+            "evidence_quote": "step 1. 창업동아리 신청서 작성(양식 첨부파일 참조)",
+            "evidence_line": 19,
+            "template_url": "https://www.catholic.ac.kr/ko/campuslife/notice.do?mode=download&articleNo=270315&attachNo=219892",
+            "extraction_method": "submission_rule",
+            "review_status": "unreviewed",
+            "evidence_url": "https://www.catholic.ac.kr/ko/campuslife/notice.do?mode=view&articleNo=270315"
+          }
+        ]
+      }
+    },
+    {
+      "id": "startup-cuk-275912",
+      "type": "창업지원",
+      "title": "[CUK창업지원단] 2026학년도 창업동아리 모집 안내",
+      "org": "가톨릭대학교",
+      "source": {
+        "name": "가톨릭대학교",
+        "url": "https://www.catholic.ac.kr/ko/campuslife/notice.do?mode=view&articleNo=275912"
+      },
+      "isVirtual": false,
+      "jobs": [
+        "founder"
+      ],
+      "required": [
+        {
+          "key": "other",
+          "label": "소속·지역·창업 단계 등 원문 지원 자격 확인",
+          "src": "startup-body"
+        }
+      ],
+      "preferred": [],
+      "documents": [
+        "참가신청서"
+      ],
+      "applyUrl": "https://www.catholic.ac.kr/ko/campuslife/notice.do?mode=view&articleNo=275912",
+      "sections": [
+        {
+          "id": "startup-body",
+          "title": "공고 본문",
+          "text": "안녕하세요 가톨릭대학교 창업지원팀입니다.\n2026학년도 창업동아리 모집을 다음과 같이 안내하오니 재학생 여러분의 많은 관심과 참여 바랍니다.\n1. 모집 개요\n가. 지원 자격: 창업 아이템을 보유한 본교 재학생 2인 이상의 팀\n(팀장은 반드시 재학생, 휴학생은 팀원으로 참여 가능)\n나. 모집 규모: 총 20팀 선발\n2. 지원 내용\n- 창업 활동비 지원: 아이템 개발비 및 기술정보활동비 지급\n3. 신청 안내\n가. 접수 기간 : 2026.09.16.(수) ~ 09.30.(수) 23시 59분까지\n나. 결과 발표 : 2026.10.02.(금) 예정\n다. 신청 방법\nstep 1. 창업동아리 신청서 작성(양식 첨부파일 참조)\nstep 2. 구글 폼(https://forms.gle/NUgCY1xANFPugXei9) 작성 및 신청서 첨부 제출\n4. 유의 사항\n- 제출 서류 서면 심사로 진행되며 별도의 면접 심사는 없습니다.\n5. 문의처 : 가톨릭대학교 창업지원팀 (02-2164-4734)"
+        },
+        {
+          "id": "594a70fecfc17b5f00538dcb8d4260ca85df34088c4e244a7ae5eb4d92079924",
+          "title": "참가신청서",
+          "text": "step 1. 창업동아리 신청서 작성(양식 첨부파일 참조)"
+        }
+      ],
+      "versions": [
+        {
+          "version": 1,
+          "checkedAt": "2026-11-21T06:15:52.800525+00:00",
+          "deadline": "2026-09-30"
+        }
+      ],
+      "confidence": 1,
+      "reviewed": false,
+      "deadlineStatus": "date_only",
+      "facts": [
+        {
+          "label": "지원 유형",
+          "value": "창업동아리"
+        }
+      ],
+      "startup": {
+        "postingId": "cuk-275912",
+        "category": "창업동아리",
+        "status": "closed",
+        "eligibility": "2026학년도 창업동아리 모집을 다음과 같이 안내하오니 재학생 여러분의 많은 관심과 참여 바랍니다.\n가. 지원 자격: 창업 아이템을 보유한 본교 재학생 2인 이상의 팀\n(팀장은 반드시 재학생, 휴학생은 팀원으로 참여 가능)",
+        "support": "안녕하세요 가톨릭대학교 창업지원팀입니다.\n가. 지원 자격: 창업 아이템을 보유한 본교 재학생 2인 이상의 팀\n2. 지원 내용\n- 창업 활동비 지원: 아이템 개발비 및 기술정보활동비 지급\n5. 문의처 : 가톨릭대학교 창업지원팀 (02-2164-4734)",
+        "reviewNotes": [
+          "미열람 첨부가 있어 제출서류 목록의 완전성 확인 필요",
+          "본문에 이미지가 있어 이미지 내 조건·서류 확인 필요"
+        ],
+        "requirements": [
+          {
+            "id": "594a70fecfc17b5f00538dcb8d4260ca85df34088c4e244a7ae5eb4d92079924",
+            "posting_id": "cuk-275912",
+            "source_id": "4588aacd07a87b43ff86cbb2383a7623b9dd47e7762677b5623d1cec328d6565",
+            "document_type": "참가신청서",
+            "original_name": "창업동아리 신청서",
+            "necessity": "required",
+            "stage": "application",
+            "condition_text": "",
+            "deadline_text": "가. 접수 기간 : 2026.09.16.(수) ~ 09.30.(수) 23시 59분까지",
+            "deadline_date": "2026-09-30",
+            "deadline_precision": "day",
+            "evidence_quote": "step 1. 창업동아리 신청서 작성(양식 첨부파일 참조)",
+            "evidence_line": 13,
+            "template_url": "https://www.catholic.ac.kr/ko/campuslife/notice.do?mode=download&articleNo=275912&attachNo=225653",
+            "extraction_method": "submission_rule",
+            "review_status": "unreviewed",
+            "evidence_url": "https://www.catholic.ac.kr/ko/campuslife/notice.do?mode=view&articleNo=275912"
+          }
+        ]
+      }
+    },
+    {
+      "id": "startup-cuk-276113",
+      "type": "창업지원",
+      "title": "★★ 2026년 가톨릭대학교 창업보육센터 입주기업 모집 공고 ★★",
+      "org": "가톨릭대학교",
+      "source": {
+        "name": "가톨릭대학교",
+        "url": "https://www.catholic.ac.kr/ko/campuslife/notice.do?mode=view&articleNo=276113"
+      },
+      "isVirtual": false,
+      "jobs": [
+        "founder"
+      ],
+      "required": [
+        {
+          "key": "other",
+          "label": "소속·지역·창업 단계 등 원문 지원 자격 확인",
+          "src": "startup-body"
+        }
+      ],
+      "preferred": [],
+      "documents": [
+        "개인정보동의서",
+        "사업계획서",
+        "참가신청서"
+      ],
+      "applyUrl": "https://www.catholic.ac.kr/ko/campuslife/notice.do?mode=view&articleNo=276113",
+      "sections": [
+        {
+          "id": "startup-body",
+          "title": "공고 본문",
+          "text": "2026년 가톨릭대학교 창업보육센터 입주기업 모집 공고\n가톨릭대학교 창업보육센터에서는 우수한 기술과 사업아이템을 보유하고 성장 가능성이 높은 창업기업을 발굴하여 안정적인 사업공간과 맞춤형 보육서비스를 제공하고자 다음과 같이 입주기업을 모집하오니, 관심있는 예비창업자 및 창업기업의 많은 신청 바랍니다.\n2026년 9월 22일\n가톨릭대학교 창업보육센터장\n1. 모집공간\n○ 대상공간(가톨릭대학교 성심교정)\n2. 모집대상\n○ 자격요건\n- 대학과의 산학협력을 통한 성장 가능성이 높은 예비창업자 또는 기업\n- 창업보육센터 입주 확정 기업은 주사업장(본점)이 입주하여야 함\n○ 우대사항\n- BT/IT 산업, 전기·전자 분야, 생물/바이오 분야\n- 가톨릭대학교 재학(졸업)생 또는 교원 창업자\n- 창업보육센터 입주 확정 기업은 주사업장(본점)이 입주하여야 함\n- 대학 및 CUK창업지원단의 창업지원 프로그램과 연계 가능성이 높은 기업\n※ 상기 분야 외에도 사업성·기술성·성장가능성이 우수한 기업은 신청 가능\n○ 제외대상\n- 기업부설연구소 입주 시 본사가 정부나 지자체 지원 공간에 입주한 경우\n- 금융기관 등으로부터 채무불이행 및 국세ㆍ지방세 체납으로 규제중인 자 또는 기업\n- ｢중소기업창업지원법 시행령｣ 제4조(창업에서 제외되는 업종)의 업종*을 영위하고 있거나 영위하고자 하는 자\n* 일반유흥주점업, 무도유흥주점업, 기타 사행시설 관리 및 운영업, 그밖에 경제질서 및 미풍양속에 현저히 어긋나는 업종으로서 중소벤처기업부령으로 정하는 업종\n- 폐수, 소음, 진동 등 공해 다발 업종을 영위하는 경우\n3. 모집일정\n○ 추진일정\n○ 신청 및 접수\n- 신청기간 : 2026. 9. 22.(화) ~ 10. 6.(화) 22:00까지\n- 접수방법 : 이메일 접수(pdw80@catholic.ac.kr)\n- 제출서류\n※ 허위사실 기재 시 불이익을 받을 수 있으며, 제출된 서류는 일체 반환하지 않음\n4. 선정절차 및 평가방법\n○ 선정방법\n- 서면평가: 제출서류 기반 자격요건 검토 후 적합 시 발표평가 대상자로 선정\n- 발표평가: 선정기준에 의거하여 발표평가 실시(10분 발표+10분 질의응답)\n※ 발표평가 발표자는 대표자가 하는 것을 원칙으로 함\n※ 발표평가 시 위원별 평가 합산 점수 평균 70점 이상 고득점자 순 입주대상으로 선정\n(70점 미만의 경우 선정 제외)\n- 최종선정: 대면평가 결과 고득점자 순으로 최종 입주 대상자 선정\n※ 대면평가 최종 평균 점수가 동점일 경우 ‘대학·센터 연계성’ 평가 항목의 평균 점수가 높은 신청자를 우선적으로 선정함\n○ 평가기준\n5. 입주 조건\n○ 계약기간 : 입주일로부터 1년\n- 입주 개시일로부터 15일 이내 입주\n- 매년 성과 평가를 통한 1년 단위 계약연장\n○ 지원사항 : 입주공간(※ 사무용 집기, 전화, 인터넷 등은 지원하지 않음), 청소 및 관리 지원\n○ 부담금\n《부담금별 세부 사항》\n※ 전기료는 매월 지정일 검침 후 원단위 절삭하여 임대료, 관리비에 포함하여 납부\n6. 입주기업 지원\n7. 유의사항 및 문의처\n○ 유의사항\n- 모집 기간 이후 접수된 신청서는 접수 무효 처리되며, 기한 내 신청서를 접수할 수 있도록 기한 및 제출 방법을 숙지하여야 함(모든 책임은 신청자 본인에게 있음)\n- 예비창업자의 경우 입주일로부터 3개월 이내 창업(사업자등록)을 하지 않을 시 퇴거 조치 될 수 있음\n- 기 창업자(기업)의 경우 입주일로부터 3개월 이내 기업의 본점 소재지를 입주 공간으로 이전하지 않을 시 퇴거 조치 될 수 있음\n※ 기업부설연구소 입주 시 연구소 주소지를 입주 공간으로 두어야 함\n- 취지에 적합한 창업자가 없을 시 모집 규모에 미달하더라도 최종 선정하지 않을 수 있으며, 적합한 창업자 모집 시까지 연장하여 모집할 수 있음\n- 입주 확정된 자가 공고문 및 관련 규정에 위배 되거나, 입주신청서의 내용을 허위 기재 또는 누락한 경우, 선정 취소 및 향후 관련 공고의 참여 제한 등의 조치를 받을 수 있음\n- 본 공고문에 명시되지 않은 사항은 관계법령, 관련규정 및 가톨릭대학교에서 정하는 바에 따르며, 지침ㆍ기준 등을 숙지하지 않아 발생하는 불이익 및 그에 따른 책임은 본 사업을 신청한 창업자에게 있음\n○ 문의처\n- 전 화 : 02-2164-4730\n- 이메일 : pdw80@catholic.ac.kr\n붙임 입주신청서, 사업계획서, 개인정보활용동의서 각 1부."
+        },
+        {
+          "id": "27d2c8f3bf62c1088d8feb4de6de8727f48cdc774dad55e2666e808b27355e35",
+          "title": "개인정보동의서",
+          "text": "붙임 입주신청서, 사업계획서, 개인정보활용동의서 각 1부."
+        },
+        {
+          "id": "8657a9a8a6693cbc321477c2161e919bf8e63816422e77a60f7c9f691a9025d6",
+          "title": "사업계획서",
+          "text": "붙임 입주신청서, 사업계획서, 개인정보활용동의서 각 1부."
+        },
+        {
+          "id": "73aa612216f229f38dddb6130c0e4f144bc6cf56612c3306ad72f7c0188d4ab6",
+          "title": "참가신청서",
+          "text": "붙임 입주신청서, 사업계획서, 개인정보활용동의서 각 1부."
+        }
+      ],
+      "versions": [
+        {
+          "version": 1,
+          "checkedAt": "2026-11-21T06:15:55.851745+00:00",
+          "deadline": "2026-10-06"
+        }
+      ],
+      "confidence": 1,
+      "reviewed": false,
+      "deadlineStatus": "date_only",
+      "facts": [
+        {
+          "label": "지원 유형",
+          "value": "공간·보육"
+        }
+      ],
+      "startup": {
+        "postingId": "cuk-276113",
+        "category": "공간·보육",
+        "status": "closed",
+        "eligibility": "가톨릭대학교 창업보육센터에서는 우수한 기술과 사업아이템을 보유하고 성장 가능성이 높은 창업기업을 발굴하여 안정적인 사업공간과 맞춤형 보육서비스를 제공하고자 다음과 같이 입주기업을 모집하오니, 관심있는 예비창업자 및 창업기업의 많은 신청 바랍니다.\n○ 대상공간(가톨릭대학교 성심교정)\n2. 모집대상\n○ 자격요건\n- 대학과의 산학협력을 통한 성장 가능성이 높은 예비창업자 또는 기업\n○ 제외대상\n- 서면평가: 제출서류 기반 자격요건 검토 후 적합 시 발표평가 대상자로 선정\n※ 발표평가 시 위원별 평가 합산 점수 평균 70점 이상 고득점자 순 입주대상으로 선정\n- 최종선정: 대면평가 결과 고득점자 순으로 최종 입주 대상자 선정\n- 예비창업자의 경우 입주일로부터 3개월 이내 창업(사업자등록)을 하지 않을 시 퇴거 조치 될 수 있음\n- 기 창업자(기업)의 경우 입주일로부터 3개월 이내 기업의 본점 소재지를 입주 공간으로 이전하지 않을 시 퇴거 조치 될 수 있음",
+        "support": "2026년 가톨릭대학교 창업보육센터 입주기업 모집 공고\n가톨릭대학교 창업보육센터에서는 우수한 기술과 사업아이템을 보유하고 성장 가능성이 높은 창업기업을 발굴하여 안정적인 사업공간과 맞춤형 보육서비스를 제공하고자 다음과 같이 입주기업을 모집하오니, 관심있는 예비창업자 및 창업기업의 많은 신청 바랍니다.\n가톨릭대학교 창업보육센터장\n- 창업보육센터 입주 확정 기업은 주사업장(본점)이 입주하여야 함\n- 창업보육센터 입주 확정 기업은 주사업장(본점)이 입주하여야 함\n- 대학 및 CUK창업지원단의 창업지원 프로그램과 연계 가능성이 높은 기업\n- 기업부설연구소 입주 시 본사가 정부나 지자체 지원 공간에 입주한 경우\n- ｢중소기업창업지원법 시행령｣ 제4조(창업에서 제외되는 업종)의 업종*을 영위하고 있거나 영위하고자 하는 자\n○ 지원사항 : 입주공간(※ 사무용 집기, 전화, 인터넷 등은 지원하지 않음), 청소 및 관리 지원\n6. 입주기업 지원",
+        "reviewNotes": [
+          "미열람 첨부가 있어 제출서류 목록의 완전성 확인 필요",
+          "본문에 이미지가 있어 이미지 내 조건·서류 확인 필요"
+        ],
+        "requirements": [
+          {
+            "id": "27d2c8f3bf62c1088d8feb4de6de8727f48cdc774dad55e2666e808b27355e35",
+            "posting_id": "cuk-276113",
+            "source_id": "09501439981b73c9cd344532896ae14cdb5ecd344e7dfe22e68add96c1130a12",
+            "document_type": "개인정보동의서",
+            "original_name": "개인정보활용동의서",
+            "necessity": "required",
+            "stage": "application",
+            "condition_text": "",
+            "deadline_text": "- 신청기간 : 2026. 9. 22.(화) ~ 10. 6.(화) 22:00까지\n- 모집 기간 이후 접수된 신청서는 접수 무효 처리되며, 기한 내 신청서를 접수할 수 있도록 기한 및 제출 방법을 숙지하여야 함(모든 책임은 신청자 본인에게 있음) - 예비창업자의 경우 입주일로부터 3개월 이내 창업(사업자등록)을 하지 않을 시 퇴거 조치 될 수 있음 - 기 창업자(기업)의 경우 입주일로부터 3개월 이내 기업의 본점 소재지를 입주 공간으로 이전하지 않을 시 퇴거 조치 될 수 있음 ※ 기업부설연구소 입주 시 연구소 주소지를 입주 공간으로 두어야 함",
+            "deadline_date": "2026-10-06",
+            "deadline_precision": "day",
+            "evidence_quote": "붙임 입주신청서, 사업계획서, 개인정보활용동의서 각 1부.",
+            "evidence_line": 61,
+            "template_url": "https://www.catholic.ac.kr/ko/campuslife/notice.do?mode=download&articleNo=276113&attachNo=225852",
+            "extraction_method": "submission_rule",
+            "review_status": "unreviewed",
+            "evidence_url": "https://www.catholic.ac.kr/ko/campuslife/notice.do?mode=view&articleNo=276113"
+          },
+          {
+            "id": "8657a9a8a6693cbc321477c2161e919bf8e63816422e77a60f7c9f691a9025d6",
+            "posting_id": "cuk-276113",
+            "source_id": "09501439981b73c9cd344532896ae14cdb5ecd344e7dfe22e68add96c1130a12",
+            "document_type": "사업계획서",
+            "original_name": "사업계획서",
+            "necessity": "required",
+            "stage": "application",
+            "condition_text": "",
+            "deadline_text": "- 신청기간 : 2026. 9. 22.(화) ~ 10. 6.(화) 22:00까지\n- 모집 기간 이후 접수된 신청서는 접수 무효 처리되며, 기한 내 신청서를 접수할 수 있도록 기한 및 제출 방법을 숙지하여야 함(모든 책임은 신청자 본인에게 있음) - 예비창업자의 경우 입주일로부터 3개월 이내 창업(사업자등록)을 하지 않을 시 퇴거 조치 될 수 있음 - 기 창업자(기업)의 경우 입주일로부터 3개월 이내 기업의 본점 소재지를 입주 공간으로 이전하지 않을 시 퇴거 조치 될 수 있음 ※ 기업부설연구소 입주 시 연구소 주소지를 입주 공간으로 두어야 함",
+            "deadline_date": "2026-10-06",
+            "deadline_precision": "day",
+            "evidence_quote": "붙임 입주신청서, 사업계획서, 개인정보활용동의서 각 1부.",
+            "evidence_line": 61,
+            "template_url": "https://www.catholic.ac.kr/ko/campuslife/notice.do?mode=download&articleNo=276113&attachNo=225852",
+            "extraction_method": "submission_rule",
+            "review_status": "unreviewed",
+            "evidence_url": "https://www.catholic.ac.kr/ko/campuslife/notice.do?mode=view&articleNo=276113"
+          },
+          {
+            "id": "73aa612216f229f38dddb6130c0e4f144bc6cf56612c3306ad72f7c0188d4ab6",
+            "posting_id": "cuk-276113",
+            "source_id": "09501439981b73c9cd344532896ae14cdb5ecd344e7dfe22e68add96c1130a12",
+            "document_type": "참가신청서",
+            "original_name": "입주신청서",
+            "necessity": "required",
+            "stage": "application",
+            "condition_text": "",
+            "deadline_text": "- 신청기간 : 2026. 9. 22.(화) ~ 10. 6.(화) 22:00까지\n- 모집 기간 이후 접수된 신청서는 접수 무효 처리되며, 기한 내 신청서를 접수할 수 있도록 기한 및 제출 방법을 숙지하여야 함(모든 책임은 신청자 본인에게 있음) - 예비창업자의 경우 입주일로부터 3개월 이내 창업(사업자등록)을 하지 않을 시 퇴거 조치 될 수 있음 - 기 창업자(기업)의 경우 입주일로부터 3개월 이내 기업의 본점 소재지를 입주 공간으로 이전하지 않을 시 퇴거 조치 될 수 있음 ※ 기업부설연구소 입주 시 연구소 주소지를 입주 공간으로 두어야 함",
+            "deadline_date": "2026-10-06",
+            "deadline_precision": "day",
+            "evidence_quote": "붙임 입주신청서, 사업계획서, 개인정보활용동의서 각 1부.",
+            "evidence_line": 61,
+            "template_url": "https://www.catholic.ac.kr/ko/campuslife/notice.do?mode=download&articleNo=276113&attachNo=225852",
+            "extraction_method": "submission_rule",
+            "review_status": "unreviewed",
+            "evidence_url": "https://www.catholic.ac.kr/ko/campuslife/notice.do?mode=view&articleNo=276113"
+          }
+        ]
+      }
+    },
+    {
+      "id": "startup-cuk-276869",
+      "type": "창업지원",
+      "title": "「2026 CUK AI Startup Challenge – AI 융합 해커톤」 참가자 모집",
+      "org": "가톨릭대학교",
+      "source": {
+        "name": "가톨릭대학교",
+        "url": "https://cukai.catholic.ac.kr/ai/community/notice.do?mode=view&articleNo=276869"
+      },
+      "isVirtual": false,
+      "jobs": [
+        "founder"
+      ],
+      "required": [
+        {
+          "key": "other",
+          "label": "소속·지역·창업 단계 등 원문 지원 자격 확인",
+          "src": "startup-body"
+        }
+      ],
+      "preferred": [],
+      "documents": [],
+      "applyUrl": "https://cukai.catholic.ac.kr/ai/community/notice.do?mode=view&articleNo=276869",
+      "sections": [
+        {
+          "id": "startup-body",
+          "title": "공고 본문",
+          "text": "경영대학과 AI전자정보융합대학에서는 경영·회계 분야와 AI·데이터 기술을 융합하여 실제 문제를 발굴하고, AI 솔루션 및 프로토타입을 개발하는 「2026 CUK AI Startup Challenge – AI 융합 해커톤」 참가자를 모집합니다.\n전공 융합 프로젝트와 전문가 멘토링을 통해 아이디어를 구체화하고, 직접 프로토타입을 개발해 볼 수 있는 기회이니 관심 있는 학생들의 많은 참여 바랍니다.\n1. 프로그램 개요\n- 프로그램명: 2026 CUK AI Startup Challenge – AI 융합 해커톤\n- 모집 대상: 경영대학 및 AI전자정보융합대학 소속 학부생\n* 경영학, 회계학, 컴퓨터정보공학, 미디어기술콘텐츠, 정보통신전자공학, 인공지능, 데이터사이언스학과\n* 2전공생 참여 가능\n- 모집 기간: 2026. 10. 19.(월) ~ 10. 23.(금)\n- 운영 기간: 2026. 10. 26.(월) ~ 11. 20.(금)\n* 선착순 30명 모집\n2. 주요 프로그램\n- 1주차: 팀 빌딩 및 문제 발굴, 킥오프\n- 2주차: 문제 정의 및 AI 솔루션 설계\n- 3주차: 프로토타입 개발 및 기술 멘토링\n- 4주차: 프로토타입 고도화, Demo Day 및 우수팀 시상\n※ 4주간 매주 월요일 점검 회의를 진행하며, 마지막 주 금요일 Demo Day를 운영할 예정입니다. 세부 일정은 운영 상황에 따라 변경될 수 있습니다.\n3. 주요 혜택 및 시상\n- 전공 융합을 통한 실전형 AI 프로젝트 수행\n- 전문가 피드백 및 기술 멘토링 제공\n- AI 솔루션 및 프로토타입 개발 경험\n- 우수팀 시상 및 향후 AI 융합 창업경진대회 연계\n4. 신청 방법\n- 신청 기간: 2026. 10. 19.(월) ~ 10. 23.(금)\n- 신청 방법: 포스터 내 QR코드 혹은 링크 접속을 통한 신청\n- 신청 링크: https://forms.gle/2kFR7EhYrd36ri3c7\n*개별 신청 후 1주차 팀 빌딩을 통해 융합 전공 팀이 구성 될 예정입니다.\n5. AI 융합 창업경진대회 연계 안내\n해커톤 프로그램 종료 후 AI 융합 창업경진대회가 연계되어 운영될 예정입니다. (11월 ~ 12월)\n기존 해커톤 참여팀과 신규 모집 및 예선을 통해 선발된 팀이 참가하며, 아이디어의 사업화 가능성을 구체화하고 우수팀 시상이 진행될 예정입니다.\n학생 여러분의 많은 관심과 참여 바랍니다.\n감사합니다.\n문의처: sobat@catholic.ac.kr / 02-2164-4290"
+        }
+      ],
+      "versions": [
+        {
+          "version": 1,
+          "checkedAt": "2026-11-21T06:16:09.024556+00:00",
+          "deadline": "2026-10-23"
+        }
+      ],
+      "confidence": 1,
+      "reviewed": false,
+      "deadlineStatus": "date_only",
+      "facts": [
+        {
+          "label": "지원 유형",
+          "value": "교육·멘토링"
+        }
+      ],
+      "startup": {
+        "postingId": "cuk-276869",
+        "category": "교육·멘토링",
+        "status": "closed",
+        "eligibility": "전공 융합 프로젝트와 전문가 멘토링을 통해 아이디어를 구체화하고, 직접 프로토타입을 개발해 볼 수 있는 기회이니 관심 있는 학생들의 많은 참여 바랍니다.\n- 모집 대상: 경영대학 및 AI전자정보융합대학 소속 학부생\n* 2전공생 참여 가능\n- 전공 융합을 통한 실전형 AI 프로젝트 수행\n*개별 신청 후 1주차 팀 빌딩을 통해 융합 전공 팀이 구성 될 예정입니다.",
+        "support": "전공 융합 프로젝트와 전문가 멘토링을 통해 아이디어를 구체화하고, 직접 프로토타입을 개발해 볼 수 있는 기회이니 관심 있는 학생들의 많은 참여 바랍니다.\n- 3주차: 프로토타입 개발 및 기술 멘토링\n- 4주차: 프로토타입 고도화, Demo Day 및 우수팀 시상\n3. 주요 혜택 및 시상\n- 전문가 피드백 및 기술 멘토링 제공\n- 우수팀 시상 및 향후 AI 융합 창업경진대회 연계\n기존 해커톤 참여팀과 신규 모집 및 예선을 통해 선발된 팀이 참가하며, 아이디어의 사업화 가능성을 구체화하고 우수팀 시상이 진행될 예정입니다.",
+        "reviewNotes": [
+          "본문에서 명시적 제출물 미추출. 서류 없음으로 해석하지 않음",
+          "본문에 이미지가 있어 이미지 내 조건·서류 확인 필요"
+        ],
+        "requirements": []
+      }
+    },
+    {
+      "id": "startup-cuk-277684",
+      "type": "창업지원",
+      "title": "[CUK창업지원단] 글로벌 창업경진대회 안내",
+      "org": "가톨릭대학교",
+      "source": {
+        "name": "가톨릭대학교",
+        "url": "https://www.catholic.ac.kr/ko/campuslife/notice.do?mode=view&articleNo=277684"
+      },
+      "isVirtual": false,
+      "jobs": [
+        "founder"
+      ],
+      "required": [
+        {
+          "key": "other",
+          "label": "소속·지역·창업 단계 등 원문 지원 자격 확인",
+          "src": "startup-body"
+        }
+      ],
+      "preferred": [],
+      "documents": [
+        "사업계획서",
+        "참가신청서"
+      ],
+      "applyUrl": "https://www.catholic.ac.kr/ko/campuslife/notice.do?mode=view&articleNo=277684",
+      "sections": [
+        {
+          "id": "startup-body",
+          "title": "공고 본문",
+          "text": "안녕하세요, CUK창업지원단입니다.\n「2026학년도 가톨릭대학교 글로벌 창업경진대회(EF Hult Prize 공식 캠퍼스 프로그램)」 참가팀을 모집합니다.\nEF Hult Prize는 매년 20만 명 이상이 참여하는 세계 최대 규모의 대학생 창업 경진대회입니다.\n교내 예선 → 국가 본선 → 글로벌 액셀러레이터 → 글로벌 결선으로 이어지며,\n최종 우승팀에게는 창업 자금 100만 달러가 주어집니다.\n- 모집 기간 : 11.9 (월) ~ 11.18 (수)\n- 참가 대상 : 본교 재학생으로만 구성된 2~4인 팀 (전공·학년 무관)\n- 주제 : UN 지속가능발전목표(SDGs) 1개 이상과 연계된 문제 해결형 창업 아이디어 또는 자유 주제\n- 심사 방법 : 1차 서류 심사 / 2차 본선 발표 · 질의응답\n- 신청 방법 : 참가 신청서 및 사업계획서 작성 후 CU K창업지원단 이메일로 제출 (~11. 18 (수) 23:59)\n※ CUK창업지원단 이메일 : startupcuk@catholic.ac.kr\n[주요 일정]\n- 서류 심사 결과 발표 : 11.25 (수) 본선 진출 10팀 선발\n- 본선 발표 자료 제출 : 12.4 (금)\n- 본선 및 시상 : 12.9 (수) / 가톨릭대학교 성심교정 K269\n[본선 진출 혜택]\n- 창업 지원금 총 400만원 (*등수별 차등 지급, 창업 지원상품으로 제공됩니다.)\n- 시상 : 대상, 최우수상, 우수상, 장려상 (총 10팀)\n※ 대상 수상팀은 EF Hult Prize 국내 본선과 연계될 예정입니다.\n창업에 관심 있는 학생 여러분의 많은 관심과 참여 바랍니다."
+        },
+        {
+          "id": "646058c413d50a389bcc023cc8b03aeb87581651294db64886b1b08f2cd2ee81",
+          "title": "발표자료",
+          "text": "- 본선 발표 자료 제출 : 12.4 (금)"
+        },
+        {
+          "id": "d500d466853056be2c4f8473209abf19a004bc83c94b4bd7d058f8ebf1e12b1e",
+          "title": "사업계획서",
+          "text": "- 신청 방법 : 참가 신청서 및 사업계획서 작성 후 CU K창업지원단 이메일로 제출 (~11. 18 (수) 23:59)"
+        },
+        {
+          "id": "5e3300a135f503ed0bcbc11e5a67fe6a3742ed45242de68acd145fca252d0518",
+          "title": "참가신청서",
+          "text": "- 신청 방법 : 참가 신청서 및 사업계획서 작성 후 CU K창업지원단 이메일로 제출 (~11. 18 (수) 23:59)"
+        }
+      ],
+      "versions": [
+        {
+          "version": 1,
+          "checkedAt": "2026-11-21T06:15:49.773228+00:00",
+          "deadline": "2026-11-18"
+        }
+      ],
+      "confidence": 1,
+      "reviewed": false,
+      "deadlineStatus": "date_only",
+      "facts": [
+        {
+          "label": "지원 유형",
+          "value": "경진대회·공모전"
+        }
+      ],
+      "startup": {
+        "postingId": "cuk-277684",
+        "category": "경진대회·공모전",
+        "status": "closed",
+        "eligibility": "- 참가 대상 : 본교 재학생으로만 구성된 2~4인 팀 (전공·학년 무관)\n- 시상 : 대상, 최우수상, 우수상, 장려상 (총 10팀)\n※ 대상 수상팀은 EF Hult Prize 국내 본선과 연계될 예정입니다.",
+        "support": "안녕하세요, CUK창업지원단입니다.\n최종 우승팀에게는 창업 자금 100만 달러가 주어집니다.\n- 신청 방법 : 참가 신청서 및 사업계획서 작성 후 CU K창업지원단 이메일로 제출 (~11. 18 (수) 23:59)\n※ CUK창업지원단 이메일 : startupcuk@catholic.ac.kr\n- 본선 및 시상 : 12.9 (수) / 가톨릭대학교 성심교정 K269\n- 창업 지원금 총 400만원 (*등수별 차등 지급, 창업 지원상품으로 제공됩니다.)\n- 시상 : 대상, 최우수상, 우수상, 장려상 (총 10팀)",
+        "reviewNotes": [
+          "미열람 첨부가 있어 제출서류 목록의 완전성 확인 필요",
+          "본문에 이미지가 있어 이미지 내 조건·서류 확인 필요"
+        ],
+        "requirements": [
+          {
+            "id": "646058c413d50a389bcc023cc8b03aeb87581651294db64886b1b08f2cd2ee81",
+            "posting_id": "cuk-277684",
+            "source_id": "ab90a0933de126628c62c0d584b51c6803ded7b2cc7c096b29d77e0da42dc7fb",
+            "document_type": "발표자료",
+            "original_name": "발표 자료",
+            "necessity": "conditional",
+            "stage": "finalist",
+            "condition_text": "본선·발표평가 대상 시",
+            "deadline_text": "- 본선 발표 자료 제출 : 12.4 (금)",
+            "deadline_date": "2026-12-04",
+            "deadline_precision": "day",
+            "evidence_quote": "- 본선 발표 자료 제출 : 12.4 (금)",
+            "evidence_line": 14,
+            "template_url": null,
+            "extraction_method": "submission_rule",
+            "review_status": "unreviewed",
+            "evidence_url": "https://www.catholic.ac.kr/ko/campuslife/notice.do?mode=view&articleNo=277684"
+          },
+          {
+            "id": "d500d466853056be2c4f8473209abf19a004bc83c94b4bd7d058f8ebf1e12b1e",
+            "posting_id": "cuk-277684",
+            "source_id": "ab90a0933de126628c62c0d584b51c6803ded7b2cc7c096b29d77e0da42dc7fb",
+            "document_type": "사업계획서",
+            "original_name": "사업계획서",
+            "necessity": "required",
+            "stage": "application",
+            "condition_text": "",
+            "deadline_text": "- 신청 방법 : 참가 신청서 및 사업계획서 작성 후 CU K창업지원단 이메일로 제출 (~11. 18 (수) 23:59)",
+            "deadline_date": "2026-11-18",
+            "deadline_precision": "day",
+            "evidence_quote": "- 신청 방법 : 참가 신청서 및 사업계획서 작성 후 CU K창업지원단 이메일로 제출 (~11. 18 (수) 23:59)",
+            "evidence_line": 10,
+            "template_url": null,
+            "extraction_method": "submission_rule",
+            "review_status": "unreviewed",
+            "evidence_url": "https://www.catholic.ac.kr/ko/campuslife/notice.do?mode=view&articleNo=277684"
+          },
+          {
+            "id": "5e3300a135f503ed0bcbc11e5a67fe6a3742ed45242de68acd145fca252d0518",
+            "posting_id": "cuk-277684",
+            "source_id": "ab90a0933de126628c62c0d584b51c6803ded7b2cc7c096b29d77e0da42dc7fb",
+            "document_type": "참가신청서",
+            "original_name": "참가 신청서",
+            "necessity": "required",
+            "stage": "application",
+            "condition_text": "",
+            "deadline_text": "- 신청 방법 : 참가 신청서 및 사업계획서 작성 후 CU K창업지원단 이메일로 제출 (~11. 18 (수) 23:59)",
+            "deadline_date": "2026-11-18",
+            "deadline_precision": "day",
+            "evidence_quote": "- 신청 방법 : 참가 신청서 및 사업계획서 작성 후 CU K창업지원단 이메일로 제출 (~11. 18 (수) 23:59)",
+            "evidence_line": 10,
+            "template_url": null,
+            "extraction_method": "submission_rule",
+            "review_status": "unreviewed",
+            "evidence_url": "https://www.catholic.ac.kr/ko/campuslife/notice.do?mode=view&articleNo=277684"
+          }
+        ]
+      }
+    },
+    {
+      "id": "startup-cuk-277825",
+      "type": "창업지원",
+      "title": "[모집] 2026 CUK AI Startup Challenge 「AI 융합 창업경진대회」 참가자 모집 안내",
+      "org": "가톨릭대학교",
+      "source": {
+        "name": "가톨릭대학교",
+        "url": "https://business.catholic.ac.kr/business/community/notice.do?mode=view&articleNo=277825"
+      },
+      "isVirtual": false,
+      "jobs": [
+        "founder"
+      ],
+      "required": [
+        {
+          "key": "other",
+          "label": "소속·지역·창업 단계 등 원문 지원 자격 확인",
+          "src": "startup-body"
+        }
+      ],
+      "preferred": [],
+      "documents": [
+        "발표자료"
+      ],
+      "applyUrl": "https://business.catholic.ac.kr/business/community/notice.do?mode=view&articleNo=277825",
+      "sections": [
+        {
+          "id": "startup-body",
+          "title": "공고 본문",
+          "text": "경영대학과 AI전자정보융합대학에서는 AI 기술을 활용한 창의적인 창업 아이디어를 발굴하고, 이를 구체적인 비즈니스 모델로 발전시키기 위한 「2026 CUK AI Startup Challenge – AI 융합 창업경진대회」 참가자를 모집합니다.\nAI 기술을 활용한 서비스, 플랫폼, 제품 등 다양한 분야의 창업 아이디어를 제안하고 구체화할 수 있는 기회이니 관심 있는 학생들의 많은 참여 바랍니다.\n1. 프로그램 개요\n- 프로그램명: 2026 CUK AI Startup Challenge – AI 융합 창업경진대회\n- 주제: AI 기술을 활용한 창의적 창업 아이디어 및 비즈니스 모델 제안\n- 제안 분야: AI를 활용한 서비스, 플랫폼, 제품 등\n2. 모집 대상\n- 기존 AI 융합해커톤 프로그램 참여 6팀\n- 경영대학 및 AI전자정보융합대학 소속 학부생 (신규 접수팀)\n* 경영학, 회계학, 컴퓨터정보공학, 미디어기술콘텐츠, 정보통신전자공학, 인공지능, 데이터사이언스학과\n* 2전공생 참여 가능\n3. 주요 일정\n- 2026. 11. 16.(월) ~ 11. 23.(월): 참가팀 구글폼 접수 (팀당 최소 3인 구성)\n- 2026. 11. 23.(월) ~ 11. 27.(금): Pitch Deck 제출 (MVP 선택 제출)\n- 2026. 12. 01.(화): 본선 진출 12팀 안내\n- 2026. 12. 03.(목) 18:00: 팀별 발표 및 수상팀 선발\n4. 제출 자료 (~11.27. 금)\n- Pitch Deck(발표자료): 필수 제출 (붙임파일 및 발표자료 sobat 메일 제출)\n- MVP(시제품): 선택 제출\n5. 시상 내역\n- 대상: 1팀 / 300,000원\n- 최우수상: 2팀 / 250,000원\n- 우수상: 3팀 / 200,000원\n6. 신청 방법\n- 신청 방법: 포스터 내 QR코드를 통한 구글폼 접수\n- 신청 기간: 2026. 11. 16.(월) ~ 11. 23.(월)\n학생 여러분의 많은 관심과 참여 바랍니다.\n감사합니다.\n문의처: sobat@catholic.ac.kr / 02-2164-4290"
+        },
+        {
+          "id": "d56755d03fc4c876c954c5714970f850b772621b6003f9a6f3c1647235466f51",
+          "title": "발표자료",
+          "text": "- Pitch Deck(발표자료): 필수 제출 (붙임파일 및 발표자료 sobat 메일 제출)"
+        },
+        {
+          "id": "32a2f54e75da83ebc45c722d643cdc9c0ac25d01e98ca935dc68c8cf7e2bd31a",
+          "title": "시제품",
+          "text": "- 2026. 11. 23.(월) ~ 11. 27.(금): Pitch Deck 제출 (MVP 선택 제출)"
+        }
+      ],
+      "versions": [
+        {
+          "version": 1,
+          "checkedAt": "2026-11-21T06:15:46.623309+00:00",
+          "deadline": "2026-11-23"
+        }
+      ],
+      "confidence": 1,
+      "reviewed": false,
+      "deadlineStatus": "date_only",
+      "facts": [
+        {
+          "label": "지원 유형",
+          "value": "경진대회·공모전"
+        }
+      ],
+      "startup": {
+        "postingId": "cuk-277825",
+        "category": "경진대회·공모전",
+        "status": "within_announced_period",
+        "eligibility": "2. 모집 대상\n* 2전공생 참여 가능\n- 2026. 11. 16.(월) ~ 11. 23.(월): 참가팀 구글폼 접수 (팀당 최소 3인 구성)\n- 대상: 1팀 / 300,000원",
+        "support": "5. 시상 내역",
+        "reviewNotes": [
+          "미열람 첨부가 있어 제출서류 목록의 완전성 확인 필요",
+          "본문에 이미지가 있어 이미지 내 조건·서류 확인 필요"
+        ],
+        "requirements": [
+          {
+            "id": "d56755d03fc4c876c954c5714970f850b772621b6003f9a6f3c1647235466f51",
+            "posting_id": "cuk-277825",
+            "source_id": "db48a06c790402ad33fc4b89f9e4fe6ee1243744e5d259ec4cb51958ac45a39e",
+            "document_type": "발표자료",
+            "original_name": "Pitch Deck",
+            "necessity": "required",
+            "stage": "application",
+            "condition_text": "",
+            "deadline_text": "4. 제출 자료 (~11.27. 금)",
+            "deadline_date": "2026-11-27",
+            "deadline_precision": "day",
+            "evidence_quote": "- Pitch Deck(발표자료): 필수 제출 (붙임파일 및 발표자료 sobat 메일 제출)",
+            "evidence_line": 18,
+            "template_url": null,
+            "extraction_method": "submission_rule",
+            "review_status": "unreviewed",
+            "evidence_url": "https://business.catholic.ac.kr/business/community/notice.do?mode=view&articleNo=277825"
+          },
+          {
+            "id": "32a2f54e75da83ebc45c722d643cdc9c0ac25d01e98ca935dc68c8cf7e2bd31a",
+            "posting_id": "cuk-277825",
+            "source_id": "db48a06c790402ad33fc4b89f9e4fe6ee1243744e5d259ec4cb51958ac45a39e",
+            "document_type": "시제품",
+            "original_name": "MVP",
+            "necessity": "optional",
+            "stage": "application",
+            "condition_text": "",
+            "deadline_text": "- 2026. 11. 23.(월) ~ 11. 27.(금): Pitch Deck 제출 (MVP 선택 제출)",
+            "deadline_date": "2026-11-27",
+            "deadline_precision": "day",
+            "evidence_quote": "- 2026. 11. 23.(월) ~ 11. 27.(금): Pitch Deck 제출 (MVP 선택 제출)",
+            "evidence_line": 14,
+            "template_url": null,
+            "extraction_method": "submission_rule",
+            "review_status": "unreviewed",
+            "evidence_url": "https://business.catholic.ac.kr/business/community/notice.do?mode=view&articleNo=277825"
+          }
+        ]
+      }
+    }
+  ]
+}

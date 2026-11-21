@@ -6,6 +6,7 @@ import { LogIn, UserPlus, UserRound } from "lucide-react";
 import { useStore } from "@/lib/store";
 import { PERSONAS } from "@/lib/data/personas";
 import { Warn } from "./ui";
+import type { CareerInterest } from "@/lib/types";
 
 export function AuthForm({ mode }: { mode: "login" | "signup" }) {
   const s = useStore();
@@ -15,14 +16,16 @@ export function AuthForm({ mode }: { mode: "login" | "signup" }) {
   const [pw2, setPw2] = useState("");
   const [err, setErr] = useState<string | null>(null);
   const [busy, setBusy] = useState(false);
+  const [interest, setInterest] = useState<CareerInterest | "">("");
   const signup = mode === "signup";
 
   const submit = async (e: React.FormEvent) => {
     e.preventDefault();
     if (signup && pw !== pw2) return setErr("비밀번호가 서로 달라요.");
+    if (signup && !interest) return setErr("관심 분야를 선택해 주세요.");
     setBusy(true);
     const loginId = id.trim().toLowerCase();
-    const error = signup ? await s.signup(loginId, pw) : await s.login(loginId, pw);
+    const error = signup ? await s.signup(loginId, pw, interest as CareerInterest) : await s.login(loginId, pw);
     setBusy(false);
     if (error) return setErr(error);
     // 가입 직후에는 기본 정보 입력으로, 로그인은 스킬트리로(프로필이 없으면 가드가 온보딩으로 보낸다)
@@ -35,7 +38,7 @@ export function AuthForm({ mode }: { mode: "login" | "signup" }) {
         <h1 className="text-xl font-bold">{signup ? "회원가입" : "로그인"}</h1>
         {signup && (
           <p className="text-sm text-slate-500">
-            아이디와 비밀번호만 받아요. 이름·연락처·이메일은 받지 않아요. 가입하면 바로 학과·학년·학번을 입력하고 보유 역량을 진단해요.
+            관심 분야를 선택하면 나에게 맞는 스킬트리와 공고를 연결해요. 가입 후 학과·학년과 준비한 결과물을 설정해요.
           </p>
         )}
         <label className="block text-sm">
@@ -66,6 +69,19 @@ export function AuthForm({ mode }: { mode: "login" | "signup" }) {
             비밀번호 확인
             <input type="password" className="input mt-1" value={pw2} onChange={(e) => setPw2(e.target.value)} autoComplete="new-password" required />
           </label>
+        )}
+        {signup && (
+          <fieldset>
+            <legend className="mb-2 text-sm font-semibold">관심 분야</legend>
+            <div className="grid grid-cols-2 gap-2">
+              {([['employment', '취업'], ['startup', '창업']] as const).map(([value, label]) => (
+                <label key={value} className={`cursor-pointer rounded-lg border p-3 ${interest === value ? 'border-edge bg-navy/5' : 'border-line'}`}>
+                  <input type="radio" name="careerInterest" value={value} checked={interest === value} onChange={() => setInterest(value)} required className="mr-2" />
+                  {label}
+                </label>
+              ))}
+            </div>
+          </fieldset>
         )}
         {err && <p className="rounded-lg bg-red-50 px-3 py-2 text-sm text-danger">{err}</p>}
         <button className="btn-primary w-full" disabled={busy}>

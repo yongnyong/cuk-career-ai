@@ -1904,6 +1904,4765 @@
       ]
     },
     {
+      "id": "mtc-video",
+      "name": "영상 기획·연출",
+      "summary": "영화·방송·유튜브 콘텐츠를 기획하고 연출한다",
+      "fields": [],
+      "departments": [
+        "media-tech"
+      ],
+      "base": "content-planner",
+      "srcUrl": "https://mtc.catholic.ac.kr/mtc/info/alumni001.do",
+      "nodes": [
+        {
+          "skill": "MTC-PLAN",
+          "required": true
+        },
+        {
+          "skill": "MTC-VIDEO",
+          "required": true,
+          "prereq": [
+            "MTC-PLAN"
+          ]
+        },
+        {
+          "skill": "SK-VIDEO",
+          "required": false
+        },
+        {
+          "skill": "SK-PORT",
+          "required": false,
+          "prereq": [
+            "MTC-VIDEO"
+          ]
+        },
+        {
+          "skill": "MTC-C-BROAD",
+          "required": false
+        }
+      ]
+    },
+    {
+      "id": "mtc-xr",
+      "name": "실감미디어·게임",
+      "summary": "실감미디어 프로그래밍과 게임 기획·개발",
+      "fields": [],
+      "departments": [
+        "media-tech"
+      ],
+      "base": "sw-developer",
+      "srcUrl": "https://mtc.catholic.ac.kr/mtc/info/alumni001.do",
+      "nodes": [
+        {
+          "skill": "SK-PY-01",
+          "required": true
+        },
+        {
+          "skill": "MTC-XR",
+          "required": true,
+          "prereq": [
+            "SK-PY-01"
+          ]
+        },
+        {
+          "skill": "MTC-GAME",
+          "required": false,
+          "prereq": [
+            "SK-PY-01"
+          ]
+        },
+        {
+          "skill": "SK-ALGO",
+          "required": false
+        },
+        {
+          "skill": "SK-PORT",
+          "required": false,
+          "prereq": [
+            "MTC-XR"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "mtc-vfx",
+      "name": "영상 특수효과",
+      "summary": "영화·게임·광고의 특수효과를 만든다",
+      "fields": [],
+      "departments": [
+        "media-tech"
+      ],
+      "base": "content-planner",
+      "srcUrl": "https://mtc.catholic.ac.kr/mtc/info/alumni001.do",
+      "nodes": [
+        {
+          "skill": "MTC-VIDEO",
+          "required": true
+        },
+        {
+          "skill": "MTC-VFX",
+          "required": true,
+          "prereq": [
+            "MTC-VIDEO"
+          ]
+        },
+        {
+          "skill": "SK-DESIGN-TOOL",
+          "required": false
+        },
+        {
+          "skill": "SK-PORT",
+          "required": false,
+          "prereq": [
+            "MTC-VFX"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "mtc-data",
+      "name": "콘텐츠 데이터·AI",
+      "summary": "콘텐츠 데이터를 분석하고 AI를 적용한다",
+      "fields": [],
+      "departments": [
+        "media-tech"
+      ],
+      "base": "data-analyst",
+      "srcUrl": "https://mtc.catholic.ac.kr/mtc/info/alumni001.do",
+      "nodes": [
+        {
+          "skill": "SK-PY-01",
+          "required": true
+        },
+        {
+          "skill": "MTC-DATA",
+          "required": true,
+          "prereq": [
+            "SK-PY-01"
+          ]
+        },
+        {
+          "skill": "SK-DA",
+          "required": false,
+          "prereq": [
+            "SK-PY-01"
+          ]
+        },
+        {
+          "skill": "SK-SQL",
+          "required": false
+        },
+        {
+          "skill": "SK-ADSP",
+          "required": false,
+          "prereq": [
+            "SK-DA"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "mtc-culture",
+      "name": "문화예술 기획·마케팅",
+      "summary": "문화예술 프로그램 기획, 마케터, 라이선싱 관리",
+      "fields": [],
+      "departments": [
+        "media-tech"
+      ],
+      "base": "arts-planner",
+      "srcUrl": "https://mtc.catholic.ac.kr/mtc/info/alumni001.do",
+      "nodes": [
+        {
+          "skill": "MTC-PLAN",
+          "required": true
+        },
+        {
+          "skill": "MTC-LICENSE",
+          "required": true,
+          "prereq": [
+            "MTC-PLAN"
+          ]
+        },
+        {
+          "skill": "SK-MKT",
+          "required": false
+        },
+        {
+          "skill": "SK-SNS",
+          "required": false
+        },
+        {
+          "skill": "SK-ARTS-PLAN",
+          "required": false,
+          "prereq": [
+            "MTC-LICENSE"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "mtc-startup",
+      "name": "ICT 기획·창업",
+      "summary": "ICT 분야 기획자, 프로그래밍 분야 창업",
+      "fields": [],
+      "departments": [
+        "media-tech"
+      ],
+      "base": "founder",
+      "srcUrl": "https://mtc.catholic.ac.kr/mtc/info/alumni001.do",
+      "nodes": [
+        {
+          "skill": "MTC-PLAN",
+          "required": true
+        },
+        {
+          "skill": "SK-WEB",
+          "required": false
+        },
+        {
+          "skill": "SK-IDEA",
+          "required": true,
+          "prereq": [
+            "MTC-PLAN"
+          ]
+        },
+        {
+          "skill": "SK-BMC",
+          "required": false,
+          "prereq": [
+            "SK-IDEA"
+          ]
+        },
+        {
+          "skill": "SK-MVP",
+          "required": false,
+          "prereq": [
+            "SK-BMC"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "ai-research",
+      "name": "AI 연구원",
+      "summary": "IT 기업에서 모델을 연구·개발한다",
+      "fields": [],
+      "departments": [
+        "ai"
+      ],
+      "base": "ai-engineer",
+      "srcUrl": "https://ai.catholic.ac.kr/ai/info/academic003.do",
+      "nodes": [
+        {
+          "skill": "SK-PY-01",
+          "required": true
+        },
+        {
+          "skill": "AI-ML",
+          "required": true,
+          "prereq": [
+            "SK-PY-01"
+          ]
+        },
+        {
+          "skill": "AI-NLP",
+          "required": false,
+          "prereq": [
+            "AI-ML"
+          ]
+        },
+        {
+          "skill": "AI-CV",
+          "required": false,
+          "prereq": [
+            "AI-ML"
+          ]
+        },
+        {
+          "skill": "AI-SPEECH",
+          "required": false,
+          "prereq": [
+            "AI-ML"
+          ]
+        },
+        {
+          "skill": "AI-CAP",
+          "required": true,
+          "prereq": [
+            "AI-ML"
+          ]
+        },
+        {
+          "skill": "AI-WRITE",
+          "required": false
+        },
+        {
+          "skill": "SK-SCI-PAPER",
+          "required": false,
+          "prereq": [
+            "AI-CAP"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "ai-robot",
+      "name": "로봇·자율주행",
+      "summary": "로봇과 자율주행의 인지·판단 기술",
+      "fields": [],
+      "departments": [
+        "ai"
+      ],
+      "base": "ai-engineer",
+      "srcUrl": "https://ai.catholic.ac.kr/ai/info/academic003.do",
+      "nodes": [
+        {
+          "skill": "SK-PY-01",
+          "required": true
+        },
+        {
+          "skill": "AI-ML",
+          "required": true,
+          "prereq": [
+            "SK-PY-01"
+          ]
+        },
+        {
+          "skill": "AI-CV",
+          "required": true,
+          "prereq": [
+            "AI-ML"
+          ]
+        },
+        {
+          "skill": "SK-EMB",
+          "required": false
+        },
+        {
+          "skill": "AI-CAP",
+          "required": false,
+          "prereq": [
+            "AI-CV"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "ai-data",
+      "name": "데이터과학 연구원",
+      "summary": "데이터에서 패턴을 찾아 서비스에 쓴다",
+      "fields": [],
+      "departments": [
+        "ai"
+      ],
+      "base": "data-analyst",
+      "srcUrl": "https://ai.catholic.ac.kr/ai/info/academic003.do",
+      "nodes": [
+        {
+          "skill": "SK-PY-01",
+          "required": true
+        },
+        {
+          "skill": "SK-DA",
+          "required": true,
+          "prereq": [
+            "SK-PY-01"
+          ]
+        },
+        {
+          "skill": "AI-ML",
+          "required": false,
+          "prereq": [
+            "SK-DA"
+          ]
+        },
+        {
+          "skill": "AI-GNN",
+          "required": false,
+          "prereq": [
+            "AI-ML"
+          ]
+        },
+        {
+          "skill": "SK-SQL",
+          "required": false
+        },
+        {
+          "skill": "AI-FIELD",
+          "required": false,
+          "prereq": [
+            "SK-DA"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "ai-sw",
+      "name": "소프트웨어·게임 개발",
+      "summary": "소프트웨어 개발자, 게임 프로그래머",
+      "fields": [],
+      "departments": [
+        "ai"
+      ],
+      "base": "sw-developer",
+      "srcUrl": "https://ai.catholic.ac.kr/ai/info/academic003.do",
+      "nodes": [
+        {
+          "skill": "SK-PY-01",
+          "required": true
+        },
+        {
+          "skill": "SK-ALGO",
+          "required": true,
+          "prereq": [
+            "SK-PY-01"
+          ]
+        },
+        {
+          "skill": "SK-WEB",
+          "required": false,
+          "prereq": [
+            "SK-ALGO"
+          ]
+        },
+        {
+          "skill": "AI-IR",
+          "required": false
+        },
+        {
+          "skill": "SK-INFO-PE",
+          "required": false,
+          "prereq": [
+            "SK-ALGO"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "ai-startup",
+      "name": "AI 스타트업",
+      "summary": "AI 기술로 창업하거나 스타트업에 합류한다",
+      "fields": [],
+      "departments": [
+        "ai"
+      ],
+      "base": "founder",
+      "srcUrl": "https://ai.catholic.ac.kr/ai/info/academic003.do",
+      "nodes": [
+        {
+          "skill": "AI-ML",
+          "required": true
+        },
+        {
+          "skill": "AI-CAP",
+          "required": true,
+          "prereq": [
+            "AI-ML"
+          ]
+        },
+        {
+          "skill": "SK-IDEA",
+          "required": false
+        },
+        {
+          "skill": "SK-MVP",
+          "required": false,
+          "prereq": [
+            "AI-CAP"
+          ]
+        },
+        {
+          "skill": "SK-IR",
+          "required": false,
+          "prereq": [
+            "SK-MVP"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "ds-scientist",
+      "name": "데이터 사이언티스트",
+      "summary": "분석 체계를 만들고 의사결정안을 도출한다",
+      "fields": [],
+      "departments": [
+        "data-science"
+      ],
+      "base": "data-analyst",
+      "srcUrl": "https://datascience.catholic.ac.kr/datascience/info/career.do",
+      "nodes": [
+        {
+          "skill": "DS-VIZ",
+          "required": true
+        },
+        {
+          "skill": "DS-ML",
+          "required": true,
+          "prereq": [
+            "DS-VIZ"
+          ]
+        },
+        {
+          "skill": "DS-MULTI",
+          "required": false,
+          "prereq": [
+            "DS-VIZ"
+          ]
+        },
+        {
+          "skill": "DS-CAP",
+          "required": true,
+          "prereq": [
+            "DS-ML"
+          ]
+        },
+        {
+          "skill": "SK-ADSP",
+          "required": false
+        }
+      ]
+    },
+    {
+      "id": "ds-analyst",
+      "name": "빅데이터 분석가",
+      "summary": "기업 데이터를 분석해 문제를 해결한다",
+      "fields": [],
+      "departments": [
+        "data-science"
+      ],
+      "base": "data-analyst",
+      "srcUrl": "https://datascience.catholic.ac.kr/datascience/info/career.do",
+      "nodes": [
+        {
+          "skill": "DS-VIZ",
+          "required": true
+        },
+        {
+          "skill": "SK-SQL",
+          "required": true
+        },
+        {
+          "skill": "DS-MINING",
+          "required": false,
+          "prereq": [
+            "DS-VIZ"
+          ]
+        },
+        {
+          "skill": "DS-C-SURVEY",
+          "required": false
+        },
+        {
+          "skill": "SK-SQLD",
+          "required": false,
+          "prereq": [
+            "SK-SQL"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "ds-engineer",
+      "name": "빅데이터 엔지니어",
+      "summary": "빅데이터를 처리·개발하고 운영한다",
+      "fields": [],
+      "departments": [
+        "data-science"
+      ],
+      "base": "sw-developer",
+      "srcUrl": "https://datascience.catholic.ac.kr/datascience/info/career.do",
+      "nodes": [
+        {
+          "skill": "DS-DB",
+          "required": true
+        },
+        {
+          "skill": "DS-DIST",
+          "required": true,
+          "prereq": [
+            "DS-DB"
+          ]
+        },
+        {
+          "skill": "SK-ALGO",
+          "required": false
+        },
+        {
+          "skill": "DS-C-INFO",
+          "required": false,
+          "prereq": [
+            "DS-DB"
+          ]
+        },
+        {
+          "skill": "SK-DEPLOY",
+          "required": false,
+          "prereq": [
+            "DS-DIST"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "ds-consult",
+      "name": "데이터 분석 컨설턴트",
+      "summary": "컨설팅·금융·광고 분야에서 데이터로 자문한다",
+      "fields": [],
+      "departments": [
+        "data-science"
+      ],
+      "base": "data-analyst",
+      "srcUrl": "https://datascience.catholic.ac.kr/datascience/info/career.do",
+      "nodes": [
+        {
+          "skill": "DS-VIZ",
+          "required": true
+        },
+        {
+          "skill": "DS-MULTI",
+          "required": true,
+          "prereq": [
+            "DS-VIZ"
+          ]
+        },
+        {
+          "skill": "SK-PPT",
+          "required": false
+        },
+        {
+          "skill": "SK-TOEIC",
+          "required": false
+        },
+        {
+          "skill": "DS-CAP",
+          "required": false,
+          "prereq": [
+            "DS-MULTI"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "cs-dev",
+      "name": "소프트웨어 개발자",
+      "summary": "서비스와 응용 프로그램을 만든다",
+      "fields": [],
+      "departments": [
+        "cs"
+      ],
+      "base": "sw-developer",
+      "srcUrl": "https://csie.catholic.ac.kr/csie/info/career.do",
+      "nodes": [
+        {
+          "skill": "CS-DS",
+          "required": true
+        },
+        {
+          "skill": "CS-SE",
+          "required": false,
+          "prereq": [
+            "CS-DS"
+          ]
+        },
+        {
+          "skill": "SK-WEB",
+          "required": true,
+          "prereq": [
+            "CS-DS"
+          ]
+        },
+        {
+          "skill": "CS-EMB",
+          "required": false,
+          "prereq": [
+            "CS-DS"
+          ]
+        },
+        {
+          "skill": "CS-DB",
+          "required": false
+        },
+        {
+          "skill": "SK-INFO-PE",
+          "required": false,
+          "prereq": [
+            "CS-DS"
+          ]
+        },
+        {
+          "skill": "SK-PORT",
+          "required": false,
+          "prereq": [
+            "SK-WEB"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "cs-system",
+      "name": "시스템 엔지니어",
+      "summary": "서버·네트워크·운영 환경을 다룬다",
+      "fields": [],
+      "departments": [
+        "cs"
+      ],
+      "base": "sw-developer",
+      "srcUrl": "https://csie.catholic.ac.kr/csie/info/career.do",
+      "nodes": [
+        {
+          "skill": "CS-OS",
+          "required": true
+        },
+        {
+          "skill": "CS-NET",
+          "required": true,
+          "prereq": [
+            "CS-OS"
+          ]
+        },
+        {
+          "skill": "CS-C-LINUX",
+          "required": false,
+          "prereq": [
+            "CS-OS"
+          ]
+        },
+        {
+          "skill": "CS-C-NET",
+          "required": false,
+          "prereq": [
+            "CS-NET"
+          ]
+        },
+        {
+          "skill": "SK-INFO-PE",
+          "required": false
+        }
+      ]
+    },
+    {
+      "id": "cs-security",
+      "name": "보안 전문가",
+      "summary": "네트워크와 시스템을 보호한다",
+      "fields": [],
+      "departments": [
+        "cs"
+      ],
+      "base": "sw-developer",
+      "srcUrl": "https://csie.catholic.ac.kr/csie/info/career.do",
+      "nodes": [
+        {
+          "skill": "CS-NET",
+          "required": true
+        },
+        {
+          "skill": "CS-SEC",
+          "required": true,
+          "prereq": [
+            "CS-NET"
+          ]
+        },
+        {
+          "skill": "CS-OS",
+          "required": false
+        },
+        {
+          "skill": "CS-C-LINUX",
+          "required": false
+        },
+        {
+          "skill": "SK-INFO-PE",
+          "required": false
+        }
+      ]
+    },
+    {
+      "id": "cs-consult",
+      "name": "정보화 컨설턴트",
+      "summary": "조직의 정보시스템을 분석하고 설계한다",
+      "fields": [],
+      "departments": [
+        "cs"
+      ],
+      "base": "data-analyst",
+      "srcUrl": "https://csie.catholic.ac.kr/csie/info/career.do",
+      "nodes": [
+        {
+          "skill": "CS-IS",
+          "required": true
+        },
+        {
+          "skill": "CS-DB",
+          "required": true
+        },
+        {
+          "skill": "CS-SE",
+          "required": false,
+          "prereq": [
+            "CS-IS"
+          ]
+        },
+        {
+          "skill": "SK-PPT",
+          "required": false
+        },
+        {
+          "skill": "SK-INFO-PE",
+          "required": false
+        }
+      ]
+    },
+    {
+      "id": "cs-public",
+      "name": "전산직 공무원",
+      "summary": "공공기관의 전산 업무를 맡는다",
+      "fields": [],
+      "departments": [
+        "cs"
+      ],
+      "base": "public-sector",
+      "srcUrl": "https://csie.catholic.ac.kr/csie/info/career.do",
+      "nodes": [
+        {
+          "skill": "CS-DS",
+          "required": true
+        },
+        {
+          "skill": "CS-DB",
+          "required": false
+        },
+        {
+          "skill": "SK-INFO-PE",
+          "required": true,
+          "prereq": [
+            "CS-DS"
+          ]
+        },
+        {
+          "skill": "SK-KHIST",
+          "required": false
+        }
+      ]
+    },
+    {
+      "id": "kor-edu",
+      "name": "국어 교육",
+      "summary": "교사, 독서·논술 지도",
+      "fields": [],
+      "departments": [
+        "kor-lit"
+      ],
+      "base": "educator",
+      "srcUrl": "https://korean.catholic.ac.kr/korean/info/career.do",
+      "nodes": [
+        {
+          "skill": "KOR-TEXT",
+          "required": true
+        },
+        {
+          "skill": "KOR-TEACH",
+          "required": true,
+          "prereq": [
+            "KOR-TEXT"
+          ]
+        },
+        {
+          "skill": "KOR-C-TEACH",
+          "required": false,
+          "prereq": [
+            "KOR-TEACH"
+          ]
+        },
+        {
+          "skill": "KOR-FEST",
+          "required": false
+        }
+      ]
+    },
+    {
+      "id": "kor-culture",
+      "name": "출판·언론·방송",
+      "summary": "출판, 기자, 방송작가, 스토리텔러",
+      "fields": [],
+      "departments": [
+        "kor-lit"
+      ],
+      "base": "content-planner",
+      "srcUrl": "https://korean.catholic.ac.kr/korean/info/career.do",
+      "nodes": [
+        {
+          "skill": "KOR-TEXT",
+          "required": true
+        },
+        {
+          "skill": "KOR-EDIT",
+          "required": true,
+          "prereq": [
+            "KOR-TEXT"
+          ]
+        },
+        {
+          "skill": "KOR-FEST",
+          "required": false
+        },
+        {
+          "skill": "SK-WRITE",
+          "required": false
+        },
+        {
+          "skill": "SK-PORT",
+          "required": false,
+          "prereq": [
+            "KOR-EDIT"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "kor-ad",
+      "name": "광고·홍보",
+      "summary": "광고회사, 기업 홍보, 카피라이터",
+      "fields": [],
+      "departments": [
+        "kor-lit"
+      ],
+      "base": "marketer",
+      "srcUrl": "https://korean.catholic.ac.kr/korean/info/career.do",
+      "nodes": [
+        {
+          "skill": "KOR-TEXT",
+          "required": true
+        },
+        {
+          "skill": "KOR-CONTEST",
+          "required": false
+        },
+        {
+          "skill": "SK-WRITE",
+          "required": true,
+          "prereq": [
+            "KOR-TEXT"
+          ]
+        },
+        {
+          "skill": "SK-MKT",
+          "required": false
+        },
+        {
+          "skill": "SK-SNS",
+          "required": false
+        }
+      ]
+    },
+    {
+      "id": "kor-writer",
+      "name": "창작",
+      "summary": "시인, 소설가 등 작가",
+      "fields": [],
+      "departments": [
+        "kor-lit"
+      ],
+      "base": "content-planner",
+      "srcUrl": "https://korean.catholic.ac.kr/korean/info/career.do",
+      "nodes": [
+        {
+          "skill": "KOR-CREATE",
+          "required": true
+        },
+        {
+          "skill": "KOR-CONTEST",
+          "required": true,
+          "prereq": [
+            "KOR-CREATE"
+          ]
+        },
+        {
+          "skill": "KOR-FEST",
+          "required": false
+        }
+      ]
+    },
+    {
+      "id": "phi-edu",
+      "name": "논술·철학 교육",
+      "summary": "아동 논술 교육, 윤리·철학 교사",
+      "fields": [],
+      "departments": [
+        "philosophy"
+      ],
+      "base": "educator",
+      "srcUrl": "https://philosophy.catholic.ac.kr/philosophy/info/career.do",
+      "nodes": [
+        {
+          "skill": "PHI-LOGIC",
+          "required": true
+        },
+        {
+          "skill": "PHI-READ",
+          "required": true
+        },
+        {
+          "skill": "PHI-EDU",
+          "required": false,
+          "prereq": [
+            "PHI-READ"
+          ]
+        },
+        {
+          "skill": "PHI-C-TEACH",
+          "required": false,
+          "prereq": [
+            "PHI-EDU"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "phi-counsel",
+      "name": "청소년 상담",
+      "summary": "청소년을 만나 고민을 듣는다",
+      "fields": [],
+      "departments": [
+        "philosophy"
+      ],
+      "base": "welfare",
+      "srcUrl": "https://philosophy.catholic.ac.kr/philosophy/info/career.do",
+      "nodes": [
+        {
+          "skill": "PHI-ETHIC",
+          "required": true
+        },
+        {
+          "skill": "PHI-READ",
+          "required": false
+        },
+        {
+          "skill": "SK-COUNSEL",
+          "required": false,
+          "prereq": [
+            "PHI-ETHIC"
+          ]
+        },
+        {
+          "skill": "SK-VOL",
+          "required": false
+        }
+      ]
+    },
+    {
+      "id": "phi-plan",
+      "name": "공연·전시 기획",
+      "summary": "문화 콘텐츠를 기획한다",
+      "fields": [],
+      "departments": [
+        "philosophy"
+      ],
+      "base": "arts-planner",
+      "srcUrl": "https://philosophy.catholic.ac.kr/philosophy/info/career.do",
+      "nodes": [
+        {
+          "skill": "PHI-READ",
+          "required": true
+        },
+        {
+          "skill": "SK-WRITE",
+          "required": false
+        },
+        {
+          "skill": "SK-CONTENT",
+          "required": false,
+          "prereq": [
+            "PHI-READ"
+          ]
+        },
+        {
+          "skill": "SK-ARTS-PLAN",
+          "required": false,
+          "prereq": [
+            "SK-CONTENT"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "phi-biz",
+      "name": "기업·금융·IT",
+      "summary": "논리력을 살려 기업과 금융권, IT로 간다(복수전공 권장)",
+      "fields": [],
+      "departments": [
+        "philosophy"
+      ],
+      "base": "finance",
+      "srcUrl": "https://philosophy.catholic.ac.kr/philosophy/info/career.do",
+      "nodes": [
+        {
+          "skill": "PHI-LOGIC",
+          "required": true
+        },
+        {
+          "skill": "SK-PPT",
+          "required": false
+        },
+        {
+          "skill": "SK-COMP",
+          "required": false
+        },
+        {
+          "skill": "SK-TOEIC",
+          "required": false
+        }
+      ]
+    },
+    {
+      "id": "eng-global",
+      "name": "외국계기업·무역",
+      "summary": "외국계기업과 무역회사에서 일한다",
+      "fields": [],
+      "departments": [
+        "english"
+      ],
+      "base": "overseas-sales",
+      "srcUrl": "https://english.catholic.ac.kr/english/intro/career.do",
+      "nodes": [
+        {
+          "skill": "ENG-ESSAY",
+          "required": true
+        },
+        {
+          "skill": "ENG-PRES",
+          "required": true,
+          "prereq": [
+            "ENG-ESSAY"
+          ]
+        },
+        {
+          "skill": "SK-TOEIC",
+          "required": true
+        },
+        {
+          "skill": "SK-OPIC",
+          "required": false
+        },
+        {
+          "skill": "ENG-C-TRADE",
+          "required": false
+        }
+      ]
+    },
+    {
+      "id": "eng-edu",
+      "name": "영어 교육",
+      "summary": "교직 이수 후 영어 교사·강사",
+      "fields": [],
+      "departments": [
+        "english"
+      ],
+      "base": "educator",
+      "srcUrl": "https://english.catholic.ac.kr/english/intro/career.do",
+      "nodes": [
+        {
+          "skill": "ENG-ESSAY",
+          "required": true
+        },
+        {
+          "skill": "ENG-EDU",
+          "required": true,
+          "prereq": [
+            "ENG-ESSAY"
+          ]
+        },
+        {
+          "skill": "ENG-C-TEACH",
+          "required": false,
+          "prereq": [
+            "ENG-EDU"
+          ]
+        },
+        {
+          "skill": "SK-TOEIC",
+          "required": false
+        }
+      ]
+    },
+    {
+      "id": "eng-trans",
+      "name": "출판·통번역",
+      "summary": "출판과 통번역 분야",
+      "fields": [],
+      "departments": [
+        "english"
+      ],
+      "base": "content-planner",
+      "srcUrl": "https://english.catholic.ac.kr/english/intro/career.do",
+      "nodes": [
+        {
+          "skill": "ENG-ESSAY",
+          "required": true
+        },
+        {
+          "skill": "ENG-TRANS",
+          "required": true,
+          "prereq": [
+            "ENG-ESSAY"
+          ]
+        },
+        {
+          "skill": "ENG-LIT",
+          "required": false
+        },
+        {
+          "skill": "SK-PORT",
+          "required": false,
+          "prereq": [
+            "ENG-TRANS"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "eng-content",
+      "name": "문화마케팅·미디어콘텐츠",
+      "summary": "문화마케팅·브랜딩, 미디어콘텐츠 창작·기획",
+      "fields": [],
+      "departments": [
+        "english"
+      ],
+      "base": "marketer",
+      "srcUrl": "https://english.catholic.ac.kr/english/intro/career.do",
+      "nodes": [
+        {
+          "skill": "ENG-LIT",
+          "required": true
+        },
+        {
+          "skill": "ENG-PRES",
+          "required": false
+        },
+        {
+          "skill": "SK-CONTENT",
+          "required": false,
+          "prereq": [
+            "ENG-LIT"
+          ]
+        },
+        {
+          "skill": "SK-MKT",
+          "required": false
+        },
+        {
+          "skill": "SK-SNS",
+          "required": false
+        }
+      ]
+    },
+    {
+      "id": "eng-public",
+      "name": "공기업·공공기관",
+      "summary": "어학 능력을 살려 공공 부문으로 간다",
+      "fields": [],
+      "departments": [
+        "english"
+      ],
+      "base": "public-sector",
+      "srcUrl": "https://english.catholic.ac.kr/english/intro/career.do",
+      "nodes": [
+        {
+          "skill": "SK-TOEIC",
+          "required": true
+        },
+        {
+          "skill": "SK-NCS",
+          "required": true
+        },
+        {
+          "skill": "SK-KHIST",
+          "required": false
+        },
+        {
+          "skill": "SK-COMP",
+          "required": false
+        }
+      ]
+    },
+    {
+      "id": "chn-trans",
+      "name": "통·번역",
+      "summary": "국제회의 통역, 웹툰·미디어 번역",
+      "fields": [],
+      "departments": [
+        "chinese"
+      ],
+      "base": "content-planner",
+      "srcUrl": "https://cn.catholic.ac.kr/cn/info/career.do",
+      "nodes": [
+        {
+          "skill": "CHN-TALK",
+          "required": true
+        },
+        {
+          "skill": "CHN-TRANS",
+          "required": true,
+          "prereq": [
+            "CHN-TALK"
+          ]
+        },
+        {
+          "skill": "SK-HSK",
+          "required": true
+        },
+        {
+          "skill": "CHN-C-TCT",
+          "required": false,
+          "prereq": [
+            "CHN-TRANS"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "chn-trade",
+      "name": "해외영업·유통",
+      "summary": "중국 기업, 유통, 무역, 해외영업",
+      "fields": [],
+      "departments": [
+        "chinese"
+      ],
+      "base": "overseas-sales",
+      "srcUrl": "https://cn.catholic.ac.kr/cn/info/career.do",
+      "nodes": [
+        {
+          "skill": "CHN-TALK",
+          "required": true
+        },
+        {
+          "skill": "CHN-BIZ",
+          "required": true,
+          "prereq": [
+            "CHN-TALK"
+          ]
+        },
+        {
+          "skill": "SK-HSK",
+          "required": true
+        },
+        {
+          "skill": "CHN-C-BCT",
+          "required": false
+        },
+        {
+          "skill": "CHN-C-TSC",
+          "required": false
+        }
+      ]
+    },
+    {
+      "id": "chn-content",
+      "name": "문화콘텐츠·엔터테인먼트",
+      "summary": "출판, 게임, 여행, 스포츠 마케팅",
+      "fields": [],
+      "departments": [
+        "chinese"
+      ],
+      "base": "content-planner",
+      "srcUrl": "https://cn.catholic.ac.kr/cn/info/career.do",
+      "nodes": [
+        {
+          "skill": "CHN-CULTURE",
+          "required": true
+        },
+        {
+          "skill": "CHN-TALK",
+          "required": false
+        },
+        {
+          "skill": "SK-HSK",
+          "required": false
+        },
+        {
+          "skill": "SK-CONTENT",
+          "required": false,
+          "prereq": [
+            "CHN-CULTURE"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "chn-edu",
+      "name": "중국어 교육",
+      "summary": "어린이 중국어 교육, 중국어 강사",
+      "fields": [],
+      "departments": [
+        "chinese"
+      ],
+      "base": "educator",
+      "srcUrl": "https://cn.catholic.ac.kr/cn/info/career.do",
+      "nodes": [
+        {
+          "skill": "CHN-TALK",
+          "required": true
+        },
+        {
+          "skill": "SK-HSK",
+          "required": true
+        },
+        {
+          "skill": "CHN-C-TSC",
+          "required": false
+        }
+      ]
+    },
+    {
+      "id": "chn-public",
+      "name": "공무원·공기업",
+      "summary": "외무영사, KOTRA 등",
+      "fields": [],
+      "departments": [
+        "chinese"
+      ],
+      "base": "public-sector",
+      "srcUrl": "https://cn.catholic.ac.kr/cn/info/career.do",
+      "nodes": [
+        {
+          "skill": "SK-HSK",
+          "required": true
+        },
+        {
+          "skill": "SK-NCS",
+          "required": false
+        },
+        {
+          "skill": "SK-KHIST",
+          "required": false
+        },
+        {
+          "skill": "SK-TOEIC",
+          "required": false
+        }
+      ]
+    },
+    {
+      "id": "jpn-biz",
+      "name": "일본계·일본 진출 기업",
+      "summary": "일본 기업 또는 일본에 진출한 국내 기업",
+      "fields": [],
+      "departments": [
+        "japanese"
+      ],
+      "base": "overseas-sales",
+      "srcUrl": "https://japanese.catholic.ac.kr/japanese/info/career001.do",
+      "nodes": [
+        {
+          "skill": "JPN-TALK",
+          "required": true
+        },
+        {
+          "skill": "JPN-NEWS",
+          "required": false,
+          "prereq": [
+            "JPN-TALK"
+          ]
+        },
+        {
+          "skill": "SK-JLPT",
+          "required": true
+        },
+        {
+          "skill": "SK-TOEIC",
+          "required": false
+        }
+      ]
+    },
+    {
+      "id": "jpn-trans",
+      "name": "통·번역",
+      "summary": "도서·영화·웹툰·웹소설 번역, 행사 통역",
+      "fields": [],
+      "departments": [
+        "japanese"
+      ],
+      "base": "content-planner",
+      "srcUrl": "https://japanese.catholic.ac.kr/japanese/info/career001.do",
+      "nodes": [
+        {
+          "skill": "JPN-TALK",
+          "required": true
+        },
+        {
+          "skill": "JPN-TRANS",
+          "required": true,
+          "prereq": [
+            "JPN-TALK"
+          ]
+        },
+        {
+          "skill": "SK-JLPT",
+          "required": true
+        },
+        {
+          "skill": "SK-PORT",
+          "required": false,
+          "prereq": [
+            "JPN-TRANS"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "jpn-edu",
+      "name": "일본어 교육",
+      "summary": "교사, 강사, 교재 개발",
+      "fields": [],
+      "departments": [
+        "japanese"
+      ],
+      "base": "educator",
+      "srcUrl": "https://japanese.catholic.ac.kr/japanese/info/career001.do",
+      "nodes": [
+        {
+          "skill": "JPN-TALK",
+          "required": true
+        },
+        {
+          "skill": "JPN-SOC",
+          "required": false
+        },
+        {
+          "skill": "SK-JLPT",
+          "required": true
+        }
+      ]
+    },
+    {
+      "id": "jpn-local",
+      "name": "일본 현지 취업",
+      "summary": "일본에서 일한다",
+      "fields": [],
+      "departments": [
+        "japanese"
+      ],
+      "base": "overseas-sales",
+      "srcUrl": "https://japanese.catholic.ac.kr/japanese/info/career001.do",
+      "nodes": [
+        {
+          "skill": "JPN-TALK",
+          "required": true
+        },
+        {
+          "skill": "JPN-SOC",
+          "required": true
+        },
+        {
+          "skill": "SK-JLPT",
+          "required": true,
+          "prereq": [
+            "JPN-TALK"
+          ]
+        },
+        {
+          "skill": "SK-RESUME",
+          "required": false
+        }
+      ]
+    },
+    {
+      "id": "klc-teacher",
+      "name": "한국어 교원",
+      "summary": "외국인에게 한국어를 가르친다",
+      "fields": [],
+      "departments": [
+        "korean-culture"
+      ],
+      "base": "educator",
+      "srcUrl": "https://klc.catholic.ac.kr/klc/info/career.do",
+      "nodes": [
+        {
+          "skill": "KLC-TEACH",
+          "required": true
+        },
+        {
+          "skill": "KLC-PRACT",
+          "required": true,
+          "prereq": [
+            "KLC-TEACH"
+          ]
+        },
+        {
+          "skill": "KLC-TEST",
+          "required": false
+        },
+        {
+          "skill": "KLC-C-TEACH",
+          "required": true,
+          "prereq": [
+            "KLC-PRACT"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "klc-content",
+      "name": "문화콘텐츠 전문가",
+      "summary": "한국 문화 콘텐츠를 기획하고 쓴다",
+      "fields": [],
+      "departments": [
+        "korean-culture"
+      ],
+      "base": "content-planner",
+      "srcUrl": "https://klc.catholic.ac.kr/klc/info/career.do",
+      "nodes": [
+        {
+          "skill": "KLC-CONTENT",
+          "required": true
+        },
+        {
+          "skill": "KLC-MATERIAL",
+          "required": false,
+          "prereq": [
+            "KLC-CONTENT"
+          ]
+        },
+        {
+          "skill": "SK-WRITE",
+          "required": false
+        },
+        {
+          "skill": "SK-VIDEO",
+          "required": false
+        }
+      ]
+    },
+    {
+      "id": "klc-material",
+      "name": "한국어 교재·콘텐츠 개발",
+      "summary": "교재와 교육 콘텐츠를 만든다",
+      "fields": [],
+      "departments": [
+        "korean-culture"
+      ],
+      "base": "educator",
+      "srcUrl": "https://klc.catholic.ac.kr/klc/info/career.do",
+      "nodes": [
+        {
+          "skill": "KLC-TEACH",
+          "required": true
+        },
+        {
+          "skill": "KLC-MATERIAL",
+          "required": true,
+          "prereq": [
+            "KLC-TEACH"
+          ]
+        },
+        {
+          "skill": "KLC-TEST",
+          "required": false
+        }
+      ]
+    },
+    {
+      "id": "soc-research",
+      "name": "사회조사·연구원",
+      "summary": "공공·민간 연구소에서 사회를 조사한다",
+      "fields": [],
+      "departments": [
+        "sociology"
+      ],
+      "base": "data-analyst",
+      "srcUrl": "https://sociology.catholic.ac.kr/sociology/info/roadmap.do",
+      "nodes": [
+        {
+          "skill": "SOC-SURVEY",
+          "required": true
+        },
+        {
+          "skill": "SK-STAT",
+          "required": false,
+          "prereq": [
+            "SOC-SURVEY"
+          ]
+        },
+        {
+          "skill": "SOC-C-SURVEY",
+          "required": true,
+          "prereq": [
+            "SOC-SURVEY"
+          ]
+        },
+        {
+          "skill": "SK-POLICY",
+          "required": false
+        }
+      ]
+    },
+    {
+      "id": "soc-public",
+      "name": "공공정책·공무원",
+      "summary": "정책을 만들고 집행한다",
+      "fields": [],
+      "departments": [
+        "sociology"
+      ],
+      "base": "public-sector",
+      "srcUrl": "https://sociology.catholic.ac.kr/sociology/info/roadmap.do",
+      "nodes": [
+        {
+          "skill": "SOC-POLICY",
+          "required": true
+        },
+        {
+          "skill": "SOC-C-SURVEY",
+          "required": false
+        },
+        {
+          "skill": "SK-NCS",
+          "required": false
+        },
+        {
+          "skill": "SK-KHIST",
+          "required": false
+        }
+      ]
+    },
+    {
+      "id": "soc-media",
+      "name": "언론·콘텐츠",
+      "summary": "기자, 아나운서, PD, 작가",
+      "fields": [],
+      "departments": [
+        "sociology"
+      ],
+      "base": "content-planner",
+      "srcUrl": "https://sociology.catholic.ac.kr/sociology/info/roadmap.do",
+      "nodes": [
+        {
+          "skill": "SOC-CONFLICT",
+          "required": true
+        },
+        {
+          "skill": "SK-WRITE",
+          "required": true
+        },
+        {
+          "skill": "SK-CONTENT",
+          "required": false,
+          "prereq": [
+            "SK-WRITE"
+          ]
+        },
+        {
+          "skill": "SK-VIDEO",
+          "required": false
+        }
+      ]
+    },
+    {
+      "id": "soc-pr",
+      "name": "홍보·기획·마케팅",
+      "summary": "기업의 홍보와 마케팅",
+      "fields": [],
+      "departments": [
+        "sociology"
+      ],
+      "base": "marketer",
+      "srcUrl": "https://sociology.catholic.ac.kr/sociology/info/roadmap.do",
+      "nodes": [
+        {
+          "skill": "SOC-CORP",
+          "required": true
+        },
+        {
+          "skill": "SOC-SURVEY",
+          "required": false
+        },
+        {
+          "skill": "SK-MKT",
+          "required": false,
+          "prereq": [
+            "SOC-CORP"
+          ]
+        },
+        {
+          "skill": "SK-SNS",
+          "required": false
+        }
+      ]
+    },
+    {
+      "id": "soc-ngo",
+      "name": "사회단체·국제 NGO",
+      "summary": "시민사회에서 일한다",
+      "fields": [],
+      "departments": [
+        "sociology"
+      ],
+      "base": "npo",
+      "srcUrl": "https://sociology.catholic.ac.kr/sociology/info/roadmap.do",
+      "nodes": [
+        {
+          "skill": "SOC-CONFLICT",
+          "required": true
+        },
+        {
+          "skill": "SK-VOL",
+          "required": false
+        },
+        {
+          "skill": "SK-NPO",
+          "required": false,
+          "prereq": [
+            "SOC-CONFLICT"
+          ]
+        },
+        {
+          "skill": "SK-TOEIC",
+          "required": false
+        }
+      ]
+    },
+    {
+      "id": "chd-care",
+      "name": "보육교사",
+      "summary": "국공립·직장·재단 어린이집",
+      "fields": [],
+      "departments": [
+        "child"
+      ],
+      "base": "educator",
+      "srcUrl": "https://children.catholic.ac.kr/children/info/career.do",
+      "nodes": [
+        {
+          "skill": "CHD-DEV",
+          "required": true
+        },
+        {
+          "skill": "CHD-PLAY",
+          "required": true,
+          "prereq": [
+            "CHD-DEV"
+          ]
+        },
+        {
+          "skill": "CHD-OBS",
+          "required": false,
+          "prereq": [
+            "CHD-DEV"
+          ]
+        },
+        {
+          "skill": "CHD-PRACT",
+          "required": true,
+          "prereq": [
+            "CHD-PLAY"
+          ]
+        },
+        {
+          "skill": "CHD-C-CARE",
+          "required": true,
+          "prereq": [
+            "CHD-PRACT"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "chd-kinder",
+      "name": "유치원 교사",
+      "summary": "교직과정을 이수해 유치원 정교사가 된다",
+      "fields": [],
+      "departments": [
+        "child"
+      ],
+      "base": "educator",
+      "srcUrl": "https://children.catholic.ac.kr/children/info/career.do",
+      "nodes": [
+        {
+          "skill": "CHD-DEV",
+          "required": true
+        },
+        {
+          "skill": "CHD-PLAY",
+          "required": false
+        },
+        {
+          "skill": "CHD-C-KINDER",
+          "required": true,
+          "prereq": [
+            "CHD-DEV"
+          ]
+        },
+        {
+          "skill": "CHD-C-CARE",
+          "required": false
+        }
+      ]
+    },
+    {
+      "id": "chd-therapy",
+      "name": "놀이심리재활사",
+      "summary": "놀이로 아동의 발달을 돕는다",
+      "fields": [],
+      "departments": [
+        "child"
+      ],
+      "base": "welfare",
+      "srcUrl": "https://children.catholic.ac.kr/children/info/career.do",
+      "nodes": [
+        {
+          "skill": "CHD-DEV",
+          "required": true
+        },
+        {
+          "skill": "CHD-OBS",
+          "required": true,
+          "prereq": [
+            "CHD-DEV"
+          ]
+        },
+        {
+          "skill": "CHD-PARENT",
+          "required": false,
+          "prereq": [
+            "CHD-OBS"
+          ]
+        },
+        {
+          "skill": "CHD-C-PLAY",
+          "required": true,
+          "prereq": [
+            "CHD-OBS"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "chd-content",
+      "name": "교재교구·아동출판",
+      "summary": "영유아 교재교구 개발, 아동문학 출판",
+      "fields": [],
+      "departments": [
+        "child"
+      ],
+      "base": "content-planner",
+      "srcUrl": "https://children.catholic.ac.kr/children/info/career.do",
+      "nodes": [
+        {
+          "skill": "CHD-DEV",
+          "required": true
+        },
+        {
+          "skill": "CHD-PLAY",
+          "required": false
+        },
+        {
+          "skill": "SK-CONTENT",
+          "required": false,
+          "prereq": [
+            "CHD-PLAY"
+          ]
+        },
+        {
+          "skill": "SK-WRITE",
+          "required": false
+        }
+      ]
+    },
+    {
+      "id": "chd-policy",
+      "name": "육아정책·보육 행정",
+      "summary": "연구원, 보육 행정·정책 담당",
+      "fields": [],
+      "departments": [
+        "child"
+      ],
+      "base": "public-sector",
+      "srcUrl": "https://children.catholic.ac.kr/children/info/career.do",
+      "nodes": [
+        {
+          "skill": "CHD-DEV",
+          "required": true
+        },
+        {
+          "skill": "CHD-PARENT",
+          "required": false
+        },
+        {
+          "skill": "SK-POLICY",
+          "required": false,
+          "prereq": [
+            "CHD-DEV"
+          ]
+        },
+        {
+          "skill": "CHD-C-CARE",
+          "required": false
+        }
+      ]
+    },
+    {
+      "id": "int-gov",
+      "name": "정부·외교",
+      "summary": "외교부, 산업통상자원부, KOICA 등",
+      "fields": [],
+      "departments": [
+        "intl"
+      ],
+      "base": "public-sector",
+      "srcUrl": "https://is.catholic.ac.kr/is/info/career.do",
+      "nodes": [
+        {
+          "skill": "INT-DIPLO",
+          "required": true
+        },
+        {
+          "skill": "INT-AREA",
+          "required": true
+        },
+        {
+          "skill": "SK-TOEIC",
+          "required": true
+        },
+        {
+          "skill": "SK-KHIST",
+          "required": false
+        },
+        {
+          "skill": "SK-NCS",
+          "required": false
+        }
+      ]
+    },
+    {
+      "id": "int-trade",
+      "name": "통상·민간기업",
+      "summary": "대기업·외국계기업의 통상과 해외 업무",
+      "fields": [],
+      "departments": [
+        "intl"
+      ],
+      "base": "overseas-sales",
+      "srcUrl": "https://is.catholic.ac.kr/is/info/career.do",
+      "nodes": [
+        {
+          "skill": "INT-TRADE",
+          "required": true
+        },
+        {
+          "skill": "INT-AREA",
+          "required": false
+        },
+        {
+          "skill": "SK-TOEIC",
+          "required": true
+        },
+        {
+          "skill": "SK-OPIC",
+          "required": false
+        },
+        {
+          "skill": "SK-TRADE",
+          "required": false,
+          "prereq": [
+            "INT-TRADE"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "int-ngo",
+      "name": "국제개발·시민단체",
+      "summary": "국제개발협력과 NGO",
+      "fields": [],
+      "departments": [
+        "intl"
+      ],
+      "base": "npo",
+      "srcUrl": "https://is.catholic.ac.kr/is/info/career.do",
+      "nodes": [
+        {
+          "skill": "INT-DEV",
+          "required": true
+        },
+        {
+          "skill": "INT-AREA",
+          "required": false
+        },
+        {
+          "skill": "SK-VOL",
+          "required": false
+        },
+        {
+          "skill": "SK-NPO",
+          "required": false,
+          "prereq": [
+            "INT-DEV"
+          ]
+        },
+        {
+          "skill": "SK-TOEIC",
+          "required": false
+        }
+      ]
+    },
+    {
+      "id": "int-media",
+      "name": "언론",
+      "summary": "방송·통신·신문사",
+      "fields": [],
+      "departments": [
+        "intl"
+      ],
+      "base": "content-planner",
+      "srcUrl": "https://is.catholic.ac.kr/is/info/career.do",
+      "nodes": [
+        {
+          "skill": "INT-AREA",
+          "required": true
+        },
+        {
+          "skill": "INT-METHOD",
+          "required": false
+        },
+        {
+          "skill": "SK-WRITE",
+          "required": true
+        },
+        {
+          "skill": "SK-TOEIC",
+          "required": false
+        }
+      ]
+    },
+    {
+      "id": "int-finance",
+      "name": "금융권",
+      "summary": "은행·증권",
+      "fields": [],
+      "departments": [
+        "intl"
+      ],
+      "base": "finance",
+      "srcUrl": "https://is.catholic.ac.kr/is/info/career.do",
+      "nodes": [
+        {
+          "skill": "INT-TRADE",
+          "required": true
+        },
+        {
+          "skill": "SK-FIN",
+          "required": false
+        },
+        {
+          "skill": "SK-TOEIC",
+          "required": false
+        },
+        {
+          "skill": "SK-COMP",
+          "required": false
+        }
+      ]
+    },
+    {
+      "id": "law-school",
+      "name": "법학전문대학원",
+      "summary": "로스쿨에 진학해 법조인이 된다",
+      "fields": [],
+      "departments": [
+        "law"
+      ],
+      "base": "legal",
+      "srcUrl": "https://law.catholic.ac.kr/law/info/career.do",
+      "nodes": [
+        {
+          "skill": "LAW-CONST",
+          "required": true
+        },
+        {
+          "skill": "LAW-CIVIL",
+          "required": true
+        },
+        {
+          "skill": "LAW-CRIM",
+          "required": true
+        },
+        {
+          "skill": "SK-TOEIC",
+          "required": true
+        },
+        {
+          "skill": "LAW-FEST",
+          "required": false
+        }
+      ]
+    },
+    {
+      "id": "law-court",
+      "name": "법원직·검찰직 공무원",
+      "summary": "법원과 검찰에서 일한다",
+      "fields": [],
+      "departments": [
+        "law"
+      ],
+      "base": "public-sector",
+      "srcUrl": "https://law.catholic.ac.kr/law/info/career.do",
+      "nodes": [
+        {
+          "skill": "LAW-CONST",
+          "required": true
+        },
+        {
+          "skill": "LAW-CRIM",
+          "required": true
+        },
+        {
+          "skill": "LAW-CIVIL",
+          "required": false
+        },
+        {
+          "skill": "SK-KHIST",
+          "required": false
+        },
+        {
+          "skill": "SK-TOEIC",
+          "required": false
+        }
+      ]
+    },
+    {
+      "id": "law-admin",
+      "name": "일반행정직 공무원",
+      "summary": "헌법·행정법을 바탕으로 공직에 진출한다",
+      "fields": [],
+      "departments": [
+        "law"
+      ],
+      "base": "public-sector",
+      "srcUrl": "https://law.catholic.ac.kr/law/info/career.do",
+      "nodes": [
+        {
+          "skill": "LAW-CONST",
+          "required": true
+        },
+        {
+          "skill": "LAW-ADMIN",
+          "required": true,
+          "prereq": [
+            "LAW-CONST"
+          ]
+        },
+        {
+          "skill": "SK-KHIST",
+          "required": false
+        },
+        {
+          "skill": "SK-TOEIC",
+          "required": false
+        }
+      ]
+    },
+    {
+      "id": "law-corp",
+      "name": "기업 법무·공기업",
+      "summary": "상법·민법 지식으로 기업과 공기업에서 일한다",
+      "fields": [],
+      "departments": [
+        "law"
+      ],
+      "base": "legal",
+      "srcUrl": "https://law.catholic.ac.kr/law/info/career.do",
+      "nodes": [
+        {
+          "skill": "LAW-COMM",
+          "required": true
+        },
+        {
+          "skill": "LAW-CIVIL",
+          "required": true
+        },
+        {
+          "skill": "SK-LAW-DOC",
+          "required": false,
+          "prereq": [
+            "LAW-CIVIL"
+          ]
+        },
+        {
+          "skill": "SK-NCS",
+          "required": false
+        },
+        {
+          "skill": "SK-TOEIC",
+          "required": false
+        }
+      ]
+    },
+    {
+      "id": "law-labor",
+      "name": "공인노무사",
+      "summary": "노동 관계 전문가",
+      "fields": [],
+      "departments": [
+        "law"
+      ],
+      "base": "legal",
+      "srcUrl": "https://law.catholic.ac.kr/law/info/career.do",
+      "nodes": [
+        {
+          "skill": "LAW-LABOR",
+          "required": true
+        },
+        {
+          "skill": "LAW-CIVIL",
+          "required": false
+        },
+        {
+          "skill": "LAW-C-LABOR",
+          "required": true,
+          "prereq": [
+            "LAW-LABOR"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "eco-finance",
+      "name": "금융기관",
+      "summary": "은행·증권에서 일한다",
+      "fields": [],
+      "departments": [
+        "economics"
+      ],
+      "base": "finance",
+      "srcUrl": "https://economics.catholic.ac.kr/economics/info/career.do",
+      "nodes": [
+        {
+          "skill": "ECO-MICRO",
+          "required": true
+        },
+        {
+          "skill": "ECO-FIN",
+          "required": true,
+          "prereq": [
+            "ECO-MICRO"
+          ]
+        },
+        {
+          "skill": "ECO-C-FP",
+          "required": false
+        },
+        {
+          "skill": "ECO-C-CREDIT",
+          "required": false
+        },
+        {
+          "skill": "SK-TOEIC",
+          "required": false
+        }
+      ]
+    },
+    {
+      "id": "eco-corp",
+      "name": "기업 기획·조사",
+      "summary": "기업의 기획·조사 부서, 컨설팅",
+      "fields": [],
+      "departments": [
+        "economics"
+      ],
+      "base": "finance",
+      "srcUrl": "https://economics.catholic.ac.kr/economics/info/career.do",
+      "nodes": [
+        {
+          "skill": "ECO-MICRO",
+          "required": true
+        },
+        {
+          "skill": "ECO-METRIC",
+          "required": true,
+          "prereq": [
+            "ECO-MICRO"
+          ]
+        },
+        {
+          "skill": "SK-PPT",
+          "required": false
+        },
+        {
+          "skill": "SK-COMP",
+          "required": false
+        },
+        {
+          "skill": "SK-TOEIC",
+          "required": false
+        }
+      ]
+    },
+    {
+      "id": "eco-public",
+      "name": "정부·금융공기업",
+      "summary": "경제 정책과 금융공기업",
+      "fields": [],
+      "departments": [
+        "economics"
+      ],
+      "base": "public-sector",
+      "srcUrl": "https://economics.catholic.ac.kr/economics/info/career.do",
+      "nodes": [
+        {
+          "skill": "ECO-MICRO",
+          "required": true
+        },
+        {
+          "skill": "ECO-FIN",
+          "required": false
+        },
+        {
+          "skill": "SK-NCS",
+          "required": true
+        },
+        {
+          "skill": "SK-KHIST",
+          "required": false
+        },
+        {
+          "skill": "SK-TOEIC",
+          "required": false
+        }
+      ]
+    },
+    {
+      "id": "eco-research",
+      "name": "연구기관",
+      "summary": "국책·민간 연구소",
+      "fields": [],
+      "departments": [
+        "economics"
+      ],
+      "base": "data-analyst",
+      "srcUrl": "https://economics.catholic.ac.kr/economics/info/career.do",
+      "nodes": [
+        {
+          "skill": "ECO-METRIC",
+          "required": true
+        },
+        {
+          "skill": "SK-STAT",
+          "required": false,
+          "prereq": [
+            "ECO-METRIC"
+          ]
+        },
+        {
+          "skill": "SK-POLICY",
+          "required": false
+        },
+        {
+          "skill": "SK-SCI-PAPER",
+          "required": false,
+          "prereq": [
+            "SK-STAT"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "pa-gov",
+      "name": "공무원",
+      "summary": "중앙·지방 정부, 경찰·검찰·법원",
+      "fields": [],
+      "departments": [
+        "public-admin"
+      ],
+      "base": "public-sector",
+      "srcUrl": "https://pa.catholic.ac.kr/pa/info/career001.do",
+      "nodes": [
+        {
+          "skill": "PA-POLICY",
+          "required": true
+        },
+        {
+          "skill": "PA-MANAGE",
+          "required": true
+        },
+        {
+          "skill": "SK-KHIST",
+          "required": true
+        },
+        {
+          "skill": "SK-TOEIC",
+          "required": false
+        }
+      ]
+    },
+    {
+      "id": "pa-public",
+      "name": "공공기관·공기업",
+      "summary": "공사·공단에서 일한다",
+      "fields": [],
+      "departments": [
+        "public-admin"
+      ],
+      "base": "public-sector",
+      "srcUrl": "https://pa.catholic.ac.kr/pa/info/career001.do",
+      "nodes": [
+        {
+          "skill": "PA-MANAGE",
+          "required": true
+        },
+        {
+          "skill": "SK-NCS",
+          "required": true
+        },
+        {
+          "skill": "SK-KHIST",
+          "required": false
+        },
+        {
+          "skill": "SK-COMP",
+          "required": false
+        },
+        {
+          "skill": "SK-TOEIC",
+          "required": false
+        }
+      ]
+    },
+    {
+      "id": "pa-research",
+      "name": "정책 연구소",
+      "summary": "정책을 평가하고 연구한다",
+      "fields": [],
+      "departments": [
+        "public-admin"
+      ],
+      "base": "data-analyst",
+      "srcUrl": "https://pa.catholic.ac.kr/pa/info/career001.do",
+      "nodes": [
+        {
+          "skill": "PA-POLICY",
+          "required": true
+        },
+        {
+          "skill": "SK-POLICY",
+          "required": true,
+          "prereq": [
+            "PA-POLICY"
+          ]
+        },
+        {
+          "skill": "SK-STAT",
+          "required": false
+        }
+      ]
+    },
+    {
+      "id": "pa-expert",
+      "name": "전문 자격",
+      "summary": "행정사, 노무사, 관세사 등",
+      "fields": [],
+      "departments": [
+        "public-admin"
+      ],
+      "base": "legal",
+      "srcUrl": "https://pa.catholic.ac.kr/pa/info/career001.do",
+      "nodes": [
+        {
+          "skill": "PA-POLICY",
+          "required": true
+        },
+        {
+          "skill": "PA-C-ADMIN",
+          "required": false
+        },
+        {
+          "skill": "PA-C-LABOR",
+          "required": false
+        }
+      ]
+    },
+    {
+      "id": "biz-marketing",
+      "name": "마케팅",
+      "summary": "시장을 조사하고 브랜드를 키운다",
+      "fields": [],
+      "departments": [
+        "business"
+      ],
+      "base": "marketer",
+      "srcUrl": "https://business.catholic.ac.kr/business/info/career.do",
+      "nodes": [
+        {
+          "skill": "BIZ-MKT",
+          "required": true
+        },
+        {
+          "skill": "BIZ-C-SURVEY",
+          "required": false
+        },
+        {
+          "skill": "SK-MKT",
+          "required": true,
+          "prereq": [
+            "BIZ-MKT"
+          ]
+        },
+        {
+          "skill": "BIZ-FIELD",
+          "required": false
+        },
+        {
+          "skill": "SK-SNS",
+          "required": false
+        }
+      ]
+    },
+    {
+      "id": "biz-finance",
+      "name": "재무·금융",
+      "summary": "기업 재무와 금융권",
+      "fields": [],
+      "departments": [
+        "business"
+      ],
+      "base": "finance",
+      "srcUrl": "https://business.catholic.ac.kr/business/info/career.do",
+      "nodes": [
+        {
+          "skill": "BIZ-FIN",
+          "required": true
+        },
+        {
+          "skill": "SK-FIN",
+          "required": true,
+          "prereq": [
+            "BIZ-FIN"
+          ]
+        },
+        {
+          "skill": "SK-COMP",
+          "required": false
+        },
+        {
+          "skill": "SK-TOEIC",
+          "required": false
+        }
+      ]
+    },
+    {
+      "id": "biz-hr",
+      "name": "인사·조직",
+      "summary": "채용, 교육, 조직문화",
+      "fields": [],
+      "departments": [
+        "business"
+      ],
+      "base": "finance",
+      "srcUrl": "https://business.catholic.ac.kr/business/info/career.do",
+      "nodes": [
+        {
+          "skill": "BIZ-HR",
+          "required": true
+        },
+        {
+          "skill": "BIZ-FIELD",
+          "required": false,
+          "prereq": [
+            "BIZ-HR"
+          ]
+        },
+        {
+          "skill": "BIZ-C-CONSULT",
+          "required": false
+        },
+        {
+          "skill": "SK-TOEIC",
+          "required": false
+        }
+      ]
+    },
+    {
+      "id": "biz-ops",
+      "name": "생산운영·물류",
+      "summary": "생산과 공급망을 관리한다",
+      "fields": [],
+      "departments": [
+        "business"
+      ],
+      "base": "finance",
+      "srcUrl": "https://business.catholic.ac.kr/business/info/career.do",
+      "nodes": [
+        {
+          "skill": "BIZ-OPS",
+          "required": true
+        },
+        {
+          "skill": "BIZ-C-LOGIS",
+          "required": false,
+          "prereq": [
+            "BIZ-OPS"
+          ]
+        },
+        {
+          "skill": "SK-COMP",
+          "required": false
+        }
+      ]
+    },
+    {
+      "id": "biz-strategy",
+      "name": "경영전략·국제경영",
+      "summary": "전략 기획과 해외 사업",
+      "fields": [],
+      "departments": [
+        "business"
+      ],
+      "base": "overseas-sales",
+      "srcUrl": "https://business.catholic.ac.kr/business/info/career.do",
+      "nodes": [
+        {
+          "skill": "BIZ-STRATEGY",
+          "required": true
+        },
+        {
+          "skill": "BIZ-CAP",
+          "required": false,
+          "prereq": [
+            "BIZ-STRATEGY"
+          ]
+        },
+        {
+          "skill": "SK-PPT",
+          "required": false
+        },
+        {
+          "skill": "SK-TOEIC",
+          "required": true
+        }
+      ]
+    },
+    {
+      "id": "biz-startup",
+      "name": "창업",
+      "summary": "사업을 직접 시작한다",
+      "fields": [],
+      "departments": [
+        "business"
+      ],
+      "base": "founder",
+      "srcUrl": "https://business.catholic.ac.kr/business/info/career.do",
+      "nodes": [
+        {
+          "skill": "BIZ-STRATEGY",
+          "required": true
+        },
+        {
+          "skill": "BIZ-CAP",
+          "required": false
+        },
+        {
+          "skill": "SK-IDEA",
+          "required": true
+        },
+        {
+          "skill": "SK-BMC",
+          "required": false,
+          "prereq": [
+            "SK-IDEA"
+          ]
+        },
+        {
+          "skill": "SK-BIZPLAN",
+          "required": false,
+          "prereq": [
+            "SK-BMC"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "gb-foreign",
+      "name": "외국기업",
+      "summary": "외국계 기업에서 일한다",
+      "fields": [],
+      "departments": [
+        "global-business"
+      ],
+      "base": "overseas-sales",
+      "srcUrl": "https://globalbiz.catholic.ac.kr/globalbiz/info/career.do",
+      "nodes": [
+        {
+          "skill": "GB-STRATEGY",
+          "required": true
+        },
+        {
+          "skill": "GB-MKT",
+          "required": false
+        },
+        {
+          "skill": "SK-TOEIC",
+          "required": true
+        },
+        {
+          "skill": "SK-OPIC",
+          "required": false
+        }
+      ]
+    },
+    {
+      "id": "gb-finance",
+      "name": "금융기관",
+      "summary": "은행·증권·투자",
+      "fields": [],
+      "departments": [
+        "global-business"
+      ],
+      "base": "finance",
+      "srcUrl": "https://globalbiz.catholic.ac.kr/globalbiz/info/career.do",
+      "nodes": [
+        {
+          "skill": "GB-FIN",
+          "required": true
+        },
+        {
+          "skill": "SK-FIN",
+          "required": false,
+          "prereq": [
+            "GB-FIN"
+          ]
+        },
+        {
+          "skill": "SK-TOEIC",
+          "required": false
+        }
+      ]
+    },
+    {
+      "id": "gb-corp",
+      "name": "대기업·중견기업",
+      "summary": "기획, 마케팅, 공급망",
+      "fields": [],
+      "departments": [
+        "global-business"
+      ],
+      "base": "finance",
+      "srcUrl": "https://globalbiz.catholic.ac.kr/globalbiz/info/career.do",
+      "nodes": [
+        {
+          "skill": "GB-STRATEGY",
+          "required": true
+        },
+        {
+          "skill": "GB-SCM",
+          "required": false
+        },
+        {
+          "skill": "GB-ESG",
+          "required": false
+        },
+        {
+          "skill": "SK-PPT",
+          "required": false
+        },
+        {
+          "skill": "SK-TOEIC",
+          "required": false
+        }
+      ]
+    },
+    {
+      "id": "gb-public",
+      "name": "공공기관·공무원",
+      "summary": "공사·공기업, 7·9급",
+      "fields": [],
+      "departments": [
+        "global-business"
+      ],
+      "base": "public-sector",
+      "srcUrl": "https://globalbiz.catholic.ac.kr/globalbiz/info/career.do",
+      "nodes": [
+        {
+          "skill": "GB-ESG",
+          "required": false
+        },
+        {
+          "skill": "SK-NCS",
+          "required": true
+        },
+        {
+          "skill": "SK-KHIST",
+          "required": true
+        },
+        {
+          "skill": "SK-TOEIC",
+          "required": false
+        }
+      ]
+    },
+    {
+      "id": "che-pharma",
+      "name": "제약·바이오",
+      "summary": "제약회사와 바이오 기업",
+      "fields": [],
+      "departments": [
+        "chemistry"
+      ],
+      "base": "bio-qa",
+      "srcUrl": "https://chemistry.catholic.ac.kr/chemistry/info/career.do",
+      "nodes": [
+        {
+          "skill": "CHE-ORG",
+          "required": true
+        },
+        {
+          "skill": "CHE-ANAL",
+          "required": true
+        },
+        {
+          "skill": "SK-LAB-ANAL",
+          "required": false,
+          "prereq": [
+            "CHE-ANAL"
+          ]
+        },
+        {
+          "skill": "SK-GMP",
+          "required": false
+        },
+        {
+          "skill": "CHE-RESEARCH",
+          "required": false,
+          "prereq": [
+            "CHE-ORG"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "che-semi",
+      "name": "반도체·전자재료",
+      "summary": "반도체와 전자 부품 소재",
+      "fields": [],
+      "departments": [
+        "chemistry"
+      ],
+      "base": "electronics",
+      "srcUrl": "https://chemistry.catholic.ac.kr/chemistry/info/career.do",
+      "nodes": [
+        {
+          "skill": "CHE-INORG",
+          "required": true
+        },
+        {
+          "skill": "CHE-MATERIAL",
+          "required": true,
+          "prereq": [
+            "CHE-INORG"
+          ]
+        },
+        {
+          "skill": "CHE-PHYS",
+          "required": false
+        },
+        {
+          "skill": "CHE-RESEARCH",
+          "required": false,
+          "prereq": [
+            "CHE-MATERIAL"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "che-energy",
+      "name": "에너지·이차전지",
+      "summary": "배터리와 에너지 소재",
+      "fields": [],
+      "departments": [
+        "chemistry"
+      ],
+      "base": "env-engineer",
+      "srcUrl": "https://chemistry.catholic.ac.kr/chemistry/info/career.do",
+      "nodes": [
+        {
+          "skill": "CHE-PHYS",
+          "required": true
+        },
+        {
+          "skill": "CHE-MATERIAL",
+          "required": false,
+          "prereq": [
+            "CHE-PHYS"
+          ]
+        },
+        {
+          "skill": "CHE-C-CHE",
+          "required": false
+        },
+        {
+          "skill": "CHE-RESEARCH",
+          "required": false,
+          "prereq": [
+            "CHE-PHYS"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "che-consumer",
+      "name": "화장품·생활용품",
+      "summary": "화장품, 세제, 위생용품",
+      "fields": [],
+      "departments": [
+        "chemistry"
+      ],
+      "base": "bio-qa",
+      "srcUrl": "https://chemistry.catholic.ac.kr/chemistry/info/career.do",
+      "nodes": [
+        {
+          "skill": "CHE-ORG",
+          "required": true
+        },
+        {
+          "skill": "CHE-ANAL",
+          "required": true
+        },
+        {
+          "skill": "SK-LAB-ANAL",
+          "required": false,
+          "prereq": [
+            "CHE-ANAL"
+          ]
+        },
+        {
+          "skill": "SK-BIO-QC",
+          "required": false
+        }
+      ]
+    },
+    {
+      "id": "che-research",
+      "name": "연구소·대학원",
+      "summary": "석·박사 후 연구직",
+      "fields": [],
+      "departments": [
+        "chemistry"
+      ],
+      "base": "bio-researcher",
+      "srcUrl": "https://chemistry.catholic.ac.kr/chemistry/info/career.do",
+      "nodes": [
+        {
+          "skill": "CHE-ANAL",
+          "required": true
+        },
+        {
+          "skill": "CHE-RESEARCH",
+          "required": true
+        },
+        {
+          "skill": "SK-SCI-PAPER",
+          "required": false,
+          "prereq": [
+            "CHE-RESEARCH"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "che-edu",
+      "name": "화학 교사",
+      "summary": "교직과정을 이수해 화학을 가르친다",
+      "fields": [],
+      "departments": [
+        "chemistry"
+      ],
+      "base": "educator",
+      "srcUrl": "https://chemistry.catholic.ac.kr/chemistry/info/career.do",
+      "nodes": [
+        {
+          "skill": "CHE-ORG",
+          "required": true
+        },
+        {
+          "skill": "CHE-EDU",
+          "required": true
+        }
+      ]
+    },
+    {
+      "id": "mat-finance",
+      "name": "금융·리스크",
+      "summary": "금융수학으로 금융권과 보험으로 간다(로드맵 기준)",
+      "fields": [],
+      "departments": [
+        "math"
+      ],
+      "base": "finance",
+      "srcUrl": "https://math.catholic.ac.kr/math/community/job.do",
+      "nodes": [
+        {
+          "skill": "MAT-STAT",
+          "required": true
+        },
+        {
+          "skill": "MAT-FIN",
+          "required": true,
+          "prereq": [
+            "MAT-STAT"
+          ]
+        },
+        {
+          "skill": "MAT-C-ACTUARY",
+          "required": false,
+          "prereq": [
+            "MAT-FIN"
+          ]
+        },
+        {
+          "skill": "SK-FIN",
+          "required": false
+        }
+      ]
+    },
+    {
+      "id": "mat-data",
+      "name": "데이터·AI",
+      "summary": "수학적 기반으로 데이터와 AI를 다룬다(로드맵 기준)",
+      "fields": [],
+      "departments": [
+        "math"
+      ],
+      "base": "data-analyst",
+      "srcUrl": "https://math.catholic.ac.kr/math/community/job.do",
+      "nodes": [
+        {
+          "skill": "MAT-STAT",
+          "required": true
+        },
+        {
+          "skill": "MAT-PROG",
+          "required": true
+        },
+        {
+          "skill": "MAT-ML",
+          "required": false,
+          "prereq": [
+            "MAT-PROG"
+          ]
+        },
+        {
+          "skill": "SK-PY-01",
+          "required": false
+        },
+        {
+          "skill": "MAT-C-SURVEY",
+          "required": false
+        }
+      ]
+    },
+    {
+      "id": "mat-pure",
+      "name": "대학원·교육",
+      "summary": "수학을 더 공부하거나 가르친다(로드맵 기준)",
+      "fields": [],
+      "departments": [
+        "math"
+      ],
+      "base": "educator",
+      "srcUrl": "https://math.catholic.ac.kr/math/community/job.do",
+      "nodes": [
+        {
+          "skill": "MAT-ANAL",
+          "required": true
+        },
+        {
+          "skill": "MAT-STAT",
+          "required": false
+        },
+        {
+          "skill": "SK-SCI-PAPER",
+          "required": false,
+          "prereq": [
+            "MAT-ANAL"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "phy-semi",
+      "name": "반도체·디스플레이",
+      "summary": "전기·전자·반도체 산업체",
+      "fields": [],
+      "departments": [
+        "physics"
+      ],
+      "base": "electronics",
+      "srcUrl": "https://physics.catholic.ac.kr/physics/info/career.do",
+      "nodes": [
+        {
+          "skill": "PHY-QUANT",
+          "required": true
+        },
+        {
+          "skill": "PHY-SEMI",
+          "required": true,
+          "prereq": [
+            "PHY-QUANT"
+          ]
+        },
+        {
+          "skill": "PHY-LAB",
+          "required": false
+        },
+        {
+          "skill": "SK-CIRCUIT",
+          "required": false
+        }
+      ]
+    },
+    {
+      "id": "phy-research",
+      "name": "연구소·대학원",
+      "summary": "국공립·대기업 연구소",
+      "fields": [],
+      "departments": [
+        "physics"
+      ],
+      "base": "bio-researcher",
+      "srcUrl": "https://physics.catholic.ac.kr/physics/info/career.do",
+      "nodes": [
+        {
+          "skill": "PHY-QUANT",
+          "required": true
+        },
+        {
+          "skill": "PHY-LAB",
+          "required": true
+        },
+        {
+          "skill": "SK-SCI-PAPER",
+          "required": false,
+          "prereq": [
+            "PHY-LAB"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "phy-sim",
+      "name": "시뮬레이션·데이터",
+      "summary": "전산물리와 딥러닝으로 금융·기술평가까지",
+      "fields": [],
+      "departments": [
+        "physics"
+      ],
+      "base": "data-analyst",
+      "srcUrl": "https://physics.catholic.ac.kr/physics/info/career.do",
+      "nodes": [
+        {
+          "skill": "PHY-COMP",
+          "required": true
+        },
+        {
+          "skill": "PHY-SIM",
+          "required": false,
+          "prereq": [
+            "PHY-COMP"
+          ]
+        },
+        {
+          "skill": "SK-PY-01",
+          "required": true
+        },
+        {
+          "skill": "SK-DA",
+          "required": false,
+          "prereq": [
+            "SK-PY-01"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "spd-interior",
+      "name": "인테리어 디자인",
+      "summary": "주거·상업·전시 공간을 설계한다",
+      "fields": [],
+      "departments": [
+        "space-design"
+      ],
+      "base": "designer",
+      "srcUrl": "https://design.catholic.ac.kr/design/info/career.do",
+      "nodes": [
+        {
+          "skill": "SPD-DRAW",
+          "required": true
+        },
+        {
+          "skill": "SPD-CAD",
+          "required": true,
+          "prereq": [
+            "SPD-DRAW"
+          ]
+        },
+        {
+          "skill": "SPD-INTERIOR",
+          "required": true,
+          "prereq": [
+            "SPD-CAD"
+          ]
+        },
+        {
+          "skill": "SPD-C-INTERIOR",
+          "required": false,
+          "prereq": [
+            "SPD-INTERIOR"
+          ]
+        },
+        {
+          "skill": "SPD-PORT",
+          "required": false,
+          "prereq": [
+            "SPD-INTERIOR"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "spd-house",
+      "name": "주택설계·도시재생",
+      "summary": "단독주택·아파트 설계, 문화공간 기획",
+      "fields": [],
+      "departments": [
+        "space-design"
+      ],
+      "base": "designer",
+      "srcUrl": "https://design.catholic.ac.kr/design/info/career.do",
+      "nodes": [
+        {
+          "skill": "SPD-DRAW",
+          "required": true
+        },
+        {
+          "skill": "SPD-CAD",
+          "required": true,
+          "prereq": [
+            "SPD-DRAW"
+          ]
+        },
+        {
+          "skill": "SPD-HOUSE",
+          "required": true,
+          "prereq": [
+            "SPD-CAD"
+          ]
+        },
+        {
+          "skill": "SPD-PORT",
+          "required": false,
+          "prereq": [
+            "SPD-HOUSE"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "spd-vmd",
+      "name": "VMD·실내 코디네이션",
+      "summary": "매장 연출과 인테리어 스타일링",
+      "fields": [],
+      "departments": [
+        "space-design"
+      ],
+      "base": "designer",
+      "srcUrl": "https://design.catholic.ac.kr/design/info/career.do",
+      "nodes": [
+        {
+          "skill": "SPD-VMD",
+          "required": true
+        },
+        {
+          "skill": "SPD-C-COLOR",
+          "required": false
+        },
+        {
+          "skill": "SPD-PORT",
+          "required": false,
+          "prereq": [
+            "SPD-VMD"
+          ]
+        },
+        {
+          "skill": "SPD-FURN",
+          "required": false
+        }
+      ]
+    },
+    {
+      "id": "spd-consumer",
+      "name": "소비자조사·상품기획",
+      "summary": "소비자를 조사하고 상품과 서비스를 기획한다",
+      "fields": [],
+      "departments": [
+        "space-design"
+      ],
+      "base": "marketer",
+      "srcUrl": "https://design.catholic.ac.kr/design/info/career.do",
+      "nodes": [
+        {
+          "skill": "SPD-CONSUMER",
+          "required": true
+        },
+        {
+          "skill": "SK-MKT",
+          "required": false,
+          "prereq": [
+            "SPD-CONSUMER"
+          ]
+        },
+        {
+          "skill": "SK-STAT",
+          "required": false
+        },
+        {
+          "skill": "SK-COMP",
+          "required": false
+        }
+      ]
+    },
+    {
+      "id": "spd-cs",
+      "name": "기업 CS·유통",
+      "summary": "기업 고객 서비스, 소매유통",
+      "fields": [],
+      "departments": [
+        "space-design"
+      ],
+      "base": "marketer",
+      "srcUrl": "https://design.catholic.ac.kr/design/info/career.do",
+      "nodes": [
+        {
+          "skill": "SPD-CONSUMER",
+          "required": true
+        },
+        {
+          "skill": "SK-PPT",
+          "required": false
+        },
+        {
+          "skill": "SK-COMP",
+          "required": false
+        }
+      ]
+    },
+    {
+      "id": "fn-dietitian",
+      "name": "임상·급식 영양사",
+      "summary": "병원과 단체급식의 영양사",
+      "fields": [],
+      "departments": [
+        "food-nutrition"
+      ],
+      "base": "food",
+      "srcUrl": "https://fn.catholic.ac.kr/fn/info/career.do",
+      "nodes": [
+        {
+          "skill": "FN-CLINIC",
+          "required": true
+        },
+        {
+          "skill": "FN-MEAL",
+          "required": true
+        },
+        {
+          "skill": "FN-FIELD",
+          "required": true,
+          "prereq": [
+            "FN-MEAL"
+          ]
+        },
+        {
+          "skill": "SK-DIET",
+          "required": true,
+          "prereq": [
+            "FN-FIELD"
+          ]
+        },
+        {
+          "skill": "FN-C-SANIT",
+          "required": false
+        }
+      ]
+    },
+    {
+      "id": "fn-teacher",
+      "name": "영양교사",
+      "summary": "학교에서 급식과 영양 교육을 맡는다",
+      "fields": [],
+      "departments": [
+        "food-nutrition"
+      ],
+      "base": "educator",
+      "srcUrl": "https://fn.catholic.ac.kr/fn/info/career.do",
+      "nodes": [
+        {
+          "skill": "FN-ASSESS",
+          "required": true
+        },
+        {
+          "skill": "FN-MEAL",
+          "required": true
+        },
+        {
+          "skill": "SK-DIET",
+          "required": true,
+          "prereq": [
+            "FN-MEAL"
+          ]
+        },
+        {
+          "skill": "FN-C-TEACH",
+          "required": true,
+          "prereq": [
+            "SK-DIET"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "fn-research",
+      "name": "식품기업 연구원",
+      "summary": "식품을 개발하고 품질을 관리한다",
+      "fields": [],
+      "departments": [
+        "food-nutrition"
+      ],
+      "base": "food",
+      "srcUrl": "https://fn.catholic.ac.kr/fn/info/career.do",
+      "nodes": [
+        {
+          "skill": "FN-PROCESS",
+          "required": true
+        },
+        {
+          "skill": "SK-HACCP",
+          "required": false,
+          "prereq": [
+            "FN-PROCESS"
+          ]
+        },
+        {
+          "skill": "SK-LAB-ANAL",
+          "required": false
+        },
+        {
+          "skill": "FN-C-SANIT",
+          "required": false
+        }
+      ]
+    },
+    {
+      "id": "fn-md",
+      "name": "식품 MD·외식경영",
+      "summary": "식품 상품기획과 외식 사업",
+      "fields": [],
+      "departments": [
+        "food-nutrition"
+      ],
+      "base": "marketer",
+      "srcUrl": "https://fn.catholic.ac.kr/fn/info/career.do",
+      "nodes": [
+        {
+          "skill": "FN-MKT",
+          "required": true
+        },
+        {
+          "skill": "FN-PROCESS",
+          "required": false
+        },
+        {
+          "skill": "SK-MKT",
+          "required": false,
+          "prereq": [
+            "FN-MKT"
+          ]
+        },
+        {
+          "skill": "SK-BIZPLAN",
+          "required": false
+        }
+      ]
+    },
+    {
+      "id": "fn-health",
+      "name": "헬스케어 컨설턴트",
+      "summary": "영양 상담으로 건강을 관리한다",
+      "fields": [],
+      "departments": [
+        "food-nutrition"
+      ],
+      "base": "food",
+      "srcUrl": "https://fn.catholic.ac.kr/fn/info/career.do",
+      "nodes": [
+        {
+          "skill": "FN-ASSESS",
+          "required": true
+        },
+        {
+          "skill": "FN-CLINIC",
+          "required": true
+        },
+        {
+          "skill": "SK-DIET",
+          "required": false,
+          "prereq": [
+            "FN-CLINIC"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "fn-public",
+      "name": "식품·보건 공무원",
+      "summary": "식품 안전과 보건 행정",
+      "fields": [],
+      "departments": [
+        "food-nutrition"
+      ],
+      "base": "public-sector",
+      "srcUrl": "https://fn.catholic.ac.kr/fn/info/career.do",
+      "nodes": [
+        {
+          "skill": "FN-PROCESS",
+          "required": true
+        },
+        {
+          "skill": "SK-DIET",
+          "required": false
+        },
+        {
+          "skill": "FN-C-SANIT",
+          "required": false
+        },
+        {
+          "skill": "SK-KHIST",
+          "required": false
+        }
+      ]
+    },
+    {
+      "id": "bt-pharma",
+      "name": "제약·바이오벤처",
+      "summary": "신약 개발, 임상, 품질관리",
+      "fields": [],
+      "departments": [
+        "biotech"
+      ],
+      "base": "bio-researcher",
+      "srcUrl": "https://biotech.catholic.ac.kr/biotech/info/career.do",
+      "nodes": [
+        {
+          "skill": "BT-EXP",
+          "required": true
+        },
+        {
+          "skill": "BT-RED",
+          "required": true,
+          "prereq": [
+            "BT-EXP"
+          ]
+        },
+        {
+          "skill": "BT-RESEARCH",
+          "required": false,
+          "prereq": [
+            "BT-RED"
+          ]
+        },
+        {
+          "skill": "SK-GMP",
+          "required": false
+        },
+        {
+          "skill": "BT-C-BIO",
+          "required": false
+        }
+      ]
+    },
+    {
+      "id": "bt-qc",
+      "name": "병원 연구소·QC",
+      "summary": "임상 데이터 분석과 생산 품질관리",
+      "fields": [],
+      "departments": [
+        "biotech"
+      ],
+      "base": "bio-qa",
+      "srcUrl": "https://biotech.catholic.ac.kr/biotech/info/career.do",
+      "nodes": [
+        {
+          "skill": "BT-EXP",
+          "required": true
+        },
+        {
+          "skill": "BT-WHITE",
+          "required": false,
+          "prereq": [
+            "BT-EXP"
+          ]
+        },
+        {
+          "skill": "SK-BIO-QC",
+          "required": true,
+          "prereq": [
+            "BT-EXP"
+          ]
+        },
+        {
+          "skill": "SK-GMP",
+          "required": false
+        },
+        {
+          "skill": "BT-C-BIO",
+          "required": false
+        }
+      ]
+    },
+    {
+      "id": "bt-food",
+      "name": "식품·기능성 화장품",
+      "summary": "발효와 미생물로 제품을 만든다",
+      "fields": [],
+      "departments": [
+        "biotech"
+      ],
+      "base": "food",
+      "srcUrl": "https://biotech.catholic.ac.kr/biotech/info/career.do",
+      "nodes": [
+        {
+          "skill": "BT-EXP",
+          "required": true
+        },
+        {
+          "skill": "BT-GREEN",
+          "required": true,
+          "prereq": [
+            "BT-EXP"
+          ]
+        },
+        {
+          "skill": "BT-C-FOOD",
+          "required": false
+        },
+        {
+          "skill": "SK-HACCP",
+          "required": false
+        }
+      ]
+    },
+    {
+      "id": "bt-public",
+      "name": "공무원·연구기관",
+      "summary": "식약처, 환경부, 국가 연구소",
+      "fields": [],
+      "departments": [
+        "biotech"
+      ],
+      "base": "public-sector",
+      "srcUrl": "https://biotech.catholic.ac.kr/biotech/info/career.do",
+      "nodes": [
+        {
+          "skill": "BT-EXP",
+          "required": true
+        },
+        {
+          "skill": "BT-RESEARCH",
+          "required": false
+        },
+        {
+          "skill": "BT-C-BIO",
+          "required": false
+        },
+        {
+          "skill": "SK-KHIST",
+          "required": false
+        }
+      ]
+    },
+    {
+      "id": "bt-startup",
+      "name": "생명공학 창업",
+      "summary": "바이오 기술로 창업한다",
+      "fields": [],
+      "departments": [
+        "biotech"
+      ],
+      "base": "founder",
+      "srcUrl": "https://biotech.catholic.ac.kr/biotech/info/career.do",
+      "nodes": [
+        {
+          "skill": "BT-WHITE",
+          "required": true
+        },
+        {
+          "skill": "BT-RESEARCH",
+          "required": false,
+          "prereq": [
+            "BT-WHITE"
+          ]
+        },
+        {
+          "skill": "SK-IDEA",
+          "required": false
+        },
+        {
+          "skill": "SK-BIZPLAN",
+          "required": false,
+          "prereq": [
+            "SK-IDEA"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "bmc-pharma",
+      "name": "제약",
+      "summary": "제약 공정과 의약품 생산",
+      "fields": [],
+      "departments": [
+        "biomed-chem"
+      ],
+      "base": "pharma",
+      "srcUrl": "https://bmce.catholic.ac.kr/bmce/info/career.do",
+      "nodes": [
+        {
+          "skill": "BMC-PHARM",
+          "required": true
+        },
+        {
+          "skill": "SK-GMP",
+          "required": false,
+          "prereq": [
+            "BMC-PHARM"
+          ]
+        },
+        {
+          "skill": "BMC-C-ANAL",
+          "required": false
+        },
+        {
+          "skill": "SK-BIO-QC",
+          "required": false
+        }
+      ]
+    },
+    {
+      "id": "bmc-bio",
+      "name": "바이오의약품",
+      "summary": "바이오 기업의 생산·개발",
+      "fields": [],
+      "departments": [
+        "biomed-chem"
+      ],
+      "base": "bio-qa",
+      "srcUrl": "https://bmce.catholic.ac.kr/bmce/info/career.do",
+      "nodes": [
+        {
+          "skill": "BMC-BIO",
+          "required": true
+        },
+        {
+          "skill": "SK-GMP",
+          "required": true,
+          "prereq": [
+            "BMC-BIO"
+          ]
+        },
+        {
+          "skill": "SK-BIO-LAB",
+          "required": false
+        },
+        {
+          "skill": "BMC-C-ANAL",
+          "required": false
+        }
+      ]
+    },
+    {
+      "id": "bmc-cosmetic",
+      "name": "화장품",
+      "summary": "화장품 소재와 제형",
+      "fields": [],
+      "departments": [
+        "biomed-chem"
+      ],
+      "base": "bio-qa",
+      "srcUrl": "https://bmce.catholic.ac.kr/bmce/info/career.do",
+      "nodes": [
+        {
+          "skill": "BMC-COSME",
+          "required": true
+        },
+        {
+          "skill": "BMC-C-ANAL",
+          "required": false,
+          "prereq": [
+            "BMC-COSME"
+          ]
+        },
+        {
+          "skill": "SK-LAB-ANAL",
+          "required": false
+        }
+      ]
+    },
+    {
+      "id": "bmc-semi",
+      "name": "반도체·이차전지",
+      "summary": "반도체 공정과 배터리 소재",
+      "fields": [],
+      "departments": [
+        "biomed-chem"
+      ],
+      "base": "electronics",
+      "srcUrl": "https://bmce.catholic.ac.kr/bmce/info/career.do",
+      "nodes": [
+        {
+          "skill": "BMC-SEMI",
+          "required": true
+        },
+        {
+          "skill": "BMC-C-CHE",
+          "required": false,
+          "prereq": [
+            "BMC-SEMI"
+          ]
+        },
+        {
+          "skill": "SK-LAB-ANAL",
+          "required": false
+        }
+      ]
+    },
+    {
+      "id": "bmc-energy",
+      "name": "정유·에너지·화학",
+      "summary": "화학 공정과 에너지 산업",
+      "fields": [],
+      "departments": [
+        "biomed-chem"
+      ],
+      "base": "env-engineer",
+      "srcUrl": "https://bmce.catholic.ac.kr/bmce/info/career.do",
+      "nodes": [
+        {
+          "skill": "BMC-REACT",
+          "required": true
+        },
+        {
+          "skill": "BMC-C-CHE",
+          "required": true,
+          "prereq": [
+            "BMC-REACT"
+          ]
+        },
+        {
+          "skill": "BMC-C-HAZ",
+          "required": false
+        }
+      ]
+    },
+    {
+      "id": "bmc-device",
+      "name": "의료기기·진단",
+      "summary": "진단 기술과 의료기기",
+      "fields": [],
+      "departments": [
+        "biomed-chem"
+      ],
+      "base": "bio-researcher",
+      "srcUrl": "https://bmce.catholic.ac.kr/bmce/info/career.do",
+      "nodes": [
+        {
+          "skill": "BMC-DIAG",
+          "required": true
+        },
+        {
+          "skill": "SK-BIO-LAB",
+          "required": false
+        },
+        {
+          "skill": "SK-RA",
+          "required": false,
+          "prereq": [
+            "BMC-DIAG"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "abe-ai",
+      "name": "의료 AI",
+      "summary": "디지털 헬스케어 기업에서 의료 AI를 만든다",
+      "fields": [],
+      "departments": [
+        "ai-biomed"
+      ],
+      "base": "ai-engineer",
+      "srcUrl": "https://aibme.catholic.ac.kr/aibme/info/career.do",
+      "nodes": [
+        {
+          "skill": "SK-PY-01",
+          "required": true
+        },
+        {
+          "skill": "ABE-ML",
+          "required": true,
+          "prereq": [
+            "SK-PY-01"
+          ]
+        },
+        {
+          "skill": "ABE-IMAGE",
+          "required": false,
+          "prereq": [
+            "ABE-ML"
+          ]
+        },
+        {
+          "skill": "ABE-CAP",
+          "required": true,
+          "prereq": [
+            "ABE-ML"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "abe-device",
+      "name": "의료기기",
+      "summary": "의료기기를 개발하고 시험한다",
+      "fields": [],
+      "departments": [
+        "ai-biomed"
+      ],
+      "base": "electronics",
+      "srcUrl": "https://aibme.catholic.ac.kr/aibme/info/career.do",
+      "nodes": [
+        {
+          "skill": "ABE-MEASURE",
+          "required": true
+        },
+        {
+          "skill": "ABE-SIGNAL",
+          "required": true
+        },
+        {
+          "skill": "ABE-C-BME",
+          "required": false,
+          "prereq": [
+            "ABE-MEASURE"
+          ]
+        },
+        {
+          "skill": "ABE-LAB",
+          "required": false
+        },
+        {
+          "skill": "SK-RA",
+          "required": false
+        }
+      ]
+    },
+    {
+      "id": "abe-hospital",
+      "name": "대학병원·정부출연기관",
+      "summary": "병원과 식약처 등 공공 연구기관",
+      "fields": [],
+      "departments": [
+        "ai-biomed"
+      ],
+      "base": "bio-researcher",
+      "srcUrl": "https://aibme.catholic.ac.kr/aibme/info/career.do",
+      "nodes": [
+        {
+          "skill": "ABE-SIGNAL",
+          "required": true
+        },
+        {
+          "skill": "ABE-IMAGE",
+          "required": false
+        },
+        {
+          "skill": "ABE-LAB",
+          "required": true
+        },
+        {
+          "skill": "SK-SCI-PAPER",
+          "required": false,
+          "prereq": [
+            "ABE-LAB"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "abe-startup",
+      "name": "디지털 헬스케어 창업",
+      "summary": "헬스케어 스타트업을 만든다",
+      "fields": [],
+      "departments": [
+        "ai-biomed"
+      ],
+      "base": "founder",
+      "srcUrl": "https://aibme.catholic.ac.kr/aibme/info/career.do",
+      "nodes": [
+        {
+          "skill": "ABE-ML",
+          "required": true
+        },
+        {
+          "skill": "ABE-CAP",
+          "required": false,
+          "prereq": [
+            "ABE-ML"
+          ]
+        },
+        {
+          "skill": "SK-IDEA",
+          "required": false
+        },
+        {
+          "skill": "SK-MVP",
+          "required": false,
+          "prereq": [
+            "ABE-CAP"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "mbs-pharma",
+      "name": "제약회사",
+      "summary": "QC·QA, 임상설계, 개발부서",
+      "fields": [],
+      "departments": [
+        "biomed-science"
+      ],
+      "base": "bio-qa",
+      "srcUrl": "https://mbs.catholic.ac.kr/mbs/info/career.do",
+      "nodes": [
+        {
+          "skill": "MBS-LAB",
+          "required": true
+        },
+        {
+          "skill": "MBS-DRUG",
+          "required": false,
+          "prereq": [
+            "MBS-LAB"
+          ]
+        },
+        {
+          "skill": "SK-GMP",
+          "required": true
+        },
+        {
+          "skill": "SK-BIO-QC",
+          "required": false,
+          "prereq": [
+            "MBS-LAB"
+          ]
+        },
+        {
+          "skill": "MBS-C-BIO",
+          "required": false
+        }
+      ]
+    },
+    {
+      "id": "mbs-diag",
+      "name": "진단·바이오벤처",
+      "summary": "분자진단과 바이오 기업",
+      "fields": [],
+      "departments": [
+        "biomed-science"
+      ],
+      "base": "bio-researcher",
+      "srcUrl": "https://mbs.catholic.ac.kr/mbs/info/career.do",
+      "nodes": [
+        {
+          "skill": "MBS-LAB",
+          "required": true
+        },
+        {
+          "skill": "MBS-DIAG",
+          "required": true,
+          "prereq": [
+            "MBS-LAB"
+          ]
+        },
+        {
+          "skill": "MBS-OMICS",
+          "required": false
+        },
+        {
+          "skill": "SK-BIOINFO",
+          "required": false,
+          "prereq": [
+            "MBS-OMICS"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "mbs-institute",
+      "name": "국가 연구소",
+      "summary": "질병관리청, 식약처, 국과수 등",
+      "fields": [],
+      "departments": [
+        "biomed-science"
+      ],
+      "base": "bio-researcher",
+      "srcUrl": "https://mbs.catholic.ac.kr/mbs/info/career.do",
+      "nodes": [
+        {
+          "skill": "MBS-LAB",
+          "required": true
+        },
+        {
+          "skill": "MBS-OMICS",
+          "required": false
+        },
+        {
+          "skill": "SK-SCI-PAPER",
+          "required": false,
+          "prereq": [
+            "MBS-LAB"
+          ]
+        },
+        {
+          "skill": "SK-KHIST",
+          "required": false
+        }
+      ]
+    },
+    {
+      "id": "mbs-grad",
+      "name": "대학원(학석사연계)",
+      "summary": "줄기세포·신약 연구를 이어간다",
+      "fields": [],
+      "departments": [
+        "biomed-science"
+      ],
+      "base": "bio-researcher",
+      "srcUrl": "https://mbs.catholic.ac.kr/mbs/info/career.do",
+      "nodes": [
+        {
+          "skill": "MBS-LAB",
+          "required": true
+        },
+        {
+          "skill": "MBS-STEM",
+          "required": true,
+          "prereq": [
+            "MBS-LAB"
+          ]
+        },
+        {
+          "skill": "SK-SCI-PAPER",
+          "required": false,
+          "prereq": [
+            "MBS-STEM"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "bsw-dev",
+      "name": "의료 소프트웨어 개발자",
+      "summary": "병원과 헬스케어의 소프트웨어를 만든다",
+      "fields": [],
+      "departments": [
+        "biomed-sw"
+      ],
+      "base": "sw-developer",
+      "srcUrl": "https://bmsw.catholic.ac.kr/bmsw/info/career.do",
+      "nodes": [
+        {
+          "skill": "SK-PY-01",
+          "required": true
+        },
+        {
+          "skill": "BSW-ML",
+          "required": true,
+          "prereq": [
+            "SK-PY-01"
+          ]
+        },
+        {
+          "skill": "BSW-CAP",
+          "required": true,
+          "prereq": [
+            "BSW-ML"
+          ]
+        },
+        {
+          "skill": "BSW-ETHIC",
+          "required": false
+        },
+        {
+          "skill": "SK-ALGO",
+          "required": false
+        }
+      ]
+    },
+    {
+      "id": "bsw-device",
+      "name": "의료기기 개발",
+      "summary": "의료기기의 소프트웨어와 신호 처리",
+      "fields": [],
+      "departments": [
+        "biomed-sw"
+      ],
+      "base": "electronics",
+      "srcUrl": "https://bmsw.catholic.ac.kr/bmsw/info/career.do",
+      "nodes": [
+        {
+          "skill": "BSW-SIGNAL",
+          "required": true
+        },
+        {
+          "skill": "BSW-ML",
+          "required": false,
+          "prereq": [
+            "BSW-SIGNAL"
+          ]
+        },
+        {
+          "skill": "BSW-FIELD",
+          "required": false
+        },
+        {
+          "skill": "SK-RA",
+          "required": false
+        }
+      ]
+    },
+    {
+      "id": "bsw-data",
+      "name": "의료 데이터·바이오인포매틱스",
+      "summary": "병원·제약의 데이터를 분석한다",
+      "fields": [],
+      "departments": [
+        "biomed-sw"
+      ],
+      "base": "data-analyst",
+      "srcUrl": "https://bmsw.catholic.ac.kr/bmsw/info/career.do",
+      "nodes": [
+        {
+          "skill": "SK-PY-01",
+          "required": true
+        },
+        {
+          "skill": "BSW-DATA",
+          "required": true,
+          "prereq": [
+            "SK-PY-01"
+          ]
+        },
+        {
+          "skill": "BSW-BIOINFO",
+          "required": false,
+          "prereq": [
+            "BSW-DATA"
+          ]
+        },
+        {
+          "skill": "SK-SQL",
+          "required": false
+        }
+      ]
+    },
+    {
+      "id": "bsw-startup",
+      "name": "헬스케어 창업",
+      "summary": "의료 AI로 창업한다",
+      "fields": [],
+      "departments": [
+        "biomed-sw"
+      ],
+      "base": "founder",
+      "srcUrl": "https://bmsw.catholic.ac.kr/bmsw/info/career.do",
+      "nodes": [
+        {
+          "skill": "BSW-ML",
+          "required": true
+        },
+        {
+          "skill": "BSW-CAP",
+          "required": false,
+          "prereq": [
+            "BSW-ML"
+          ]
+        },
+        {
+          "skill": "SK-IDEA",
+          "required": false
+        },
+        {
+          "skill": "SK-MVP",
+          "required": false,
+          "prereq": [
+            "BSW-CAP"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "mus-orchestra",
+      "name": "오케스트라·합창단",
+      "summary": "시립 오케스트라와 합창단",
+      "fields": [],
+      "departments": [
+        "music"
+      ],
+      "base": "arts-planner",
+      "srcUrl": "https://music.catholic.ac.kr/music/info/career.do",
+      "nodes": [
+        {
+          "skill": "MUS-MAJOR",
+          "required": true
+        },
+        {
+          "skill": "MUS-EAR",
+          "required": true
+        },
+        {
+          "skill": "MUS-ENSEMBLE",
+          "required": true,
+          "prereq": [
+            "MUS-MAJOR"
+          ]
+        },
+        {
+          "skill": "MUS-STAGE",
+          "required": false,
+          "prereq": [
+            "MUS-ENSEMBLE"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "mus-edu",
+      "name": "음악 교육",
+      "summary": "예술강사, 중·고등학교 음악 교사",
+      "fields": [],
+      "departments": [
+        "music"
+      ],
+      "base": "educator",
+      "srcUrl": "https://music.catholic.ac.kr/music/info/career.do",
+      "nodes": [
+        {
+          "skill": "MUS-MAJOR",
+          "required": true
+        },
+        {
+          "skill": "MUS-EAR",
+          "required": false
+        },
+        {
+          "skill": "MUS-STAGE",
+          "required": false
+        }
+      ]
+    },
+    {
+      "id": "mus-plan",
+      "name": "문화재단·예술회관",
+      "summary": "공연을 기획하고 운영한다",
+      "fields": [],
+      "departments": [
+        "music"
+      ],
+      "base": "arts-planner",
+      "srcUrl": "https://music.catholic.ac.kr/music/info/career.do",
+      "nodes": [
+        {
+          "skill": "MUS-ENSEMBLE",
+          "required": true
+        },
+        {
+          "skill": "SK-ARTS-PLAN",
+          "required": true
+        },
+        {
+          "skill": "SK-PERF",
+          "required": false
+        }
+      ]
+    },
+    {
+      "id": "mus-compose",
+      "name": "작곡·스튜디오",
+      "summary": "게임 음악 작곡, 스튜디오·학원 창업",
+      "fields": [],
+      "departments": [
+        "music"
+      ],
+      "base": "founder",
+      "srcUrl": "https://music.catholic.ac.kr/music/info/career.do",
+      "nodes": [
+        {
+          "skill": "MUS-MAJOR",
+          "required": true
+        },
+        {
+          "skill": "MUS-EAR",
+          "required": true
+        },
+        {
+          "skill": "SK-PORT",
+          "required": false
+        },
+        {
+          "skill": "SK-BIZPLAN",
+          "required": false
+        }
+      ]
+    },
+    {
+      "id": "voc-singer",
+      "name": "성악가·오페라 가수",
+      "summary": "오페라단과 무대에서 노래한다",
+      "fields": [],
+      "departments": [
+        "vocal"
+      ],
+      "base": "arts-planner",
+      "srcUrl": "https://voice.catholic.ac.kr/voice/info/career.do",
+      "nodes": [
+        {
+          "skill": "VOC-MAJOR",
+          "required": true
+        },
+        {
+          "skill": "VOC-OPERA",
+          "required": true,
+          "prereq": [
+            "VOC-MAJOR"
+          ]
+        },
+        {
+          "skill": "SK-PERF",
+          "required": false
+        }
+      ]
+    },
+    {
+      "id": "voc-choir",
+      "name": "합창단·뮤지컬",
+      "summary": "전문 합창단원, 뮤지컬 배우",
+      "fields": [],
+      "departments": [
+        "vocal"
+      ],
+      "base": "arts-planner",
+      "srcUrl": "https://voice.catholic.ac.kr/voice/info/career.do",
+      "nodes": [
+        {
+          "skill": "VOC-MAJOR",
+          "required": true
+        },
+        {
+          "skill": "VOC-OPERA",
+          "required": false
+        },
+        {
+          "skill": "SK-PERF",
+          "required": true
+        }
+      ]
+    },
+    {
+      "id": "voc-plan",
+      "name": "연출·공연기획",
+      "summary": "음악 PD, 음악감독, 공연 기획",
+      "fields": [],
+      "departments": [
+        "vocal"
+      ],
+      "base": "arts-planner",
+      "srcUrl": "https://voice.catholic.ac.kr/voice/info/career.do",
+      "nodes": [
+        {
+          "skill": "VOC-OPERA",
+          "required": true
+        },
+        {
+          "skill": "SK-ARTS-PLAN",
+          "required": true,
+          "prereq": [
+            "VOC-OPERA"
+          ]
+        },
+        {
+          "skill": "SK-CONTENT",
+          "required": false
+        }
+      ]
+    },
+    {
+      "id": "voc-edu",
+      "name": "음악 교육·해설",
+      "summary": "음악 교육자, 클래식 해설가",
+      "fields": [],
+      "departments": [
+        "vocal"
+      ],
+      "base": "educator",
+      "srcUrl": "https://voice.catholic.ac.kr/voice/info/career.do",
+      "nodes": [
+        {
+          "skill": "VOC-MAJOR",
+          "required": true
+        },
+        {
+          "skill": "SK-PPT",
+          "required": false
+        }
+      ]
+    },
+    {
+      "id": "phm-community",
+      "name": "개국·근무 약사",
+      "summary": "약국에서 일하거나 약국을 연다",
+      "fields": [],
+      "departments": [
+        "pharmacy"
+      ],
+      "base": "pharma",
+      "srcUrl": "https://pharmacy.catholic.ac.kr/pharmacy/info/career.do",
+      "nodes": [
+        {
+          "skill": "PHM-ANAL",
+          "required": true
+        },
+        {
+          "skill": "PHM-PRACT",
+          "required": true,
+          "prereq": [
+            "PHM-ANAL"
+          ]
+        },
+        {
+          "skill": "PHM-C-LICENSE",
+          "required": true,
+          "prereq": [
+            "PHM-PRACT"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "phm-hospital",
+      "name": "병원 약사",
+      "summary": "병원에서 약과 관련된 문제를 해결한다",
+      "fields": [],
+      "departments": [
+        "pharmacy"
+      ],
+      "base": "pharma",
+      "srcUrl": "https://pharmacy.catholic.ac.kr/pharmacy/info/career.do",
+      "nodes": [
+        {
+          "skill": "PHM-CLINIC",
+          "required": true
+        },
+        {
+          "skill": "PHM-PRACT",
+          "required": true,
+          "prereq": [
+            "PHM-CLINIC"
+          ]
+        },
+        {
+          "skill": "PHM-C-LICENSE",
+          "required": true,
+          "prereq": [
+            "PHM-PRACT"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "phm-industry",
+      "name": "제약회사",
+      "summary": "생산관리, 개발·허가, 품질관리, 연구",
+      "fields": [],
+      "departments": [
+        "pharmacy"
+      ],
+      "base": "pharma",
+      "srcUrl": "https://pharmacy.catholic.ac.kr/pharmacy/info/career.do",
+      "nodes": [
+        {
+          "skill": "PHM-INDUSTRY",
+          "required": true
+        },
+        {
+          "skill": "PHM-PRACT",
+          "required": false,
+          "prereq": [
+            "PHM-INDUSTRY"
+          ]
+        },
+        {
+          "skill": "PHM-C-LICENSE",
+          "required": true,
+          "prereq": [
+            "PHM-PRACT"
+          ]
+        },
+        {
+          "skill": "SK-GMP",
+          "required": false
+        },
+        {
+          "skill": "SK-RA",
+          "required": false
+        }
+      ]
+    },
+    {
+      "id": "phm-public",
+      "name": "공직 약사",
+      "summary": "식약처, 보건소의 보건 행정",
+      "fields": [],
+      "departments": [
+        "pharmacy"
+      ],
+      "base": "public-sector",
+      "srcUrl": "https://pharmacy.catholic.ac.kr/pharmacy/info/career.do",
+      "nodes": [
+        {
+          "skill": "PHM-ANAL",
+          "required": true
+        },
+        {
+          "skill": "PHM-C-LICENSE",
+          "required": true,
+          "prereq": [
+            "PHM-ANAL"
+          ]
+        },
+        {
+          "skill": "SK-KHIST",
+          "required": false
+        }
+      ]
+    },
+    {
       "id": "ai-engineer",
       "name": "AI 엔지니어",
       "summary": "모델을 만들고 평가해 서비스로 배포한다",
@@ -3453,6 +8212,1725 @@
       "srcUrl": "https://socialwelfare.catholic.ac.kr/socialwelfare/info/career001.do"
     },
     {
+      "id": "MTC-PLAN",
+      "name": "콘텐츠 기획·스토리텔링",
+      "kind": "교육",
+      "verifiable": false,
+      "from": "학과",
+      "srcUrl": "https://mtc.catholic.ac.kr/mtc/info/alumni001.do"
+    },
+    {
+      "id": "MTC-VIDEO",
+      "name": "영상 촬영·연출",
+      "kind": "프로젝트",
+      "verifiable": false,
+      "from": "학과",
+      "srcUrl": "https://mtc.catholic.ac.kr/mtc/info/alumni001.do"
+    },
+    {
+      "id": "MTC-XR",
+      "name": "실감미디어(XR) 프로그래밍",
+      "kind": "프로젝트",
+      "verifiable": false,
+      "from": "학과",
+      "srcUrl": "https://mtc.catholic.ac.kr/mtc/info/alumni001.do"
+    },
+    {
+      "id": "MTC-GAME",
+      "name": "게임 기획·개발",
+      "kind": "프로젝트",
+      "verifiable": false,
+      "from": "학과",
+      "srcUrl": "https://mtc.catholic.ac.kr/mtc/info/alumni001.do"
+    },
+    {
+      "id": "MTC-VFX",
+      "name": "영상 특수효과(VFX) 제작",
+      "kind": "프로젝트",
+      "verifiable": false,
+      "from": "학과",
+      "srcUrl": "https://mtc.catholic.ac.kr/mtc/info/alumni001.do"
+    },
+    {
+      "id": "MTC-DATA",
+      "name": "콘텐츠 데이터 분석",
+      "kind": "교육",
+      "verifiable": false,
+      "from": "학과",
+      "srcUrl": "https://mtc.catholic.ac.kr/mtc/info/alumni001.do"
+    },
+    {
+      "id": "MTC-LICENSE",
+      "name": "문화예술 프로그램 기획·라이선싱",
+      "kind": "교육",
+      "verifiable": false,
+      "from": "학과",
+      "srcUrl": "https://mtc.catholic.ac.kr/mtc/info/alumni001.do"
+    },
+    {
+      "id": "MTC-C-BROAD",
+      "name": "방송통신기사",
+      "kind": "자격증",
+      "verifiable": true,
+      "from": "커리어넷",
+      "srcUrl": "https://www.career.go.kr/cloud/w/major/uView?seq=181"
+    },
+    {
+      "id": "AI-ML",
+      "name": "머신러닝·딥러닝",
+      "kind": "교육",
+      "verifiable": false,
+      "from": "학과",
+      "srcUrl": "https://ai.catholic.ac.kr/ai/course/roadmap.do"
+    },
+    {
+      "id": "AI-NLP",
+      "name": "자연어처리",
+      "kind": "교육",
+      "verifiable": false,
+      "from": "학과",
+      "srcUrl": "https://ai.catholic.ac.kr/ai/course/roadmap.do"
+    },
+    {
+      "id": "AI-CV",
+      "name": "컴퓨터비전·디지털영상처리",
+      "kind": "교육",
+      "verifiable": false,
+      "from": "학과",
+      "srcUrl": "https://ai.catholic.ac.kr/ai/course/roadmap.do"
+    },
+    {
+      "id": "AI-SPEECH",
+      "name": "음성인식·합성",
+      "kind": "교육",
+      "verifiable": false,
+      "from": "학과",
+      "srcUrl": "https://ai.catholic.ac.kr/ai/course/roadmap.do"
+    },
+    {
+      "id": "AI-IR",
+      "name": "정보검색",
+      "kind": "교육",
+      "verifiable": false,
+      "from": "학과",
+      "srcUrl": "https://ai.catholic.ac.kr/ai/course/roadmap.do"
+    },
+    {
+      "id": "AI-GNN",
+      "name": "그래프마이닝·그래프신경망",
+      "kind": "교육",
+      "verifiable": false,
+      "from": "학과",
+      "srcUrl": "https://ai.catholic.ac.kr/ai/course/roadmap.do"
+    },
+    {
+      "id": "AI-CAP",
+      "name": "인공지능 캡스톤디자인",
+      "kind": "프로젝트",
+      "verifiable": false,
+      "from": "학과",
+      "srcUrl": "https://ai.catholic.ac.kr/ai/course/roadmap.do"
+    },
+    {
+      "id": "AI-FIELD",
+      "name": "인공지능 현장실습",
+      "kind": "경험",
+      "verifiable": false,
+      "from": "학과",
+      "srcUrl": "https://ai.catholic.ac.kr/ai/course/roadmap.do"
+    },
+    {
+      "id": "AI-WRITE",
+      "name": "기술적 글쓰기",
+      "kind": "역량",
+      "verifiable": false,
+      "from": "학과",
+      "srcUrl": "https://ai.catholic.ac.kr/ai/course/roadmap.do"
+    },
+    {
+      "id": "DS-VIZ",
+      "name": "데이터 수집·분석·시각화",
+      "kind": "교육",
+      "verifiable": false,
+      "from": "학과",
+      "srcUrl": "https://datascience.catholic.ac.kr/datascience/course/roadmap.do"
+    },
+    {
+      "id": "DS-MULTI",
+      "name": "다변량 데이터 분석",
+      "kind": "교육",
+      "verifiable": false,
+      "from": "학과",
+      "srcUrl": "https://datascience.catholic.ac.kr/datascience/course/roadmap.do"
+    },
+    {
+      "id": "DS-DIST",
+      "name": "분산컴퓨팅",
+      "kind": "교육",
+      "verifiable": false,
+      "from": "학과",
+      "srcUrl": "https://datascience.catholic.ac.kr/datascience/course/roadmap.do"
+    },
+    {
+      "id": "DS-MINING",
+      "name": "데이터마이닝",
+      "kind": "교육",
+      "verifiable": false,
+      "from": "학과",
+      "srcUrl": "https://datascience.catholic.ac.kr/datascience/course/roadmap.do"
+    },
+    {
+      "id": "DS-ML",
+      "name": "머신러닝·딥러닝",
+      "kind": "교육",
+      "verifiable": false,
+      "from": "학과",
+      "srcUrl": "https://datascience.catholic.ac.kr/datascience/course/roadmap.do"
+    },
+    {
+      "id": "DS-CAP",
+      "name": "데이터사이언스 캡스톤디자인",
+      "kind": "프로젝트",
+      "verifiable": false,
+      "from": "학과",
+      "srcUrl": "https://datascience.catholic.ac.kr/datascience/course/roadmap.do"
+    },
+    {
+      "id": "DS-DB",
+      "name": "데이터베이스",
+      "kind": "교육",
+      "verifiable": false,
+      "from": "학과",
+      "srcUrl": "https://datascience.catholic.ac.kr/datascience/course/roadmap.do"
+    },
+    {
+      "id": "DS-C-SURVEY",
+      "name": "사회조사분석사",
+      "kind": "자격증",
+      "verifiable": true,
+      "from": "커리어넷",
+      "srcUrl": "https://www.career.go.kr/cloud/w/major/uView?seq=591"
+    },
+    {
+      "id": "DS-C-INFO",
+      "name": "정보처리기사",
+      "kind": "자격증",
+      "verifiable": true,
+      "from": "커리어넷",
+      "srcUrl": "https://www.career.go.kr/cloud/w/major/uView?seq=591"
+    },
+    {
+      "id": "CS-DS",
+      "name": "자료구조·알고리즘 설계",
+      "kind": "교육",
+      "verifiable": false,
+      "from": "학과",
+      "srcUrl": "https://csie.catholic.ac.kr/csie/course/roadmap.do"
+    },
+    {
+      "id": "CS-OS",
+      "name": "운영체제·컴퓨터구조",
+      "kind": "교육",
+      "verifiable": false,
+      "from": "학과",
+      "srcUrl": "https://csie.catholic.ac.kr/csie/course/roadmap.do"
+    },
+    {
+      "id": "CS-NET",
+      "name": "컴퓨터 네트워크",
+      "kind": "교육",
+      "verifiable": false,
+      "from": "학과",
+      "srcUrl": "https://csie.catholic.ac.kr/csie/course/roadmap.do"
+    },
+    {
+      "id": "CS-SEC",
+      "name": "네트워크·시스템 보안",
+      "kind": "교육",
+      "verifiable": false,
+      "from": "학과",
+      "srcUrl": "https://csie.catholic.ac.kr/csie/course/roadmap.do"
+    },
+    {
+      "id": "CS-DB",
+      "name": "데이터베이스 설계",
+      "kind": "교육",
+      "verifiable": false,
+      "from": "학과",
+      "srcUrl": "https://csie.catholic.ac.kr/csie/course/roadmap.do"
+    },
+    {
+      "id": "CS-SE",
+      "name": "소프트웨어 공학",
+      "kind": "교육",
+      "verifiable": false,
+      "from": "학과",
+      "srcUrl": "https://csie.catholic.ac.kr/csie/course/roadmap.do"
+    },
+    {
+      "id": "CS-EMB",
+      "name": "임베디드·모바일",
+      "kind": "교육",
+      "verifiable": false,
+      "from": "학과",
+      "srcUrl": "https://csie.catholic.ac.kr/csie/course/roadmap.do"
+    },
+    {
+      "id": "CS-IS",
+      "name": "정보시스템 분석·설계",
+      "kind": "교육",
+      "verifiable": false,
+      "from": "학과",
+      "srcUrl": "https://csie.catholic.ac.kr/csie/course/roadmap.do"
+    },
+    {
+      "id": "CS-C-LINUX",
+      "name": "리눅스마스터",
+      "kind": "자격증",
+      "verifiable": true,
+      "from": "커리어넷",
+      "srcUrl": "https://www.career.go.kr/cloud/w/major/uView?seq=569"
+    },
+    {
+      "id": "CS-C-NET",
+      "name": "네트워크관리사",
+      "kind": "자격증",
+      "verifiable": true,
+      "from": "커리어넷",
+      "srcUrl": "https://www.career.go.kr/cloud/w/major/uView?seq=569"
+    },
+    {
+      "id": "KOR-TEXT",
+      "name": "텍스트 분석·작성",
+      "kind": "교육",
+      "verifiable": false,
+      "from": "학과",
+      "srcUrl": "https://korean.catholic.ac.kr/korean/info/career.do"
+    },
+    {
+      "id": "KOR-EDIT",
+      "name": "교정·출판 편집",
+      "kind": "교육",
+      "verifiable": false,
+      "from": "학과",
+      "srcUrl": "https://korean.catholic.ac.kr/korean/info/career.do"
+    },
+    {
+      "id": "KOR-CREATE",
+      "name": "창작(시·소설·실용)",
+      "kind": "프로젝트",
+      "verifiable": false,
+      "from": "학과",
+      "srcUrl": "https://korean.catholic.ac.kr/korean/info/career.do"
+    },
+    {
+      "id": "KOR-TEACH",
+      "name": "독서·작문 지도",
+      "kind": "교육",
+      "verifiable": false,
+      "from": "학과",
+      "srcUrl": "https://korean.catholic.ac.kr/korean/info/career.do"
+    },
+    {
+      "id": "KOR-FEST",
+      "name": "학과 학술제·학술답사",
+      "kind": "경험",
+      "verifiable": false,
+      "from": "학과",
+      "srcUrl": "https://korean.catholic.ac.kr/korean/info/career.do"
+    },
+    {
+      "id": "KOR-CONTEST",
+      "name": "응용작품대회·문예 공모",
+      "kind": "경험",
+      "verifiable": false,
+      "from": "학과",
+      "srcUrl": "https://korean.catholic.ac.kr/korean/info/career.do"
+    },
+    {
+      "id": "KOR-C-TEACH",
+      "name": "중등 정교사 2급(국어)",
+      "kind": "자격증",
+      "verifiable": true,
+      "from": "커리어넷",
+      "srcUrl": "https://www.career.go.kr/cloud/w/major/uView?seq=69"
+    },
+    {
+      "id": "PHI-LOGIC",
+      "name": "논리적 분석과 응용",
+      "kind": "교육",
+      "verifiable": false,
+      "from": "학과",
+      "srcUrl": "https://philosophy.catholic.ac.kr/philosophy/course/roadmap.do"
+    },
+    {
+      "id": "PHI-READ",
+      "name": "철학 문헌 읽기·토론",
+      "kind": "교육",
+      "verifiable": false,
+      "from": "학과",
+      "srcUrl": "https://philosophy.catholic.ac.kr/philosophy/course/roadmap.do"
+    },
+    {
+      "id": "PHI-ETHIC",
+      "name": "현대사회와 윤리 문제",
+      "kind": "교육",
+      "verifiable": false,
+      "from": "학과",
+      "srcUrl": "https://philosophy.catholic.ac.kr/philosophy/course/roadmap.do"
+    },
+    {
+      "id": "PHI-EDU",
+      "name": "철학교과교육",
+      "kind": "교육",
+      "verifiable": false,
+      "from": "학과",
+      "srcUrl": "https://philosophy.catholic.ac.kr/philosophy/course/roadmap.do"
+    },
+    {
+      "id": "PHI-C-TEACH",
+      "name": "중등 정교사 2급(철학)",
+      "kind": "자격증",
+      "verifiable": true,
+      "from": "커리어넷",
+      "srcUrl": "https://www.career.go.kr/cloud/w/major/uView?seq=548"
+    },
+    {
+      "id": "ENG-ESSAY",
+      "name": "영어 에세이 쓰기",
+      "kind": "교육",
+      "verifiable": false,
+      "from": "학과",
+      "srcUrl": "https://english.catholic.ac.kr/english/course/roadmap.do"
+    },
+    {
+      "id": "ENG-PRES",
+      "name": "영어 발표",
+      "kind": "교육",
+      "verifiable": false,
+      "from": "학과",
+      "srcUrl": "https://english.catholic.ac.kr/english/course/roadmap.do"
+    },
+    {
+      "id": "ENG-TRANS",
+      "name": "번역의 원리와 응용",
+      "kind": "교육",
+      "verifiable": false,
+      "from": "학과",
+      "srcUrl": "https://english.catholic.ac.kr/english/course/roadmap.do"
+    },
+    {
+      "id": "ENG-LIT",
+      "name": "영미문학·스토리텔링",
+      "kind": "교육",
+      "verifiable": false,
+      "from": "학과",
+      "srcUrl": "https://english.catholic.ac.kr/english/course/roadmap.do"
+    },
+    {
+      "id": "ENG-EDU",
+      "name": "영어교과교육론·지도법",
+      "kind": "교육",
+      "verifiable": false,
+      "from": "학과",
+      "srcUrl": "https://english.catholic.ac.kr/english/course/roadmap.do"
+    },
+    {
+      "id": "ENG-C-TEACH",
+      "name": "중등 정교사(영어, 교직 이수)",
+      "kind": "자격증",
+      "verifiable": true,
+      "from": "학과",
+      "srcUrl": "https://english.catholic.ac.kr/english/intro/career.do"
+    },
+    {
+      "id": "ENG-C-TRADE",
+      "name": "무역영어",
+      "kind": "자격증",
+      "verifiable": true,
+      "from": "커리어넷",
+      "srcUrl": "https://www.career.go.kr/cloud/w/major/uView?seq=366"
+    },
+    {
+      "id": "CHN-TALK",
+      "name": "중국어 회화·프레젠테이션",
+      "kind": "교육",
+      "verifiable": false,
+      "from": "학과",
+      "srcUrl": "https://cn.catholic.ac.kr/cn/course/roadmap.do"
+    },
+    {
+      "id": "CHN-BIZ",
+      "name": "통상중국어",
+      "kind": "교육",
+      "verifiable": false,
+      "from": "학과",
+      "srcUrl": "https://cn.catholic.ac.kr/cn/course/roadmap.do"
+    },
+    {
+      "id": "CHN-TRANS",
+      "name": "AI 활용 중한번역 연습",
+      "kind": "교육",
+      "verifiable": false,
+      "from": "학과",
+      "srcUrl": "https://cn.catholic.ac.kr/cn/course/roadmap.do"
+    },
+    {
+      "id": "CHN-CULTURE",
+      "name": "중국 지역문화",
+      "kind": "교육",
+      "verifiable": false,
+      "from": "학과",
+      "srcUrl": "https://cn.catholic.ac.kr/cn/course/roadmap.do"
+    },
+    {
+      "id": "CHN-C-BCT",
+      "name": "BCT",
+      "kind": "어학",
+      "verifiable": true,
+      "from": "학과",
+      "srcUrl": "https://cn.catholic.ac.kr/cn/info/career.do"
+    },
+    {
+      "id": "CHN-C-TSC",
+      "name": "TSC",
+      "kind": "어학",
+      "verifiable": true,
+      "from": "학과",
+      "srcUrl": "https://cn.catholic.ac.kr/cn/info/career.do"
+    },
+    {
+      "id": "CHN-C-TCT",
+      "name": "TCT(번역능력인정시험)",
+      "kind": "자격증",
+      "verifiable": true,
+      "from": "학과",
+      "srcUrl": "https://cn.catholic.ac.kr/cn/info/career.do"
+    },
+    {
+      "id": "JPN-TALK",
+      "name": "일본어 회화·작문·경어",
+      "kind": "교육",
+      "verifiable": false,
+      "from": "학과",
+      "srcUrl": "https://japanese.catholic.ac.kr/japanese/course/roadmap.do"
+    },
+    {
+      "id": "JPN-TRANS",
+      "name": "일한 번역",
+      "kind": "교육",
+      "verifiable": false,
+      "from": "학과",
+      "srcUrl": "https://japanese.catholic.ac.kr/japanese/course/roadmap.do"
+    },
+    {
+      "id": "JPN-NEWS",
+      "name": "시사 일본어 토론",
+      "kind": "교육",
+      "verifiable": false,
+      "from": "학과",
+      "srcUrl": "https://japanese.catholic.ac.kr/japanese/course/roadmap.do"
+    },
+    {
+      "id": "JPN-SOC",
+      "name": "일본 사회·문화 이해",
+      "kind": "교육",
+      "verifiable": false,
+      "from": "학과",
+      "srcUrl": "https://japanese.catholic.ac.kr/japanese/course/roadmap.do"
+    },
+    {
+      "id": "KLC-TEACH",
+      "name": "한국어 교수법(말하기·듣기·읽기·쓰기 교육)",
+      "kind": "교육",
+      "verifiable": false,
+      "from": "학과",
+      "srcUrl": "https://klc.catholic.ac.kr/klc/course/roadmap.do"
+    },
+    {
+      "id": "KLC-MATERIAL",
+      "name": "한국어 교재·교육 콘텐츠 제작",
+      "kind": "프로젝트",
+      "verifiable": false,
+      "from": "학과",
+      "srcUrl": "https://klc.catholic.ac.kr/klc/course/roadmap.do"
+    },
+    {
+      "id": "KLC-TEST",
+      "name": "한국어능력평가",
+      "kind": "교육",
+      "verifiable": false,
+      "from": "학과",
+      "srcUrl": "https://klc.catholic.ac.kr/klc/course/roadmap.do"
+    },
+    {
+      "id": "KLC-PRACT",
+      "name": "한국어 교실수업의 실제",
+      "kind": "경험",
+      "verifiable": false,
+      "from": "학과",
+      "srcUrl": "https://klc.catholic.ac.kr/klc/course/roadmap.do"
+    },
+    {
+      "id": "KLC-CONTENT",
+      "name": "한국언어문화콘텐츠 설계",
+      "kind": "프로젝트",
+      "verifiable": false,
+      "from": "학과",
+      "srcUrl": "https://klc.catholic.ac.kr/klc/course/roadmap.do"
+    },
+    {
+      "id": "KLC-C-TEACH",
+      "name": "한국어교원 2급",
+      "kind": "자격증",
+      "verifiable": true,
+      "from": "커리어넷",
+      "srcUrl": "https://www.career.go.kr/cloud/w/major/uView?seq=613"
+    },
+    {
+      "id": "SOC-SURVEY",
+      "name": "사회조사·통계 분석",
+      "kind": "교육",
+      "verifiable": false,
+      "from": "학과",
+      "srcUrl": "https://sociology.catholic.ac.kr/sociology/course/roadmap.do"
+    },
+    {
+      "id": "SOC-POLICY",
+      "name": "공공사회정책",
+      "kind": "교육",
+      "verifiable": false,
+      "from": "학과",
+      "srcUrl": "https://sociology.catholic.ac.kr/sociology/course/roadmap.do"
+    },
+    {
+      "id": "SOC-CONFLICT",
+      "name": "사회갈등·사회운동 연구",
+      "kind": "교육",
+      "verifiable": false,
+      "from": "학과",
+      "srcUrl": "https://sociology.catholic.ac.kr/sociology/course/roadmap.do"
+    },
+    {
+      "id": "SOC-CORP",
+      "name": "기업과 사회(경영학 연계)",
+      "kind": "교육",
+      "verifiable": false,
+      "from": "학과",
+      "srcUrl": "https://sociology.catholic.ac.kr/sociology/course/roadmap.do"
+    },
+    {
+      "id": "SOC-C-SURVEY",
+      "name": "사회조사분석사",
+      "kind": "자격증",
+      "verifiable": true,
+      "from": "학과",
+      "srcUrl": "https://sociology.catholic.ac.kr/sociology/info/roadmap.do"
+    },
+    {
+      "id": "CHD-DEV",
+      "name": "영유아 발달·교수방법",
+      "kind": "교육",
+      "verifiable": false,
+      "from": "학과",
+      "srcUrl": "https://children.catholic.ac.kr/children/info/career.do"
+    },
+    {
+      "id": "CHD-PLAY",
+      "name": "놀이지도",
+      "kind": "교육",
+      "verifiable": false,
+      "from": "학과",
+      "srcUrl": "https://children.catholic.ac.kr/children/info/career.do"
+    },
+    {
+      "id": "CHD-OBS",
+      "name": "아동관찰 및 행동연구",
+      "kind": "교육",
+      "verifiable": false,
+      "from": "학과",
+      "srcUrl": "https://children.catholic.ac.kr/children/info/career.do"
+    },
+    {
+      "id": "CHD-PRACT",
+      "name": "보육실습 6주 240시간",
+      "kind": "경험",
+      "verifiable": false,
+      "from": "학과",
+      "srcUrl": "https://children.catholic.ac.kr/children/info/career.do"
+    },
+    {
+      "id": "CHD-PARENT",
+      "name": "부모교육·아동상담",
+      "kind": "교육",
+      "verifiable": false,
+      "from": "학과",
+      "srcUrl": "https://children.catholic.ac.kr/children/info/career.do"
+    },
+    {
+      "id": "CHD-C-CARE",
+      "name": "보육교사 2급",
+      "kind": "자격증",
+      "verifiable": true,
+      "from": "학과",
+      "srcUrl": "https://children.catholic.ac.kr/children/info/career.do"
+    },
+    {
+      "id": "CHD-C-PLAY",
+      "name": "놀이심리재활사",
+      "kind": "자격증",
+      "verifiable": true,
+      "from": "학과",
+      "srcUrl": "https://children.catholic.ac.kr/children/info/career.do"
+    },
+    {
+      "id": "CHD-C-KINDER",
+      "name": "유치원 정교사(교직 이수)",
+      "kind": "자격증",
+      "verifiable": true,
+      "from": "학과",
+      "srcUrl": "https://children.catholic.ac.kr/children/info/career.do"
+    },
+    {
+      "id": "INT-AREA",
+      "name": "지역연구(미국·중국·일본·유럽·동남아)",
+      "kind": "교육",
+      "verifiable": false,
+      "from": "학과",
+      "srcUrl": "https://is.catholic.ac.kr/is/course/roadmap.do"
+    },
+    {
+      "id": "INT-TRADE",
+      "name": "통상실무개론",
+      "kind": "교육",
+      "verifiable": false,
+      "from": "학과",
+      "srcUrl": "https://is.catholic.ac.kr/is/course/roadmap.do"
+    },
+    {
+      "id": "INT-DEV",
+      "name": "국제개발협력",
+      "kind": "교육",
+      "verifiable": false,
+      "from": "학과",
+      "srcUrl": "https://is.catholic.ac.kr/is/course/roadmap.do"
+    },
+    {
+      "id": "INT-DIPLO",
+      "name": "외교정책 분석",
+      "kind": "교육",
+      "verifiable": false,
+      "from": "학과",
+      "srcUrl": "https://is.catholic.ac.kr/is/course/roadmap.do"
+    },
+    {
+      "id": "INT-METHOD",
+      "name": "국제학 방법론",
+      "kind": "교육",
+      "verifiable": false,
+      "from": "학과",
+      "srcUrl": "https://is.catholic.ac.kr/is/course/roadmap.do"
+    },
+    {
+      "id": "LAW-CIVIL",
+      "name": "민사법(민법총칙·채권·물권)",
+      "kind": "교육",
+      "verifiable": false,
+      "from": "학과",
+      "srcUrl": "https://law.catholic.ac.kr/law/course/roadmap.do"
+    },
+    {
+      "id": "LAW-CRIM",
+      "name": "형사법(형법총론·각론)",
+      "kind": "교육",
+      "verifiable": false,
+      "from": "학과",
+      "srcUrl": "https://law.catholic.ac.kr/law/course/roadmap.do"
+    },
+    {
+      "id": "LAW-CONST",
+      "name": "헌법",
+      "kind": "교육",
+      "verifiable": false,
+      "from": "학과",
+      "srcUrl": "https://law.catholic.ac.kr/law/course/roadmap.do"
+    },
+    {
+      "id": "LAW-ADMIN",
+      "name": "행정법",
+      "kind": "교육",
+      "verifiable": false,
+      "from": "학과",
+      "srcUrl": "https://law.catholic.ac.kr/law/course/roadmap.do"
+    },
+    {
+      "id": "LAW-COMM",
+      "name": "상법·회사법",
+      "kind": "교육",
+      "verifiable": false,
+      "from": "학과",
+      "srcUrl": "https://law.catholic.ac.kr/law/course/roadmap.do"
+    },
+    {
+      "id": "LAW-LABOR",
+      "name": "노동법",
+      "kind": "교육",
+      "verifiable": false,
+      "from": "학과",
+      "srcUrl": "https://law.catholic.ac.kr/law/course/roadmap.do"
+    },
+    {
+      "id": "LAW-FEST",
+      "name": "학술제·학회 활동",
+      "kind": "경험",
+      "verifiable": false,
+      "from": "학과",
+      "srcUrl": "https://law.catholic.ac.kr/law/info/career.do"
+    },
+    {
+      "id": "LAW-C-LABOR",
+      "name": "공인노무사",
+      "kind": "자격증",
+      "verifiable": true,
+      "from": "학과",
+      "srcUrl": "https://law.catholic.ac.kr/law/info/career.do"
+    },
+    {
+      "id": "ECO-MICRO",
+      "name": "미시·거시경제 분석",
+      "kind": "교육",
+      "verifiable": false,
+      "from": "학과",
+      "srcUrl": "https://economics.catholic.ac.kr/economics/info/career.do"
+    },
+    {
+      "id": "ECO-METRIC",
+      "name": "계량 분석",
+      "kind": "교육",
+      "verifiable": false,
+      "from": "학과",
+      "srcUrl": "https://economics.catholic.ac.kr/economics/info/career.do"
+    },
+    {
+      "id": "ECO-FIN",
+      "name": "금융·화폐 경제",
+      "kind": "교육",
+      "verifiable": false,
+      "from": "학과",
+      "srcUrl": "https://economics.catholic.ac.kr/economics/info/career.do"
+    },
+    {
+      "id": "ECO-C-FP",
+      "name": "자산관리사(FP)",
+      "kind": "자격증",
+      "verifiable": true,
+      "from": "커리어넷",
+      "srcUrl": "https://www.career.go.kr/cloud/w/major/uView?seq=25"
+    },
+    {
+      "id": "ECO-C-CREDIT",
+      "name": "신용분석사",
+      "kind": "자격증",
+      "verifiable": true,
+      "from": "커리어넷",
+      "srcUrl": "https://www.career.go.kr/cloud/w/major/uView?seq=25"
+    },
+    {
+      "id": "PA-POLICY",
+      "name": "정책 분석·평가",
+      "kind": "교육",
+      "verifiable": false,
+      "from": "학과",
+      "srcUrl": "https://pa.catholic.ac.kr/pa/info/career001.do"
+    },
+    {
+      "id": "PA-MANAGE",
+      "name": "공공 관리·조직",
+      "kind": "교육",
+      "verifiable": false,
+      "from": "학과",
+      "srcUrl": "https://pa.catholic.ac.kr/pa/info/career001.do"
+    },
+    {
+      "id": "PA-C-ADMIN",
+      "name": "행정사",
+      "kind": "자격증",
+      "verifiable": true,
+      "from": "커리어넷",
+      "srcUrl": "https://www.career.go.kr/cloud/w/major/uView?seq=639"
+    },
+    {
+      "id": "PA-C-LABOR",
+      "name": "공인노무사",
+      "kind": "자격증",
+      "verifiable": true,
+      "from": "커리어넷",
+      "srcUrl": "https://www.career.go.kr/cloud/w/major/uView?seq=639"
+    },
+    {
+      "id": "BIZ-MKT",
+      "name": "마케팅·시장조사·마케팅데이터분석",
+      "kind": "교육",
+      "verifiable": false,
+      "from": "학과",
+      "srcUrl": "https://business.catholic.ac.kr/business/course/roadmap.do"
+    },
+    {
+      "id": "BIZ-FIN",
+      "name": "재무관리·투자론",
+      "kind": "교육",
+      "verifiable": false,
+      "from": "학과",
+      "srcUrl": "https://business.catholic.ac.kr/business/course/roadmap.do"
+    },
+    {
+      "id": "BIZ-HR",
+      "name": "인적자원관리·조직행위론",
+      "kind": "교육",
+      "verifiable": false,
+      "from": "학과",
+      "srcUrl": "https://business.catholic.ac.kr/business/course/roadmap.do"
+    },
+    {
+      "id": "BIZ-OPS",
+      "name": "생산운영·SCM",
+      "kind": "교육",
+      "verifiable": false,
+      "from": "학과",
+      "srcUrl": "https://business.catholic.ac.kr/business/course/roadmap.do"
+    },
+    {
+      "id": "BIZ-STRATEGY",
+      "name": "경영전략·국제경영",
+      "kind": "교육",
+      "verifiable": false,
+      "from": "학과",
+      "srcUrl": "https://business.catholic.ac.kr/business/course/roadmap.do"
+    },
+    {
+      "id": "BIZ-FIELD",
+      "name": "경영학 현장실습",
+      "kind": "경험",
+      "verifiable": false,
+      "from": "학과",
+      "srcUrl": "https://business.catholic.ac.kr/business/course/roadmap.do"
+    },
+    {
+      "id": "BIZ-CAP",
+      "name": "경영학 캡스톤디자인",
+      "kind": "프로젝트",
+      "verifiable": false,
+      "from": "학과",
+      "srcUrl": "https://business.catholic.ac.kr/business/course/roadmap.do"
+    },
+    {
+      "id": "BIZ-C-CONSULT",
+      "name": "경영지도사",
+      "kind": "자격증",
+      "verifiable": true,
+      "from": "커리어넷",
+      "srcUrl": "https://www.career.go.kr/cloud/w/major/uView?seq=23"
+    },
+    {
+      "id": "BIZ-C-LOGIS",
+      "name": "물류관리사",
+      "kind": "자격증",
+      "verifiable": true,
+      "from": "커리어넷",
+      "srcUrl": "https://www.career.go.kr/cloud/w/major/uView?seq=23"
+    },
+    {
+      "id": "BIZ-C-SURVEY",
+      "name": "사회조사분석사",
+      "kind": "자격증",
+      "verifiable": true,
+      "from": "커리어넷",
+      "srcUrl": "https://www.career.go.kr/cloud/w/major/uView?seq=23"
+    },
+    {
+      "id": "GB-FIN",
+      "name": "다국적 기업 재무전략·M&A와 가치평가",
+      "kind": "교육",
+      "verifiable": false,
+      "from": "학과",
+      "srcUrl": "https://globalbiz.catholic.ac.kr/globalbiz/course/roadmap.do"
+    },
+    {
+      "id": "GB-SCM",
+      "name": "글로벌 공급망 전략",
+      "kind": "교육",
+      "verifiable": false,
+      "from": "학과",
+      "srcUrl": "https://globalbiz.catholic.ac.kr/globalbiz/course/roadmap.do"
+    },
+    {
+      "id": "GB-ESG",
+      "name": "다국적 기업과 ESG 경영",
+      "kind": "교육",
+      "verifiable": false,
+      "from": "학과",
+      "srcUrl": "https://globalbiz.catholic.ac.kr/globalbiz/course/roadmap.do"
+    },
+    {
+      "id": "GB-MKT",
+      "name": "글로벌 마케팅·소비자행동",
+      "kind": "교육",
+      "verifiable": false,
+      "from": "학과",
+      "srcUrl": "https://globalbiz.catholic.ac.kr/globalbiz/course/roadmap.do"
+    },
+    {
+      "id": "GB-STRATEGY",
+      "name": "국제경영·글로벌 경영전략",
+      "kind": "교육",
+      "verifiable": false,
+      "from": "학과",
+      "srcUrl": "https://globalbiz.catholic.ac.kr/globalbiz/course/roadmap.do"
+    },
+    {
+      "id": "CHE-ORG",
+      "name": "유기화학·유기합성 실험",
+      "kind": "교육",
+      "verifiable": false,
+      "from": "학과",
+      "srcUrl": "https://chemistry.catholic.ac.kr/chemistry/course/roadmap.do"
+    },
+    {
+      "id": "CHE-ANAL",
+      "name": "분석화학·기기분석",
+      "kind": "교육",
+      "verifiable": false,
+      "from": "학과",
+      "srcUrl": "https://chemistry.catholic.ac.kr/chemistry/course/roadmap.do"
+    },
+    {
+      "id": "CHE-PHYS",
+      "name": "물리화학·전기화학",
+      "kind": "교육",
+      "verifiable": false,
+      "from": "학과",
+      "srcUrl": "https://chemistry.catholic.ac.kr/chemistry/course/roadmap.do"
+    },
+    {
+      "id": "CHE-INORG",
+      "name": "무기화학·나노재료화학",
+      "kind": "교육",
+      "verifiable": false,
+      "from": "학과",
+      "srcUrl": "https://chemistry.catholic.ac.kr/chemistry/course/roadmap.do"
+    },
+    {
+      "id": "CHE-MATERIAL",
+      "name": "소재화학(유기·전자재료)",
+      "kind": "교육",
+      "verifiable": false,
+      "from": "학과",
+      "srcUrl": "https://chemistry.catholic.ac.kr/chemistry/course/roadmap.do"
+    },
+    {
+      "id": "CHE-RESEARCH",
+      "name": "소재화학연구(심화연구)",
+      "kind": "경험",
+      "verifiable": false,
+      "from": "학과",
+      "srcUrl": "https://chemistry.catholic.ac.kr/chemistry/course/roadmap.do"
+    },
+    {
+      "id": "CHE-EDU",
+      "name": "화학교과교육론",
+      "kind": "교육",
+      "verifiable": false,
+      "from": "학과",
+      "srcUrl": "https://chemistry.catholic.ac.kr/chemistry/course/roadmap.do"
+    },
+    {
+      "id": "CHE-C-CHE",
+      "name": "화공기사",
+      "kind": "자격증",
+      "verifiable": true,
+      "from": "커리어넷",
+      "srcUrl": "https://www.career.go.kr/cloud/w/major/uView?seq=649"
+    },
+    {
+      "id": "MAT-ANAL",
+      "name": "해석학·대수학",
+      "kind": "교육",
+      "verifiable": false,
+      "from": "학과",
+      "srcUrl": "https://math.catholic.ac.kr/math/course/roadmap.do"
+    },
+    {
+      "id": "MAT-STAT",
+      "name": "확률론·수리통계학·자료분석",
+      "kind": "교육",
+      "verifiable": false,
+      "from": "학과",
+      "srcUrl": "https://math.catholic.ac.kr/math/course/roadmap.do"
+    },
+    {
+      "id": "MAT-FIN",
+      "name": "금융수학·전산금융·위험관리론",
+      "kind": "교육",
+      "verifiable": false,
+      "from": "학과",
+      "srcUrl": "https://math.catholic.ac.kr/math/course/roadmap.do"
+    },
+    {
+      "id": "MAT-ML",
+      "name": "기계학습의 수학적 이론·딥러닝",
+      "kind": "교육",
+      "verifiable": false,
+      "from": "학과",
+      "srcUrl": "https://math.catholic.ac.kr/math/course/roadmap.do"
+    },
+    {
+      "id": "MAT-PROG",
+      "name": "수학프로그래밍·계산수학",
+      "kind": "교육",
+      "verifiable": false,
+      "from": "학과",
+      "srcUrl": "https://math.catholic.ac.kr/math/course/roadmap.do"
+    },
+    {
+      "id": "MAT-C-ACTUARY",
+      "name": "보험계리사",
+      "kind": "자격증",
+      "verifiable": true,
+      "from": "커리어넷",
+      "srcUrl": "https://www.career.go.kr/cloud/w/major/uView?seq=298"
+    },
+    {
+      "id": "MAT-C-SURVEY",
+      "name": "사회조사분석사",
+      "kind": "자격증",
+      "verifiable": true,
+      "from": "커리어넷",
+      "srcUrl": "https://www.career.go.kr/cloud/w/major/uView?seq=298"
+    },
+    {
+      "id": "PHY-LAB",
+      "name": "현대·고급물리학실험",
+      "kind": "교육",
+      "verifiable": false,
+      "from": "학과",
+      "srcUrl": "https://physics.catholic.ac.kr/physics/course/roadmap.do"
+    },
+    {
+      "id": "PHY-COMP",
+      "name": "전산물리와 딥러닝",
+      "kind": "교육",
+      "verifiable": false,
+      "from": "학과",
+      "srcUrl": "https://physics.catholic.ac.kr/physics/course/roadmap.do"
+    },
+    {
+      "id": "PHY-SEMI",
+      "name": "반도체·고체물리학",
+      "kind": "교육",
+      "verifiable": false,
+      "from": "학과",
+      "srcUrl": "https://physics.catholic.ac.kr/physics/course/roadmap.do"
+    },
+    {
+      "id": "PHY-QUANT",
+      "name": "양자역학·전자기학",
+      "kind": "교육",
+      "verifiable": false,
+      "from": "학과",
+      "srcUrl": "https://physics.catholic.ac.kr/physics/course/roadmap.do"
+    },
+    {
+      "id": "PHY-SIM",
+      "name": "복잡계 시뮬레이션 나노디그리",
+      "kind": "교육",
+      "verifiable": false,
+      "from": "학과",
+      "srcUrl": "https://physics.catholic.ac.kr/physics/course/roadmap.do"
+    },
+    {
+      "id": "SPD-DRAW",
+      "name": "제도·표현기법",
+      "kind": "교육",
+      "verifiable": false,
+      "from": "학과",
+      "srcUrl": "https://design.catholic.ac.kr/design/course/major-roadmap.do"
+    },
+    {
+      "id": "SPD-CAD",
+      "name": "CAD(Computer Aided Design)",
+      "kind": "교육",
+      "verifiable": false,
+      "from": "학과",
+      "srcUrl": "https://design.catholic.ac.kr/design/course/major-roadmap.do"
+    },
+    {
+      "id": "SPD-HOUSE",
+      "name": "주택설계",
+      "kind": "프로젝트",
+      "verifiable": false,
+      "from": "학과",
+      "srcUrl": "https://design.catholic.ac.kr/design/course/major-roadmap.do"
+    },
+    {
+      "id": "SPD-INTERIOR",
+      "name": "실내디자인 프로젝트",
+      "kind": "프로젝트",
+      "verifiable": false,
+      "from": "학과",
+      "srcUrl": "https://design.catholic.ac.kr/design/course/major-roadmap.do"
+    },
+    {
+      "id": "SPD-VMD",
+      "name": "VMD(비주얼머천다이징)·실내 코디네이션",
+      "kind": "교육",
+      "verifiable": false,
+      "from": "학과",
+      "srcUrl": "https://design.catholic.ac.kr/design/course/major-roadmap.do"
+    },
+    {
+      "id": "SPD-FURN",
+      "name": "가구디자인 종합설계",
+      "kind": "프로젝트",
+      "verifiable": false,
+      "from": "학과",
+      "srcUrl": "https://design.catholic.ac.kr/design/course/major-roadmap.do"
+    },
+    {
+      "id": "SPD-PORT",
+      "name": "포트폴리오 디자인",
+      "kind": "프로젝트",
+      "verifiable": false,
+      "from": "학과",
+      "srcUrl": "https://design.catholic.ac.kr/design/course/major-roadmap.do"
+    },
+    {
+      "id": "SPD-CONSUMER",
+      "name": "소비자학 캡스톤디자인(소비자조사·상품기획)",
+      "kind": "프로젝트",
+      "verifiable": false,
+      "from": "학과",
+      "srcUrl": "https://design.catholic.ac.kr/design/course/major-roadmap.do"
+    },
+    {
+      "id": "SPD-C-INTERIOR",
+      "name": "실내건축기사",
+      "kind": "자격증",
+      "verifiable": true,
+      "from": "커리어넷",
+      "srcUrl": "https://www.career.go.kr/cloud/w/major/uView?seq=10024"
+    },
+    {
+      "id": "SPD-C-COLOR",
+      "name": "컬러리스트기사",
+      "kind": "자격증",
+      "verifiable": true,
+      "from": "커리어넷",
+      "srcUrl": "https://www.career.go.kr/cloud/w/major/uView?seq=10024"
+    },
+    {
+      "id": "FN-PROCESS",
+      "name": "식품가공학·식품화학 실험",
+      "kind": "교육",
+      "verifiable": false,
+      "from": "학과",
+      "srcUrl": "https://fn.catholic.ac.kr/fn/course/roadmap.do"
+    },
+    {
+      "id": "FN-CLINIC",
+      "name": "임상영양학·식사요법",
+      "kind": "교육",
+      "verifiable": false,
+      "from": "학과",
+      "srcUrl": "https://fn.catholic.ac.kr/fn/course/roadmap.do"
+    },
+    {
+      "id": "FN-ASSESS",
+      "name": "영양판정·영양교육 및 상담",
+      "kind": "교육",
+      "verifiable": false,
+      "from": "학과",
+      "srcUrl": "https://fn.catholic.ac.kr/fn/course/roadmap.do"
+    },
+    {
+      "id": "FN-MEAL",
+      "name": "단체급식관리·급식경영학",
+      "kind": "교육",
+      "verifiable": false,
+      "from": "학과",
+      "srcUrl": "https://fn.catholic.ac.kr/fn/course/roadmap.do"
+    },
+    {
+      "id": "FN-FIELD",
+      "name": "영양사 현장실습",
+      "kind": "경험",
+      "verifiable": false,
+      "from": "학과",
+      "srcUrl": "https://fn.catholic.ac.kr/fn/course/roadmap.do"
+    },
+    {
+      "id": "FN-MKT",
+      "name": "외식마케팅",
+      "kind": "교육",
+      "verifiable": false,
+      "from": "학과",
+      "srcUrl": "https://fn.catholic.ac.kr/fn/course/roadmap.do"
+    },
+    {
+      "id": "FN-C-TEACH",
+      "name": "영양교사(교직 이수)",
+      "kind": "자격증",
+      "verifiable": true,
+      "from": "학과",
+      "srcUrl": "https://fn.catholic.ac.kr/fn/info/career.do"
+    },
+    {
+      "id": "FN-C-SANIT",
+      "name": "위생사",
+      "kind": "자격증",
+      "verifiable": true,
+      "from": "커리어넷",
+      "srcUrl": "https://www.career.go.kr/cloud/w/major/uView?seq=318"
+    },
+    {
+      "id": "BT-RED",
+      "name": "RED Bio 마이크로디그리(바이오의약품·면역학)",
+      "kind": "교육",
+      "verifiable": false,
+      "from": "학과",
+      "srcUrl": "https://biotech.catholic.ac.kr/biotech/course/roadmap.do"
+    },
+    {
+      "id": "BT-GREEN",
+      "name": "GREEN Bio 마이크로디그리(산업미생물·발효공학)",
+      "kind": "교육",
+      "verifiable": false,
+      "from": "학과",
+      "srcUrl": "https://biotech.catholic.ac.kr/biotech/course/roadmap.do"
+    },
+    {
+      "id": "BT-WHITE",
+      "name": "WHITE Bio 마이크로디그리(유전공학·생물공정)",
+      "kind": "교육",
+      "verifiable": false,
+      "from": "학과",
+      "srcUrl": "https://biotech.catholic.ac.kr/biotech/course/roadmap.do"
+    },
+    {
+      "id": "BT-EXP",
+      "name": "Bio Experiment Expert(BT 실험)",
+      "kind": "교육",
+      "verifiable": false,
+      "from": "학과",
+      "srcUrl": "https://biotech.catholic.ac.kr/biotech/course/roadmap.do"
+    },
+    {
+      "id": "BT-RESEARCH",
+      "name": "심화연구실습",
+      "kind": "경험",
+      "verifiable": false,
+      "from": "학과",
+      "srcUrl": "https://biotech.catholic.ac.kr/biotech/course/roadmap.do"
+    },
+    {
+      "id": "BT-C-BIO",
+      "name": "생물공학기사",
+      "kind": "자격증",
+      "verifiable": true,
+      "from": "커리어넷",
+      "srcUrl": "https://www.career.go.kr/cloud/w/major/uView?seq=260"
+    },
+    {
+      "id": "BT-C-FOOD",
+      "name": "식품기사",
+      "kind": "자격증",
+      "verifiable": true,
+      "from": "커리어넷",
+      "srcUrl": "https://www.career.go.kr/cloud/w/major/uView?seq=260"
+    },
+    {
+      "id": "BMC-PHARM",
+      "name": "제약공정 마이크로디그리",
+      "kind": "교육",
+      "verifiable": false,
+      "from": "학과",
+      "srcUrl": "https://bmce.catholic.ac.kr/bmce/course/roadmap.do"
+    },
+    {
+      "id": "BMC-BIO",
+      "name": "첨단바이오의약품 마이크로디그리",
+      "kind": "교육",
+      "verifiable": false,
+      "from": "학과",
+      "srcUrl": "https://bmce.catholic.ac.kr/bmce/course/roadmap.do"
+    },
+    {
+      "id": "BMC-COSME",
+      "name": "화장품소재 마이크로디그리",
+      "kind": "교육",
+      "verifiable": false,
+      "from": "학과",
+      "srcUrl": "https://bmce.catholic.ac.kr/bmce/course/roadmap.do"
+    },
+    {
+      "id": "BMC-SEMI",
+      "name": "반도체 공정·BioMEMS 마이크로디그리",
+      "kind": "교육",
+      "verifiable": false,
+      "from": "학과",
+      "srcUrl": "https://bmce.catholic.ac.kr/bmce/course/roadmap.do"
+    },
+    {
+      "id": "BMC-REACT",
+      "name": "화공 반응 공정 마이크로디그리",
+      "kind": "교육",
+      "verifiable": false,
+      "from": "학과",
+      "srcUrl": "https://bmce.catholic.ac.kr/bmce/course/roadmap.do"
+    },
+    {
+      "id": "BMC-DIAG",
+      "name": "분자질병진단 마이크로디그리",
+      "kind": "교육",
+      "verifiable": false,
+      "from": "학과",
+      "srcUrl": "https://bmce.catholic.ac.kr/bmce/course/roadmap.do"
+    },
+    {
+      "id": "BMC-C-CHE",
+      "name": "화공기사",
+      "kind": "자격증",
+      "verifiable": true,
+      "from": "커리어넷",
+      "srcUrl": "https://www.career.go.kr/cloud/w/major/uView?seq=648"
+    },
+    {
+      "id": "BMC-C-ANAL",
+      "name": "화학분석기사",
+      "kind": "자격증",
+      "verifiable": true,
+      "from": "커리어넷",
+      "srcUrl": "https://www.career.go.kr/cloud/w/major/uView?seq=648"
+    },
+    {
+      "id": "BMC-C-HAZ",
+      "name": "위험물산업기사",
+      "kind": "자격증",
+      "verifiable": true,
+      "from": "커리어넷",
+      "srcUrl": "https://www.career.go.kr/cloud/w/major/uView?seq=648"
+    },
+    {
+      "id": "ABE-SIGNAL",
+      "name": "생체신호 처리",
+      "kind": "교육",
+      "verifiable": false,
+      "from": "학과",
+      "srcUrl": "https://aibme.catholic.ac.kr/aibme/course/roadmap.do"
+    },
+    {
+      "id": "ABE-IMAGE",
+      "name": "의료영상·생체디지털영상처리",
+      "kind": "교육",
+      "verifiable": false,
+      "from": "학과",
+      "srcUrl": "https://aibme.catholic.ac.kr/aibme/course/roadmap.do"
+    },
+    {
+      "id": "ABE-MEASURE",
+      "name": "의용계측·의료센서",
+      "kind": "교육",
+      "verifiable": false,
+      "from": "학과",
+      "srcUrl": "https://aibme.catholic.ac.kr/aibme/course/roadmap.do"
+    },
+    {
+      "id": "ABE-ML",
+      "name": "헬스케어 머신러닝·딥러닝",
+      "kind": "교육",
+      "verifiable": false,
+      "from": "학과",
+      "srcUrl": "https://aibme.catholic.ac.kr/aibme/course/roadmap.do"
+    },
+    {
+      "id": "ABE-LAB",
+      "name": "ABME 경험랩",
+      "kind": "경험",
+      "verifiable": false,
+      "from": "학과",
+      "srcUrl": "https://aibme.catholic.ac.kr/aibme/course/roadmap.do"
+    },
+    {
+      "id": "ABE-CAP",
+      "name": "ABME 캡스톤디자인",
+      "kind": "프로젝트",
+      "verifiable": false,
+      "from": "학과",
+      "srcUrl": "https://aibme.catholic.ac.kr/aibme/course/roadmap.do"
+    },
+    {
+      "id": "ABE-C-BME",
+      "name": "의공기사",
+      "kind": "자격증",
+      "verifiable": true,
+      "from": "커리어넷",
+      "srcUrl": "https://www.career.go.kr/cloud/w/major/uView?seq=414"
+    },
+    {
+      "id": "MBS-DIAG",
+      "name": "의학분자진단학",
+      "kind": "교육",
+      "verifiable": false,
+      "from": "학과",
+      "srcUrl": "https://mbs.catholic.ac.kr/mbs/course/roadmap.do"
+    },
+    {
+      "id": "MBS-OMICS",
+      "name": "유전체학·전사체학",
+      "kind": "교육",
+      "verifiable": false,
+      "from": "학과",
+      "srcUrl": "https://mbs.catholic.ac.kr/mbs/course/roadmap.do"
+    },
+    {
+      "id": "MBS-STEM",
+      "name": "줄기세포연구 종합설계",
+      "kind": "프로젝트",
+      "verifiable": false,
+      "from": "학과",
+      "srcUrl": "https://mbs.catholic.ac.kr/mbs/course/roadmap.do"
+    },
+    {
+      "id": "MBS-DRUG",
+      "name": "분자모델링 기반 신약개발",
+      "kind": "교육",
+      "verifiable": false,
+      "from": "학과",
+      "srcUrl": "https://mbs.catholic.ac.kr/mbs/course/roadmap.do"
+    },
+    {
+      "id": "MBS-LAB",
+      "name": "의생명과학실험",
+      "kind": "교육",
+      "verifiable": false,
+      "from": "학과",
+      "srcUrl": "https://mbs.catholic.ac.kr/mbs/course/roadmap.do"
+    },
+    {
+      "id": "MBS-C-BIO",
+      "name": "생물공학기사",
+      "kind": "자격증",
+      "verifiable": true,
+      "from": "커리어넷",
+      "srcUrl": "https://www.career.go.kr/cloud/w/major/uView?seq=261"
+    },
+    {
+      "id": "BSW-SIGNAL",
+      "name": "생체신호·의료영상 처리",
+      "kind": "교육",
+      "verifiable": false,
+      "from": "학과",
+      "srcUrl": "https://bmsw.catholic.ac.kr/bmsw/course/roadmap.do"
+    },
+    {
+      "id": "BSW-ML",
+      "name": "헬스케어 머신러닝·딥러닝·생성형 AI",
+      "kind": "교육",
+      "verifiable": false,
+      "from": "학과",
+      "srcUrl": "https://bmsw.catholic.ac.kr/bmsw/course/roadmap.do"
+    },
+    {
+      "id": "BSW-DATA",
+      "name": "의료 빅데이터 분석",
+      "kind": "교육",
+      "verifiable": false,
+      "from": "학과",
+      "srcUrl": "https://bmsw.catholic.ac.kr/bmsw/course/roadmap.do"
+    },
+    {
+      "id": "BSW-BIOINFO",
+      "name": "AI 바이오인포매틱스",
+      "kind": "교육",
+      "verifiable": false,
+      "from": "학과",
+      "srcUrl": "https://bmsw.catholic.ac.kr/bmsw/course/roadmap.do"
+    },
+    {
+      "id": "BSW-CAP",
+      "name": "산학·임상 의료AI 종합설계",
+      "kind": "프로젝트",
+      "verifiable": false,
+      "from": "학과",
+      "srcUrl": "https://bmsw.catholic.ac.kr/bmsw/course/roadmap.do"
+    },
+    {
+      "id": "BSW-FIELD",
+      "name": "BMSW 현장실습",
+      "kind": "경험",
+      "verifiable": false,
+      "from": "학과",
+      "srcUrl": "https://bmsw.catholic.ac.kr/bmsw/course/roadmap.do"
+    },
+    {
+      "id": "BSW-ETHIC",
+      "name": "의료 AI 윤리",
+      "kind": "교육",
+      "verifiable": false,
+      "from": "학과",
+      "srcUrl": "https://bmsw.catholic.ac.kr/bmsw/course/roadmap.do"
+    },
+    {
+      "id": "MUS-MAJOR",
+      "name": "전공 실기(성악·관현악·피아노·작곡)",
+      "kind": "교육",
+      "verifiable": false,
+      "from": "학과",
+      "srcUrl": "https://music.catholic.ac.kr/music/course/roadmap.do"
+    },
+    {
+      "id": "MUS-EAR",
+      "name": "시창·청음·화성",
+      "kind": "교육",
+      "verifiable": false,
+      "from": "학과",
+      "srcUrl": "https://music.catholic.ac.kr/music/course/roadmap.do"
+    },
+    {
+      "id": "MUS-ENSEMBLE",
+      "name": "합창·합주",
+      "kind": "경험",
+      "verifiable": false,
+      "from": "학과",
+      "srcUrl": "https://music.catholic.ac.kr/music/course/roadmap.do"
+    },
+    {
+      "id": "MUS-STAGE",
+      "name": "연주(무대 발표)",
+      "kind": "경험",
+      "verifiable": false,
+      "from": "학과",
+      "srcUrl": "https://music.catholic.ac.kr/music/course/roadmap.do"
+    },
+    {
+      "id": "VOC-MAJOR",
+      "name": "성악 실기·딕션",
+      "kind": "교육",
+      "verifiable": false,
+      "from": "학과",
+      "srcUrl": "https://voice.catholic.ac.kr/voice/info/career.do"
+    },
+    {
+      "id": "VOC-OPERA",
+      "name": "오페라·합창 무대",
+      "kind": "경험",
+      "verifiable": false,
+      "from": "학과",
+      "srcUrl": "https://voice.catholic.ac.kr/voice/info/career.do"
+    },
+    {
+      "id": "PHM-ANAL",
+      "name": "약품분석·약물학·제제학",
+      "kind": "교육",
+      "verifiable": false,
+      "from": "학과",
+      "srcUrl": "https://pharmacy.catholic.ac.kr/pharmacy/course/roadmap.do"
+    },
+    {
+      "id": "PHM-CLINIC",
+      "name": "임상약학 실무",
+      "kind": "교육",
+      "verifiable": false,
+      "from": "학과",
+      "srcUrl": "https://pharmacy.catholic.ac.kr/pharmacy/course/roadmap.do"
+    },
+    {
+      "id": "PHM-INDUSTRY",
+      "name": "산업약학 실무",
+      "kind": "교육",
+      "verifiable": false,
+      "from": "학과",
+      "srcUrl": "https://pharmacy.catholic.ac.kr/pharmacy/course/roadmap.do"
+    },
+    {
+      "id": "PHM-PRACT",
+      "name": "실무실습(기초·필수·심화)",
+      "kind": "경험",
+      "verifiable": false,
+      "from": "학과",
+      "srcUrl": "https://pharmacy.catholic.ac.kr/pharmacy/course/roadmap.do"
+    },
+    {
+      "id": "PHM-C-LICENSE",
+      "name": "약사 면허(국가시험)",
+      "kind": "자격증",
+      "verifiable": true,
+      "from": "학과",
+      "srcUrl": "https://pharmacy.catholic.ac.kr/pharmacy/info/career.do"
+    },
+    {
+      "id": "CERT-ACP-PREMIERE",
+      "name": "Adobe Certified Professional · Premiere",
+      "kind": "자격증",
+      "verifiable": true,
+      "officialUrl": "https://certifiedprofessional.adobe.com/premiere"
+    },
+    {
+      "id": "CERT-ACP-AE",
+      "name": "Adobe Certified Professional · After Effects",
+      "kind": "자격증",
+      "verifiable": true,
+      "officialUrl": "https://certifiedprofessional.adobe.com/after-effects"
+    },
+    {
+      "id": "CERT-ACP-PS",
+      "name": "Adobe Certified Professional · Photoshop",
+      "kind": "자격증",
+      "verifiable": true,
+      "officialUrl": "https://certifiedprofessional.adobe.com/photoshop"
+    },
+    {
+      "id": "CERT-SNS-ADS",
+      "name": "SNS광고마케터 1급",
+      "kind": "자격증",
+      "verifiable": true,
+      "officialUrl": "https://www.ihd.or.kr/introducesubject10.do"
+    },
+    {
+      "id": "CERT-TAX",
+      "name": "전산세무",
+      "kind": "자격증",
+      "verifiable": true,
+      "officialUrl": "https://license.kacpta.or.kr/"
+    },
+    {
+      "id": "CERT-BIGDATA",
+      "name": "빅데이터분석기사",
+      "kind": "자격증",
+      "verifiable": true,
+      "officialUrl": "https://www.q-net.or.kr/crf005.do?id=crf00503&jmCd=1324"
+    },
+    {
+      "id": "CERT-POWER-BI",
+      "name": "Microsoft Power BI 데이터 분석 전문가",
+      "kind": "자격증",
+      "verifiable": true,
+      "officialUrl": "https://learn.microsoft.com/ko-kr/credentials/certifications/data-analyst-associate/"
+    },
+    {
+      "id": "CERT-AWS-DATA",
+      "name": "AWS Certified Data Engineer – Associate",
+      "kind": "자격증",
+      "verifiable": true,
+      "officialUrl": "https://aws.amazon.com/ko/certification/certified-data-engineer-associate/"
+    },
+    {
+      "id": "CERT-AWS-ML",
+      "name": "AWS Certified Machine Learning Engineer – Associate",
+      "kind": "자격증",
+      "verifiable": true,
+      "officialUrl": "https://aws.amazon.com/ko/certification/certified-machine-learning-engineer-associate/"
+    },
+    {
       "id": "PR-ROLE-COMPARISON",
       "name": "목표 직무 공고 비교표",
       "kind": "프로젝트",
@@ -3514,7 +9992,7 @@
     },
     {
       "id": "PR-RESEARCH-PLAN",
-      "name": "연구 질문과 관찰 계획",
+      "name": "연구용 데이터 수집 명세서",
       "kind": "프로젝트",
       "verifiable": false
     },
@@ -4572,6 +11050,12 @@
         "1급"
       ]
     },
+    "CERT-TAX": {
+      "grades": [
+        "2급",
+        "1급"
+      ]
+    },
     "SK-KHIST": {
       "grades": [
         "6급",
@@ -4620,5 +11104,16 @@
     "PR-EN-READING": "영어\\s*독해\\s*(?:가능|역량|능력)",
     "PR-WORD-TEMPLATE": "워드\\s*프로세서|워드\\s*및\\s*파워포인트|(?<![A-Za-z])Word(?![A-Za-z])",
     "PR-FIELD-EXPERIENCE": "유관업무\\s*경험자\\s*\\(인턴[·ㆍ]알바\\)"
+  },
+  "credentialPatterns": {
+    "CERT-ACP-PREMIERE": "(?:Adobe Certified Professional|\\bACP)\\s*(?:[·:–-]\\s*)?(?:in\\s+)?(?:Digital Video Using (?:Adobe )?)?Premiere(?:\\s+Pro)?\\b",
+    "CERT-ACP-AE": "(?:Adobe Certified Professional|\\bACP)\\s*(?:[·:–-]\\s*)?(?:in\\s+)?(?:Visual Effects (?:&|and) Motion Graphics Using (?:Adobe )?)?After Effects\\b",
+    "CERT-ACP-PS": "(?:Adobe Certified Professional|\\bACP)\\s*(?:[·:–-]\\s*)?(?:in\\s+)?(?:Visual Design Using (?:Adobe )?)?Photoshop\\b",
+    "CERT-SNS-ADS": "SNS\\s*광고\\s*마케터\\s*1\\s*급",
+    "CERT-TAX": "전산\\s*세무(?=\\s*[12]\\s*급)",
+    "CERT-BIGDATA": "빅\\s*데이터\\s*분석\\s*기사",
+    "CERT-POWER-BI": "(?:Microsoft Certified:\\s*)?Power\\s*BI\\s*(?:Data Analyst Associate|데이터\\s*분석\\s*전문가\\s*어소시에이트)",
+    "CERT-AWS-DATA": "AWS\\s+Certified\\s+Data\\s+Engineer\\s*[-–—]?\\s*Associate\\b",
+    "CERT-AWS-ML": "AWS\\s+Certified\\s+Machine\\s+Learning\\s+Engineer\\s*[-–—]?\\s*Associate\\b"
   }
 }

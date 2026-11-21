@@ -1,5 +1,6 @@
 import { scaleOf, skillById } from "./data/catalog";
 import { postingProjectById } from "./data/postingProjects";
+import type { CareerCredential } from "./data/careerCredentials";
 import type { Opportunity, Profile, TreeSignal } from "./types";
 
 type Observation = NonNullable<Opportunity["preparationEvidence"]>[number];
@@ -74,6 +75,11 @@ const routes = {
   },
 } satisfies Record<string, Route>;
 
+// Completed posting projects keep their deliverable when a source is refreshed.
+export const preparationCompletionBySkill = new Map<string, string>(
+  Object.values(routes).map(route => [route.skillId, route.completion]),
+);
+
 function held(profile: Student, skill: string) {
   return (profile.skills[skill] ?? "none") !== "none";
 }
@@ -118,6 +124,7 @@ function observations(opp: Opportunity): Observation[] {
 export function preparationSignals(
   profile: Student, opportunity: Opportunity, templateSkills: ReadonlySet<string>,
   reference: TreeSignal["reference"], directSignals: readonly TreeSignal[] = [],
+  credentialOptions: readonly CareerCredential[] = [],
 ): TreeSignal[] {
   if (!opportunity.reviewed || opportunity.isVirtual) return [];
   const verified = observations(opportunity).filter((entry) =>
@@ -125,6 +132,18 @@ export function preparationSignals(
     entry.quote.trim() && opportunity.sections?.some((section) => section.id === entry.src && section.text.includes(entry.quote)));
   const analysisRequested = verified.some((entry) => entry.key === "analysis" || entry.key === "sql_project");
   const signals: TreeSignal[] = [];
+  for (const option of credentialOptions) {
+    if (!option.observation || held(profile, option.id) ||
+        verified.some(e => e.key === "credential:" + option.id)) continue;
+    for (const entry of verified.filter(e => e.key === option.observation)) {
+      signals.push({
+        skillId: option.id, basis: entry.basis, status: "gap",
+        reference: { ...reference, sectionId: entry.src, quote: entry.quote, scope: entry.scope },
+        preparation: { kind: "suggested", action: option.reason,
+          completion: "발급기관의 자격증 또는 취득 확인서에서 실제 취득 결과를 확인하세요." },
+      });
+    }
+  }
   // On a citation tie, keep the more specific experience clause ahead of a generic SQL mention.
   for (const entry of verified.sort((a, b) => Number(b.key === "sql_project") - Number(a.key === "sql_project"))) {
     if (entry.key === "analysis" && verified.some((item) =>

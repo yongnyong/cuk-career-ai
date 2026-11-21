@@ -210,6 +210,7 @@ def main():
     parser.add_argument("--posting", action="append", default=[])
     parser.add_argument("--include-review", action="store_true")
     parser.add_argument("--export", type=Path)
+    parser.add_argument("--web-export", type=Path, help="Export nodes and startup notices for the web demo")
     args = parser.parse_args()
     if not args.db.is_file():
         parser.error("Collect startup notices before extracting nodes")
@@ -219,6 +220,9 @@ def main():
     with connect(args.db) as db:
         rebuild_nodes(db)
         graph = load_graph(db, args.posting, args.include_review)
+        if args.web_export:
+            from .startup_catalog import catalog
+            args.web_export.write_text(json.dumps(catalog(db), ensure_ascii=False, indent=2), encoding="utf-8")
     if args.export:
         args.export.write_text(json.dumps(graph, ensure_ascii=False, indent=2), encoding="utf-8")
     print(json.dumps({**graph["summary"], "catalog": [{"id": n["id"], "title": n["title"], "kind": n["kind"],

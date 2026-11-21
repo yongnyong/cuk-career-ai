@@ -50,8 +50,7 @@ def build_postings(database, catalog):
     db = sqlite3.connect(database.resolve().as_uri() + '?mode=ro', uri=True)
     db.row_factory = sqlite3.Row
     jobs = {job['id']: job for job in catalog['jobs']}
-    skills = {skill['name'].casefold(): skill['id'] for skill in catalog['skills']}
-    known_skills = set(skills.values())
+    known_skills = {skill['id'] for skill in catalog['skills']}
     stamp = datetime.now(KST).isoformat(timespec='seconds')
     rows = []
     try:
@@ -84,6 +83,9 @@ def build_postings(database, catalog):
                     r'\bmarketing\s+(?:assistant|intern)\b|(?:주니어|브랜드|콘텐츠|퍼포먼스)\s*마케터', post['title'], re.I):
                 paths = {'마케팅'}
                 linked_jobs = {'marketer'} | {j['id'] for j in jobs.values() if j.get('base') == 'marketer'}
+            if not multi_role and re.search(r'기장\s*관리\s*업무', post['title']):
+                paths = {'회계·세무'}
+                linked_jobs = {'acc-tax', 'acc-corp'} & jobs.keys()
             raw_text = '' if post['completeness'] == 'reviewed_excerpt' else post['content_text']
             skill_evidence = [entry for entry in extract_skill_evidence(raw_text, evidence, multi_role=multi_role)
                               if entry['skill'] in known_skills]

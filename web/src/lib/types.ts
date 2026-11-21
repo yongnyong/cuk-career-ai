@@ -92,7 +92,29 @@ export interface Opportunity {
   confidence: number; // AI 구조화 신뢰도 (0.8 미만이면 검수 대기)
   reviewed: boolean;
   deadlineStatus?: "announced" | "date_only" | "unknown";
+  startup?: {
+    postingId: string; category: string; status: string; eligibility: string; support: string; reviewNotes: string[];
+    requirements: { id: string; document_type: string; necessity: string; stage: string; condition_text: string;
+      deadline_date: string | null; evidence_quote: string; template_url: string | null; evidence_url: string }[];
+  };
 }
+
+export interface StartupReference {
+  id: string; posting_id: string; posting_title: string; source_url: string; evidence_url: string;
+  basis: "submission" | "form_section" | "evaluation";
+  necessity: string; stage: string; condition_text: string; deadline_date: string | null;
+  quote: string; source_page: number | null; application_status: string;
+}
+export interface StartupNode {
+  id: string; title: string; kind: string; completion: string; related_skill_id: string | null;
+  posting_count: number; references: StartupReference[];
+}
+export interface StartupCatalog {
+  nodes: StartupNode[];
+  edges: { parent_id: string; child_id: string; evidence_id: string; relation: string }[];
+  opportunities: Opportunity[];
+}
+export type CareerInterest = "employment" | "startup";
 
 export type Verdict = "pass" | "fail" | "check";
 
@@ -134,6 +156,7 @@ export interface RecommendedQuest {
 }
 
 export interface Profile {
+  careerInterest?: CareerInterest;
   pseudoId: string; // 로그인 아이디(가명) — 이름·연락처·학번 전체는 받지 않는다
   admissionYear: number; // 학번 = 입학년도(예: 2021 → 21학번). 개인 식별이 되는 학번 전체는 저장하지 않는다
   campus: string;

@@ -9,12 +9,13 @@ export interface ProofMeta {
   name: string;
   type: string;
   size: number;
+  url?: string;
 }
 interface Row extends ProofMeta {
   key: string;
   owner: string;
   skill: string;
-  blob: Blob;
+  blob?: Blob;
 }
 
 function open(): Promise<IDBDatabase> {
@@ -28,9 +29,10 @@ function open(): Promise<IDBDatabase> {
 async function run<T>(mode: IDBTransactionMode, fn: (s: IDBObjectStore) => IDBRequest<T>): Promise<T> {
   const db = await open();
   return new Promise((resolve, reject) => {
-    const req = fn(db.transaction(STORE, mode).objectStore(STORE));
-    req.onsuccess = () => resolve(req.result);
-    req.onerror = () => reject(req.error);
+    const tx = db.transaction(STORE, mode);
+    const req = fn(tx.objectStore(STORE));
+    tx.oncomplete = () => { db.close(); resolve(req.result); };
+    tx.onabort = () => { db.close(); reject(tx.error ?? req.error); };
   });
 }
 const keyOf = (owner: string, skill: string) => `${owner}::${skill}`;
@@ -39,17 +41,30 @@ export async function putProof(owner: string, skill: string, file: File) {
   const row: Row = { key: keyOf(owner, skill), owner, skill, name: file.name, type: file.type, size: file.size, blob: file };
   await run("readwrite", (s) => s.put(row));
 }
+export function resultUrl(value: string) {
+  try {
+    const url = new URL(value.trim());
+    return ["https:", "http:"].includes(url.protocol) && !url.username && !url.password ? url.href : undefined;
+  } catch { return undefined; }
+}
+
+export async function putProofLink(owner: string, skill: string, value: string) {
+  const url = resultUrl(value);
+  if (!url) throw new Error("올바른 작업물 주소를 입력하세요.");
+  const row: Row = { key: keyOf(owner, skill), owner, skill, url, name: new URL(url).hostname, size: 0, type: "text/uri-list" };
+  await run("readwrite", s => s.put(row));
+}
 export const getProof = (owner: string, skill: string) => run<Row | undefined>("readonly", (s) => s.get(keyOf(owner, skill)));
 export const deleteProof = (owner: string, skill: string) => run("readwrite", (s) => s.delete(keyOf(owner, skill)));
 export async function listProofs(owner: string): Promise<Record<string, ProofMeta>> {
   const rows = await run<Row[]>("readonly", (s) => s.getAll());
-  return Object.fromEntries(rows.filter((r) => r.owner === owner).map((r) => [r.skill, { name: r.name, type: r.type, size: r.size }]));
+  return Object.fromEntries(rows.filter((r) => r.owner === owner).map((r) => [r.skill, { name: r.name, type: r.type, size: r.size, url: r.url && resultUrl(r.url) }]));
 }
 
 // 파일을 새 탭으로 열거나(인쇄 여부 선택) 인쇄 창을 띄운다
 export async function openProof(owner: string, skill: string, print = false) {
   const row = await getProof(owner, skill);
-  if (!row) return;
+  if (!row?.blob) return;
   const url = URL.createObjectURL(row.blob);
   if (!print) {
     window.open(url, "_blank", "noopener");

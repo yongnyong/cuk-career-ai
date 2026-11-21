@@ -13,7 +13,7 @@ import secrets
 import time
 from datetime import datetime, timezone
 from pathlib import Path
-from typing import Any
+from typing import Any, Literal
 
 from argon2 import PasswordHasher
 from argon2.exceptions import InvalidHashError, VerificationError
@@ -123,6 +123,7 @@ def current_user(cuk_session: str | None = Cookie(default=None), db: Session = D
 class Credentials(BaseModel):
     id: str = Field(max_length=16)
     password: str = Field(max_length=128)
+    careerInterest: Literal["employment", "startup"] | None = None
 
 
 class StateBody(BaseModel):
@@ -148,10 +149,11 @@ def signup(body: Credentials, response: Response, db: Session = Depends(get_db))
         raise HTTPException(422, "비밀번호는 6자 이상으로 입력해 주세요.")
     if db.get(User, body.id):
         raise HTTPException(409, "이미 사용 중인 아이디예요.")
-    db.add(User(id=body.id, password_hash=hasher.hash(body.password), state=None, created_at=int(time.time())))
+    state = {"careerInterest": body.careerInterest} if body.careerInterest else None
+    db.add(User(id=body.id, password_hash=hasher.hash(body.password), state=state, created_at=int(time.time())))
     db.commit()
     start_session(db, response, body.id)
-    return {"id": body.id, "state": None, "admin": body.id in ADMIN_IDS}
+    return {"id": body.id, "state": state, "admin": body.id in ADMIN_IDS}
 
 
 @app.post("/api/auth/login")
@@ -257,6 +259,9 @@ def delete_me(response: Response, user: User = Depends(current_user), db: Sessio
 
 
 from .chat import make_router  # noqa: E402
+from .startup_catalog import router as startup_router
+
+app.include_router(startup_router)
 
 app.include_router(make_router(get_career_db, Posting))
 

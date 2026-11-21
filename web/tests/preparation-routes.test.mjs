@@ -13,6 +13,8 @@ const { buildCareerPath, evaluate, recommend } = await import("../src/lib/engine
 const { PERSONAS } = await import("../src/lib/data/personas.ts");
 const { jobById, skillById, SKILLS } = await import("../src/lib/data/catalog.ts");
 const { POSTING_PROJECTS } = await import("../src/lib/data/postingProjects.ts");
+const { CAREER_CREDENTIALS } = await import("../src/lib/data/careerCredentials.ts");
+const { questOutcome } = await import("../src/lib/questOutcome.ts");
 hooks.deregister();
 
 const ref = { id: "role-test", title: "근거 검증용 공고", url: "https://example.org/posting", historical: false };
@@ -23,6 +25,60 @@ function posting(...entries) {
     sections: entries.map(({ quote, src }) => ({ id: src, text: quote })) };
 }
 const targets = (p, skills = {}, template = analyst) => preparationSignals({ skills }, p, template, ref);
+
+test("career electives are track-specific, optional and retain the issuer and earned state", () => {
+  const now = new Date("2026-11-22");
+  const path = (jobId, skills = {}) => buildCareerPath({ ...PERSONAS[2].profile, jobId, skills }, [], now, []);
+  for (const credential of CAREER_CREDENTIALS) {
+    assert(credential.jobs.every(id => jobById(id)));
+    assert.equal(skillById(credential.id).officialUrl, credential.officialUrl);
+    const result = path(credential.jobs[0]);
+    const node = result.tree.find(n => n.skill === credential.id);
+    assert.equal(questOutcome(node).label, "직무 선택 자격");
+    assert.equal(node.required, false);
+    assert.equal(node.depth, credential.stage);
+    assert.notEqual(result.recommendedQuest?.skillId, credential.id);
+  }
+  assert(!path("mtc-vfx").tree.some(n => n.skill === "CERT-ACP-PREMIERE"));
+  assert(!path("ai-research").tree.some(n => n.skill === "CERT-AWS-ML"));
+  const completed = path("mtc-video", { "CERT-ACP-PREMIERE": "verified" });
+  assert.equal(completed.tree.find(n => n.skill === "CERT-ACP-PREMIERE").state, "verified");
+  assert.equal(completed.treeProgress.bonusExp, 100);
+  assert.equal(completed.treeProgress.max, path("mtc-video").treeProgress.max);
+});
+
+test("a tool preference supports a work sample and an elective, while an explicit credential gets one direct node", () => {
+  const student = { ...PERSONAS[2].profile, jobId: "marketer" };
+  const path = (profile, ...entries) => buildCareerPath(profile, [{
+    ...posting(...entries), id: "photo", title: "마케터", org: "테스트", jobs: ["marketer"], type: "채용",
+    source: ref, versions: [{ version: 1, deadline: "2026-12-30" }], preferred: [], required: [],
+  }], new Date("2026-11-22"), []);
+  const tool = fact("PR-IMAGE-RETOUCH", "기본우대 포토샵 능숙자");
+  const named = fact("credential:CERT-ACP-PS", "ACP Photoshop 자격 보유자", "required");
+  const result = path(student, tool);
+  const find = (p, id) => p.tree.find(n => n.skill === id);
+  assert(find(result, "PR-IMAGE-RETOUCH"));
+  const elective = find(result, "CERT-ACP-PS");
+  assert.equal(questOutcome(elective).label, "서비스 추천");
+  assert.equal(elective.evidence[0].reference.quote, tool.quote);
+  assert.notEqual(result.recommendedQuest.skillId, elective.skill);
+  assert.equal(find(path({ ...student, skills: { "CERT-ACP-PS": "self" } }, tool), elective.skill).preparationSignals?.length ?? 0, 0);
+  const direct = path(student, tool, named);
+  assert.equal(direct.tree.filter(n => n.skill === elective.skill).length, 1);
+  assert.equal(questOutcome(find(direct, elective.skill)).label, "공고 자격요건에 명시");
+  assert.equal(questOutcome(find(path(student, { ...tool, scope: "posting" }), elective.skill)).label, "직무 선택 자격");
+});
+
+test("SQLD retains acquisition as its deliverable and distinguishes an optional path from an employer requirement", () => {
+  const forKey = (key, basis) => targets(posting(fact(key, "SQL 역량 확인", basis)), { "SK-SQL": "self" });
+  const credential = { skill: "SK-SQLD", name: "SQLD", kind: "자격증" };
+  const optional = questOutcome({ ...credential, evidence: forKey("sql", "preferred") });
+  const required = questOutcome({ ...credential, evidence: forKey("sql_certificate", "required") });
+  assert.equal(optional.label, "서비스 추천");
+  assert.equal(required.label, "공고 자격요건에 명시");
+  assert.equal(optional.title, "SQLD 취득");
+  assert.match(required.completion, /취득 확인서/);
+});
 
 test("new posting projects have distinct catalog IDs and require a role citation to enter a tree", () => {
   assert.equal(new Set(SKILLS.map(s => s.id)).size, SKILLS.length);

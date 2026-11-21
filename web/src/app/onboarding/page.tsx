@@ -8,6 +8,8 @@ import { diagnosisItems, gradeStage, jobsFor, matchJobs } from "@/lib/engine";
 import { useStore } from "@/lib/store";
 import { useMounted } from "@/lib/useMounted";
 import type { Profile, SkillState } from "@/lib/types";
+import { careerInterestOf } from "@/lib/interest";
+import { startupSkills } from "@/lib/startup";
 
 const STEPS = ["기본 정보", "보유 역량 진단", "목표", "준비 시간"];
 const YEARS = Array.from({ length: 12 }, (_, i) => 2026 - i);
@@ -28,7 +30,7 @@ const blank: Profile = {
 };
 
 function Form({ start }: { start: Profile }) {
-  const { session, setProfile } = useStore();
+  const { session, setProfile, startupCatalog } = useStore();
   const router = useRouter();
   const [step, setStep] = useState(0);
   const [college, setCollege] = useState("");
@@ -37,11 +39,14 @@ function Form({ start }: { start: Profile }) {
   const dept = getDepartment(f.departmentId);
   const maxGrade = dept && ["medicine", "pharmacy"].includes(dept.field) ? 6 : 4;
   const stage = gradeStage(f.grade);
-  const groups = useMemo(() => (f.departmentId ? diagnosisItems(f.departmentId, f.grade) : []), [f.departmentId, f.grade]);
-  const matches = useMemo(() => matchJobs(f.skills, f.departmentId), [f.skills, f.departmentId]);
+  const startup = careerInterestOf(f) === "startup";
+  const groups = useMemo(() => startup
+    ? [{ kind: '창업 준비', focus: false, skills: startupSkills(startupCatalog) }]
+    : (f.departmentId ? diagnosisItems(f.departmentId, f.grade) : []), [startup, startupCatalog, f.departmentId, f.grade]);
+  const matches = useMemo(() => matchJobs(f.skills, f.departmentId).filter((m) => m.job.id !== 'founder' && m.job.base !== 'founder'), [f.skills, f.departmentId]);
   const heldCount = Object.values(f.skills).filter((x) => x !== "none").length;
   const job = jobById(f.jobId);
-  const canNext = [!!f.departmentId, true, !!f.jobId, true][step];
+  const canNext = [!!f.departmentId, true, startup || !!f.jobId, true][step];
 
   const toggle = (skill: string) => {
     const next: Record<string, SkillState> = { ...f.skills };
@@ -51,7 +56,9 @@ function Form({ start }: { start: Profile }) {
   };
 
   const finish = () => {
-    setProfile({ ...f, pseudoId: session ?? f.pseudoId, createdAt: f.createdAt || new Date().toISOString() });
+    setProfile({ ...f, careerInterest: startup ? 'startup' : 'employment', jobId: startup ? 'founder' : f.jobId,
+      startup: startup ? { ...f.startup, stage: f.startup?.stage || 'pre' } : f.startup,
+      pseudoId: session ?? f.pseudoId, createdAt: f.createdAt || new Date().toISOString() });
     router.push("/tree");
   };
 
@@ -69,6 +76,19 @@ function Form({ start }: { start: Profile }) {
         {step === 0 && (
           <div className="space-y-4">
             <h1 className="text-xl font-bold">{session}님, 기본 정보를 알려 주세요</h1>
+            <fieldset>
+              <legend className="mb-2 text-sm font-bold">관심 분야</legend>
+              <div className="flex gap-2">
+                {(['employment', 'startup'] as const).map((value) => (
+                  <label key={value} className="rounded-lg border border-line px-4 py-2 text-sm">
+                    <input type="radio" name="careerInterest" checked={careerInterestOf(f) === value} onChange={() => setF({ ...f, careerInterest: value,
+                      jobId: value === 'startup' ? 'founder' : (jobById(f.jobId)?.base === 'founder' || f.jobId === 'founder' ? '' : f.jobId),
+                      startup: value === 'startup' ? { ...f.startup, stage: f.startup?.stage || 'pre' } : f.startup })} className="mr-2" />
+                    {value === 'startup' ? '창업' : '취업'}
+                  </label>
+                ))}
+              </div>
+            </fieldset>
             <p className="text-sm text-slate-500">
               학과와 학년에 맞춰 체크할 항목을 골라 드려요. 학번은 입학년도만 받고, 개인을 알아볼 수 있는 학번 전체·이름·연락처는 받지 않아요.
             </p>
@@ -153,12 +173,12 @@ function Form({ start }: { start: Profile }) {
             </h1>
             <div className="rounded-lg bg-navy/5 px-4 py-3 text-sm">
               <b>
-                {dept.name} {f.grade}학년 · {stage.stage} 단계
+                {dept.name} {f.grade}학년 · {startup ? '창업 준비' : stage.stage} 단계
               </b>
-              <p className="text-slate-600">{stage.tip}</p>
+              <p className="text-slate-600">{startup ? '아이디어와 팀을 바탕으로 이미 준비한 결과물을 골라 주세요.' : stage.tip}</p>
             </div>
             <p className="text-sm text-slate-500">
-              {dept.name} 학생이 많이 준비하는 항목을 골랐어요. 체크한 항목은 &lsquo;자기 보고&rsquo;로 저장되고, 점수·증빙 파일은 받지 않아요.
+              {startup ? '창업 공고의 제출물·양식·심사항목에서 준비 과제를 골랐어요.' : `${dept.name} 학생이 많이 준비하는 항목을 골랐어요.`} 체크한 항목은 자기 보고로 저장해요.
             </p>
             {groups.map((g) => (
               <section key={g.kind}>
@@ -194,7 +214,18 @@ function Form({ start }: { start: Profile }) {
           </div>
         )}
 
-        {step === 2 && (
+        {step === 2 && startup && (
+          <div className="space-y-4">
+            <h1 className="text-xl font-bold">팀의 창업 준비를 이어가요</h1>
+            <p className="text-sm text-slate-500">사업계획서·발표자료·시제품과 관련 준비 과제를 연결하고, 공고별 필수·선택 제출물을 확인해요.</p>
+            <label className="block text-sm">창업 단계
+              <select className="input mt-1" value={f.startup?.stage ?? 'pre'} onChange={(e) => setF({ ...f, startup: { ...f.startup, stage: e.target.value } })}>
+                <option value="pre">예비창업자</option><option value="1">창업 1년 미만</option><option value="3">창업 3년 미만</option>
+              </select>
+            </label>
+          </div>
+        )}
+        {step === 2 && !startup && (
           <div className="space-y-4">
             <h1 className="text-xl font-bold">어떤 일을 해 보고 싶나요?</h1>
             <p className="text-sm text-slate-500">
@@ -227,7 +258,7 @@ function Form({ start }: { start: Profile }) {
               <div>
                 <p className="mb-2 text-sm font-medium">함께 관심 있는 분야 (선택)</p>
                 <div className="flex flex-wrap gap-1.5">
-                  {jobsFor(f.departmentId).filter((j) => j.id !== f.jobId).map((j) => {
+                  {jobsFor(f.departmentId).filter((j) => j.id !== f.jobId && j.id !== 'founder' && j.base !== 'founder').map((j) => {
                     const on = f.interests.includes(j.id);
                     return (
                       <button
@@ -290,7 +321,7 @@ function Form({ start }: { start: Profile }) {
 }
 
 export default function Onboarding() {
-  const { session, profile, ready, isAdmin } = useStore();
+  const { session, profile, careerInterest, ready, isAdmin } = useStore();
   const router = useRouter();
   const mounted = useMounted();
   // 관리자 계정은 기본 정보·역량 진단 없이 관리자 화면으로 간다
@@ -301,5 +332,5 @@ export default function Onboarding() {
   }, [ready, session, skip, router]);
   if (!mounted || !ready || !session || skip) return null;
   // 기존 프로필이 있으면 그 값에서 시작(다시 설정)
-  return <Form key={session} start={profile ?? blank} />;
+  return <Form key={session} start={{ ...(profile ?? blank), careerInterest: profile ? careerInterestOf(profile) : careerInterest ?? 'employment' }} />;
 }

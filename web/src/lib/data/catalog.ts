@@ -5,6 +5,7 @@ import { DEPT_JOBS_2, DEPT_SKILLS_2 } from "./deptTracks2";
 import { PRACTICE } from "./practice";
 import { POSTING_PROJECTS } from "./postingProjects";
 import { CAMPUS_NODES } from "./campusNodes";
+import { CAREER_CREDENTIALS } from "./careerCredentials";
 
 const s = (id: string, name: string, kind: Skill["kind"], verifiable = false, officialUrl?: string): Skill => ({
   id,
@@ -20,6 +21,7 @@ const DATAQ = "https://www.dataq.or.kr/";
 export const SKILLS: Skill[] = [
   ...DEPT_SKILLS,
   ...DEPT_SKILLS_2,
+  ...CAREER_CREDENTIALS.map(({ id, name, officialUrl }) => s(id, name, "자격증", true, officialUrl)),
   ...PRACTICE.map(({ id, name }) => s(id, name, "프로젝트")),
   ...POSTING_PROJECTS.map(({ id, name }) => s(id, name, "프로젝트")),
   ...CAMPUS_NODES.map(({ id, name, url }) => s(id, name, "경험", false, url)),
@@ -408,6 +410,7 @@ export const SCALES: Record<string, Scale> = {
   "SK-HSK": { grades: ["1급", "2급", "3급", "4급", "5급", "6급"] },
   "SK-DELF": { grades: ["A1", "A2", "B1", "B2", "C1", "C2"] },
   "SK-COMP": { grades: ["2급", "1급"] },
+  "CERT-TAX": { grades: ["2급", "1급"] },
   "SK-KHIST": { grades: ["6급", "5급", "4급", "3급", "2급", "1급"] },
   "HIS-C-HANJA": { grades: ["8급", "7급", "6급", "5급", "4급", "3급", "2급", "1급"] },
   "CLO-C-GTQ": { grades: ["3급", "2급", "1급"] },
@@ -474,5 +477,10 @@ export function applyOverrides(ov: Partial<CatalogOverrides> | null) {
   JOBS.push(...jobs.values());
 }
 
-export const skillById = (id: string) => SKILLS.find((x) => x.id === id);
+const startupSkills = new Map<string, Skill>();
+export function registerStartupSkills(skills: Skill[]) {
+  startupSkills.clear();
+  for (const skill of skills) startupSkills.set(skill.id, skill);
+}
+export const skillById = (id: string) => SKILLS.find((x) => x.id === id) ?? startupSkills.get(id);
 export const jobById = (id: string) => JOBS.find((x) => x.id === id);
