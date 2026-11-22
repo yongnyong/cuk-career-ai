@@ -6,6 +6,12 @@ import { getDepartment } from "./data/departments";
 import { groupTreeSignals, selectRecommendedQuest } from "./skillTree";
 import { PRACTICE, type Practice } from "./data/practice";
 import { preparationSignals, replacedPreparationSignal } from "./preparationRoutes";
+import { careerInterestOf } from "./interest";
+import { buildStartupPath } from "./startup";
+import { assignProgression } from "./treeProgression";
+import { questOutcome } from "./questOutcome";
+import { credentialsForJob, type CareerCredential } from "./data/careerCredentials";
+import type { StartupCatalog, StartupNode } from "./types";
 import type {
   ChatAnswer,
   Condition,
@@ -22,13 +28,18 @@ import type {
 export const latest = (o: Opportunity) => o.versions[o.versions.length - 1];
 export const deadlineOf = (o: Opportunity) => new Date(latest(o).deadline);
 export function dday(o: Opportunity, now: Date) {
+  if (o.deadlineStatus === "date_only") {
+    const today = new Date(now.getTime() + 9 * 3600_000).toISOString().slice(0, 10);
+    return Math.round((Date.parse(latest(o).deadline.slice(0, 10)) - Date.parse(today)) / 86_400_000);
+  }
   const ms = deadlineOf(o).getTime() - now.getTime();
   return Math.ceil(ms / 86_400_000);
 }
-export const isOpen = (o: Opportunity, now: Date) =>
-  o.deadlineStatus !== "unknown" && deadlineOf(o).getTime() > now.getTime();
+export const isOpen = (o: Opportunity, now: Date) => o.startup?.status !== "closed" &&
+  o.deadlineStatus !== "unknown" && (o.deadlineStatus === "date_only" ? dday(o, now) >= 0 : deadlineOf(o).getTime() > now.getTime());
 export function fmt(isoStr: string, withTime = true) {
   const d = new Date(isoStr);
+  if (!Number.isFinite(d.getTime())) return "기한 확인";
   const p = (n: number) => String(n).padStart(2, "0");
   const k = new Date(d.getTime() + 9 * 3600_000); // KST 표시
   const s = `${k.getUTCFullYear()}.${p(k.getUTCMonth() + 1)}.${p(k.getUTCDate())}`;
@@ -135,12 +146,16 @@ export function recommend(opps: Opportunity[], p: Profile, now: Date): Recommend
   const dept = getDepartment(p.departmentId);
   const scored: Recommendation[] = [];
   for (const o of opps) {
+    if (careerInterestOf(p) === "startup" ? o.type !== "창업지원" : o.type === "창업지원") continue;
     if (!isOpen(o, now)) continue;
     const { overall } = evaluate(o, p);
     if (overall === "fail") continue;
     let score = 0;
     const reasons: string[] = [];
-    if (o.jobs.length === 0) {
+    if (careerInterestOf(p) === 'startup') {
+      score += 50;
+      reasons.push('창업 준비와 연결된 공고');
+    } else if (o.jobs.length === 0) {
       score += 30;
       reasons.push("모든 학생 대상 공지");
     } else if (o.jobs.includes(p.jobId) || (job?.base && o.jobs.includes(job.base))) {
@@ -180,6 +195,9 @@ export function recommend(opps: Opportunity[], p: Profile, now: Date): Recommend
 
 // ───────── 스킬트리
 export interface TreeNode {
+  startup?: StartupNode;
+  connections?: string[];
+  sequence?: string[];
   skill: string;
   name: string;
   kind: string;
@@ -194,17 +212,22 @@ export interface TreeNode {
   preparationSignals?: TreeSignal[];
   evidence?: TreeSignal[];
   practice?: Practice;
+  credentialOption?: CareerCredential;
 }
 
-export function buildTree(p: Profile, opps: Opportunity[], now: Date, extraSkills: readonly string[] = []): TreeNode[] {
+export function buildTree(p: Profile, opps: Opportunity[], now: Date, extraSkills: readonly string[] = [], signals: ReadonlyMap<string, TreeSignal[]> = new Map()): TreeNode[] {
   const job = jobById(p.jobId);
   if (!job) return [];
   const definitions = new Map(job.nodes.map((node) => [node.skill, node]));
   const trackSkills = new Set(definitions.keys());
+  const options = new Map(credentialsForJob(job.id).map(c => [c.id, c]));
+  for (const id of options.keys()) {
+    if (!definitions.has(id)) definitions.set(id, { skill: id, required: false });
+  }
   const practices = new Map<string, Practice>();
   for (const practice of PRACTICE) {
     const anchor = practice.anchors.find((id) => trackSkills.has(id));
-    if (!trackSkills.size || (practice.anchors.length > 0 && !anchor) || definitions.has(practice.id)) continue;
+    if (!anchor || definitions.has(practice.id)) continue;
     definitions.set(practice.id, { skill: practice.id, required: false, prereq: anchor && !practice.independent ? [anchor] : [] });
     practices.set(practice.id, practice);
   }
@@ -212,17 +235,10 @@ export function buildTree(p: Profile, opps: Opportunity[], now: Date, extraSkill
     if (skillById(skill) && !definitions.has(skill)) definitions.set(skill, { skill, required: false });
   }
   const available = opps.filter((o) => o.versions.length && isOpen(o, now) && evaluate(o, p).overall !== "fail");
-  const depth: Record<string, number> = {};
-  const depthOf = (id: string): number => {
-    if (depth[id] !== undefined) return depth[id];
-    const n = definitions.get(id);
-    depth[id] = n?.prereq?.length ? Math.max(...n.prereq.map(depthOf)) + 1 : 0;
-    return depth[id];
-  };
-  return Array.from(definitions.values(), (n) => {
+  const tree: TreeNode[] = Array.from(definitions.values(), (n) => {
     const sk = skillById(n.skill)!;
     const state = p.skills[n.skill] ?? "none";
-    const locked = (n.prereq ?? []).some((q) => (p.skills[q] ?? "none") === "none");
+    const evidence = signals.get(n.skill);
     const linked = available.filter((o) => o.preferred.includes(n.skill) || o.required.some((c) => c.skill === n.skill));
     return {
       skill: n.skill,
@@ -230,28 +246,53 @@ export function buildTree(p: Profile, opps: Opportunity[], now: Date, extraSkill
       kind: sk.kind,
       required: n.required,
       prereq: n.prereq ?? [],
-      depth: depthOf(n.skill),
+      depth: 0,
       state,
-      locked,
+      locked: false,
+      evidence,
+      preparationSignals: evidence?.filter(s => s.preparation),
       opportunities: linked,
       target: n.target,
       score: p.scores?.[n.skill],
       practice: practices.get(n.skill),
+      credentialOption: trackSkills.has(n.skill) ? undefined : options.get(n.skill),
     };
   });
+  const quests = tree.filter(node => questOutcome(node) !== undefined);
+  const visible = new Set(quests.map(node => node.skill));
+  // Follow a removed topic back to the nearest actionable prerequisites.
+  function visibleParents(ids: string[]) {
+    const parents = new Set<string>();
+    const seen = new Set<string>();
+    function visit(id: string) {
+      if (seen.has(id)) return;
+      seen.add(id);
+      if (visible.has(id)) parents.add(id);
+      else definitions.get(id)?.prereq?.forEach(visit);
+    }
+    ids.forEach(visit);
+    return [...parents];
+  }
+  for (const node of quests) {
+    node.prereq = visibleParents(node.prereq);
+    node.locked = node.prereq.some(id => (p.skills[id] ?? "none") === "none");
+  }
+  return assignProgression(quests, "employment");
 }
 
-export function progress(p: Profile, nodes = jobById(p.jobId)?.nodes ?? []) {
-  let exp = 0;
-  for (const n of nodes) {
-    const st = p.skills[n.skill] ?? "none";
-    exp += st === "verified" ? 100 : st === "self" ? 60 : 0;
-  }
+export function progress(p: Profile, nodes = jobById(p.jobId)?.nodes ?? [], electives: readonly { skill: string }[] = []) {
+  const earned = (items: readonly { skill: string }[]) => items.reduce((sum, n) => {
+    const state = p.skills[n.skill];
+    return sum + (state === "verified" ? 100 : state === "self" ? 60 : 0);
+  }, 0);
+  const exp = earned(nodes);
+  const bonusExp = earned(electives);
   const max = nodes.length * 100 || 1;
-  return { exp, max, pct: Math.round((exp / max) * 100), level: 1 + Math.floor(exp / 40) };
+  return { exp, max, bonusExp, pct: Math.round((exp / max) * 100), level: 1 + Math.floor((exp + bonusExp) / 40) };
 }
 
 function recordedScoreCheck(p: Profile, skill: string, target?: string) {
+  if ((p.skills[skill] ?? "none") === "none") return null;
   const value = p.scores?.[skill]?.trim();
   const scale = scaleOf(skill);
   if (!scale || !value || !target) return null;
@@ -262,6 +303,7 @@ function recordedScoreCheck(p: Profile, skill: string, target?: string) {
 }
 
 function postingSignals(p: Profile, opps: Opportunity[], jobIds: string[], now: Date, templateSkills: ReadonlySet<string>): TreeSignal[] {
+  const options = credentialsForJob(p.jobId);
   const latestPostings = new Map<string, Opportunity>();
   for (const opp of opps) {
     if (opp.isVirtual || !opp.versions.length) continue;
@@ -283,14 +325,14 @@ function postingSignals(p: Profile, opps: Opportunity[], jobIds: string[], now: 
       const scoreCheck = recordedScoreCheck(p, entry.skill, entry.minimum);
       const status = entry.scope === "posting" ? "unknown"
         : entry.minimum ? scoreCheck === true ? "matched" : scoreCheck === false ? "gap" : "unknown"
-          : state !== "none" ? "matched" : "gap";
+          : state !== "none" ? entry.skill === "CERT-TAX" ? "unknown" : "matched" : "gap";
       direct.push({
         skillId: entry.skill, basis: entry.basis, status,
         minimum: entry.scope === "role" ? entry.minimum : undefined,
         reference: { ...reference, sectionId: entry.src, quote: entry.quote, scope: entry.scope },
       });
     }
-    const routes = preparationSignals(p, opp, templateSkills, reference, direct);
+    const routes = preparationSignals(p, opp, templateSkills, reference, direct, options);
     signals.push(...routes, ...direct.filter((signal) => !replacedPreparationSignal(signal, routes)));
     for (const condition of opp.required) {
       const skill = condition.skill;
@@ -316,7 +358,8 @@ function postingSignals(p: Profile, opps: Opportunity[], jobIds: string[], now: 
   return signals;
 }
 
-export function buildCareerPath(p: Profile, opps: Opportunity[], now: Date, snapshotSignals: TreeSignal[]) {
+export function buildCareerPath(p: Profile, opps: Opportunity[], now: Date, snapshotSignals: TreeSignal[], startupCatalog?: StartupCatalog) {
+  if (careerInterestOf(p) === "startup" && startupCatalog) return buildStartupPath(p, opps, now, startupCatalog);
   const job = jobById(p.jobId);
   const templateSkills = new Set(job?.nodes.map((node) => node.skill));
   const schoolSignals: TreeSignal[] = [];
@@ -340,18 +383,18 @@ export function buildCareerPath(p: Profile, opps: Opportunity[], now: Date, snap
       (s.reference.scope === "role" && (s.basis === "activity" || !!s.reference.quote || !!s.reference.summary || !!s.preparation))
     )) extraSkills.push(id);
   }
-  const tree = buildTree(p, opps, now, extraSkills);
-  for (const node of tree) {
-    node.evidence = signals.get(node.skill);
-    const evidence = node.evidence?.filter((s) => s.preparation);
-    if (evidence?.length) node.preparationSignals = evidence;
-  }
+  const tree = buildTree(p, opps, now, extraSkills, signals);
   const focus = gradeStage(p.grade)?.focus ?? [];
   const belowTarget = new Set(tree.filter((node) => node.state !== "none" && (
     recordedScoreCheck(p, node.skill, node.target) === false ||
     signals.get(node.skill)?.some((signal) => signal.minimum && recordedScoreCheck(p, node.skill, signal.minimum) === false)
   )).map((node) => node.skill));
-  return { tree, recommendedQuest: selectRecommendedQuest(tree, signals, focus, belowTarget), treeProgress: progress(p, tree) };
+  // Optional issuer-backed paths never displace a core quest or dilute track progress.
+  const core = tree.filter(n => !n.credentialOption || n.evidence?.some(e =>
+    e.reference.scope === "role" && (e.basis === "required" || e.basis === "preferred") && e.preparation?.kind !== "suggested"));
+  const coreIds = new Set(core.map(n => n.skill));
+  return { tree, recommendedQuest: selectRecommendedQuest(core, signals, focus, belowTarget),
+    treeProgress: progress(p, core, tree.filter(n => !coreIds.has(n.skill))) };
 }
 
 // 경로 초안 생성 — 서버 연결 시 Gemini가 경로 설명을 쓰고, 노드는 직무 그래프에서만 고른다(존재하는 노드 ID만 허용)
@@ -620,7 +663,10 @@ export function diagnosisItems(departmentId: string, grade: number) {
   const all = jobsFor(departmentId);
   const related = dept && dept.field !== "open" ? all.filter((j) => j.departments || j.fields.includes(dept.field)) : all;
   const ids = new Set<string>(COMMON_SKILLS);
-  for (const j of related) for (const n of j.nodes) ids.add(n.skill);
+  for (const j of related) {
+    for (const n of j.nodes) ids.add(n.skill);
+    for (const option of credentialsForJob(j.id)) ids.add(option.id);
+  }
   const focus = gradeStage(grade).focus;
   return KIND_ORDER.map((kind) => ({
     kind,

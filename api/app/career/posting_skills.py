@@ -12,7 +12,10 @@ HEADINGS = re.compile(
 )
 # Competencies and certificates have separate aliases. Office proficiency does
 # not establish a Computer Specialist certificate or a language test result.
+WEB_CATALOG = json.loads(Path(__file__).with_name('web_catalog.json').read_text(encoding='utf-8'))
+CERTIFICATE_PATTERNS = WEB_CATALOG['credentialPatterns']
 SKILL_PATTERNS = {
+    **CERTIFICATE_PATTERNS,
     'SK-PY-01': r'(?<![A-Za-z])Python(?![A-Za-z])|파이썬',
     'SK-SQL': r'(?<![A-Za-z])SQL(?![A-Za-z])',
     'SK-SQLD': r'(?<![A-Za-z])SQLD(?![A-Za-z])',
@@ -50,7 +53,10 @@ CAPABILITIES = {
     'writing': SKILL_PATTERNS['SK-WRITE'],
     'cad': r'(?<![A-Za-z])(?:Auto\s*CAD|CAD)(?![A-Za-z])',
     'analysis': r'(?:데이터|통계)\s*분석\s*(?:력|능력|역량|경험|능숙)|통계분석[·ㆍ]리서치\s*능숙',
-    **json.loads(Path(__file__).with_name('web_catalog.json').read_text(encoding='utf-8'))['postingProjectPatterns'],
+    'premiere_editing': r'프리미어\s*프로|\bPremiere\s*Pro\b',
+    'after_effects': r'애프터\s*이펙트|에프터\s*이펙트|\bAfter\s+Effects\b',
+    'power_bi': r'(?<![a-z])Power\s*BI(?![a-z])',
+    **WEB_CATALOG['postingProjectPatterns'],
 }
 ARTIFACTS = {
     'proposal': r'(?:기획서|제안서)',
@@ -59,6 +65,7 @@ ARTIFACTS = {
     'portfolio': r'포트폴리오|작품집',
 }
 CREDENTIALS = {
+    **{'credential:' + skill: pattern for skill, pattern in CERTIFICATE_PATTERNS.items()},
     'credential:SK-FINANCE-MANAGER': r'재경관리사',
     'credential:SK-NURSING-LICENSE': r'간호사\s*면허',
     'credential:SK-CHILDCARE-2': r'보육교사\s*2\s*급',
@@ -97,8 +104,15 @@ def has_multiple_roles(title, text):
         return True
     # Explicit role names on both sides avoid interpreting 신입/경력 as multiple roles.
     role = r'(?:개발|영업|재무|구매|디자인|마케팅|기획|연구|생산|보안|물류)'
-    return bool(re.search(role + r'\s*[/·ㆍ]\s*' + role, title)
-                or re.search(r'직무별\s*상[이세]|모집분야\s+[^\n]{1,55},[^\n]{1,55}모집인원', text))
+    if re.search(role + r'\s*[/·ㆍ]\s*' + role, title) or re.search(r'직무별\s*상[이세]', text):
+        return True
+    listing = re.search(r'모집분야\s+([^\n]{1,55},[^\n]{1,55}?)\s*모집인원', text)
+    if not listing:
+        return False
+    # A listing can repeat the same occupation for junior and experienced applicants.
+    occupations = [re.sub(r'\s+(?:신입|경력)(?:직)?$', '', value.strip())
+                   for value in listing[1].split(',')]
+    return len(set(occupations)) > 1
 
 
 def _observation_keys(clause, documents):
@@ -228,6 +242,10 @@ def extract_skill_evidence(text, reviewed=(), *, multi_role=False):
                 continue
             minimum = None
             tail = clause[hit.end():]
+            if skill == 'CERT-TAX':
+                grade = re.match(r'\s*([12])\s*급', tail)
+                if grade and (grade[1] == '1' or re.match(r'\s*이상', tail[grade.end():])):
+                    minimum = grade[1] + '급'
             if skill == 'SK-TOEIC':
                 score = re.match(r'\s*(\d{3})\s*점?\s*이상', tail)
                 if score and 10 <= int(score[1]) <= 990:

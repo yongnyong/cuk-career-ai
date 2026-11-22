@@ -5,7 +5,8 @@ import { Printer } from "lucide-react";
 import { RequireProfile } from "@/components/RequireProfile";
 import { useStore } from "@/lib/store";
 import { fmt } from "@/lib/engine";
-import { formatScore, jobById } from "@/lib/data/catalog";
+import { questOutcome } from "@/lib/questOutcome";
+import { formatScore, jobById, skillById } from "@/lib/data/catalog";
 import { getDepartment } from "@/lib/data/departments";
 import { getProof, listProofs, openProof, type ProofMeta } from "@/lib/files";
 
@@ -27,7 +28,7 @@ function Sheet() {
       for (const [skill, m] of Object.entries(metas)) {
         if (!m.type.startsWith("image/")) continue;
         const row = await getProof(owner, skill);
-        if (row) imgs.push({ skill, name: m.name, url: URL.createObjectURL(row.blob) });
+        if (row?.blob) imgs.push({ skill, name: m.name, url: URL.createObjectURL(row.blob) });
       }
       urls = imgs.map((x) => x.url);
       setImages(imgs);
@@ -37,7 +38,10 @@ function Sheet() {
 
   const done = tree.filter((n) => n.state !== "none");
   const pdfs = Object.entries(proofs).filter(([, m]) => m.type === "application/pdf");
-  const nameOf = (skill: string) => tree.find((n) => n.skill === skill)?.name ?? skill;
+  const activeIds = new Set(tree.map(n => n.skill));
+  const priorIds = new Set([...(jobById(p.jobId)?.nodes.map(n => n.skill) ?? []), ...(p.completedPreparation?.[p.jobId] ?? []), ...Object.keys(proofs)]);
+  const priorRecords = [...priorIds].filter(id => !activeIds.has(id) && (proofs[id] || (p.skills[id] ?? "none") !== "none"));
+  const nameOf = (skill: string) => skillById(skill)?.name ?? skill;
 
   return (
     <div className="mx-auto max-w-3xl space-y-4">
@@ -78,13 +82,13 @@ function Sheet() {
               {tree.map((n) => (
                 <tr key={n.skill} className="border-b border-neutral-300">
                   <td className="py-1.5">
-                    {n.name}
+                    {proofs[n.skill] ? questOutcome(n)?.title ?? n.name : n.name}
                     {n.required ? " (트랙 기본)" : ""}
                   </td>
                   <td>{n.kind}</td>
                   <td>{n.state === "none" ? "미완료" : "완료"}</td>
                   <td>{formatScore(n.skill, n.score) || "-"}</td>
-                  <td>{proofs[n.skill] ? "첨부" : "-"}</td>
+                  <td>{proofs[n.skill]?.url ? <a href={proofs[n.skill].url} className="underline" target="_blank" rel="noreferrer">작업물 링크</a> : proofs[n.skill] ? "첨부" : "-"}</td>
                 </tr>
               ))}
             </tbody>
@@ -92,6 +96,12 @@ function Sheet() {
           <p className="mt-2 text-xs text-neutral-600">완료 표시와 점수·등급은 본인이 입력한 내용이며, 기관이 확인한 것이 아닙니다.</p>
         </section>
 
+        {priorRecords.length > 0 && <section className="space-y-1">
+          <h2 className="font-bold">이전에 저장한 준비 기록</h2>
+          {priorRecords.map(id => <p key={id} className="text-sm">{nameOf(id)} · {(p.skills[id] ?? "none") !== "none" ? "보유 기록" : "증빙 첨부"}
+            {proofs[id]?.url && <a className="ml-2 underline" href={proofs[id].url} target="_blank" rel="noreferrer">작업물 링크</a>}
+          </p>)}
+        </section>}
         {images.map((img) => (
           <section key={img.skill} className="break-before-page">
             <h2 className="mb-2 font-bold">증빙: {nameOf(img.skill)}</h2>

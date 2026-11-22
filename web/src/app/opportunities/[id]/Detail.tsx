@@ -39,13 +39,13 @@ function Body() {
           <h1 className="mt-2 text-xl font-bold">{o.title}</h1>
           <p className="text-sm text-slate-500">
             {o.org}
-            {o.period && ` · 활동 ${o.period}`} · 마감 {o.deadlineStatus === "unknown" ? "원문 확인 필요" : fmt(v.deadline)}
+            {o.period && ` · 활동 ${o.period}`} · 마감 {o.deadlineStatus === "unknown" ? "원문 확인 필요" : fmt(v.deadline, o.deadlineStatus !== 'date_only')}
           </p>
           <SourceLine opp={o} />
           <AiNotice className="mt-1" />
           {!o.reviewed && (
             <div className="mt-3">
-              <Warn>AI 구조화 신뢰도 {o.confidence}로 검수 전이에요. 아래 내용보다 원문을 먼저 확인하세요.</Warn>
+              <Warn>{o.startup ? '공개 공고에서 자동 추출한 시연 자료예요. 모집 상태·지원 자격·제출물은 원문에서 확인해 주세요.' : `AI 구조화 신뢰도 ${o.confidence}로 검수 전이에요. 아래 내용보다 원문을 먼저 확인하세요.`}</Warn>
             </div>
           )}
         </div>
@@ -124,7 +124,24 @@ function Body() {
           )}
         </div>
 
-        {!o.isVirtual && s.mode === "server" && <ProcessView key={o.id} opp={o} />}
+        {o.startup && (
+          <section className="card space-y-3 p-5">
+            <h2 className="font-bold">공고별 제출물</h2>
+            {o.startup.requirements.length === 0 && <p className="text-sm text-slate-500">첨부 양식에서 제출 목록을 확인해 주세요.</p>}
+            {[...new Map(o.startup.requirements.map((r) => [`${r.document_type}:${r.necessity}:${r.stage}:${r.deadline_date}`, r])).values()].map((r) => (
+              <div key={r.id} className="border-t border-line pt-2 text-sm">
+                <p className="font-semibold">{r.document_type} · {{ required: '필수', optional: '선택', conditional: '조건부', needs_review: '확인 필요' }[r.necessity]}</p>
+                <p className="text-xs text-slate-500">{{ application: '신청 단계', finalist: '본선·발표평가 단계', agreement: '선정·협약 단계', unknown: '제출 단계 확인 필요' }[r.stage]}
+                  {r.deadline_date && ` · ${r.deadline_date}`}</p>
+                {r.condition_text && <p className="mt-1 text-xs">{r.condition_text}</p>}
+                <blockquote className="mt-1 whitespace-pre-line text-xs text-slate-500">{r.evidence_quote}</blockquote>
+                {r.template_url && <a href={o.source.url} target="_blank" rel="noreferrer" className="text-xs underline">공식 공고의 첨부 양식 확인</a>}
+              </div>
+            ))}
+            <p className="text-xs text-slate-500">{o.startup.reviewNotes.join(' · ')}</p>
+          </section>
+        )}
+        {!o.startup && !o.isVirtual && s.mode === "server" && <ProcessView key={o.id} opp={o} />}
 
         <div className="card p-5">
           <div className="flex items-center justify-between">
@@ -162,7 +179,7 @@ function Body() {
             </>
           ) : (
             <p className="mt-2 text-sm text-slate-500">
-              제출 서류: {o.documents.join(", ") || "없음"} — 퀘스트를 시작하면 체크리스트와 마감 알림이 생겨요.
+              제출 서류: {o.documents.join(", ") || (o.startup ? '원문·첨부 확인 필요' : '없음')} — 퀘스트를 시작하면 체크리스트와 마감 알림이 생겨요.
             </p>
           )}
           <div className="mt-4 flex flex-wrap items-center gap-2">

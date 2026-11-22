@@ -4,6 +4,8 @@ import { dday, progress, type TreeNode } from "@/lib/engine";
 import { formatScore, jobById } from "@/lib/data/catalog";
 import { getDepartment } from "@/lib/data/departments";
 import type { Profile } from "@/lib/types";
+import { careerInterestOf } from "@/lib/interest";
+import { questOutcome } from "@/lib/questOutcome";
 
 // 노드 상태 3가지 + 기회 열림. 색·아이콘·글자를 항상 같이 쓴다.
 const STATUS = {
@@ -18,10 +20,13 @@ export function NodeBox({ node, isNew, now, proof, recommended }: {
   node: TreeNode; isNew?: boolean; now: Date; proof?: boolean; recommended?: boolean;
 }) {
   const st = STATUS[nodeStatus(node)];
+  const outcome = questOutcome(node);
+  const title = node.state === "none" || proof ? outcome?.title ?? node.name : node.name;
   const opps = node.opportunities;
   const soonest = opps.length ? Math.min(...opps.map((o) => dday(o, now))) : null;
   const hasPosting = node.evidence?.some(s => s.reference.scope === "role" && (s.basis === "required" || s.basis === "preferred"));
-  const source = hasPosting ? "공고 근거" : node.practice ? "직무 연습" : node.evidence?.some(s => s.basis === "activity") ? "연계 활동" : undefined;
+  const credential = node.kind === "자격증" || node.kind === "어학";
+  const source = credential ? outcome?.label : node.startup ? '창업 공고 근거' : hasPosting ? "공고 근거" : node.practice ? "직무 연습" : node.evidence?.some(s => s.basis === "activity") ? "연계 활동" : undefined;
   return (
     <div className={`w-48 overflow-hidden rounded-md border-2 bg-panel text-left ${st.box} ${isNew ? "unlock" : ""}`}>
       <div className="flex items-center gap-2 px-2 py-2">
@@ -29,7 +34,7 @@ export function NodeBox({ node, isNew, now, proof, recommended }: {
           <st.icon size={15} />
         </span>
         <span className="min-w-0">
-          <span className="block truncate text-sm font-bold leading-tight">{node.name}</span>
+          <span title={title} className="block text-sm font-bold leading-tight">{title}</span>
           {recommended && <span className="block text-[11px] font-bold text-go">추천 퀘스트</span>}
           <span className="block text-[11px] opacity-70">
             {node.state === "none" ? st.label : node.score ? `완료 · ${formatScore(node.skill, node.score)}` : node.state === "verified" ? "완료 · 검증됨" : "완료 · 자기 보고"}
@@ -89,7 +94,7 @@ export function StatusWindow({ profile, children, treeProgress }: {
           <p className="text-sm text-ink/65">
             {dept?.name} {profile.grade}학년 · {profile.pseudoId}
           </p>
-          <h1 className="text-xl font-bold">목표: {job?.name}</h1>
+          <h1 className="text-xl font-bold">{careerInterestOf(profile) === 'startup' ? '창업 준비' : `취업 · ${job?.name}`}</h1>
           <div className="mt-2 flex items-center gap-2">
             <div className="exp flex-1" role="progressbar" aria-valuenow={prog.pct} aria-valuemin={0} aria-valuemax={100} aria-label="경험치">
               <div className="h-full bg-gradient-to-r from-go to-edge transition-all" style={{ width: `${prog.pct}%` }} />

@@ -8,7 +8,7 @@ import { useMounted } from "@/lib/useMounted";
 import { buildCareerPath, dday, recommend } from "@/lib/engine";
 import { DEPARTMENTS } from "@/lib/data/departments";
 import { PERSONAS } from "@/lib/data/personas";
-import { skillById } from "@/lib/data/catalog";
+import { recommendedTitle } from "@/lib/questOutcome";
 import { questProgress } from "@/lib/quest";
 import { Legend, NodeBox, StatusWindow } from "@/components/quest-ui";
 import { OppCard } from "@/components/OppCard";
@@ -101,6 +101,7 @@ function Today() {
   const recs = useMemo(() => recommend(s.opportunities, p, now), [s.opportunities, p, now]);
   const urgent = [...recs].sort((a, b) => dday(a.opp, now) - dday(b.opp, now)).slice(0, 3);
   const { recommendedQuest: next, treeProgress, tree } = s.careerPath!;
+  const nextNode = next && tree.find(n => n.skill === next.skillId);
   const quests = s.followed
     .map((id) => s.opportunities.find((o) => o.id === id))
     .filter((o) => o !== undefined && dday(o, now) >= 0)
@@ -137,7 +138,7 @@ function Today() {
         <section>
           <h2 className="border-b-2 border-edge pb-2 text-lg font-bold">오늘 할 일</h2>
           <ul className="divide-y divide-line">
-            {next && (
+            {next && nextNode && (
               <li>
                 <Link href="/tree" className="flex items-center gap-3 py-3 hover:bg-panel">
                   <span className="grid size-9 shrink-0 place-items-center rounded bg-go text-white">
@@ -145,7 +146,7 @@ function Today() {
                   </span>
                   <span className="min-w-0 flex-1">
                     <span className="block text-xs text-ink/60">추천 퀘스트</span>
-                    <span className="block font-bold">{skillById(next.skillId)?.name}</span>
+                    <span className="block font-bold">{recommendedTitle(nextNode, next)}</span>
                   </span>
                   <ChevronRight size={18} className="text-ink/40" />
                 </Link>

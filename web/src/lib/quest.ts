@@ -17,6 +17,9 @@ function cleanDocs(docs: string[]) {
 
 // 지원 퀘스트 체크리스트. "공식 신청처 이동"은 신청 완료가 아니라 이동 기록일 뿐이다.
 export function questItems(o: Opportunity) {
+  if (o.startup) return ['원문 확인', '지원 자격 확인',
+    ...[...new Set(o.startup.requirements.filter((r) => r.necessity === 'required' && r.stage === 'application').map((r) => `${r.document_type} 준비`))],
+    '공고별 선택·조건부 제출물 확인', '공식 신청처 이동'];
   const docs = cleanDocs(o.documents).map((d) => `${d} 준비`);
   if (o.type !== "창업지원") return ["원문 확인", "조건 점검", ...docs, "공식 신청처 이동"];
   // 창업지원: 사업계획서와 증빙이 준비의 중심이다(기획서 4.3). 공고문에 서류 목록이 있으면 그것을 따른다

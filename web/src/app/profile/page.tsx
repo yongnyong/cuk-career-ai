@@ -7,6 +7,7 @@ import { useStore } from "@/lib/store";
 import { jobById, skillById } from "@/lib/data/catalog";
 import { getDepartment } from "@/lib/data/departments";
 import { questProgress } from "@/lib/quest";
+import { careerInterestOf } from "@/lib/interest";
 
 function Body() {
   const s = useStore();
@@ -30,7 +31,8 @@ function Body() {
             ["학번", `${String(p.admissionYear).slice(2)}학번`],
             ["소속", `${dept?.college} ${dept?.name}`],
             ["학년·학적", `${p.grade}학년 · ${p.status}`],
-            ["목표 직무", job.name],
+            ["관심 분야", careerInterestOf(p) === 'startup' ? '창업' : '취업'],
+            ["목표", careerInterestOf(p) === 'startup' ? '팀의 창업 준비' : job.name],
             ["주당 준비", `${p.weeklyHours}시간`],
             ["희망 시기", p.targetTerm],
           ].map(([k, v]) => (

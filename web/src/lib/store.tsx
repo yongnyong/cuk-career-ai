@@ -5,9 +5,16 @@
 // 공고 목록과 가상 시계는 아직 브라우저에만 있다.
 import { createContext, useCallback, useContext, useEffect, useMemo, useRef, useState } from "react";
 import { SEED_OPPORTUNITIES } from "./data/opportunities";
-import { applyOverrides, jobById, type CatalogOverrides } from "./data/catalog";
+import { applyOverrides, jobById, registerStartupSkills, type CatalogOverrides } from "./data/catalog";
+import startupData from "./data/startupCatalog.json";
+import { PERSONAS, restoreDemoProfile } from "./data/personas";
+import { startupSkills } from "./startup";
+import { careerInterestOf } from "./interest";
 import { buildCareerPath, evaluate, latest, syncNotices, fmt } from "./engine";
-import type { Notice, Opportunity, Profile, SkillState, TreeSignal } from "./types";
+import type { CareerInterest, Notice, Opportunity, Profile, SkillState, StartupCatalog, TreeSignal } from "./types";
+
+const STARTUP_CATALOG = startupData as StartupCatalog;
+registerStartupSkills(startupSkills(STARTUP_CATALOG));
 
 export const DEMO_START = "2026-11-16T09:00:00+09:00";
 const KEY = "cuk-career-ai:v2";
@@ -25,6 +32,7 @@ function recordSkill(profile: Profile, skill: string, value: SkillState, inTree:
 }
 
 interface UserData {
+  careerInterest?: CareerInterest;
   profile: Profile | null;
   followed: string[];
   quests: Record<string, Record<string, boolean>>;
@@ -61,6 +69,7 @@ const errorOf = (data: { detail?: unknown }) => (typeof data.detail === "string"
 // 서버가 준 내 데이터에서 아는 필드만 꺼낸다
 const fromServer = (st: Partial<UserData> | null): UserData => ({ ...emptyUser(), ...(st ? pickKeys(st) : {}) });
 const pickKeys = (st: Partial<UserData>): Partial<UserData> => ({
+  ...(st.careerInterest && { careerInterest: st.careerInterest }),
   ...(st.profile !== undefined && { profile: st.profile }),
   ...(Array.isArray(st.followed) && { followed: st.followed }),
   ...(st.quests && { quests: st.quests }),
@@ -68,8 +77,9 @@ const pickKeys = (st: Partial<UserData>): Partial<UserData> => ({
   ...(Array.isArray(st.newOpps) && { newOpps: st.newOpps }),
 });
 
-const emptyUser = (): UserData => ({ profile: null, followed: [], quests: {}, notices: [], newOpps: [] });
+const emptyUser = (): UserData => ({ profile: null, careerInterest: undefined, followed: [], quests: {}, notices: [], newOpps: [] });
 const pickUser = (s: State): UserData => ({
+  careerInterest: s.profile ? careerInterestOf(s.profile) : s.careerInterest,
   profile: s.profile,
   followed: s.followed,
   quests: s.quests,
@@ -86,6 +96,7 @@ async function hashPassword(salt: string, pw: string) {
 }
 
 interface State {
+  careerInterest?: CareerInterest;
   session: string | null; // 로그인한 아이디
   users: Record<string, Account>;
   profile: Profile | null;
@@ -119,8 +130,9 @@ interface Ctx extends State {
   // 관리자 계정: 실제·가상 공고를 모두 보고 서버 현황을 볼 수 있다
   nowDate: Date;
   careerPath: ReturnType<typeof buildCareerPath> | null;
+  startupCatalog: StartupCatalog;
   getQuestAction: (() => Promise<string | undefined>) | null;
-  signup: (id: string, pw: string) => Promise<string | null>; // 실패 시 사유 반환
+  signup: (id: string, pw: string, interest?: CareerInterest) => Promise<string | null>; // 실패 시 사유 반환
   login: (id: string, pw: string) => Promise<string | null>;
   loginDemo: (id: string, profile: Profile) => void;
   logout: () => void;
@@ -149,6 +161,7 @@ export function StoreProvider({ children }: { children: React.ReactNode }) {
   const [catalog, setCatalog] = useState<CatalogOverrides>({ skills: {}, jobs: {} });
   const [catalogVersion, setCatalogVersion] = useState(0);
   const [isAdmin, setIsAdmin] = useState(false); // 서버가 알려준 관리자 여부(저장하지 않는다)
+  const [startupCatalog, setStartupCatalog] = useState<StartupCatalog>(STARTUP_CATALOG);
 
   // 브라우저 저장소(외부 시스템)에서 한 번 복원한다
   /* eslint-disable react-hooks/set-state-in-effect */
@@ -160,7 +173,10 @@ export function StoreProvider({ children }: { children: React.ReactNode }) {
         // 저장된 공고 목록에 없는 가상 공고(나중에 추가된 것)는 채워 넣는다
         const have = new Set((saved.opportunities ?? []).map((o: Opportunity) => o.id));
         const opportunities = [...(saved.opportunities ?? []), ...SEED_OPPORTUNITIES.filter((o) => !have.has(o.id))];
-        setState({ ...initial(), ...saved, opportunities });
+        const scenario = PERSONAS.find((person) => person.id === saved.session);
+        const profile = scenario && saved.profile ? restoreDemoProfile(scenario.profile, saved.profile) : saved.profile;
+        setState({ ...initial(), ...saved, opportunities, profile,
+          careerInterest: profile ? careerInterestOf(profile) : saved.careerInterest });
       }
     } catch {
       /* 저장소 사용 불가 시 기본값 */
@@ -194,12 +210,12 @@ export function StoreProvider({ children }: { children: React.ReactNode }) {
   }, [state, ready]);
 
   // 서버 모드: 내 데이터가 바뀌면 잠시 모아 서버에 저장
-  const { session, profile, followed, quests, notices, newOpps } = state;
+  const { session, profile, careerInterest, followed, quests, notices, newOpps } = state;
   useEffect(() => {
     if (!ready || mode !== "server" || !session || isDemo(session)) return;
-    const t = setTimeout(() => call("/me/state", "PUT", { state: { profile, followed, quests, notices, newOpps } }), 600);
+    const t = setTimeout(() => call("/me/state", "PUT", { state: { profile, careerInterest, followed, quests, notices, newOpps } }), 600);
     return () => clearTimeout(t);
-  }, [ready, mode, session, profile, followed, quests, notices, newOpps]);
+  }, [ready, mode, session, profile, careerInterest, followed, quests, notices, newOpps]);
 
   // 상태 변경 후 알림 재계산
   const update = useCallback((fn: (s: State) => State) => {
@@ -222,9 +238,25 @@ export function StoreProvider({ children }: { children: React.ReactNode }) {
     });
   }, [ready, update]);
 
-  const visible = useMemo(() => visibleOpps({ opportunities: state.opportunities, session }, isAdmin), [state.opportunities, session, isAdmin]);
+  useEffect(() => {
+    if (!ready) return;
+    let current = true;
+    void call("/startup/catalog").then((r) => {
+      if (current && r?.ok && Array.isArray(r.data.nodes) && Array.isArray(r.data.opportunities)) {
+        registerStartupSkills(startupSkills(r.data));
+        setStartupCatalog(r.data);
+      }
+    });
+    return () => { current = false; };
+  }, [ready]);
+  const visible = useMemo(() => {
+    const merged = [...state.opportunities.filter((o) => !o.startup), ...startupCatalog.opportunities];
+    const all = visibleOpps({ opportunities: merged, session }, isAdmin);
+    if (!profile || isAdmin) return all;
+    return all.filter((o) => careerInterestOf(profile) === "startup" ? !!o.startup : o.type !== "창업지원");
+  }, [state.opportunities, session, isAdmin, profile, startupCatalog]);
   const asOf = state.now;
-  const signalRequest = useMemo(() => profile ? {
+  const signalRequest = useMemo(() => profile && careerInterestOf(profile) !== "startup" ? {
     asOf,
     profile: {
       departmentId: profile.departmentId, grade: profile.grade, status: profile.status,
@@ -244,16 +276,16 @@ export function StoreProvider({ children }: { children: React.ReactNode }) {
     return () => { current = false; };
   }, [ready, signalKey, signalRequest]);
   const careerPath = useMemo(() => {
-    if (!profile || !signalKey) return null;
-    return buildCareerPath(profile, visible, new Date(asOf), snapshot?.key === signalKey ? snapshot.signals : []);
-  }, [profile, signalKey, visible, asOf, snapshot]);
+    if (!profile) return null;
+    return buildCareerPath(profile, visible, new Date(asOf), snapshot?.key === signalKey ? snapshot.signals : [], startupCatalog);
+  }, [profile, signalKey, visible, asOf, snapshot, startupCatalog]);
   const recommendation = careerPath?.recommendedQuest;
   const questRequestKey = recommendation && profile
     ? JSON.stringify([signalKey, profile.weeklyHours, recommendation])
     : "";
   const actionCache = useRef<{ key: string; promise: Promise<string | undefined> } | null>(null);
   const getQuestAction = useMemo(() => {
-    if (!questRequestKey || !profile || !recommendation) return null;
+    if (!questRequestKey || !profile || !recommendation || careerInterestOf(profile) === 'startup') return null;
     const stage = profile.grade <= 1 ? "explore" : profile.grade === 2 ? "prepare" : profile.grade === 3 ? "practice" : "apply";
     const timeBudget = profile.weeklyHours <= 3 ? "short" : profile.weeklyHours <= 8 ? "medium" : "long";
     const body = { skillId: recommendation.skillId, actionKind: recommendation.actionKind,
@@ -274,6 +306,7 @@ export function StoreProvider({ children }: { children: React.ReactNode }) {
     () => ({
       ...state,
       opportunities: visible,
+      startupCatalog,
       careerPath,
       getQuestAction,
       isAdmin,
@@ -290,13 +323,13 @@ export function StoreProvider({ children }: { children: React.ReactNode }) {
       ready,
       mode,
       nowDate: new Date(state.now),
-      signup: async (id, pw) => {
+      signup: async (id, pw, interest) => {
         if (mode === "server") {
-          const r = await call("/auth/signup", "POST", { id, password: pw });
+          const r = await call("/auth/signup", "POST", { id, password: pw, careerInterest: interest });
           if (!r) return "서버에 연결하지 못했어요. 잠시 뒤 다시 시도해 주세요.";
           if (!r.ok) return errorOf(r.data);
           setIsAdmin(r.data.admin === true);
-          update((s) => ({ ...s, ...emptyUser(), session: r.data.id, now: new Date().toISOString() }));
+          update((s) => ({ ...s, ...fromServer(r.data.state), session: r.data.id, now: new Date().toISOString() }));
           return null;
         }
         if (!/^[a-z0-9_]{4,16}$/.test(id)) return "아이디는 영문 소문자·숫자 4~16자로 입력해 주세요.";
@@ -304,7 +337,8 @@ export function StoreProvider({ children }: { children: React.ReactNode }) {
         if (state.users[id]) return "이미 사용 중인 아이디예요.";
         const salt = crypto.randomUUID();
         const hash = await hashPassword(salt, pw);
-        update((s) => ({ ...s, ...emptyUser(), session: id, users: { ...s.users, [id]: { salt, hash, data: emptyUser() } } }));
+        const data = { ...emptyUser(), careerInterest: interest };
+        update((s) => ({ ...s, ...data, session: id, users: { ...s.users, [id]: { salt, hash, data } } }));
         return null;
       },
       login: async (id, pw) => {
@@ -324,20 +358,25 @@ export function StoreProvider({ children }: { children: React.ReactNode }) {
         return null;
       },
       loginDemo: (id, profile) =>
-        update((s) => ({
+        update((s) => {
+          const restored = restoreDemoProfile(profile, s.users[id]?.data.profile);
+          return {
           ...s,
           ...emptyUser(),
-          ...(s.users[id]?.data ?? { profile }),
+          ...(s.users[id]?.data ?? {}),
+          profile: restored,
+          careerInterest: restored.careerInterest,
           session: id,
           now: DEMO_START,
           users: s.users[id] ? s.users : { ...s.users, [id]: { salt: "", hash: "", data: emptyUser() } },
-        })),
+          };
+        }),
       logout: () => {
         if (mode === "server" && !isDemo(state.session)) void call("/auth/logout", "POST");
         setIsAdmin(false);
         update((s) => ({ ...s, ...emptyUser(), session: null }));
       },
-      setProfile: (p) => update((s) => ({ ...s, profile: p })),
+      setProfile: (p) => update((s) => ({ ...s, profile: p, careerInterest: careerInterestOf(p) })),
       setScore: (skill, value) =>
         update((s) => {
           if (!s.profile) return s;
@@ -419,7 +458,7 @@ export function StoreProvider({ children }: { children: React.ReactNode }) {
       },
       resetDemo: () => update(() => initial()),
     }),
-    [state, update, ready, mode, isAdmin, catalog, catalogVersion, visible, careerPath, getQuestAction],
+    [state, update, ready, mode, isAdmin, catalog, catalogVersion, visible, careerPath, getQuestAction, startupCatalog],
   );
 
   return <StoreCtx.Provider value={api}>{children}</StoreCtx.Provider>;

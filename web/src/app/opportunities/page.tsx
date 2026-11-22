@@ -7,12 +7,14 @@ import { AiNotice, DDay, TypeTag, VerdictBadge, VirtualTag } from "@/components/
 import { useStore } from "@/lib/store";
 import { evaluate, isOpen, recommend } from "@/lib/engine";
 import type { OppType } from "@/lib/types";
+import { careerInterestOf } from "@/lib/interest";
 
 const TYPES: (OppType | "전체")[] = ["전체", "현장실습", "창업지원", "채용", "비교과", "장학", "학사"];
 
 function List() {
   const s = useStore();
   const p = s.profile!;
+  const startup = careerInterestOf(p) === 'startup';
   const now = s.nowDate;
   const [type, setType] = useState<OppType | "전체">("전체");
   const [mode, setMode] = useState<"rec" | "all">("rec");
@@ -27,7 +29,7 @@ function List() {
       <div className="flex flex-wrap items-end justify-between gap-3">
         <div>
           <h1 className="text-xl font-bold">기회</h1>
-          <p className="text-sm text-slate-500">조건을 먼저 거르고, 목표 직무·보유 역량·마감 순으로 정렬했어요.</p>
+          <p className="text-sm text-slate-500">{startup ? '창업 지원사업·경진대회의 제출물과 지원 자격을 확인해요. 지난 공고도 준비 자료로 볼 수 있어요.' : '조건을 먼저 거르고, 목표 직무·보유 역량·마감 순으로 정렬했어요.'}</p>
         </div>
         <div className="flex rounded-lg border border-slate-300 bg-panel p-0.5 text-sm">
           {(["rec", "all"] as const).map((m) => (
@@ -38,7 +40,7 @@ function List() {
         </div>
       </div>
       <div className="flex flex-wrap items-center gap-2">
-        {TYPES.map((t) => (
+        {(startup ? ['전체', '창업지원'] as const : TYPES.filter((t) => t !== '창업지원')).map((t) => (
           <button
             key={t}
             onClick={() => setType(t)}
@@ -52,6 +54,7 @@ function List() {
 
       {mode === "rec" ? (
         <div className="grid gap-3 sm:grid-cols-2 lg:grid-cols-3">
+          {recs.length === 0 && <p className="text-sm text-slate-500">지금 추천할 모집 공고가 없어요. 전체 공고에서 준비 자료를 확인할 수 있어요.</p>}
           {recs
             .filter((r) => match(r.opp.title, r.opp.org, r.opp.type))
             .map((r) => (

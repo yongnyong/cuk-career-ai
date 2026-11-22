@@ -19,7 +19,7 @@ export const PRACTICE = [
   exercise("PR-DEPLOY-ROLLBACK", "모델 버전 교체·복구 실습", ["SK-DEPLOY"], "로컬 데모에서 모델 버전을 교체한 뒤 이전 버전으로 복구해 보세요.", "교체 전후의 예측, 버전 식별자와 복구 후 확인 절차를 기록하세요."),
   starter("PR-COUNSEL-CONSENT", "모의 상담 첫 회기 안내문", ["PSY-INTERVIEW", "SK-COUNSEL", "SP-COUNSEL"], "가상 상담 실습을 처음 접하는 사람에게 진행 순서와 기록 방식을 설명하는 안내문을 쓰세요.", "실습 목적과 질문·중단 방법을 담아 동료에게 읽혀 보고 불분명한 표현을 수정하세요."),
   exercise("PR-FOLLOWUP-QUESTIONS", "후속 질문 자기피드백", ["PSY-INTERVIEW", "SP-COUNSEL"], "가상의 면접 대화를 읽고 답변을 유도한 질문을 열린 질문으로 다시 작성하세요.", "기존 질문, 수정 질문, 바뀐 의도를 나란히 비교한 피드백지를 남기세요."),
-  starter("PR-RESEARCH-PLAN", "연구 질문과 관찰 계획", ["PSY-STAT", "SW-RESEARCH", "SK-SCI-PAPER", "SK-RESEARCH"], "궁금한 현상을 관찰 가능한 질문으로 바꾸고 어떤 자료가 필요할지 정하세요.", "질문, 관찰할 단위, 예상되는 편향과 확인 방법을 한 쪽으로 정리하세요."),
+  starter("PR-RESEARCH-PLAN", "연구용 데이터 수집 명세서", ["PSY-STAT", "SW-RESEARCH", "SK-SCI-PAPER", "SK-RESEARCH"], "연구 질문을 검증할 자료의 각 열에 이름, 관찰 단위, 허용값과 결측 처리 기준을 정하세요.", "명세서와 같은 형식의 예시 데이터 행을 만들고 다른 사람이 그 기준대로 입력할 수 있는지 확인하세요."),
   starter("PR-BENEFICIARY-MAP", "수혜자·비용 부담자 관계도", ["SW-SOCIAL", "SK-BMC", "SK-NPO"], "가상 사업에서 서비스를 이용하는 사람, 비용을 내는 사람, 운영하는 기관을 구분하세요.", "각 주체가 얻는 가치와 부담을 표시하고 아직 확인해야 할 가정을 적으세요."),
   exercise("PR-PARTNER-PLAN", "지역 협력기관 제안서", ["SW-SOCIAL", "SW-PROGRAM", "SK-NPO"], "실제 공개 사업을 조사해 함께할 수 있는 지역 기관과 협업 내용을 설계하세요.", "기관 선정 근거, 양측 역할, 필요한 자원과 첫 회의 의제를 담은 초안을 남기세요."),
   starter("PR-PILOT-DECISION", "파일럿 계속·중단 결정표", ["SK-IDEA", "SK-MVP"], "아이디어를 시험하기 전에 어떤 결과에서 계속하거나 설계를 바꿀지 정하세요.", "가설, 측정 지표와 판정 기준을 정하고 가상의 결과에 적용해 보세요."),

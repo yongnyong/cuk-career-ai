@@ -1,4 +1,17 @@
 from app.career.posting_skills import attach_preparation_evidence, extract_preparation_evidence, extract_skill_evidence
+from app.career.posting_skills import has_multiple_roles
+
+
+def test_specific_certificate_names_and_tax_grade_are_distinct_from_product_proficiency():
+    text = '우대조건\n전산세무1급\n포토샵 능숙자\nPower BI 활용\nAWS 데이터 파이프라인 운영'
+    assert [(r['skill'], r.get('minimum')) for r in extract_skill_evidence(text)] == [('CERT-TAX', '1급')]
+    assert {r['key'] for r in extract_preparation_evidence(text)} == {
+        'credential:CERT-TAX', 'PR-IMAGE-RETOUCH', 'power_bi'}
+    assert {r['skill'] for r in extract_skill_evidence('자격요건\nACP Photoshop\nSNS광고마케터 1급')} == {
+        'CERT-ACP-PS', 'CERT-SNS-ADS'}
+    assert not extract_skill_evidence('자격요건\nSNS광고마케터 1급 없어도 가능\n전산세무1급 또는 전산회계1급')
+    assert not has_multiple_roles('기장관리업무 신입, 경력직 채용', '모집분야 기장관리업무 신입, 기장관리업무 경력 모집인원 2명')
+    assert has_multiple_roles('공개 채용', '모집분야 기장관리업무 신입, 고객상담 경력 모집인원 2명')
 
 
 def test_project_observations_keep_exact_capability_without_inventing_a_certificate():

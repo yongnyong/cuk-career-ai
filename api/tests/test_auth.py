@@ -23,6 +23,17 @@ def test_signup_sets_httponly_cookie_and_me_works():
     assert c.get("/api/me").json()["id"] == "alice01"
 
 
+def test_signup_interest_is_saved_before_onboarding_and_restored_on_login():
+    c = client()
+    r = c.post('/api/auth/signup', json={'id': 'founder01', 'password': PW, 'careerInterest': 'startup'})
+    assert r.status_code == 200
+    assert r.json()['state'] == {'careerInterest': 'startup'}
+    c.post('/api/auth/logout')
+    restored = c.post('/api/auth/login', json={'id': 'founder01', 'password': PW})
+    assert restored.json()['state']['careerInterest'] == 'startup'
+    assert c.post('/api/auth/signup', json={'id': 'invalidinterest', 'password': PW, 'careerInterest': 'invalid'}).status_code == 422
+
+
 def test_password_is_stored_hashed():
     with main.SessionLocal() as db:
         u = db.get(main.User, "alice01")

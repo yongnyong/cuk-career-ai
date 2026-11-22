@@ -25,9 +25,10 @@ def build_tree_signals(profile, job, skills, now, *, path=DEFAULT_CATALOG):
     if not node_ids:
         return {'version': snapshot, 'signals': []}
     by_name = {}
-    # Resolve duplicate names to the student's own track before using the wider catalog.
+    # Prefer the student's track, then stable shared IDs before other departments' aliases.
     track_skills = [skills[node['skill']] for node in job['nodes'] if node['skill'] in skills]
-    for skill in [*track_skills, *skills.values()]:
+    shared_skills = [skill for key, skill in skills.items() if key.startswith('SK-')]
+    for skill in [*track_skills, *shared_skills, *skills.values()]:
         if skill and skill['kind'] in ('어학', '자격증'):
             name = skill['name'].strip().casefold()
             by_name.setdefault(aliases.get(name, name), skill['id'])
