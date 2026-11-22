@@ -16,7 +16,7 @@ import type { CareerInterest, Notice, Opportunity, Profile, SkillState, StartupC
 const STARTUP_CATALOG = startupData as StartupCatalog;
 registerStartupSkills(startupSkills(STARTUP_CATALOG));
 
-export const DEMO_START = "2026-11-16T09:00:00+09:00";
+export const DEMO_START = "2026-11-22T09:00:00+09:00";
 const KEY = "cuk-career-ai:v2";
 
 function recordSkill(profile: Profile, skill: string, value: SkillState, inTree: boolean): Profile {
