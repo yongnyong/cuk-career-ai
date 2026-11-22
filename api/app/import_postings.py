@@ -9,6 +9,8 @@ from pathlib import Path
 
 from .collect import with_history
 from .career.posting_skills import attach_preparation_evidence, extract_skill_evidence, has_multiple_roles
+from .career.major_conditions import extract_major_conditions
+from .career.supplemental import build_supplemental_postings
 
 ROOT = Path(__file__).resolve().parents[2]
 KST = timezone(timedelta(hours=9))
@@ -28,6 +30,20 @@ PATH_JOBS = {
     '의학': ['clinical'], '약학': ['pharma'], '법률': ['legal'], '행정': ['public-sector'],
     '음악·공연': ['arts-planner'], '신학·사목': ['npo'],
 }
+
+# When a specific occupation is named, do not let an employer name or an industry
+# tag override it. General titles still use the collected department classification.
+TITLE_ROLES = [
+    (r'(?:S/?W|소프트웨어|백엔드|프론트엔드)\s*개발', ('sw-developer', 'cs-dev'), ('cs',)),
+    (r'영상\s*(?:제작|촬영|편집|연출)|영상\s*PD', ('mtc-video',), ('media-tech',)),
+    (r'데이터\s*(?:분석가|애널리스트)|data\s+analyst', ('data-analyst', 'ds-analyst'), ('data-science',)),
+    (r'데이터\s*엔지니어|data\s+engineer', ('ds-engineer',), ('data-science', 'cs')),
+    (r'(?:AI|인공지능|머신러닝)\s*(?:연구원|연구직)', ('ai-research',), ('ai',)),
+    (r'(?:AI|머신러닝)\s*(?:개발|엔지니어)', ('ai-engineer',), ('ai',)),
+    (r'\bmarketing\s+(?:assistant|intern)\b|(?:주니어|브랜드|콘텐츠|퍼포먼스)\s*마케터',
+     ('marketer', 'biz-marketing'), ('business', 'media-tech')),
+    (r'기장\s*관리\s*업무', ('acc-tax', 'acc-corp'), ('accounting',)),
+]
 
 
 def parse_deadline(date_text, content):
@@ -50,6 +66,9 @@ def build_postings(database, catalog):
     db = sqlite3.connect(database.resolve().as_uri() + '?mode=ro', uri=True)
     db.row_factory = sqlite3.Row
     jobs = {job['id']: job for job in catalog['jobs']}
+    departments = {d['name']: d['id'] for d in catalog['departments']}
+    if '의예과·의학과' in departments:
+        departments.update(dict.fromkeys(('의학과', '의예과'), departments['의예과·의학과']))
     known_skills = {skill['id'] for skill in catalog['skills']}
     stamp = datetime.now(KST).isoformat(timespec='seconds')
     rows = []
@@ -57,8 +76,10 @@ def build_postings(database, catalog):
         for post in db.execute('SELECT p.*,s.url,s.publisher,s.verified_on FROM postings p JOIN sources s ON s.id=p.source_id ORDER BY p.id'):
             paths = {row[0] for row in db.execute('''SELECT w.name FROM roles r JOIN role_pathways rp ON rp.role_id=r.id
                 JOIN pathways w ON w.id=rp.pathway_id WHERE r.posting_id=?''', (post['id'],))}
+            reviewed_jobs = {job for path in paths for job in PATH_JOBS.get(path, ()) if job in jobs}
             matches = list(db.execute('''SELECT d.name,m.evidence FROM department_job_matches m
-                JOIN departments d ON d.id=m.department_id WHERE m.posting_id=? ORDER BY d.name''', (post['id'],)))
+                JOIN departments d ON d.id=m.department_id WHERE m.posting_id=? ORDER BY m.score DESC,d.name''', (post['id'],)))
+            department_ids = list(dict.fromkeys(departments[m['name']] for m in matches if m['name'] in departments))
             for match in matches:
                 for path in PATH_JOBS:
                     if path + '(' in match['evidence']:
@@ -77,6 +98,18 @@ def build_postings(database, catalog):
             role_count = db.execute('SELECT COUNT(DISTINCT name) FROM roles WHERE posting_id=?',
                                     (post['id'],)).fetchone()[0]
             multi_role = role_count > 1 or has_multiple_roles(post['title'], post['content_text'])
+            title = post['title'].removeprefix(post['company']).strip()
+            named_jobs = set()
+            named_departments = set()
+            for pattern, role_ids, dept_ids in TITLE_ROLES:
+                if re.search(pattern, title, re.I):
+                    named_jobs.update(role_id for role_id in role_ids if role_id in jobs)
+                    named_departments.update(dept_ids)
+            if named_jobs:
+                if multi_role:
+                    department_ids = list(dict.fromkeys([*department_ids, *sorted(named_departments)]))
+                else:
+                    department_ids = sorted(named_departments)
             # Some broad department clusters mapped named marketing roles only to overseas sales or design.
             # For a single-role posting the advertised occupation takes precedence.
             if not multi_role and 'marketer' in jobs and re.search(
@@ -86,7 +119,10 @@ def build_postings(database, catalog):
             if not multi_role and re.search(r'기장\s*관리\s*업무', post['title']):
                 paths = {'회계·세무'}
                 linked_jobs = {'acc-tax', 'acc-corp'} & jobs.keys()
+            if named_jobs:
+                linked_jobs = named_jobs | reviewed_jobs if multi_role else named_jobs
             raw_text = '' if post['completeness'] == 'reviewed_excerpt' else post['content_text']
+            major_conditions = extract_major_conditions(raw_text, catalog, multi_role=multi_role)
             skill_evidence = [entry for entry in extract_skill_evidence(raw_text, evidence, multi_role=multi_role)
                               if entry['skill'] in known_skills]
             for index, entry in enumerate(skill_evidence):
@@ -106,13 +142,23 @@ def build_postings(database, catalog):
             sections.extend({'id': entry['src'], 'title': '역량 근거 · ' + (
                 '우대' if entry['basis'] == 'preferred' else '요구 역량'),
                 'text': entry['quote']} for entry in skill_evidence)
+            for index, condition in enumerate(major_conditions):
+                condition['src'] = f'전공{index + 1}'
+                sections.append({'id': condition['src'], 'title': '전공 조건 원문', 'text': condition['quote']})
+                if condition['basis'] == 'required' and not condition['unrestricted']:
+                    required.append({'key': 'department', 'label': condition['quote'], 'src': condition['src'],
+                                     'departmentIds': condition['departmentIds'], 'majors': condition['fields'],
+                                     'related': condition['related'], 'scope': condition['scope']})
             facts = [{'label': '자료 확인일', 'value': snapshot_date},
-                     {'label': '학과 연결 참고', 'value': ' · '.join(match['name'] for match in matches) or '매칭 정보 없음'}]
+                     {'label': '학과 연결 참고', 'value': ' · '.join(
+                         d['name'] for d in catalog['departments'] if d['id'] in department_ids) or '매칭 정보 없음'}]
             data = {
                 'id': 'hist-' + post['id'].split(':')[-1], 'type': '채용',
                 'title': post['title'], 'org': post['company'],
                 'source': {'name': post['publisher'], 'url': post['url']}, 'applyUrl': post['url'],
                 'isVirtual': False, 'jobs': sorted(linked_jobs), 'required': required,
+                'employmentMatch': {'namedJobs': sorted(named_jobs), 'reviewedJobs': sorted(reviewed_jobs),
+                                    'departmentIds': department_ids, 'majorConditions': major_conditions},
                 'preferred': sorted(set(preferred)), 'documents': [], 'sections': sections,
                 'conditionsBy': 'rule', 'facts': facts, 'confidence': 1.0, 'reviewed': True,
                 'skillEvidence': skill_evidence,
@@ -123,6 +169,8 @@ def build_postings(database, catalog):
             rows.append(attach_preparation_evidence(data, raw_text, evidence, multi_role=multi_role))
     finally:
         db.close()
+    existing_urls = {row['source']['url'] for row in rows}
+    rows.extend(row for row in build_supplemental_postings(catalog) if row['source']['url'] not in existing_urls)
     return rows
 
 

@@ -8,6 +8,9 @@ type Work = readonly [title: string, completion: string];
 
 // These are suggested work samples. They do not change the source skill or its requirements.
 const samples: Record<string, Work> = {
+  "CW-EVIDENCE": ["프로젝트 경험·증빙 모음 만들기", "수업·동아리·근로에서 실제로 끝낸 일의 원본 파일이나 시연 링크를 모으세요. 각 결과물에 본인이 맡은 부분과 확인 가능한 성과를 붙여 다시 꺼내 쓸 수 있는 색인을 만드세요."],
+  "CW-BUDGET": ["프로젝트 예산·정산 워크북 제작", "행사나 프로젝트의 수량·단가·실제 지출을 입력하면 항목별 합계와 예산 차이가 갱신되는 스프레드시트를 만드세요. 예시 거래를 넣고 총액을 대조한 파일을 저장하세요."],
+  "CW-JOB-INTERVIEW": ["지원 직무 모의면접 녹화본 완성", "목표 직무 공고에서 고른 업무에 맞춰 프로젝트 경험과 본인의 기여를 설명하고 후속 질문에도 답하세요. 질문 목록과 수정해 다시 답한 최종 영상 또는 음성을 함께 저장하세요."],
   "AI-WRITE": ["모델 카드 작성", "만든 모델의 용도, 학습 데이터, 평가 지표와 실패 사례를 모델 카드에 적고 실행 가능한 모델이나 저장소를 연결하세요."],
   "AI-CAP": ["AI 캡스톤 데모와 실행 안내서 만들기", "핵심 기능을 시연하는 링크나 영상, 예시 입력과 출력, 재실행 방법을 README에 남기세요."],
   "SK-PY-01": ["CSV 집계 스크립트 만들기", "예제 CSV를 읽어 항목별 건수를 출력하세요. 입력 파일, 코드, 예상 결과표를 함께 저장하고 다시 실행해 대조하세요."],
@@ -95,7 +98,7 @@ export function questOutcome(node: TreeNode) {
     const language = kind === "어학";
     const suggested = node.evidence?.find(e => e.preparation?.kind === "suggested");
     const direct = node.evidence?.find(e => e.reference.scope === "role" && e.preparation?.kind !== "suggested" && (e.basis === "required" || e.basis === "preferred"));
-    const label = direct ? (direct.basis === "required" ? "공고 자격요건에 명시" : "공고 우대에 명시") : suggested ? "서비스 추천" : node.credentialOption ? "직무 선택 자격" : "트랙 준비";
+    const label = direct ? (direct.basis === "required" ? "공고 자격요건에 명시" : "공고 우대에 명시") : suggested ? "서비스 추천" : node.commonExamOption ? "공통 선택 시험" : node.credentialOption ? "직무 선택 자격" : "트랙 준비";
     const record = language ? "공식 성적표" : "취득한 자격증 또는 발급기관의 취득 확인서";
     const completion = scaleOf(skill) ? `${record}에 표시된 실제 점수·등급을 기록하세요.` : `${record}에서 본인의 취득 결과를 확인하세요.`;
     const credentialName = skill === "CERT-TAX" && direct?.minimum ? `${name} ${direct.minimum}` : name;

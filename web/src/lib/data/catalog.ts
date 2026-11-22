@@ -21,11 +21,14 @@ const DATAQ = "https://www.dataq.or.kr/";
 export const SKILLS: Skill[] = [
   ...DEPT_SKILLS,
   ...DEPT_SKILLS_2,
-  ...CAREER_CREDENTIALS.map(({ id, name, officialUrl }) => s(id, name, "자격증", true, officialUrl)),
+  ...CAREER_CREDENTIALS.filter(c => !c.reuseExisting).map(({ id, name, officialUrl }) => s(id, name, "자격증", true, officialUrl)),
   ...PRACTICE.map(({ id, name }) => s(id, name, "프로젝트")),
   ...POSTING_PROJECTS.map(({ id, name }) => s(id, name, "프로젝트")),
   ...CAMPUS_NODES.map(({ id, name, url }) => s(id, name, "경험", false, url)),
   // 공통
+  s("CW-EVIDENCE", "프로젝트 경험·증빙 모음", "프로젝트"),
+  s("CW-BUDGET", "프로젝트 예산·정산 워크북", "프로젝트"),
+  s("CW-JOB-INTERVIEW", "지원 직무 모의면접 녹화본", "프로젝트"),
   s("SK-TOEIC", "TOEIC", "어학", true, "https://exam.toeic.co.kr/"),
   s("SK-TOEIC-SPEAKING", "TOEIC Speaking", "어학", true),
   s("SK-FINANCE-MANAGER", "재경관리사", "자격증", true),
@@ -446,7 +449,9 @@ export function sanitizeJob(job: Job, known: Set<string>): Job {
   const seen = new Set<string>();
   const nodes = (Array.isArray(job.nodes) ? job.nodes : [])
     .filter((n) => n && known.has(n.skill) && !seen.has(n.skill) && seen.add(n.skill))
-    .map((n) => ({ skill: n.skill, required: !!n.required, prereq: (n.prereq ?? []).filter((q) => q !== n.skill), ...(n.target && { target: String(n.target) }) }));
+    .map((n) => ({ skill: n.skill, required: !!n.required, prereq: (n.prereq ?? []).filter((q) => q !== n.skill), ...(n.target && { target: String(n.target) }),
+      ...(n.route && ["common", "specialist"].includes(n.route.domain) && Number.isInteger(n.route.stage) && n.route.stage >= 0 && n.route.stage <= 10
+        ? { route: { ...n.route, recommendedBefore: (n.route.recommendedBefore ?? []).filter(id => known.has(id) && id !== n.skill) } } : {}) }));
   const own = new Set(nodes.map((n) => n.skill));
   for (const n of nodes) n.prereq = n.prereq.filter((q) => own.has(q));
   const byId = new Map(nodes.map((n) => [n.skill, n]));

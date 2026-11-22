@@ -11,13 +11,15 @@ import { listProofs, type ProofMeta } from "@/lib/files";
 import { Legend, NodeBox, StatusWindow } from "@/components/quest-ui";
 import { AiNotice, DDay, TypeTag, VirtualTag } from "@/components/ui";
 import { useStore } from "@/lib/store";
-import { dday, recommend, type TreeNode } from "@/lib/engine";
-import type { RecommendedQuest, TreeSignal } from "@/lib/types";
+import { countsTowardTrack, dday, recommend, type TreeNode } from "@/lib/engine";
+import type { RecommendedQuest, TreeSignal, TreeDomain } from "@/lib/types";
 import { formatScore, meetsTarget, scaleOf, skillById } from "@/lib/data/catalog";
 import { questProgress } from "@/lib/quest";
 import { questOutcome, recommendedTitle } from "@/lib/questOutcome";
 import { careerInterestOf } from "@/lib/interest";
-import { layoutProgression, progressionStage } from "@/lib/treeProgression";
+import { routeFor, layoutProgression, progressionStage } from "@/lib/treeProgression";
+
+import { layoutKey, layoutTree, type TreeLayout } from "@/lib/treeLayout";
 
 type SkillNodeData = { node: TreeNode; isNew: boolean; now: Date; proof: boolean; recommended: boolean };
 
@@ -212,19 +214,27 @@ function TreeView() {
   const s = useStore();
   const p = s.profile!;
   const now = s.nowDate;
-  const { tree, recommendedQuest, treeProgress } = s.careerPath!;
+  const { tree: allTree, recommendedQuest, treeProgress } = s.careerPath!;
+  const mode = careerInterestOf(p);
+  const [domain, setDomain] = useState<TreeDomain>("specialist");
+  const tree = useMemo(() => mode === "startup" ? allTree : allTree.filter(n => routeFor(n).domain === domain), [allTree, mode, domain]);
+  const openNode = (id: string) => {
+    const node = allTree.find(n => n.skill === id);
+    if (node && mode === "employment") setDomain(routeFor(node).domain);
+    setSel(id);
+    requestAnimationFrame(() => requestAnimationFrame(() => { void flow.current?.fitView({ nodes: [{ id }], maxZoom: 1, duration: 300, padding: 0.5 }); }));
+  };
   const readyCount = tree.filter((node) => node.state === "none" && !node.locked).length;
   const recs = useMemo(() => recommend(s.opportunities, p, now), [s.opportunities, p, now]);
   const [sel, setSel] = useState<string | null>(null);
-  const selNode = tree.find((n) => n.skill === sel);
+  const selNode = allTree.find((n) => n.skill === sel);
   const outcome = selNode && questOutcome(selNode);
   const selectedQuest = recommendedQuest?.skillId === sel ? recommendedQuest : null;
   const routedQuest = selectedQuest?.signals[0]?.preparation ? selectedQuest : undefined;
   const selectedRoutes = routedQuest?.signals ?? selNode?.preparationSignals;
   const newSet = useMemo(() => new Set(s.newOpps), [s.newOpps]);
   const questSkill = recommendedQuest?.skillId;
-  const questNode = tree.find(n => n.skill === questSkill);
-  const mode = careerInterestOf(p);
+  const questNode = allTree.find(n => n.skill === questSkill);
   const flow = useRef<ReactFlowInstance | null>(null);
   const canvas = useRef<HTMLDivElement>(null);
   const [columns, setColumns] = useState(3);
@@ -233,10 +243,23 @@ function TreeView() {
     if (canvas.current) observer.observe(canvas.current);
     return () => observer.disconnect();
   }, []);
-  const layout = useMemo(() => layoutProgression(tree, columns), [tree, columns]);
+  const graphKey = layoutKey(tree);
+  const [arranged, setArranged] = useState<{ key: string; layout: TreeLayout } | null>(null);
+  const [layoutError, setLayoutError] = useState(false);
+  useEffect(() => {
+    let cancelled = false;
+    const structure: TreeNode[] = JSON.parse(graphKey).map(([skill, depth, prereq, sequence]: [string, number, string[], string[]]) =>
+      ({ skill, depth, prereq, sequence } as TreeNode));
+    void layoutTree(structure).then(layout => {
+      if (!cancelled) { setArranged({ key: graphKey, layout }); setLayoutError(false); }
+    }).catch(() => { if (!cancelled) setLayoutError(true); });
+    return () => { cancelled = true; };
+  }, [graphKey]);
+  const fallback = useMemo(() => layoutProgression(tree, columns), [tree, columns]);
+  const layout = arranged?.key === graphKey ? arranged.layout : fallback;
   const focusStage = (depth: number) => {
     const band = layout.bands.find(b => b.depth === depth);
-    if (band) void flow.current?.fitView({ nodes: [{ id: `stage-${depth}` }, ...band.skills.slice(0, columns * 2).map(id => ({ id }))], padding: 0.15, maxZoom: 1, duration: 300 });
+    if (band) void flow.current?.fitView({ nodes: band.skills.slice(0, columns * 2).map(id => ({ id })), padding: 0.3, maxZoom: 1, duration: 300 });
   };
   // 증빙 파일 목록(이 브라우저에만 저장)
   const [proofs, setProofs] = useState<Record<string, ProofMeta>>({});
@@ -247,6 +270,7 @@ function TreeView() {
   const cancel = (skill: string) => (s.setScore(skill, ""), s.setSkill(skill, "none"));
 
   const { nodes, edges } = useMemo(() => {
+    const visibleIds = new Set(tree.map(n => n.skill));
     const nodes: Node[] = tree.map((n) => {
       return {
         id: n.skill,
@@ -255,17 +279,18 @@ function TreeView() {
         data: { node: n, isNew: n.opportunities.some((o) => newSet.has(o.id)), now, proof: !!proofs[n.skill], recommended: n.skill === questSkill },
       };
     });
-    nodes.push(...layout.bands.map(band => ({ id: `stage-${band.depth}`, type: "stage", position: { x: 0, y: band.y }, selectable: false, data: { ...progressionStage(band.depth, mode), width: band.width, count: band.skills.length } })));
+    nodes.push(...layout.bands.map(band => ({ id: `stage-${band.depth}`, type: "stage", position: { x: 0, y: band.y }, selectable: false, data: { ...progressionStage(band.depth, mode, domain), width: band.width, count: band.skills.length } })));
     const edges: Edge[] = tree.flatMap((n) =>
-      [...n.prereq.map((q) => ({ id: `${q}-${n.skill}`, source: q, target: n.skill, animated: n.state === "none" && !n.locked, style: { stroke: n.locked ? "#4a5078" : "#7c6cff", strokeWidth: 2 } })),
-       ...(n.sequence ?? []).map((q) => ({ id: `startup-${q}-${n.skill}`, source: q, target: n.skill, style: { stroke: '#7c6cff', strokeWidth: 1.5, strokeDasharray: '5 4' } }))],
+      [...n.prereq.filter(q => visibleIds.has(q)).map((q) => ({ id: `${q}-${n.skill}`, source: q, target: n.skill, animated: n.state === "none" && !n.locked, style: { stroke: n.locked ? "#4a5078" : "#7c6cff", strokeWidth: 2 } })),
+       ...(n.sequence ?? []).filter(q => visibleIds.has(q)).map((q) => ({ id: `startup-${q}-${n.skill}`, source: q, target: n.skill, style: { stroke: '#7c6cff', strokeWidth: 1.5, strokeDasharray: '5 4' } }))],
     );
     for (const edge of edges) {
+      edge.type = "smoothstep";
       edge.markerEnd = { type: MarkerType.ArrowClosed, color: "#7c6cff" };
       edge.style = { ...edge.style, opacity: sel ? (edge.source === sel || edge.target === sel ? 1 : 0.12) : 0.4 };
     }
     return { nodes, edges };
-  }, [tree, layout, mode, newSet, now, proofs, questSkill, sel]);
+  }, [tree, layout, mode, domain, newSet, now, proofs, questSkill, sel]);
 
   const newOpp = s.opportunities.find((o) => newSet.has(o.id) && tree.some((n) => n.opportunities.includes(o)));
   const activeQuest = s.followed
@@ -292,23 +317,34 @@ function TreeView() {
         <div className="relative flex h-[620px] min-w-0 flex-col overflow-hidden rounded-lg border-2 border-edge bg-panel">
           <div className="flex flex-wrap items-center justify-between gap-2 border-b border-line px-3 py-2">
             <Legend />
-            <span className="text-xs text-ink/60">전체 {tree.length}개 · 지금 도전 {readyCount}개</span>
+            {mode === "employment" && <div role="tablist" aria-label="스킬트리 영역" className="flex gap-2">
+              {(["common", "specialist"] as const).map(value => {
+                const group = allTree.filter(n => routeFor(n).domain === value);
+                const core = group.filter(countsTowardTrack);
+                const pct = core.length ? Math.round(core.reduce((sum, n) => sum + (n.state === "verified" ? 1 : n.state === "self" ? 0.6 : 0), 0) / core.length * 100) : 0;
+                return <button key={value} role="tab" aria-selected={domain === value} className={domain === value ? "btn-primary text-xs" : "btn-ghost text-xs"} onClick={() => { setDomain(value); setSel(null); }}>
+                  {value === "common" ? "공통 역량" : "전공·직무 전문"} · {group.length}개 · {pct}%
+                </button>;
+              })}
+            </div>}
+            <span className="text-xs text-ink/60">현재 영역 {tree.length}개 · 지금 도전 {readyCount}개</span>
           </div>
           <div className="space-y-2 border-b border-line px-3 py-2">
-            <p className="text-xs text-ink/70">위에서 아래로 기초 → 심화 · 수행 권장 순서{mode === "startup" && " · 점선은 권장 흐름"}</p>
+            <p className="text-xs text-ink/70">위에서 아래로 준비 → 응용 → 전문 · 실선은 선행 조건, 점선은 권장 순서 · 같은 높이는 병행 가능</p>
+            {layoutError && <p role="status" className="text-xs text-ink/70">기본 단계 배치로 표시 중이에요.</p>}
             <div className="flex flex-wrap gap-1" aria-label="준비 단계 이동">
-              {layout.bands.map((band, index) => <button key={band.depth} className="btn-ghost !px-2 !py-1 text-xs" onClick={() => focusStage(band.depth)}>{index + 1}. {progressionStage(band.depth, mode).title}</button>)}
+              {layout.bands.map((band, index) => <button key={band.depth} className="btn-ghost !px-2 !py-1 text-xs" onClick={() => focusStage(band.depth)}>{index + 1}. {progressionStage(band.depth, mode, domain).title}</button>)}
             </div>
           </div>
           <div ref={canvas} className="min-h-0 flex-1">
             {tree.length === 0 ? <p className="p-5 text-sm text-ink/70">이 직무에 연결된 자격이나 작업물 퀘스트를 준비 중이에요.</p> : <ReactFlow
-              key={mode + columns + nodes.map((node) => node.id).sort().join("|")}
+              key={mode + domain + columns + String(arranged?.key === graphKey) + nodes.map((node) => node.id).sort().join("|")}
               nodes={nodes}
               edges={edges}
               nodeTypes={nodeTypes}
               fitView
               minZoom={0.2}
-              fitViewOptions={{ nodes: nodes.filter(n => n.id === `stage-${layout.bands[0]?.depth}` || layout.bands[0]?.skills.slice(0, columns * 2).includes(n.id)), padding: 0.15, maxZoom: 1 }}
+              fitViewOptions={{ nodes: nodes.filter(n => sel ? n.id === sel : layout.bands[0]?.skills.slice(0, columns * 2).includes(n.id)), padding: 0.3, maxZoom: 1 }}
               onInit={(instance) => { flow.current = instance; }}
               panOnScroll
               zoomOnScroll={false}
@@ -329,10 +365,15 @@ function TreeView() {
               <p className="pr-4 text-xs text-slate-500">{selNode.name} · {outcome.label}</p>
               <h3 className="font-bold">{outcome.title}</h3>
               <p className="mt-2 text-xs"><strong>완료 기준</strong> {outcome.completion}</p>
+              {selNode.commonExamOption && !countsTowardTrack(selNode) && <p className="mt-2 text-xs text-ink/70">목표에 맞으면 선택하세요. 취득 결과를 기록하면 추가 경험치를 받아요.</p>}
               {selNode.credentialOption && !selectedRoutes?.some(s => s.preparation?.action === selNode.credentialOption?.reason) &&
                 <p className="mt-2 text-xs"><strong>직무와의 연결</strong> {selNode.credentialOption.reason}</p>}
-              <p className="mt-1 text-xs text-go">{progressionStage(selNode.depth, mode).title}</p>
-              {!!selNode.sequence?.length && <p className="mt-2 text-xs text-ink/70">먼저 준비하면 좋은 과제: {selNode.sequence.map(id => tree.find(n => n.skill === id)?.name).join(", ")} · 지원 자격과는 별개인 권장 순서예요.</p>}
+              <p className="mt-1 text-xs text-go">{progressionStage(selNode.depth, mode, mode === "employment" ? routeFor(selNode).domain : undefined).title}</p>
+              {[...selNode.prereq, ...selNode.sequence ?? []].some(id => allTree.some(n => n.skill === id && mode === "employment" && routeFor(n).domain !== domain)) &&
+                <div className="mt-2 space-y-1 text-xs"><p>다른 트리에서 이어지는 준비</p>{[...new Set([...selNode.prereq, ...selNode.sequence ?? []])].map(id => allTree.find(n => n.skill === id)).filter(n => n && mode === "employment" && routeFor(n).domain !== domain).map(n => n &&
+                  <button key={n.skill} className="block text-go underline" onClick={() => openNode(n.skill)}>{routeFor(n).domain === "common" ? "공통 역량" : "전공·직무 전문"} · {n.name} · {n.state === "none" ? "준비 전" : "완료"}</button>)}</div>}
+              {selNode.route?.reason && <p className="mt-2 text-xs text-ink/70">{selNode.route.reason}</p>}
+              {!!selNode.sequence?.length && <p className="mt-2 text-xs text-ink/70">먼저 준비하면 좋은 과제: {selNode.sequence.map(id => allTree.find(n => n.skill === id)?.name).join(", ")} · 지원 자격과는 별개인 권장 순서예요.</p>}
               {selNode.startup && <StartupDetail node={selNode} recommended={!!selectedQuest} />}
               {!selNode.startup && selectedQuest && !routedQuest && (
                 <QuestDetail node={selNode} quest={selectedQuest} loadAction={s.getQuestAction} showAction={!selectedRoutes?.length && !selNode.practice} />
@@ -412,18 +453,18 @@ function TreeView() {
               const done = n.state !== "none";
               return (
                 <li key={n.skill} className="flex flex-wrap items-center gap-2 py-2 text-sm">
-                  {(index === 0 || tree[index - 1].depth !== n.depth) && <p className="w-full py-2 font-bold text-go">{progressionStage(n.depth, mode).title}</p>}
+                  {(index === 0 || tree[index - 1].depth !== n.depth) && <p className="w-full py-2 font-bold text-go">{progressionStage(n.depth, mode, domain).title}</p>}
                   <span className={`grid size-6 shrink-0 place-items-center rounded ${done ? "bg-ok text-white" : "border border-line"}`}>
                     {done && <Check size={14} />}
                   </span>
-                  <button className="min-w-0 flex-1 text-left hover:underline" onClick={() => setSel(n.skill)}>
+                  <button className="min-w-0 flex-1 text-left hover:underline" onClick={() => openNode(n.skill)}>
                     <span className="font-semibold">{done && !proofs[n.skill] ? n.name : questOutcome(n)?.title ?? n.name}</span>
                     <span className="ml-1.5 text-xs text-ink/60">
                       {n.kind}
                       {n.required && " · 트랙 기본"}
                       {n.score && ` · ${formatScore(n.skill, n.score)}`}
                       {proofs[n.skill] && " · 증빙 첨부"}
-                      {!done && n.locked && " · 앞 단계를 먼저 권장"}
+                      {!done && n.locked && " · 선행 작업 준비 필요"}
                     </span>
                   </button>
                   {done ? (
@@ -431,7 +472,7 @@ function TreeView() {
                       완료 취소
                     </button>
                   ) : scaleOf(n.skill) ? (
-                    <button className="btn-primary !py-1 text-xs" onClick={() => setSel(n.skill)}>
+                    <button className="btn-primary !py-1 text-xs" onClick={() => openNode(n.skill)}>
                       점수·등급 입력
                     </button>
                   ) : (
@@ -469,7 +510,7 @@ function TreeView() {
             )}
             {questNode && recommendedQuest && (
               <p className="mt-3 text-sm">
-                추천 퀘스트 · <button type="button" className="font-bold hover:underline" onClick={() => setSel(questNode.skill)}>{recommendedTitle(questNode, recommendedQuest)}</button>
+                추천 퀘스트 · <button type="button" className="font-bold hover:underline" onClick={() => openNode(questNode.skill)}>{recommendedTitle(questNode, recommendedQuest)}</button>
               </p>
             )}
             <p className="mt-3 flex items-center gap-1 text-xs text-slate-500">
