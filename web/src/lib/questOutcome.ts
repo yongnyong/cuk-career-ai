@@ -1,6 +1,7 @@
 import type { TreeNode } from "./engine";
 import type { RecommendedQuest } from "./types";
 import { scaleOf } from "./data/catalog";
+import { savedDiscoveryOutcome } from "./discoveredSkills";
 import { postingProjectById } from "./data/postingProjects";
 import { preparationCompletionBySkill } from "./preparationRoutes";
 
@@ -113,6 +114,7 @@ export function questOutcome(node: TreeNode) {
     label: route.kind === "direct" ? "공고 명시" : "추천 작업물",
   };
   if (sample) return { title: sample[0], completion: sample[1], label: "추천 작업물" };
+  if (node.state !== "none" && skill.startsWith("AUTO-")) return savedDiscoveryOutcome(skill);
   const project = postingProjectById.get(skill);
   if (project) return { title: project.name, completion: project.completion, label: "추천 작업물" };
   const savedCompletion = preparationCompletionBySkill.get(skill);

@@ -11,6 +11,7 @@ import { buildStartupPath } from "./startup";
 import { assignProgression } from "./treeProgression";
 import { COMMON_WORK, COMMON_EXAMS } from "./data/skillRoutes";
 import { questOutcome } from "./questOutcome";
+import { discoveredSignals, discoveredSkillById } from "./discoveredSkills";
 import { employmentRelevance, matchesEmploymentRole } from "./employmentMatch";
 import { credentialsForJob, type CareerCredential } from "./data/careerCredentials";
 import type { StartupCatalog, StartupNode } from "./types";
@@ -266,15 +267,17 @@ export function buildTree(p: Profile, opps: Opportunity[], now: Date, extraSkill
   const available = opps.filter((o) => o.versions.length && isOpen(o, now) && evaluate(o, p).overall !== "fail" &&
     (!["채용", "현장실습"].includes(o.type) || matchesEmploymentRole(o, p.jobId)));
   const tree: TreeNode[] = Array.from(definitions.values(), (n) => {
-    const sk = skillById(n.skill)!;
-    const state = p.skills[n.skill] ?? "none";
     const evidence = signals.get(n.skill);
+    const plan = evidence?.[0]?.preparation;
+    const discovery = plan?.discovery;
+    const sk = discoveredSkillById(n.skill, discovery?.term) ?? skillById(n.skill)!;
+    const state = p.skills[n.skill] ?? "none";
     const linked = available.filter((o) => o.preferred.includes(n.skill) || o.required.some((c) => c.skill === n.skill));
     return {
       skill: n.skill,
       commonExamOption: COMMON_EXAMS.has(n.skill) && !trackSkills.has(n.skill),
-      route: n.route,
-      name: sk.name,
+      route: n.route ?? (discovery ? { domain: discovery.domain, stage: sk.kind === "자격증" ? 1 : 2 } : undefined),
+      name: plan?.discovery && sk.kind === "프로젝트" ? plan.action : sk.name,
       kind: sk.kind,
       required: n.required,
       prereq: n.prereq ?? [],
@@ -342,7 +345,7 @@ function postingSignals(p: Profile, opps: Opportunity[], now: Date, templateSkil
     const previous = latestPostings.get(opp.id);
     if (!previous || latest(previous).version < latest(opp).version) latestPostings.set(opp.id, opp);
   }
-  const signals: TreeSignal[] = [];
+  const signals = discoveredSignals(latestPostings.values(), p, o => !isOpen(o, now), id => jobById(id)?.base ?? id);
   for (const opp of latestPostings.values()) {
     if (!opp.reviewed || !["채용", "현장실습"].includes(opp.type) || !matchesEmploymentRole(opp, p.jobId)) continue;
     const reference = { id: opp.id, url: opp.source.url, title: opp.title, organization: opp.org, version: latest(opp).version, historical: !isOpen(opp, now) };
