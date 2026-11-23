@@ -1,0 +1,2 @@
+# 비서 패키지도 API와 같은 목록을 쓴다(버전은 api/requirements.txt 한 곳에서 관리)
+-r ../../requirements.txt
