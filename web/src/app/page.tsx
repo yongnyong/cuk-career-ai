@@ -118,8 +118,6 @@ function Today() {
         </Link>
       </StatusWindow>
 
-      <AssistantHero />
-
       {fresh.length > 0 && (
         <section className="unlock rounded-lg border-2 border-edge bg-gold text-on-gold p-4">
           <h2 className="flex items-center gap-1.5 font-bold">
@@ -138,57 +136,61 @@ function Today() {
       )}
 
       <div className="grid gap-8 lg:grid-cols-2">
-        <section>
-          <h2 className="border-b-2 border-edge pb-2 text-lg font-bold">오늘 할 일</h2>
-          <ul className="divide-y divide-line">
-            {next && nextNode && (
-              <li>
-                <Link href="/tree" className="flex items-center gap-3 py-3 hover:bg-panel">
-                  <span className="grid size-9 shrink-0 place-items-center rounded bg-go text-white">
-                    <Swords size={18} />
-                  </span>
-                  <span className="min-w-0 flex-1">
-                    <span className="block text-xs text-ink/60">추천 퀘스트</span>
-                    <span className="block font-bold">{recommendedTitle(nextNode, next)}</span>
-                  </span>
-                  <ChevronRight size={18} className="text-ink/40" />
-                </Link>
-              </li>
-            )}
-            {quests.map((o) => {
-              const qp = questProgress(o, s.quests[o.id]);
-              return (
-                <li key={o.id}>
-                  <Link href={`/opportunities/${o.id}`} className="flex items-center gap-3 py-3 hover:bg-panel">
-                    <span className="grid size-9 shrink-0 place-items-center rounded bg-gold text-on-gold">
-                      <KeyRound size={18} />
+        <div className="space-y-6">
+          <section>
+            <h2 className="border-b-2 border-edge pb-2 text-lg font-bold">오늘 할 일</h2>
+            <ul className="divide-y divide-line">
+              {next && nextNode && (
+                <li>
+                  <Link href="/tree" className="flex items-center gap-3 py-3 hover:bg-panel">
+                    <span className="grid size-9 shrink-0 place-items-center rounded bg-go text-white">
+                      <Swords size={18} />
                     </span>
                     <span className="min-w-0 flex-1">
-                      <span className="flex items-center gap-1.5 text-xs text-ink/60">
-                        지원 퀘스트 {qp.done}/{qp.total} <DDay opp={o} now={now} />
-                      </span>
-                      <span className="block truncate font-bold">{o.title}</span>
-                      <span className="exp mt-1 block !h-2">
-                        <span className="block h-full bg-ok" style={{ width: `${(qp.done / qp.total) * 100}%` }} />
-                      </span>
+                      <span className="block text-xs text-ink/60">추천 퀘스트</span>
+                      <span className="block font-bold">{recommendedTitle(nextNode, next)}</span>
                     </span>
                     <ChevronRight size={18} className="text-ink/40" />
                   </Link>
                 </li>
-              );
-            })}
-            {!next && quests.length === 0 && (
-              <li className="py-3 text-sm text-ink/60">
-                {tree.length > 0 && tree.every((node) => node.state !== "none")
-                  ? "트리의 모든 노드를 완료했어요."
-                  : "지금 추천할 노드가 없어요."}
-              </li>
+              )}
+              {quests.map((o) => {
+                const qp = questProgress(o, s.quests[o.id]);
+                return (
+                  <li key={o.id}>
+                    <Link href={`/opportunities/${o.id}`} className="flex items-center gap-3 py-3 hover:bg-panel">
+                      <span className="grid size-9 shrink-0 place-items-center rounded bg-gold text-on-gold">
+                        <KeyRound size={18} />
+                      </span>
+                      <span className="min-w-0 flex-1">
+                        <span className="flex items-center gap-1.5 text-xs text-ink/60">
+                          지원 퀘스트 {qp.done}/{qp.total} <DDay opp={o} now={now} />
+                        </span>
+                        <span className="block truncate font-bold">{o.title}</span>
+                        <span className="exp mt-1 block !h-2">
+                          <span className="block h-full bg-ok" style={{ width: `${(qp.done / qp.total) * 100}%` }} />
+                        </span>
+                      </span>
+                      <ChevronRight size={18} className="text-ink/40" />
+                    </Link>
+                  </li>
+                );
+              })}
+              {!next && quests.length === 0 && (
+                <li className="py-3 text-sm text-ink/60">
+                  {tree.length > 0 && tree.every((node) => node.state !== "none")
+                    ? "트리의 모든 노드를 완료했어요."
+                    : "지금 추천할 노드가 없어요."}
+                </li>
+              )}
+            </ul>
+            {quests.length === 0 && (
+              <p className="mt-2 text-sm text-ink/60">기회 카드에서 &lsquo;지원 퀘스트 시작&rsquo;을 누르면 준비 목록이 여기에 생겨요.</p>
             )}
-          </ul>
-          {quests.length === 0 && (
-            <p className="mt-2 text-sm text-ink/60">기회 카드에서 &lsquo;지원 퀘스트 시작&rsquo;을 누르면 준비 목록이 여기에 생겨요.</p>
-          )}
-        </section>
+          </section>
+          {/* 오늘 할 일 아래 빈 자리에 챗봇 */}
+          <AssistantHero />
+        </div>
 
         <section>
           <div className="flex items-baseline justify-between border-b-2 border-edge pb-2">
