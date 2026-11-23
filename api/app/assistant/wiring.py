@@ -2,14 +2,16 @@
 
 - 로그인 계정: 세션 쿠키의 사용자. 기억·대화·문서를 Postgres에 저장한다.
 - 공고: 브라우저가 X-Assistant-Focus로 웹 규칙 엔진의 추천 공고 ID를 보내면 그 안에서 고른다.
-- 시연 계정: 서버 계정이 없으므로 브라우저가 X-Demo-Id(무작위 ID)와 X-Demo-Profile(시연 프로필, base64 JSON)을 보낸다.
-  대화와 기억은 서버 메모리에만 잠시 두고, 시연 요청 전체에 분당 상한을 둔다(ID는 누구나 새로 만들 수 있으므로).
+- 시연 계정: 서버 계정이 없으므로 서버가 무작위 값을 HttpOnly 쿠키(cuk_demo)로 발급해 브라우저를 구분한다.
+  브라우저는 X-Demo-Id(시연 계정 이름, 예: demo-minji)와 X-Demo-Profile(시연 프로필, base64 JSON)만 보낸다.
+  대화와 기억은 서버 메모리에만 잠시 두고, 시연 요청 전체에 분당 상한을 둔다(쿠키는 누구나 새로 받을 수 있으므로).
 """
 import base64
 import binascii
 import json
 import os
 import re
+import secrets
 import time
 from collections import OrderedDict, deque
 from threading import Lock
@@ -24,7 +26,9 @@ from .router import make_router
 from .service import AssistantService
 from .service_data import FOCUS, ID, MemoryAssistantStore, RoutingStore, ServiceCareerData, make_pg_store
 
-DEMO_ID = re.compile(r"^[a-z0-9-]{8,64}$")
+DEMO_ID = re.compile(r"^[a-z0-9-]{1,40}$")  # 시연 계정 이름(비밀 아님)
+DEMO_COOKIE, DEMO_TOKEN = "cuk_demo", re.compile(r"^[A-Za-z0-9_-]{24,64}$")
+COOKIE_SECURE = os.environ.get("COOKIE_SECURE", "0") == "1"
 DEMO_LIMIT = 60  # 시연 요청 전체, 분당
 MAX_PROFILE_BYTES = 8000
 _recent: deque[float] = deque()  # 최근 1분간 시연 요청 시각
@@ -61,7 +65,7 @@ def make_assistant(Base, SessionLocal, career_session, Posting, User, session_us
     service = AssistantService(data, store, model or default_model())
 
     # async: 여기서 정한 FOCUS가 같은 요청의 엔드포인트(스레드풀)까지 이어지도록 이벤트 루프의 컨텍스트에서 실행한다
-    async def owner(request: Request, user=Depends(session_user)):
+    async def owner(request: Request, response: Response, user=Depends(session_user)):
         focus = [x for x in request.headers.get("x-assistant-focus", "").split(",") if ID.match(x)][:12]
         FOCUS.set(tuple(focus))
         if user:
@@ -76,7 +80,12 @@ def make_assistant(Base, SessionLocal, career_session, Posting, User, session_us
             if len(_recent) >= DEMO_LIMIT:
                 raise HTTPException(429, "시연 질문이 많아요. 잠시 뒤 다시 시도해 주세요.", headers={"Retry-After": "30"})
             _recent.append(now)
-        uid = f"demo:{demo_id}"
+        token = request.cookies.get(DEMO_COOKIE, "")
+        if not DEMO_TOKEN.match(token):
+            token = secrets.token_urlsafe(24)
+            response.set_cookie(DEMO_COOKIE, token, max_age=24 * 3600, httponly=True, samesite="lax",
+                                secure=COOKIE_SECURE, path="/")
+        uid = f"demo:{demo_id}:{token}"
         raw = request.headers.get("x-demo-profile", "")
         if raw:
             try:

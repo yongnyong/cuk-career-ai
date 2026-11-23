@@ -67,21 +67,11 @@ export function AssistantProvider({ children }: { children: React.ReactNode }) {
     [s.opportunities, s.profile, s.nowDate],
   );
 
-  // 시연·비로그인: 브라우저마다 무작위 ID를 만들어 서버 메모리의 대화와 이어 준다. 시연 계정이 바뀌면 다른 ID
+  // 시연·비로그인: 서버가 HttpOnly 쿠키로 브라우저를 구분하고, 여기서는 시연 계정 이름만 보낸다(계정이 바뀌면 다른 대화)
   const headers = useCallback((): Record<string, string> => {
     const f: Record<string, string> = focus ? { "x-assistant-focus": focus } : {};
     if (server) return f;
-    let key = "";
-    try {
-      key = localStorage.getItem("cuk-assistant-key") ?? "";
-      if (!/^[a-z0-9]{12}$/.test(key)) {
-        key = Array.from(crypto.getRandomValues(new Uint8Array(6)), (b) => b.toString(16).padStart(2, "0")).join("");
-        localStorage.setItem("cuk-assistant-key", key);
-      }
-    } catch {
-      key = "nostorage000";
-    }
-    const h: Record<string, string> = { ...f, "x-demo-id": `${(owner ?? "guest").replace(/[^a-z0-9-]/g, "").slice(0, 40) || "guest"}-${key}` };
+    const h: Record<string, string> = { ...f, "x-demo-id": (owner ?? "guest").replace(/[^a-z0-9-]/g, "").slice(0, 40) || "guest" };
     const p = s.profile;
     if (p) {
       // 비서가 쓰는 항목만 보낸다(아이디·입학년도·지역·출생연도·점수는 보내지 않는다)

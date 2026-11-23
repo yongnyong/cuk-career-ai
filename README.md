@@ -28,7 +28,7 @@ Windows에서 웹·API를 모두 PC 안에서 개발하려면 [로컬 개발 안
 
 ## 1. 지금 되는 것 / 안 되는 것
 
-2026-11-17 기준.
+2026-11-23 기준.
 
 | 기능 | 상태 | 비고 |
 |---|---|---|
@@ -40,7 +40,9 @@ Windows에서 웹·API를 모두 PC 안에서 개발하려면 [로컬 개발 안
 | 공고 상세: 조건 3값 판정, 지원 퀘스트 | ✅ 브라우저 | 충족 / 미충족 / 확인 필요 |
 | **실제 공고 수집** | ✅ 서버 | 학교 공지(취창업·장학), K-Startup, 고용24 공채속보. 6시간마다 자동 |
 | **AI 공고 구조화** | ✅ 서버 | 학교 공지 본문 → Gemini → 마감·대상·자격·직무 |
-| **AI 근거 챗봇** | ✅ 서버 | 공고 문단만 근거로 답, 근거 번호를 서버가 대조, 없으면 보류 |
+| **AI 근거 챗봇(공고 상세)** | ✅ 서버 | 공고 한 건의 문단만 근거로 답, 근거 번호를 서버가 대조, 없으면 보류 |
+| **개인 진로 비서(전역 챗봇)** | ✅ 서버 | 홈과 모든 페이지 왼쪽 아래 버튼에서 같은 대화가 이어진다. 학과·학년·목표·완료 노드와 대화에서 직접 말한 내용(자격증 준비, 공부 시간 등)을 기억하고 **AI가 기억하는 나**에서 확인·삭제. 공고 추천은 웹 규칙 엔진이 고른 공고 안에서 서버가 조건을 다시 판정. 1~14일 학습 계획. 로그인 계정은 Postgres, 시연 계정은 서버 메모리(재시작 시 삭제). 엔진은 김수민, 서비스 연결은 `api/app/assistant/service_data.py`·`wiring.py` |
+| 지원서 초안(PDF·DOCX 양식 채우기) | ⚠️ API만 | `/api/assistant/documents`. 화면 없음 |
 | **공고 핵심 정보** | ✅ 서버 | 지원금·혜택, 우대 사항, 창업 단계, 제출 서류. 학교 공지는 Gemini 추출, K-Startup은 API + 공고 상세 화면. 공고문에 없으면 "원문에서 확인"으로 표시 |
 | **점수제·등급제 자격** | ✅ | TOEIC 점수, OPIc·JLPT·한국사·한자 등 등급 입력. 학과가 급수를 밝힌 노드는 권장 기준과 비교 |
 | **완료 체크리스트·증빙 첨부·인쇄** | ✅ 브라우저 | 자격증 파일은 개인정보라 서버로 보내지 않고 그 기기 브라우저(IndexedDB)에만 저장. `/print`에서 완료 내역 인쇄 |
@@ -48,11 +50,11 @@ Windows에서 웹·API를 모두 PC 안에서 개발하려면 [로컬 개발 안
 | **창업 조건 자동 판정** | ✅ | 창업 단계·연령(K-Startup 공식 값), 지역(에이전트). 내 정보의 선택 입력과 비교 |
 | **채용 학력 자동 판정** | ✅ | 고용24 최소 학력을 학년·학적과 비교 |
 | **관리자 계정** | ✅ 서버 | `ADMIN_IDS`에 등록한 아이디. 서버 현황(개수만), 실제·가상 공고 전체 보기, 테크트리 편집기(수정본은 서버에 저장되어 전체 사용자에게 적용) |
-| 가상 공고 29건 | ✅ 브라우저 | 시연용 계정에서만 보인다. 챗봇은 규칙 기반 |
+| 가상 공고 29건 | ✅ 브라우저 | 시연용 계정에서만 보인다. 공고 상세 챗봇은 규칙 기반, 개인 진로 비서는 가상 공고를 추천하지 않음 |
 | 알림(D-7·3·1, 정정 재계산) | ⚠️ 화면 내 알림함만 | 이메일·푸시 없음 |
 | 관리자 공고 등록 | ⚠️ 브라우저에만 저장 | 정규식 파서. 서버 저장·Gemini 미연결 |
-| 공고 옆 패널, 어디서나 열리는 챗봇 버튼 | ❌ | 화면 구성안에만 있음 |
-| 임베딩 검색(pgvector) | ❌ | 지금 챗봇은 공고 한 건의 문단 전체를 그대로 넣는다 |
+| 공고 옆 패널 | ❌ | 화면 구성안에만 있음 |
+| 임베딩 검색(pgvector) | ❌ | 공고 상세 챗봇은 공고 한 건의 문단 전체를 그대로 넣는다 |
 | GitHub push → 자동 배포 | ❌ | 웹·서버 모두 수동 배포 (8번 참고) |
 
 실제 공고와 가상 공고가 보이는 규칙: **가입한 계정**은 실제 공고만, **시연용 계정**(민지·서연·도윤)은 둘 다 본다.
@@ -65,7 +67,7 @@ Windows에서 웹·API를 모두 PC 안에서 개발하려면 [로컬 개발 안
 cuk-career-ai/
 ├─ web/                  Next.js 16 (화면)
 │  ├─ src/app/           페이지: / · login · signup · onboarding · tree · opportunities · notifications · profile · admin · sources
-│  ├─ src/components/    Header, quest-ui(노드·상태창), ChatPanel, OppCard, AuthForm, ui
+│  ├─ src/components/    Header, quest-ui(노드·상태창), ChatPanel(공고 상세 챗봇), Assistant(개인 진로 비서 화면), OppCard, AuthForm, ui
 │  └─ src/lib/
 │     ├─ types.ts        프론트·백엔드 공통 데이터 계약
 │     ├─ engine.ts       규칙 엔진·추천·스킬트리·알림·(가상 공고용) 챗봇
@@ -74,7 +76,8 @@ cuk-career-ai/
 ├─ api/                  FastAPI (서버)
 │  ├─ app/main.py        계정·세션·내 데이터·공고 목록 API
 │  ├─ app/collect.py     공고 수집기 (학교 공지 + Gemini, K-Startup, 고용24)
-│  ├─ app/chat.py        근거 챗봇 API와 프롬프트
+│  ├─ app/chat.py        공고 상세 근거 챗봇 API와 프롬프트
+│  ├─ app/assistant/     개인 진로 비서: 엔진(service.py·memory.py·prompts.py 등, 김수민), 서비스 연결(service_data.py·wiring.py), 설계 문서 INTEGRATION.md
 │  ├─ app/catalog.json   직무·역량 id 목록 (web의 catalog.ts에서 뽑은 것)
 │  └─ tests/             pytest
 ├─ scripts/server-setup.sh  새 서버 1회 설치 스크립트
@@ -141,13 +144,14 @@ python -m app.collect         # 있는 키에 해당하는 출처만 수집한�
 ### 검사
 
 ```bash
-cd api && pytest -q            # 서버 테스트
+cd api && pytest -q            # 서버 테스트(비서 엔진 테스트 app/assistant/test_*.py 포함)
+cd web && node --test tests/*.test.mjs   # 웹 테스트
 cd web && npx tsc --noEmit     # 타입 검사
 cd web && npx eslint src       # 린트
 cd web && npm run build        # 빌드
 ```
 
-PR을 올리기 전에 네 가지를 모두 통과시킨다.
+PR을 올리기 전에 모두 통과시킨다.
 
 ---
 
@@ -166,11 +170,17 @@ PR을 올리기 전에 네 가지를 모두 통과시킨다.
 | PUT | `/api/admin/catalog` | 수정본 저장 (관리자만) |
 | GET | `/api/admin/overview` | 서버 현황, 개수만 (관리자만) |
 | GET | `/api/opportunities` | 수집한 실제 공고 전체 (`types.ts`의 `Opportunity[]`) |
-| POST | `/api/chat` | `{oppId, question}` → `{text, citations, held}` |
+| POST | `/api/chat` | 공고 상세 챗봇. `{oppId, question}` → `{text, citations, held}` |
+| POST | `/api/assistant/chat` | 개인 진로 비서. `{message, conversationId, requestId, context:{page, jobId?, opportunityId?}}` → `{answer, opportunities, memoryUpdated, needsConfirmation}` |
+| GET·DELETE | `/api/assistant/conversations/{id}` | 대화 불러오기·지우기 (웹은 계정마다 `main` 하나) |
+| GET·POST·PATCH·DELETE | `/api/assistant/memory[/{id}]` | AI가 기억하는 내용 보기·추가·고치기·지우기 |
+| POST·GET·PATCH | `/api/assistant/documents…`, `/api/assistant/narrative` | 지원서 양식 업로드·초안 (화면 없음, 자세한 계약은 `api/app/assistant/INTEGRATION.md`) |
 
 - 아이디: 영문 소문자·숫자·밑줄 4~16자. 비밀번호: 6자 이상.
 - 로그인 실패는 아이디당 5분에 5회로 제한한다. 틀린 비밀번호와 없는 아이디는 같은 응답을 준다.
-- 챗봇은 질문 300자, IP당 1분에 10회로 제한한다.
+- 공고 상세 챗봇은 질문 300자, IP당 1분에 10회로 제한한다.
+- 개인 진로 비서는 질문 2,000자(화면은 500자), 사용자당 1분에 20회. 시연 계정은 서버가 HttpOnly 쿠키(`cuk_demo`)로 브라우저를 구분하고, 화면은 시연 계정 이름(`X-Demo-Id`)과 학습 관련 프로필 항목(`X-Demo-Profile`)만 보낸다. 시연 요청 전체는 1분에 60회, 업로드 문서는 계정당 1건·전체 20MB까지.
+- 화면은 웹 규칙 엔진의 추천 공고 ID를 `X-Assistant-Focus`로 보내고, 비서는 그 안에서만 공고를 고른다.
 
 ### 공고 출처
 
@@ -184,7 +194,7 @@ PR을 올리기 전에 네 가지를 모두 통과시킨다.
 
 ### 챗봇 프롬프트를 고칠 때
 
-프롬프트는 `api/app/chat.py`의 `PROMPT`다. 고친 뒤에는 아래 질문으로 직접 확인한다.
+공고 상세 챗봇의 프롬프트는 `api/app/chat.py`의 `PROMPT`, 개인 진로 비서의 프롬프트는 `api/app/assistant/prompts.py`다. 비서 쪽은 `app/assistant/test_*.py`가 가짜 모델로 흐름을 검사하므로 함께 돌린다. 고친 뒤에는 아래 질문으로 직접 확인한다.
 
 - 공고에 답이 있는 질문 → 근거 번호(§)와 함께 답하는가
 - 공고에 없는 것(예: 토익 점수) → 보류하는가
@@ -199,6 +209,7 @@ PR을 올리기 전에 네 가지를 모두 통과시킨다.
 
 1. **목표·역량** — 지우(심리학과 3학년, 상담심리)로 시작 → 학과 테크 스킬트리와 기회 카드
 2. **조건·서류·신청** — 기회 카드 → 조건 판정과 원문 근거, 지원 퀘스트, 챗봇 질문 (AI 챗봇은 "가상 공고" 표시가 없는 실제 공고에서 보여준다)
+   - 개인 진로 비서: 홈 챗봇에 "나한테 맞는 공고 있어?" → 다른 페이지 왼쪽 아래 **물어보기**에서 같은 대화가 이어짐 → "나 SQLD 준비 중이야" → **AI가 기억하는 나**에 저장된 것 보여주기
    - 유나(미디어기술콘텐츠학과 3학년, 영상 기획·연출): 영상·게임·데이터·창업으로 테크가 뚜렷이 갈리는 학과라, 같은 학과 안에서 테크를 바꿔 보여주기 좋다
 3. **창업 경로** — 하늘(사회복지학과 2학년, 사회적경제·소셜벤처) → 창업지원 공고의 창업 단계·지역 판정, 사업계획서 체크리스트
 4. **새 공고 등록** — 관리자 → 심리상담센터 실습 공고 구조화 → 지우의 스킬트리에 "새 기회 열림" (브라우저 안에서 동작)
@@ -276,9 +287,9 @@ git merge main          # 충돌이 나면 파일을 열어 고친 뒤 git add �
 
 | 담당 | 주 작업 위치 |
 |---|---|
-| 양호용 (PM·AI·검색) | `api/` 의 AI 구조화·검색·RAG, `web/src/lib/engine.ts`의 추천·챗봇 |
+| 양호용 (PM·AI·검색) | `api/` 의 AI 구조화·검색·RAG, 개인 진로 비서의 서비스 연결(`api/app/assistant/service_data.py`·`wiring.py`), `web/src/lib/engine.ts`의 추천 |
 | 박정현 (백엔드·데이터) | `api/` 의 DB·규칙 엔진·알림, `docker-compose.yml` |
-| 김수민 (프론트·UX·QA) | `web/src/app/`, `web/src/components/` |
+| 김수민 (프론트·UX·QA) | `web/src/app/`, `web/src/components/`, 개인 진로 비서 엔진(`api/app/assistant/`의 나머지) |
 
 `web/src/lib/types.ts`는 프론트와 백엔드가 함께 쓰는 계약이다. 바꿀 때는 PR 설명에 적고 모두에게 알린다.
 
@@ -304,7 +315,8 @@ git merge main          # 충돌이 나면 파일을 열어 고친 뒤 git add �
 위에서부터 우선순위가 높다. 12/1에 기능을 동결한다.
 
 0. **창업 조건의 남은 부분** — 사업자 등록 여부·업종은 자동 판정하지 않는다. 가입 단계에서 창업 정보를 묻지 않는다(내 정보에서만 입력)
-1. **화면 마무리** — 어디서나 열리는 챗봇 버튼, 공고 옆 패널, 가입·기본 정보 입력·기회 목록·관리자 화면 점검(새 테마에서 눈으로 확인 안 됨)
+1. **개인 진로 비서 마무리** — 배포 후 실제 Gemini로 답변 품질 확인(`api/app/assistant/ASSISTANT_AUDIT_REPORT.md`의 NEEDS_LIVE 질문), 지원서 초안 화면, 운영 DB의 옛 `chat_messages` 테이블 정리
+1. **화면 마무리** — 공고 옆 패널, 가입·기본 정보 입력·기회 목록·관리자 화면 점검(새 테마에서 눈으로 확인 안 됨)
 2. **직무 보강** — 직무가 22개뿐이라 채용 공고 연결이 거칠다(예: 인사 → 재무). `catalog.ts`에 직무를 추가하면 `api/app/catalog.json`도 다시 만든다
 3. **K-Startup 기준 좁히기** — 119건 중 박람회·행사가 섞여 있다
 4. **관리자 공고 등록을 서버로** — 붙여넣은 본문을 Gemini로 구조화해 DB에 저장

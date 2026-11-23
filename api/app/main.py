@@ -19,7 +19,7 @@ from argon2 import PasswordHasher
 from argon2.exceptions import InvalidHashError, VerificationError
 from fastapi import Cookie, Depends, FastAPI, HTTPException, Response
 from pydantic import BaseModel, Field
-from sqlalchemy import JSON, BigInteger, ForeignKey, String, create_engine, delete, func, select
+from sqlalchemy import JSON, BigInteger, ForeignKey, String, create_engine, delete, func, inspect, select, text
 from sqlalchemy.orm import DeclarativeBase, Mapped, Session, mapped_column, sessionmaker
 from .career_db import CareerSessionLocal, Posting, migrate_legacy_postings
 
@@ -261,6 +261,9 @@ def save_state(body: StateBody, user: User = Depends(current_user), db: Session 
 def delete_me(response: Response, user: User = Depends(current_user), db: Session = Depends(get_db)):
     db.execute(delete(SessionRow).where(SessionRow.user_id == user.id))
     assistant_store.delete_user(db, user.id)
+    # 11/23 이전 전역 챗봇의 대화 테이블. 운영 DB에 남아 있으면 그 사용자 행도 지운다
+    if inspect(db.get_bind()).has_table("chat_messages"):
+        db.execute(text("DELETE FROM chat_messages WHERE user_id = :u"), {"u": user.id})
     db.execute(delete(User).where(User.id == user.id))
     db.commit()
     response.delete_cookie(COOKIE, path="/")

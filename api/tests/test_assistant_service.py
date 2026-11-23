@@ -142,3 +142,44 @@ def test_rule_engine_focus_limits_which_postings_are_recommended(fake):
     focused = c.post("/api/assistant/chat", json=ask,
                      headers={**demo_headers("demo-focus002"), "x-assistant-focus": "w24-77,bad id!,missing-id"}).json()
     assert [o["id"] for o in focused["opportunities"]] == ["w24-77"]
+
+
+def test_demo_identity_is_a_server_cookie_not_the_header(fake):
+    a, b = TestClient(main.app), TestClient(main.app)
+    for c in (a, b):  # 같은 시연 계정 이름이어도 쿠키(브라우저)가 다르면 대화·기억이 섞이지 않는다
+        assert c.get("/api/assistant/memory", headers={"x-demo-id": "demo-minji"}).status_code == 200
+        assert c.cookies.get("cuk_demo")
+    assert a.cookies.get("cuk_demo") != b.cookies.get("cuk_demo")
+    a.post("/api/assistant/chat", json={"message": CERT_MESSAGE}, headers=demo_headers("demo-minji"))
+    assert [m["value"] for m in a.get("/api/assistant/memory", headers={"x-demo-id": "demo-minji"}).json()] == ["SQLD"]
+    assert b.get("/api/assistant/memory", headers={"x-demo-id": "demo-minji"}).json() == []
+
+
+def test_demo_store_caps_documents_and_total_bytes():
+    from app.assistant.contracts import DocumentRecord, TemplateField
+    from app.assistant.service_data import MemoryAssistantStore
+
+    def record(i):
+        return DocumentRecord(id=f"doc{i}", filename="a.json", format="json", fields=[TemplateField(id="f", label="이름")])
+
+    store = MemoryAssistantStore(max_bytes=100)
+    store.create_document("demo:a", record(1), b"x" * 60)
+    with pytest.raises(Conflict):
+        store.create_document("demo:a", record(2), b"x")  # 시연 계정은 1건까지
+    store.create_document("demo:b", record(3), b"x" * 60)  # 합계 120 > 100 → 오래된 사용자(a)를 지운다
+    assert store.total == 60 and store.get_state("demo:a").documents == {}
+    with pytest.raises(Conflict):
+        store.create_document("demo:c", record(4), b"x" * 101)
+
+
+def test_account_delete_also_removes_legacy_chat_rows():
+    from sqlalchemy import text
+    with main.SessionLocal() as db:
+        db.execute(text("CREATE TABLE IF NOT EXISTS chat_messages (id INTEGER PRIMARY KEY, user_id VARCHAR(16), text TEXT)"))
+        db.execute(text("INSERT INTO chat_messages (user_id, text) VALUES ('olduser1', '예전 대화')"))
+        db.commit()
+    c = TestClient(main.app)
+    c.post("/api/auth/signup", json={"id": "olduser1", "password": "secret12"})
+    c.delete("/api/me")
+    with main.SessionLocal() as db:
+        assert db.execute(text("SELECT count(*) FROM chat_messages WHERE user_id='olduser1'")).scalar() == 0

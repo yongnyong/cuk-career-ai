@@ -267,12 +267,14 @@ def make_pg_store(Base, SessionLocal):
 
 
 class MemoryAssistantStore(_DocumentMixin):
-    """시연 계정용. 최근 max_users명만 서버 메모리에 두고, 재시작하면 사라진다."""
+    """시연 계정용. 최근 max_users명만 서버 메모리에 두고, 재시작하면 사라진다.
+    업로드 원본은 사용자당 1건, 전체 max_bytes까지만 두고 넘으면 오래된 사용자부터 지운다."""
 
-    def __init__(self, max_users: int = 300):
-        self.max_users = max_users
+    def __init__(self, max_users: int = 300, max_bytes: int = 20 * 1024 * 1024, max_documents: int = 1):
+        self.max_users, self.max_bytes, self.max_documents = max_users, max_bytes, max_documents
         self.states: OrderedDict[str, UserState] = OrderedDict()
         self.originals: dict[tuple[str, str], bytes] = {}
+        self.total = 0  # originals에 든 바이트 합계
         self.lock = Lock()
 
     def get_state(self, user_id: str) -> UserState:
@@ -280,26 +282,36 @@ class MemoryAssistantStore(_DocumentMixin):
             state = self.states.get(user_id)
             return state.model_copy(deep=True) if state else UserState()
 
+    def _drop(self, user_id: str) -> None:
+        self.states.pop(user_id, None)
+        for key in [k for k in self.originals if k[0] == user_id]:
+            self.total -= len(self.originals.pop(key))
+
+    def _save_locked(self, user_id: str, state: UserState) -> None:
+        current = self.states.get(user_id)
+        if (current.revision if current else 0) != state.revision:
+            raise Conflict("다른 요청이 정보를 변경했어요. 최신 상태에서 다시 시도해 주세요.")
+        self.states[user_id] = state.model_copy(deep=True, update={"revision": state.revision + 1})
+        self.states.move_to_end(user_id)
+        while len(self.states) > self.max_users or (self.total > self.max_bytes and len(self.states) > 1):
+            self._drop(next(iter(self.states)))
+
     def save_state(self, user_id: str, state: UserState) -> None:
         with self.lock:
-            current = self.states.get(user_id)
-            if (current.revision if current else 0) != state.revision:
-                raise Conflict("다른 요청이 정보를 변경했어요. 최신 상태에서 다시 시도해 주세요.")
-            self.states[user_id] = state.model_copy(deep=True, update={"revision": state.revision + 1})
-            self.states.move_to_end(user_id)
-            while len(self.states) > self.max_users:
-                old, _ = self.states.popitem(last=False)
-                for key in [k for k in self.originals if k[0] == old]:
-                    del self.originals[key]
+            self._save_locked(user_id, state)
 
     def create_document(self, user_id: str, record: DocumentRecord, original: bytes) -> None:
-        state = self.get_state(user_id)
-        if record.id in state.documents or len(state.documents) >= MAX_DOCUMENTS:
-            raise Conflict("이미 존재하는 문서이거나 최대 보관 문서 수에 도달했어요.")
-        state.documents[record.id] = record
-        self.save_state(user_id, state)
-        with self.lock:
+        if len(original) > self.max_bytes:
+            raise Conflict("시연 계정에서는 이 크기의 문서를 보관할 수 없어요.")
+        with self.lock:  # 원본과 문서 정보를 같은 잠금 안에서 저장
+            current = self.states.get(user_id)
+            state = current.model_copy(deep=True) if current else UserState()
+            if record.id in state.documents or len(state.documents) >= min(MAX_DOCUMENTS, self.max_documents):
+                raise Conflict("시연 계정은 문서를 1건까지 보관해요. 로그인하면 더 올릴 수 있어요.")
+            state.documents[record.id] = record
             self.originals[(user_id, record.id)] = original
+            self.total += len(original)
+            self._save_locked(user_id, state)
 
     def get_original(self, user_id: str, document_id: str) -> bytes:
         self.get_document(user_id, document_id)
