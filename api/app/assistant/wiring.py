@@ -44,7 +44,8 @@ class _NoModel:
 def default_model():
     key = os.environ.get("GEMINI_API_KEY", "")
     name = os.environ.get("GEMINI_MODEL", "gemini-3.1-flash-lite")
-    return GeminiModel(key, name, timeout=8) if key else _NoModel()
+    # 운영 측정(11/23): 호출 한 번이 1~8초, 질문 하나에 호출 1~3번. 8초·12초 상한에서는 시간 초과가 잦았다
+    return GeminiModel(key, name, timeout=15, request_budget=25) if key else _NoModel()
 
 
 def make_assistant(Base, SessionLocal, career_session, Posting, User, session_user, model=None):
