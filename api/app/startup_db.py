@@ -1,12 +1,14 @@
 """Public startup notices and traceable submission requirements, in a separate SQLite DB."""
 import hashlib
 import json
+import os
 import sqlite3
 from contextlib import contextmanager
 from pathlib import Path
 
 
-DEFAULT_DB = Path(__file__).resolve().parent.parent / "startup.db"
+# 서버에서는 STARTUP_DB_PATH로 영구 볼륨 안의 파일을 쓴다(컨테이너를 다시 만들어도 남는다)
+DEFAULT_DB = Path(os.environ.get("STARTUP_DB_PATH") or Path(__file__).resolve().parent.parent / "startup.db")
 
 SCHEMA = """
 CREATE TABLE IF NOT EXISTS postings (

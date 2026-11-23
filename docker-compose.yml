@@ -26,6 +26,9 @@ services:
       KSTARTUP_API_KEY: ${KSTARTUP_API_KEY:-}
       WORK24_API_KEY: ${WORK24_API_KEY:-}
       ADMIN_IDS: ${ADMIN_IDS:-}
+      STARTUP_DB_PATH: /srv/data/startup.db
+    volumes:
+      - apidata:/srv/data
     depends_on:
       postgres:
         condition: service_healthy
@@ -46,4 +49,5 @@ services:
 
 volumes:
   pgdata:
+  apidata:
   caddy_data:
