@@ -183,3 +183,26 @@ def test_account_delete_also_removes_legacy_chat_rows():
     c.delete("/api/me")
     with main.SessionLocal() as db:
         assert db.execute(text("SELECT count(*) FROM chat_messages WHERE user_id='olduser1'")).scalar() == 0
+
+
+def test_every_job_template_node_is_found_by_the_assistant():
+    # 웹 스킬트리는 직무 기본 노드일 때만 skillId를 보낸다. 그 노드는 비서 카탈로그에서 모두 찾아져야 한다
+    import re
+    from app.assistant.service_data import CATALOG
+    data = main.assistant_service.data
+    for job in CATALOG["jobs"]:
+        for item in job["nodes"]:
+            assert re.fullmatch(r"[A-Za-z0-9][A-Za-z0-9._-]{0,79}", item["skill"]), item["skill"]
+            assert data.get_skill_node(job["id"], item["skill"]), (job["id"], item["skill"])
+
+
+def test_tree_node_context_reaches_the_assistant(fake):
+    c = TestClient(main.app)
+    from app.assistant.service_data import SKILL
+    ask = {"message": "이 노드는 어떻게 준비하면 돼?", "conversationId": "node",
+           "context": {"page": "tree", "jobId": "ai-research", "skillId": "AI-NLP"}}
+    r = c.post("/api/assistant/chat", json=ask, headers=demo_headers("demo-node0001"))
+    assert r.status_code == 200, r.text
+    assert "선택된 스킬을 확인하지 못했어요" not in r.json()["answer"]
+    sent = json.dumps([call[1] for call in fake.calls], ensure_ascii=False)
+    assert SKILL["AI-NLP"] in sent  # 질문에 이름이 없어도 선택한 노드가 모델 입력에 들어간다

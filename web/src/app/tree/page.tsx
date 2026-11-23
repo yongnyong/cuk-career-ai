@@ -13,7 +13,8 @@ import { AiNotice, DDay, TypeTag, VirtualTag } from "@/components/ui";
 import { useStore } from "@/lib/store";
 import { dday, recommend, type TreeNode } from "@/lib/engine";
 import type { RecommendedQuest, TreeSignal } from "@/lib/types";
-import { formatScore, meetsTarget, scaleOf, skillById } from "@/lib/data/catalog";
+import { formatScore, jobById, meetsTarget, scaleOf, skillById } from "@/lib/data/catalog";
+import { AskNodeButton, useAssistantNode } from "@/components/Assistant";
 import { questProgress } from "@/lib/quest";
 import { questOutcome, recommendedTitle } from "@/lib/questOutcome";
 import { careerInterestOf } from "@/lib/interest";
@@ -218,6 +219,9 @@ function TreeView() {
   const [sel, setSel] = useState<string | null>(null);
   const selNode = tree.find((n) => n.skill === sel);
   const outcome = selNode && questOutcome(selNode);
+  // 비서 카탈로그에는 직무 기본 노드만 있다. 공고·활동에서 더해진 노드는 이름만 넘긴다
+  const askNode = selNode ? { name: selNode.name, ...(jobById(p.jobId)?.nodes.some((n) => n.skill === selNode.skill) ? { skillId: selNode.skill } : {}) } : null;
+  useAssistantNode(askNode);
   const selectedQuest = recommendedQuest?.skillId === sel ? recommendedQuest : null;
   const routedQuest = selectedQuest?.signals[0]?.preparation ? selectedQuest : undefined;
   const selectedRoutes = routedQuest?.signals ?? selNode?.preparationSignals;
@@ -329,6 +333,7 @@ function TreeView() {
               <p className="pr-4 text-xs text-slate-500">{selNode.name} · {outcome.label}</p>
               <h3 className="font-bold">{outcome.title}</h3>
               <p className="mt-2 text-xs"><strong>완료 기준</strong> {outcome.completion}</p>
+              {askNode && <AskNodeButton node={askNode} />}
               {selNode.credentialOption && !selectedRoutes?.some(s => s.preparation?.action === selNode.credentialOption?.reason) &&
                 <p className="mt-2 text-xs"><strong>직무와의 연결</strong> {selNode.credentialOption.reason}</p>}
               <p className="mt-1 text-xs text-go">{progressionStage(selNode.depth, mode).title}</p>

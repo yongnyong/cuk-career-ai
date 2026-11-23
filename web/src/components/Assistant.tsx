@@ -15,6 +15,9 @@ export type AssistantMsg = { role: "user" | "bot"; text: string; opportunities?:
 type Fact = { id: string; kind: string; value: string; source: string; progress?: string | null };
 type ChatResult = { answer: string; memoryUpdated?: boolean; needsConfirmation?: string[]; opportunities?: OppRef[] };
 
+// 스킬트리에서 지금 열어 둔 노드. skillId는 비서 카탈로그(직무 기본 노드)에 있는 노드만 넣는다(없는 ID는 비서가 답을 멈춘다)
+export type AssistantNode = { name: string; skillId?: string };
+
 const CONVERSATION = "main";
 const START = ["나한테 맞는 공고 있어?", "다음에 뭘 준비하면 돼?", "Python 7일 학습 계획 짜줘"];
 const KIND: Record<string, string> = {
@@ -25,10 +28,10 @@ const noop = () => () => {};
 const isDemo = (id: string | null) => !!id && id.startsWith("demo-");
 
 // 지금 보는 화면을 비서에게 알린다. 레이아웃의 공급자에서 주소를 읽으면 동적 페이지를 미리 만들 수 없어 대화 창이 넘긴다
-function screen(path: string, profile: Profile | null) {
+function screen(path: string, profile: Profile | null, node: AssistantNode | null) {
   const [first = "", second] = path.split("/").filter(Boolean);
   if (first === "opportunities" && second) return { page: "opportunities", opportunityId: decodeURIComponent(second) };
-  if (first === "tree") return { page: "tree", ...(profile?.jobId ? { jobId: profile.jobId } : {}) };
+  if (first === "tree") return { page: "tree", ...(profile?.jobId ? { jobId: profile.jobId } : {}), ...(node?.skillId ? { skillId: node.skillId } : {}) };
   return { page: /^[a-z][a-z0-9-]{0,40}$/.test(first) ? first : "home" };
 }
 
@@ -51,6 +54,7 @@ function errorText(d: unknown): string {
 type Ctx = {
   msgs: AssistantMsg[]; busy: boolean; saved: boolean; ask: (q: string, path: string) => void; clear: () => void;
   memory: Fact[] | null; loadMemory: () => void; forget: (id: string) => void;
+  node: AssistantNode | null; setNode: (n: AssistantNode | null) => void; open: boolean; setOpen: (o: boolean) => void;
 };
 const AssistantContext = createContext<Ctx | null>(null);
 
@@ -65,6 +69,8 @@ export function AssistantProvider({ children }: { children: React.ReactNode }) {
   const [busy, setBusy] = useState(false);
   const [mem, setMem] = useState<{ owner: string | null; facts: Fact[] } | null>(null);
   const memory = mem?.owner === owner ? mem.facts : null;
+  const [node, setNode] = useState<AssistantNode | null>(null);
+  const [open, setOpen] = useState(false);
 
   // 웹 규칙 엔진이 이 학생에게 고른 공고(직무·역량·전공 기준). 비서는 이 안에서 공고를 골라 조건을 다시 판정한다
   const focus = useMemo(
@@ -124,7 +130,7 @@ export function AssistantProvider({ children }: { children: React.ReactNode }) {
       try {
         const r = await call("/chat", {
           method: "POST",
-          body: JSON.stringify({ message, conversationId: CONVERSATION, requestId: `r${Date.now().toString(36)}${Math.random().toString(36).slice(2, 8)}`, context: screen(path, s.profile) }),
+          body: JSON.stringify({ message, conversationId: CONVERSATION, requestId: `r${Date.now().toString(36)}${Math.random().toString(36).slice(2, 8)}`, context: screen(path, s.profile, node) }),
         });
         const d = r.headers.get("content-type")?.includes("application/json") ? await r.json() : null;
         reply = r.ok && d ? toMsg(d) : { role: "bot", text: errorText(d), held: true };
@@ -135,7 +141,7 @@ export function AssistantProvider({ children }: { children: React.ReactNode }) {
       setMsgs((m) => [...m, reply]);
       setBusy(false);
     },
-    [busy, setMsgs, call, s.profile, memory, loadMemory],
+    [busy, setMsgs, call, s.profile, node, memory, loadMemory],
   );
 
   const clear = useCallback(() => {
@@ -151,10 +157,36 @@ export function AssistantProvider({ children }: { children: React.ReactNode }) {
     [call],
   );
 
-  return <AssistantContext.Provider value={{ msgs, busy, saved: server, ask, clear, memory, loadMemory, forget }}>{children}</AssistantContext.Provider>;
+  return <AssistantContext.Provider value={{ msgs, busy, saved: server, ask, clear, memory, loadMemory, forget, node, setNode, open, setOpen }}>{children}</AssistantContext.Provider>;
 }
 
 const useAssistant = () => useContext(AssistantContext)!;
+
+// 스킬트리 화면이 열어 둔 노드를 비서에게 알린다(노드를 닫거나 화면을 떠나면 지운다)
+export function useAssistantNode(node: AssistantNode | null) {
+  const { setNode } = useAssistant();
+  const name = node?.name;
+  const skillId = node?.skillId;
+  useEffect(() => {
+    setNode(name ? { name, skillId } : null);
+    return () => setNode(null);
+  }, [name, skillId, setNode]);
+}
+
+// 노드 상세의 "이 노드 물어보기": 챗봇 창을 열고 이 노드를 주제로 바로 묻는다
+export function AskNodeButton({ node }: { node: AssistantNode }) {
+  const { ask, busy, setOpen } = useAssistant();
+  const path = usePathname();
+  return (
+    <button
+      className="btn-ghost mt-3 w-full justify-center text-xs"
+      disabled={busy}
+      onClick={() => { setOpen(true); ask(`'${node.name}' 노드는 어떻게 준비하면 돼?`, path); }}
+    >
+      <MessageSquareText size={14} /> 이 노드 AI에게 물어보기
+    </button>
+  );
+}
 
 function MemoryPanel() {
   const { memory, forget, saved } = useAssistant();
@@ -184,7 +216,7 @@ function MemoryPanel() {
 }
 
 export function AssistantChat({ large = false }: { large?: boolean }) {
-  const { msgs, busy, saved, ask, clear, loadMemory } = useAssistant();
+  const { msgs, busy, saved, ask, clear, loadMemory, node } = useAssistant();
   const { profile } = useStore();
   const path = usePathname();
   const [q, setQ] = useState("");
@@ -248,6 +280,9 @@ export function AssistantChat({ large = false }: { large?: boolean }) {
         <div ref={end} />
       </div>
       <div className="border-t border-line p-3">
+        {node && path.startsWith("/tree") && !showMemory && (
+          <p className="mb-2 truncate text-[11px] text-ink/60">지금 보는 노드: <strong>{node.name}</strong> · 이 노드 기준으로 답해요</p>
+        )}
         {!showMemory && (
           <div className="mb-2 flex flex-wrap gap-1.5">
             {START.map((x) => (
@@ -306,7 +341,7 @@ export function AssistantHero() {
 export function AssistantDock() {
   const path = usePathname();
   const { profile } = useStore();
-  const [open, setOpen] = useState(false);
+  const { open, setOpen } = useAssistant();
   // 프로필은 브라우저 저장소에서 읽으므로, 서버 렌더와 어긋나지 않게 브라우저에서만 그린다
   const mounted = useSyncExternalStore(noop, () => true, () => false);
   if (!mounted) return null;
