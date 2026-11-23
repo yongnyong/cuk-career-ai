@@ -92,6 +92,14 @@ export interface Opportunity {
     scope: "role" | "posting";
     minimum?: string;
   }[];
+  discoveryEvidence?: {
+    term: string;
+    kind: "tool" | "credential" | "artifact";
+    basis: "required" | "preferred";
+    quote: string;
+    src: string;
+    scope: "role";
+  }[];
   preparationEvidence?: {
     key: string;
     basis: "required" | "preferred";
@@ -149,7 +157,8 @@ export interface TreeSignal {
   basis: "required" | "preferred" | "school" | "activity";
   status: "gap" | "unknown" | "matched";
   minimum?: string;
-  preparation?: { kind: "direct" | "suggested"; action: string; completion: string };
+  preparation?: { kind: "direct" | "suggested"; action: string; completion: string;
+    discovery?: { term: string; domain: TreeDomain } };
   reference: {
     id: string;
     title: string;

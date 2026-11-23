@@ -123,7 +123,9 @@ function PreparationDetail({ node, signals, quest }: {
       <p>{plan.kind === "direct"
         ? "공고에 명시된 항목을 준비하는 과제예요."
         : `공고에 나온 역량을 준비하는 방법으로 ‘${laterGoal ?? node.name}’을 추천해요.`}</p>
-      {employers.size > 1 && <p className="text-ink/70">이 준비 방법과 연결된 기업 {employers.size}곳</p>}
+      {employers.size > 1 && <p className="text-ink/70">{plan.discovery
+        ? `이 직무의 서로 다른 기업 ${employers.size}곳에서 ‘${plan.discovery.term}’을 언급해 생긴 퀘스트예요.`
+        : `이 준비 방법과 연결된 기업 ${employers.size}곳`}</p>}
       <dl className="space-y-1 pt-1">
         <div>
           <dt className="font-semibold">{laterGoal ? `‘${laterGoal}’ 단계에서 할 일` : "서비스가 제안하는 행동"}</dt>

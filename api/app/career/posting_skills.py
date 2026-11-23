@@ -2,6 +2,7 @@
 import json
 import re
 from pathlib import Path
+from .discovery import named_terms
 
 HEADINGS = re.compile(
     r'(?P<preferred>우대\s*(?:조건|사항|역량(?:\s*및\s*경험)?|요건)|이런\s*분이면\s*더욱\s*좋습니다)'
@@ -84,6 +85,9 @@ CREDENTIALS = {
     'credential:SK-ELEC-PE': r'전자기사', 'credential:SW-C-1': r'사회복지사\s*1\s*급',
     'credential:SK-SW-CERT': r'사회복지사\s*2\s*급',
 }
+REGISTERED_TERMS = tuple(re.compile(pattern, re.I) for pattern in {
+    *SKILL_PATTERNS.values(), *CAPABILITIES.values(), *CREDENTIALS.values(), *ARTIFACTS.values()})
+REGISTERED_NAMES = {re.sub(r'\s+', '', skill['name']).casefold() for skill in WEB_CATALOG['skills']}
 SQL_PROJECT = re.compile(
     r'(?<![A-Za-z])SQL(?![A-Za-z])[^,;·\n]{0,40}(?:프로젝트|분석(?:한|해\s*본)?\s*(?:경험|보고서)|포트폴리오)'
     r'|(?:프로젝트|분석\s*경험)[^,;·\n]{0,32}(?<![A-Za-z])SQL(?![A-Za-z])', re.I)
@@ -205,11 +209,22 @@ def extract_preparation_evidence(text, reviewed=(), *, multi_role=False):
 def attach_preparation_evidence(data, text, reviewed=(), *, multi_role=False):
     """Attach quoted observations to the public posting and reuse identical source sections."""
     observations = extract_preparation_evidence(text, reviewed, multi_role=multi_role)
+    discovery = []
+    seen = set()
+    if not multi_role:
+        for clause, basis, documents, _ in _source_clauses(text, ()):
+            for kind, term in named_terms(clause, documents):
+                key = (kind, term.casefold(), clause, basis)
+                if (key in seen or re.sub(r'\s+', '', term).casefold() in REGISTERED_NAMES
+                        or any(pattern.fullmatch(term) for pattern in REGISTERED_TERMS)):
+                    continue
+                seen.add(key)
+                discovery.append(dict(kind=kind, term=term, basis=basis, quote=clause, scope='role'))
     sections = data.setdefault('sections', [])
     sources = {section['text']: section['id'] for section in sections}
     section_ids = {section['id'] for section in sections}
     index = 0
-    for row in observations:
+    for row in observations + discovery:
         quote = row['quote']
         if quote not in sources:
             index += 1
@@ -220,6 +235,10 @@ def attach_preparation_evidence(data, text, reviewed=(), *, multi_role=False):
             sections.append({'id': source_id, 'title': '준비 근거', 'text': quote})
         row['src'] = sources[quote]
     data['preparationEvidence'] = observations
+    if discovery:
+        data['discoveryEvidence'] = discovery
+    else:
+        data.pop('discoveryEvidence', None)
     return data
 
 
