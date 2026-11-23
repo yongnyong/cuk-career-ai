@@ -120,6 +120,14 @@ def current_user(cuk_session: str | None = Cookie(default=None), db: Session = D
     raise HTTPException(401, "로그인이 필요해요.")
 
 
+def session_user(cuk_session: str | None = Cookie(default=None), db: Session = Depends(get_db)) -> "User | None":
+    """로그인했으면 사용자, 아니면 None(시연 계정용)."""
+    try:
+        return current_user(cuk_session, db)
+    except HTTPException:
+        return None
+
+
 class Credentials(BaseModel):
     id: str = Field(max_length=16)
     password: str = Field(max_length=128)
@@ -252,6 +260,7 @@ def save_state(body: StateBody, user: User = Depends(current_user), db: Session 
 @app.delete("/api/me")
 def delete_me(response: Response, user: User = Depends(current_user), db: Session = Depends(get_db)):
     db.execute(delete(SessionRow).where(SessionRow.user_id == user.id))
+    db.execute(delete(ChatMessage).where(ChatMessage.user_id == user.id))
     db.execute(delete(User).where(User.id == user.id))
     db.commit()
     response.delete_cookie(COOKIE, path="/")
@@ -262,6 +271,12 @@ from .chat import make_router  # noqa: E402
 from .startup_catalog import router as startup_router
 
 app.include_router(startup_router)
+
+from .assistant import make_router as make_assistant_router  # noqa: E402
+
+assistant_router, ChatMessage = make_assistant_router(Base, get_db, get_career_db, session_user, Posting)
+Base.metadata.create_all(engine)
+app.include_router(assistant_router)
 
 app.include_router(make_router(get_career_db, Posting))
 

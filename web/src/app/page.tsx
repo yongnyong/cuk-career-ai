@@ -13,6 +13,7 @@ import { questProgress } from "@/lib/quest";
 import { Legend, NodeBox, StatusWindow } from "@/components/quest-ui";
 import { OppCard } from "@/components/OppCard";
 import { AiNotice, DDay } from "@/components/ui";
+import { AssistantHero } from "@/components/Assistant";
 
 const STEPS = [
   { title: "학과·학년·가진 것을 고른다", text: "이름과 학번은 묻지 않아요. 1분이면 끝나요." },
@@ -116,6 +117,8 @@ function Today() {
           스킬트리 열기 <ChevronRight size={16} />
         </Link>
       </StatusWindow>
+
+      <AssistantHero />
 
       {fresh.length > 0 && (
         <section className="unlock rounded-lg border-2 border-edge bg-gold text-on-gold p-4">
