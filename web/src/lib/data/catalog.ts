@@ -1,5 +1,6 @@
 // 직무·역량 사전 (설명용 초안). 시험·자격 정보는 등록 시 공식 안내를 다시 확인한다.
 import type { Job, Skill } from "../types";
+import { discoveredSkillById } from "../discoveredSkills";
 import { DEPT_JOBS, DEPT_SKILLS } from "./deptTracks";
 import { DEPT_JOBS_2, DEPT_SKILLS_2 } from "./deptTracks2";
 import { PRACTICE } from "./practice";
@@ -487,5 +488,5 @@ export function registerStartupSkills(skills: Skill[]) {
   startupSkills.clear();
   for (const skill of skills) startupSkills.set(skill.id, skill);
 }
-export const skillById = (id: string) => SKILLS.find((x) => x.id === id) ?? startupSkills.get(id);
+export const skillById = (id: string) => SKILLS.find((x) => x.id === id) ?? startupSkills.get(id) ?? discoveredSkillById(id);
 export const jobById = (id: string) => JOBS.find((x) => x.id === id);

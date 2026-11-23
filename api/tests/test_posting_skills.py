@@ -1,4 +1,26 @@
 from app.career.posting_skills import attach_preparation_evidence, extract_preparation_evidence, extract_skill_evidence
+
+
+def test_discovers_new_terms_only_from_explicit_source_clauses():
+    text = ('담당 업무\nZetaDraw 활용 가능\n우대사항\nFluxDraw 활용 경험\n'
+            '패턴제작기능사 자격증 소지자\nQXZ 자격증 소지\nPython 활용 가능\n'
+            '선택 제출 서류\n회로 설계서 제출\n필수 제출 서류\n배선 설계서 제출')
+    data = attach_preparation_evidence({}, text)
+    entries = data['discoveryEvidence']
+    assert {(x['kind'], x['term'], x['basis']) for x in entries} == {
+        ('tool', 'FluxDraw', 'preferred'), ('credential', '패턴제작기능사', 'preferred'),
+        ('credential', 'QXZ', 'preferred'), ('artifact', '배선 설계서', 'required')}
+    sections = {s['id']: s['text'] for s in data['sections']}
+    assert all(x['term'] in x['quote'] == sections[x['src']] and x['quote'] in text for x in entries)
+    assert 'discoveryEvidence' not in attach_preparation_evidence({}, text, multi_role=True)
+
+
+def test_discovery_excludes_alternatives_negation_private_and_unsourced_text():
+    text = ('우대조건\nFluxDraw 또는 FizzDraw 활용 가능\nFluxDraw 활용 경험이 없어도 가능\n'
+            'AI 활용 가능\n필수 제출 서류\n건강 보고서 제출\n관련 보고서 제출')
+    assert 'discoveryEvidence' not in attach_preparation_evidence({}, text)
+    reviewed = [dict(item='FluxDraw', original_text='FluxDraw 활용 가능', status='우대', text_type='extracted')]
+    assert 'discoveryEvidence' not in attach_preparation_evidence({}, '', reviewed)
 from app.career.posting_skills import has_multiple_roles
 
 

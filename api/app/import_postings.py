@@ -199,7 +199,8 @@ def import_postings(source, target):
             'with_deadline': sum(p['deadlineStatus'] != 'unknown' for p in postings),
             'with_jobs': sum(bool(p['jobs']) for p in postings),
             'with_skill_evidence': sum(bool(p.get('skillEvidence')) for p in postings),
-            'with_preparation_evidence': sum(bool(p.get('preparationEvidence')) for p in postings)}
+            'with_preparation_evidence': sum(bool(p.get('preparationEvidence')) for p in postings),
+            'with_discovery_evidence': sum(bool(p.get('discoveryEvidence')) for p in postings)}
 
 
 if __name__ == '__main__':
