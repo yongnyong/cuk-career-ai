@@ -191,7 +191,7 @@ export function AssistantHero() {
   );
 }
 
-// 다른 모든 페이지 오른쪽 아래의 챗봇 버튼
+// 다른 모든 페이지 왼쪽 아래의 챗봇 버튼
 export function AssistantDock() {
   const path = usePathname();
   const { profile } = useStore();
@@ -199,7 +199,7 @@ export function AssistantDock() {
   if (path === "/" && profile) return null; // 홈에는 큰 챗봇이 있다
   if (path.startsWith("/print")) return null;
   return (
-    <div className="fixed bottom-20 right-4 z-40 sm:bottom-6 print:hidden">
+    <div className="fixed bottom-20 left-4 z-40 sm:bottom-6 print:hidden">
       {open ? (
         <div className="window flex h-[min(34rem,calc(100vh-8rem))] w-[min(24rem,calc(100vw-2rem))] flex-col overflow-hidden">
           <div className="flex items-center gap-2 border-b-2 border-edge bg-navy px-3 py-2 text-white">
