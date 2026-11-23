@@ -89,3 +89,13 @@ def test_history_is_saved_per_account_and_demo_is_not(monkeypatch):
     c.delete("/api/me")
     with main.SessionLocal() as db:
         assert not db.query(main.ChatMessage).filter_by(user_id="chatuser1").count()
+
+
+def test_anonymous_questions_have_a_global_cap_even_with_changing_ip(monkeypatch):
+    monkeypatch.setattr(assistant, "generate_json", lambda p, s: {"held": True, "text": "", "citations": [], "suggestions": []})
+    monkeypatch.setattr(assistant, "ANON_LIMIT", 3)
+    assistant._anon.clear()
+    c = TestClient(main.app)
+    codes = [c.post("/api/assistant", json={"question": "?"}, headers={"x-forwarded-for": f"10.0.0.{i}"}).status_code for i in range(5)]
+    assert codes == [200, 200, 200, 429, 429]
+    assistant._anon.clear()

@@ -17,7 +17,7 @@ from pydantic import BaseModel, Field
 from sqlalchemy import JSON, BigInteger, Integer, String, Text, delete, select
 from sqlalchemy.orm import Mapped, Session, mapped_column
 
-from .ai_provider import generate_json
+from .ai_provider import generate_json, provider_name
 from .chat import limited
 from .collect import scrub
 
@@ -31,6 +31,8 @@ STATUS = {"pass": "충족", "check": "확인 필요", "fail": "미충족"}
 HOLD_VERIFY = "근거 대조에 실패해 답변을 보류했어요. 공고 원문을 직접 확인해 주세요."
 SECTION_CHARS = 600  # 후보 공고는 문단을 잘라서 넣는다(현재 보고 있는 공고는 전문)
 HISTORY = 6
+# 비로그인 질문 전체 상한(분당). IP 헤더는 위조할 수 있어 IP별 제한만으로는 부족하다
+ANON_LIMIT, _anon = 30, []
 
 SCHEMA = {
     "type": "OBJECT",
@@ -196,7 +198,14 @@ def make_router(Base, get_db, get_career_db, session_user, Posting):
     @router.post("/api/assistant")
     def ask(body: AssistantBody, request: Request, user=Depends(session_user), db: Session = Depends(get_db),
             career: Session = Depends(get_career_db)):
+        if provider_name() == "codex":
+            from .preparation import require_local_ai
+            require_local_ai(request)
         ip = (request.headers.get("x-forwarded-for") or (request.client.host if request.client else "")).split(",")[0].strip()
+        if not user:
+            _anon[:] = [t for t in _anon if time.time() - t < 60] + [time.time()]
+            if len(_anon) > ANON_LIMIT:
+                raise HTTPException(429, "지금 질문이 많아요. 로그인하거나 1분 뒤에 다시 시도해 주세요.")
         if limited(f"u:{user.id}" if user else ip):
             raise HTTPException(429, "질문이 너무 많아요. 1분 뒤에 다시 시도해 주세요.")
         profile = ((user.state or {}).get("profile") if user else body.profile) or None
