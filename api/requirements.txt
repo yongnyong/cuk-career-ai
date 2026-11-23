@@ -4,5 +4,9 @@ sqlalchemy==2.0.36
 psycopg[binary]==3.2.3
 argon2-cffi==23.1.0
 defusedxml==0.7.1
-# 창업 공고 첨부 PDF 읽기
+# 창업 공고 첨부 PDF 읽기, 개인 진로 비서의 PDF 양식 읽기
 pypdf==7.1.1
+# 개인 진로 비서(app/assistant)
+pydantic==2.14.4
+filelock==3.32.7
+python-docx==1.2.0

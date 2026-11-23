@@ -260,7 +260,7 @@ def save_state(body: StateBody, user: User = Depends(current_user), db: Session 
 @app.delete("/api/me")
 def delete_me(response: Response, user: User = Depends(current_user), db: Session = Depends(get_db)):
     db.execute(delete(SessionRow).where(SessionRow.user_id == user.id))
-    db.execute(delete(ChatMessage).where(ChatMessage.user_id == user.id))
+    assistant_store.delete_user(db, user.id)
     db.execute(delete(User).where(User.id == user.id))
     db.commit()
     response.delete_cookie(COOKIE, path="/")
@@ -272,9 +272,10 @@ from .startup_catalog import router as startup_router
 
 app.include_router(startup_router)
 
-from .assistant import make_router as make_assistant_router  # noqa: E402
+from .assistant.wiring import make_assistant  # noqa: E402
 
-assistant_router, ChatMessage = make_assistant_router(Base, get_db, get_career_db, session_user, Posting)
+# 개인 진로 비서(기억·상담·학습 계획·지원서 초안). 로그인 계정의 기억과 대화는 assistant_states 테이블에 저장
+assistant_router, assistant_store, assistant_service = make_assistant(Base, SessionLocal, CareerSessionLocal, Posting, User, session_user)
 Base.metadata.create_all(engine)
 app.include_router(assistant_router)
 

@@ -3,7 +3,7 @@
 from secrets import token_urlsafe
 
 import pytest
-from fastapi import FastAPI
+from fastapi import APIRouter, FastAPI
 from fastapi.testclient import TestClient
 from sqlalchemy import URL, create_engine, update
 from sqlalchemy.orm import sessionmaker
@@ -59,7 +59,12 @@ def http_app(tmp_path, monkeypatch):
     )
     app = FastAPI()
     # Re-register routes so dependency overrides belong to this app.
-    app.include_router(main.app.router)
+    # main에는 실제 서비스용 비서 라우트가 이미 있으므로 빼고, 아래의 테스트용 비서만 등록한다
+    existing = APIRouter()
+    existing.routes.extend(
+        route for route in main.app.router.routes if not getattr(route, "path", "").startswith("/api/assistant")
+    )
+    app.include_router(existing)
     app.dependency_overrides[main.get_db] = temporary_db
     app.include_router(make_router(main.current_user, service))
     try:

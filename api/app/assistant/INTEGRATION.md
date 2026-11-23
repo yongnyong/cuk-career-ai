@@ -1,5 +1,7 @@
 # 개인화 AI 챗봇 연동
 
+> **서비스 연결 현황(2026-11-23)** — 아래 계약은 `service_data.py`(실제 프로필·공고 DB·스킬트리·Postgres 저장소)와 `wiring.py`(main.py 연결, 시연 계정, 웹 규칙 엔진 추천 공고 전달)로 구현했다. 패키지 버전은 `api/requirements.txt` 한 곳에서 관리하고 Dockerfile은 고치지 않는다. 웹 화면은 `web/src/components/Assistant.tsx`. 아래의 설치·Dockerfile 단계 설명은 연결 전 기록이다.
+
 개인화 상담과 지원서 기능은 `api/app/assistant/`에서 제공한다. 기존 세션 쿠키를 사용하는 전용 `/api/assistant` 라우터를 FastAPI에 등록하면 된다. 공고 상세의 `/api/chat`은 기존 `oppId`·`question` 입력과 `text`·`citations`·`held` 출력을 유지한다.
 
 ## 백엔드 설치와 라우터 등록

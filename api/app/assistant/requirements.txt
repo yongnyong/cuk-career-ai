@@ -1,5 +1,2 @@
-# Install with the API requirements when composing the assistant router.
-pydantic>=2.10,<3
-filelock>=3.20.3,<4
-python-docx>=1.2,<2
-pypdf>=6.21.4,<7
+# 비서 패키지도 API와 같은 목록을 쓴다(버전은 api/requirements.txt 한 곳에서 관리)
+-r ../../requirements.txt
