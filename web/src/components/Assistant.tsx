@@ -32,6 +32,11 @@ function screen(path: string, profile: Profile | null) {
   return { page: /^[a-z][a-z0-9-]{0,40}$/.test(first) ? first : "home" };
 }
 
+// 비서 답변의 **굵게**만 굵은 글씨로 보여준다(나머지는 글자 그대로. HTML로 해석하지 않는다)
+function withBold(text: string) {
+  return text.split(/\*\*(.+?)\*\*/g).map((part, i) => (i % 2 ? <strong key={i}>{part}</strong> : part));
+}
+
 const toMsg = (r: ChatResult): AssistantMsg => ({
   role: "bot", text: r.answer, opportunities: r.opportunities, memoryUpdated: r.memoryUpdated, needsConfirmation: r.needsConfirmation,
 });
@@ -212,7 +217,7 @@ export function AssistantChat({ large = false }: { large?: boolean }) {
                 <p key={i} className="ml-auto w-fit max-w-[85%] rounded-lg bg-navy px-3 py-2 text-sm text-white">{m.text}</p>
               ) : (
                 <div key={i} className={`max-w-[92%] rounded-lg border px-3 py-2 text-sm ${m.held ? "border-dashed border-line bg-paper" : "border-line bg-panel"}`}>
-                  <p className="whitespace-pre-line">{m.text}</p>
+                  <p className="whitespace-pre-line">{withBold(m.text)}</p>
                   {!!m.needsConfirmation?.length && (
                     <ul className="mt-2 list-disc pl-4 text-xs text-ink/70">
                       {m.needsConfirmation.map((x) => <li key={x}>{x}</li>)}
