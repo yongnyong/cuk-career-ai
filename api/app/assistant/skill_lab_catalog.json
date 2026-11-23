@@ -1,0 +1,209 @@
+{
+  "skills": [
+    {
+      "id": "mock-python-basics",
+      "name": "Python 기초",
+      "description": "변수, 자료구조, 반복문과 함수로 작은 프로그램을 작성하는 기술",
+      "learningTopics": ["자료구조", "함수", "파일 읽기"],
+      "importance": "AI 실험 코드와 데이터 처리 스크립트의 공통 기반",
+      "difficulty": "입문"
+    },
+    {
+      "id": "mock-sql",
+      "name": "SQL",
+      "description": "데이터베이스의 표에서 조건에 맞는 데이터를 조회·집계하는 언어",
+      "learningTopics": ["SELECT와 WHERE", "JOIN", "GROUP BY"],
+      "importance": "실험용 자료를 추출하고 적재 결과를 검증하는 공통 기반",
+      "difficulty": "입문"
+    },
+    {
+      "id": "mock-data-analysis",
+      "name": "데이터 분석",
+      "description": "데이터를 정리하고 분석해 유용한 정보를 추출하는 역량",
+      "learningTopics": ["Pandas", "NumPy", "데이터 시각화"],
+      "importance": "모델 입력과 오류 사례를 이해하는 데 쓰인다",
+      "difficulty": "기초"
+    },
+    {
+      "id": "mock-numpy",
+      "name": "NumPy",
+      "description": "수치 배열과 벡터화 연산을 다루는 Python 라이브러리",
+      "learningTopics": ["배열", "브로드캐스팅", "벡터화"],
+      "importance": "수치 데이터를 효율적으로 변환하는 데 쓰인다",
+      "difficulty": "기초"
+    },
+    {
+      "id": "mock-pandas",
+      "name": "Pandas",
+      "description": "표 형식 데이터를 읽고 정리하고 그룹별로 집계하는 Python 라이브러리",
+      "learningTopics": ["DataFrame", "결측치", "groupby"],
+      "importance": "모델 입력과 분석 결과를 표 단위로 다루는 데 쓰인다",
+      "difficulty": "기초"
+    },
+    {
+      "id": "mock-feature-engineering",
+      "name": "특성 공학",
+      "description": "원자료를 모델이 학습할 수 있는 입력 변수로 변환하는 역량",
+      "learningTopics": ["범주형 인코딩", "스케일링", "데이터 누수 방지"],
+      "importance": "입력 특성을 일관되게 만들고 데이터 누수를 줄인다",
+      "difficulty": "중급"
+    },
+    {
+      "id": "mock-model-evaluation",
+      "name": "모델 평가",
+      "description": "검증 데이터와 평가 지표로 모델의 일반화 성능을 확인하는 역량",
+      "learningTopics": ["학습·검증 데이터 분리", "교차 검증", "오류 분석"],
+      "importance": "모델을 비교하고 적용 한계를 판단하는 데 쓰인다",
+      "difficulty": "중급"
+    },
+    {
+      "id": "mock-data-modeling",
+      "name": "데이터 모델링",
+      "description": "업무 개념과 관계를 데이터베이스의 표와 키로 표현하는 역량",
+      "learningTopics": ["기본키와 외래키", "정규화", "사실·차원 모델"],
+      "importance": "여러 시스템의 데이터를 일관되게 연결한다",
+      "difficulty": "기초"
+    },
+    {
+      "id": "mock-pipeline",
+      "name": "데이터 파이프라인",
+      "description": "수집·변환·적재 작업을 반복 실행할 수 있게 연결하는 역량",
+      "learningTopics": ["ETL", "증분 적재", "멱등성"],
+      "importance": "원천 데이터를 안정적으로 분석 가능한 형태로 제공한다",
+      "difficulty": "중급"
+    },
+    {
+      "id": "mock-warehouse",
+      "name": "데이터 웨어하우스",
+      "description": "분석용 데이터를 저장하고 조회할 구조를 설계하는 역량",
+      "learningTopics": ["차원 모델", "파티셔닝", "쿼리 비용"],
+      "importance": "팀 간에 일관된 분석 데이터와 조회 성능을 제공한다",
+      "difficulty": "중급"
+    },
+    {
+      "id": "mock-orchestration",
+      "name": "워크플로 오케스트레이션",
+      "description": "처리 작업의 의존 관계와 실행 일정을 관리하는 역량",
+      "learningTopics": ["DAG", "재시도", "실행 이력"],
+      "importance": "실패를 추적하고 처리 흐름을 복구하는 데 쓰인다",
+      "difficulty": "중급"
+    },
+    {
+      "id": "mock-data-quality",
+      "name": "데이터 품질 관리",
+      "description": "누락·중복·스키마 변경 같은 데이터 문제를 점검하는 역량",
+      "learningTopics": ["정합성 검사", "신선도 검사", "이상 알림"],
+      "importance": "잘못된 데이터의 후속 분석 전파를 줄인다",
+      "difficulty": "중급"
+    },
+    {
+      "id": "mock-streaming",
+      "name": "스트림 처리",
+      "description": "연속적으로 들어오는 이벤트를 처리하는 역량",
+      "learningTopics": ["이벤트 시간", "윈도 집계", "지연 데이터"],
+      "importance": "빠른 데이터 갱신이 필요한 시스템을 이해하는 데 쓰인다",
+      "difficulty": "심화"
+    }
+  ],
+  "jobs": [
+    {
+      "id": "mock-ai-engineer",
+      "name": "AI 엔지니어",
+      "summary": "데이터를 가공하고 모델을 구현·평가해 예측 기능을 개발한다.",
+      "interests": [
+        "AI 개발",
+        "머신러닝",
+        "데이터 분석"
+      ],
+      "nodes": [
+        {
+          "skill": "mock-python-basics",
+          "prereq": [],
+          "required": true
+        },
+        {
+          "skill": "mock-sql",
+          "prereq": [],
+          "required": true
+        },
+        {
+          "skill": "mock-data-analysis",
+          "prereq": ["mock-python-basics"],
+          "required": true
+        },
+        {
+          "skill": "mock-numpy",
+          "prereq": ["mock-python-basics"],
+          "required": false
+        },
+        {
+          "skill": "mock-pandas",
+          "prereq": ["mock-python-basics"],
+          "required": true
+        },
+        {
+          "skill": "mock-feature-engineering",
+          "prereq": ["mock-numpy", "mock-pandas"],
+          "required": true
+        },
+        {
+          "skill": "mock-model-evaluation",
+          "prereq": ["mock-feature-engineering", "mock-data-analysis"],
+          "required": true
+        }
+      ]
+    },
+    {
+      "id": "mock-data-engineer",
+      "name": "데이터 엔지니어",
+      "summary": "데이터를 수집·저장·제공하는 파이프라인을 구축하고 운영한다.",
+      "interests": [
+        "데이터 파이프라인",
+        "데이터베이스",
+        "데이터 품질"
+      ],
+      "nodes": [
+        {
+          "skill": "mock-python-basics",
+          "prereq": [],
+          "required": true
+        },
+        {
+          "skill": "mock-sql",
+          "prereq": [],
+          "required": true
+        },
+        {
+          "skill": "mock-data-modeling",
+          "prereq": ["mock-sql"],
+          "required": true
+        },
+        {
+          "skill": "mock-pipeline",
+          "prereq": ["mock-python-basics", "mock-sql"],
+          "required": true
+        },
+        {
+          "skill": "mock-warehouse",
+          "prereq": ["mock-data-modeling"],
+          "required": true
+        },
+        {
+          "skill": "mock-orchestration",
+          "prereq": ["mock-pipeline"],
+          "required": true
+        },
+        {
+          "skill": "mock-data-quality",
+          "prereq": ["mock-pipeline", "mock-warehouse"],
+          "required": true
+        },
+        {
+          "skill": "mock-streaming",
+          "prereq": ["mock-pipeline"],
+          "required": false
+        }
+      ]
+    }
+  ]
+}

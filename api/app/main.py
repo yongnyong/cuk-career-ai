@@ -19,7 +19,7 @@ from argon2 import PasswordHasher
 from argon2.exceptions import InvalidHashError, VerificationError
 from fastapi import Cookie, Depends, FastAPI, HTTPException, Response
 from pydantic import BaseModel, Field
-from sqlalchemy import JSON, BigInteger, ForeignKey, String, create_engine, delete, func, select
+from sqlalchemy import JSON, BigInteger, ForeignKey, String, create_engine, delete, func, inspect, select, text
 from sqlalchemy.orm import DeclarativeBase, Mapped, Session, mapped_column, sessionmaker
 from .career_db import CareerSessionLocal, Posting, migrate_legacy_postings
 
@@ -118,6 +118,14 @@ def current_user(cuk_session: str | None = Cookie(default=None), db: Session = D
             if user:
                 return user
     raise HTTPException(401, "로그인이 필요해요.")
+
+
+def session_user(cuk_session: str | None = Cookie(default=None), db: Session = Depends(get_db)) -> "User | None":
+    """로그인했으면 사용자, 아니면 None(시연 계정용)."""
+    try:
+        return current_user(cuk_session, db)
+    except HTTPException:
+        return None
 
 
 class Credentials(BaseModel):
@@ -252,6 +260,10 @@ def save_state(body: StateBody, user: User = Depends(current_user), db: Session 
 @app.delete("/api/me")
 def delete_me(response: Response, user: User = Depends(current_user), db: Session = Depends(get_db)):
     db.execute(delete(SessionRow).where(SessionRow.user_id == user.id))
+    assistant_store.delete_user(db, user.id)
+    # 11/23 이전 전역 챗봇의 대화 테이블. 운영 DB에 남아 있으면 그 사용자 행도 지운다
+    if inspect(db.get_bind()).has_table("chat_messages"):
+        db.execute(text("DELETE FROM chat_messages WHERE user_id = :u"), {"u": user.id})
     db.execute(delete(User).where(User.id == user.id))
     db.commit()
     response.delete_cookie(COOKIE, path="/")
@@ -262,6 +274,13 @@ from .chat import make_router  # noqa: E402
 from .startup_catalog import router as startup_router
 
 app.include_router(startup_router)
+
+from .assistant.wiring import make_assistant  # noqa: E402
+
+# 개인 진로 비서(기억·상담·학습 계획·지원서 초안). 로그인 계정의 기억과 대화는 assistant_states 테이블에 저장
+assistant_router, assistant_store, assistant_service = make_assistant(Base, SessionLocal, CareerSessionLocal, Posting, User, session_user)
+Base.metadata.create_all(engine)
+app.include_router(assistant_router)
 
 app.include_router(make_router(get_career_db, Posting))
 

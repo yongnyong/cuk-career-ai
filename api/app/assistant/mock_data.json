@@ -1,0 +1,114 @@
+{
+  "users": {
+    "demo001": [
+      {"id": "demo-dept", "kind": "department", "value": "인공지능학과", "source": "system"},
+      {"id": "demo-grade", "kind": "grade", "value": "3", "source": "system"},
+      {"id": "demo-status", "kind": "status", "value": "재학", "source": "system"},
+      {"id": "demo-edu", "kind": "education", "value": "가상대학교 인공지능학과", "source": "system"},
+      {"id": "demo-training", "kind": "training", "value": "가상 데이터 시각화 과정", "source": "system"},
+      {"id": "demo-python", "kind": "skill", "value": "Python 기초", "source": "system"},
+      {"id": "demo-interest", "kind": "interest", "value": "AI 개발", "source": "system"},
+      {"id": "demo-goal", "kind": "goal", "value": "취업", "source": "system"},
+      {"id": "demo-project", "kind": "project", "value": "Campus Data Lab", "detail": "교내 가상 데이터 전처리와 시각화를 담당", "source": "system"},
+      {"id": "demo-cert", "kind": "certification", "value": "가상 Python 기초 인증", "date": "2026-06-15", "source": "official", "reference": "가상 발급 기록"}
+    ],
+    "demo002": [
+      {"id": "demo2-dept", "kind": "department", "value": "경영학과", "source": "system"},
+      {"id": "demo2-grade", "kind": "grade", "value": "2", "source": "system"},
+      {"id": "demo2-status", "kind": "status", "value": "휴학", "source": "system"},
+      {"id": "demo2-goal", "kind": "goal", "value": "창업", "source": "system"},
+      {"id": "demo2-skill", "kind": "skill", "value": "Excel", "source": "system"},
+      {"id": "demo2-activity", "kind": "activity", "value": "가상 교내 창업 동아리", "source": "system"}
+    ]
+  },
+  "opportunities": [
+    {
+      "id": "mock-job-001", "type": "employment", "title": "AI 개발 인턴십",
+      "organization": "테스트 기업 A", "description": "AI 개발 보조 및 데이터 전처리",
+      "conditions": [
+        {"kind": "skill", "label": "Python 기초", "values": ["Python 기초"]},
+        {"kind": "status", "label": "재학생", "values": ["재학"]},
+        {"kind": "grade", "label": "3학년 이상", "minimum": 3},
+        {"kind": "certification", "label": "SQLD 취득", "values": ["SQLD"]}
+      ],
+      "documents": ["이력서", "자기소개서"], "deadline": "2026-12-15T23:59:00+09:00", "version": 1
+    },
+    {
+      "id": "mock-startup-001", "type": "startup", "title": "대학생 창업지원 프로그램",
+      "organization": "테스트 기관 B", "description": "예비창업자를 위한 사업계획 교육 및 멘토링",
+      "conditions": [
+        {"kind": "status", "label": "대학생", "values": ["재학", "휴학"]},
+        {"kind": "other", "label": "창업 아이디어 보유"}
+      ],
+      "documents": ["사업계획서"], "deadline": "2026-12-20T23:59:00+09:00", "version": 1
+    }
+  ],
+  "skill_tree": [
+    {
+      "jobId": "mock-ai-engineer", "jobName": "AI 엔지니어",
+      "skillId": "mock-data-analysis", "skillName": "데이터 분석",
+      "description": "데이터를 정리하고 분석해 유용한 정보를 추출하는 역량",
+      "prerequisites": ["Python 기초"], "learningTopics": ["Pandas", "NumPy", "데이터 시각화"],
+      "importance": "AI 모델 개발에 필요한 기초 데이터 처리 역량",
+      "required": true
+    },
+    {
+      "jobId": "mock-ai-engineer", "jobName": "AI 엔지니어",
+      "skillId": "mock-python-basics", "skillName": "Python 기초",
+      "description": "변수, 자료구조, 반복문과 함수로 작은 프로그램을 작성하는 기술",
+      "prerequisiteIds": [], "required": true, "difficulty": "입문"
+    },
+    {
+      "jobId": "mock-ai-engineer", "jobName": "AI 엔지니어",
+      "skillId": "mock-numpy", "skillName": "NumPy",
+      "description": "수치 배열을 다루고 여러 값에 대한 연산을 한 번에 수행하는 Python 라이브러리",
+      "prerequisiteIds": ["mock-python-basics"], "prerequisites": ["Python 기초"],
+      "learningTopics": ["배열", "브로드캐스팅"], "required": false, "difficulty": "기초"
+    },
+    {
+      "jobId": "mock-ai-engineer", "jobName": "AI 엔지니어",
+      "skillId": "mock-pandas", "skillName": "Pandas",
+      "description": "표 형식 데이터를 읽고 정리하며 그룹별로 집계하는 Python 라이브러리",
+      "prerequisiteIds": ["mock-python-basics"], "prerequisites": ["Python 기초"],
+      "learningTopics": ["DataFrame", "결측치", "groupby"], "required": true, "difficulty": "기초"
+    },
+    {
+      "jobId": "mock-ai-engineer", "jobName": "AI 엔지니어",
+      "skillId": "mock-feature-engineering", "skillName": "특성 공학",
+      "description": "수집한 데이터를 모델 학습에 사용할 수 있는 입력 변수로 변환하는 실습",
+      "prerequisiteIds": ["mock-numpy", "mock-pandas"], "prerequisites": ["NumPy", "Pandas"],
+      "required": true, "difficulty": "중급"
+    },
+    {
+      "jobId": "mock-ai-engineer", "jobName": "AI 엔지니어",
+      "skillId": "mock-model-evaluation", "skillName": "모델 평가",
+      "description": "검증 데이터와 평가 지표를 이용해 모델의 일반화 성능을 확인하는 과정",
+      "prerequisiteIds": ["mock-feature-engineering", "mock-data-analysis"],
+      "prerequisites": ["특성 공학", "데이터 분석"], "required": true, "difficulty": "중급"
+    },
+    {
+      "jobId": "mock-data-analyst", "jobName": "데이터 분석가",
+      "skillId": "mock-sql", "skillName": "SQL",
+      "description": "데이터베이스에서 조건에 맞는 데이터를 조회하고 집계하는 언어",
+      "prerequisiteIds": [], "required": true
+    },
+    {
+      "jobId": "mock-data-analyst", "jobName": "데이터 분석가",
+      "skillId": "mock-visualization", "skillName": "데이터 시각화",
+      "description": "지표의 차이와 흐름을 명확한 그래프로 보고하는 기술",
+      "prerequisiteIds": ["mock-sql"], "prerequisites": ["SQL"], "required": true
+    }
+  ],
+  "career_roles": [
+    {
+      "id": "mock-data-analyst", "name": "데이터 분석가",
+      "description": "질문을 지표로 정의하고 데이터를 조회·분석해 의사결정을 돕는다.",
+      "interests": ["데이터 분석", "데이터 시각화"]
+    },
+    {
+      "id": "mock-ai-engineer", "name": "AI 엔지니어",
+      "description": "데이터를 가공하고 모델을 구현·평가해 예측 기능을 개발한다.",
+      "interests": ["AI 개발", "머신러닝", "데이터 분석"]
+    }
+  ]
+}
