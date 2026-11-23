@@ -142,6 +142,20 @@ export interface StartupCatalog {
 }
 export type CareerInterest = "employment" | "startup";
 
+export interface OpportunityEvidence {
+  postingId: string; version: number; sectionId: string; quote: string; sourceUrl: string;
+  basis?: "metadata" | "source";
+}
+export interface OpportunitySearchResult {
+  query: string; mode: "keyword" | "hybrid" | "keyword_fallback"; indexVersion: string;
+  total: number; nextOffset: number | null;
+  hits: { postingId: string; version: number; score: number; evidence: OpportunityEvidence[] }[];
+}
+export interface OpportunityExplanation {
+  query: string; mode: string;
+  items: { postingId: string; related: OpportunityEvidence[]; checks: OpportunityEvidence[] }[];
+}
+
 export type Verdict = "pass" | "fail" | "check";
 
 export interface ConditionResult {
@@ -218,4 +232,14 @@ export interface ChatAnswer {
   text: string;
   citations: { sectionId: string; version: number }[];
   held: boolean; // 근거 부족으로 답변 보류
+}
+
+export interface StartupPlan {
+  idea: string; customer: string; artifacts: string; goal: string; action: string; turns: number;
+  opportunity?: { id: string; title: string; version: number; source_url: string } | null;
+  nodes: {
+    id: string; title: string; action: string; completion: string; reason: string;
+    completed: boolean; active: boolean; reuse: string[]; requires?: string[]; stage?: number;
+    evidence?: { posting_id: string; version: number; title: string; quote: string; source_url: string }[];
+  }[];
 }

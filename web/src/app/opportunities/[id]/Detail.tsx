@@ -5,6 +5,7 @@ import { ArrowUpRight, BellPlus, BellOff, CheckSquare, History, Square } from "l
 import { RequireProfile } from "@/components/RequireProfile";
 import { ChatPanel } from "@/components/ChatPanel";
 import { ProcessView } from "@/components/ProcessView";
+import { OpportunityReason } from "@/components/OpportunityReason";
 import { AiNotice, DDay, Empty, SourceLine, TypeTag, VerdictBadge, VerdictIcon, VirtualTag, Warn } from "@/components/ui";
 import { useStore } from "@/lib/store";
 import { evaluate, fmt, latest } from "@/lib/engine";
@@ -42,7 +43,15 @@ function Body() {
             {o.period && ` · 활동 ${o.period}`} · 마감 {o.deadlineStatus === "unknown" ? "원문 확인 필요" : fmt(v.deadline, o.deadlineStatus !== 'date_only')}
           </p>
           <SourceLine opp={o} />
+          <OpportunityReason id={o.id} />
           <AiNotice className="mt-1" />
+          {o.startup && p.careerInterest === "startup" && s.startupPlan?.action === "competition" && (
+            <div className="mt-3 space-y-2">
+              <button className="btn-primary" onClick={() => void s.selectStartupOpportunity(o.id)}>이 공고 준비하기</button>
+              {s.startupPlan.opportunity?.id === o.id && <Link href="/tree" className="ml-2 text-sm underline">우리 팀 제출물 트리 보기</Link>}
+              {s.startupPlanError && <p role="alert" className="text-sm text-danger">{s.startupPlanError}</p>}
+            </div>
+          )}
           {!o.reviewed && (
             <div className="mt-3">
               <Warn>{o.startup ? '공개 공고에서 자동 추출한 시연 자료예요. 모집 상태·지원 자격·제출물은 원문에서 확인해 주세요.' : `AI 구조화 신뢰도 ${o.confidence}로 검수 전이에요. 아래 내용보다 원문을 먼저 확인하세요.`}</Warn>

@@ -28,6 +28,9 @@ export function OppCard({ r, now, isNew }: { r: Recommendation; now: Date; isNew
           <li key={x}>· {x}</li>
         ))}
       </ul>
+      {r.retrievalEvidence?.[0] && <blockquote className="mt-2 line-clamp-3 border-l-2 border-line pl-2 text-xs text-ink/70">
+        {r.retrievalEvidence[0].sectionId.startsWith("title:") ? "공고 제목" : "공고 원문"} · {r.retrievalEvidence[0].quote}
+      </blockquote>}
     </Link>
   );
 }

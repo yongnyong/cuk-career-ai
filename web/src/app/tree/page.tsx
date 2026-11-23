@@ -11,7 +11,7 @@ import { listProofs, type ProofMeta } from "@/lib/files";
 import { Legend, NodeBox, StatusWindow } from "@/components/quest-ui";
 import { AiNotice, DDay, TypeTag, VirtualTag } from "@/components/ui";
 import { useStore } from "@/lib/store";
-import { countsTowardTrack, dday, recommend, type TreeNode } from "@/lib/engine";
+import { countsTowardTrack, dday, type TreeNode } from "@/lib/engine";
 import type { RecommendedQuest, TreeSignal, TreeDomain } from "@/lib/types";
 import { formatScore, jobById, meetsTarget, scaleOf, skillById } from "@/lib/data/catalog";
 import { AskNodeButton, useAssistantNode } from "@/components/Assistant";
@@ -168,7 +168,7 @@ function QuestDetail({ node, quest, loadAction, showAction }: {
   return (
     <div className="mt-2 space-y-1 border-l-2 border-go pl-2 text-xs">
       <p className="font-bold text-go">추천 퀘스트</p>
-      <p>{reason}</p>
+      <p>{node.personalReason ?? reason}</p>
       <EvidenceLinks signals={quest.signals} />
       {showAction && <p>{(actionId && Object.hasOwn(ACTION_TEXT, actionId) ? ACTION_TEXT[actionId] : undefined) ?? ACTION_TEXT[fallback]}</p>}
     </div>
@@ -219,21 +219,22 @@ function TreeView() {
   const now = s.nowDate;
   const { tree: allTree, recommendedQuest, treeProgress } = s.careerPath!;
   const mode = careerInterestOf(p);
-  const [domain, setDomain] = useState<TreeDomain>("specialist");
-  const tree = useMemo(() => mode === "startup" ? allTree : allTree.filter(n => routeFor(n).domain === domain), [allTree, mode, domain]);
+  const [selectedDomain, setDomain] = useState<TreeDomain>("specialist");
+  const domain = mode === "startup" && !allTree.some(n => n.route?.domain === "specialist") ? "common" : selectedDomain;
+  const tree = useMemo(() => allTree.filter(n => routeFor(n).domain === domain), [allTree, domain]);
   const openNode = (id: string) => {
     const node = allTree.find(n => n.skill === id);
-    if (node && mode === "employment") setDomain(routeFor(node).domain);
+    if (node) setDomain(routeFor(node).domain);
     setSel(id);
     requestAnimationFrame(() => requestAnimationFrame(() => { void flow.current?.fitView({ nodes: [{ id }], maxZoom: 1, duration: 300, padding: 0.5 }); }));
   };
   const readyCount = tree.filter((node) => node.state === "none" && !node.locked).length;
-  const recs = useMemo(() => recommend(s.opportunities, p, now), [s.opportunities, p, now]);
+  const recs = s.recommendations;
   const [sel, setSel] = useState<string | null>(null);
   const selNode = allTree.find((n) => n.skill === sel);
   const outcome = selNode && questOutcome(selNode);
   // 비서 카탈로그에는 직무 기본 노드만 있다. 공고·활동에서 더해진 노드는 이름만 넘긴다
-  const askNode = selNode ? { name: selNode.name, ...(jobById(p.jobId)?.nodes.some((n) => n.skill === selNode.skill) ? { skillId: selNode.skill } : {}) } : null;
+  const askNode = selNode ? { name: selNode.name, ...(selNode.skill.startsWith("SUP-") ? { startupNodeId: selNode.skill } : {}), ...(jobById(p.jobId)?.nodes.some((n) => n.skill === selNode.skill) ? { skillId: selNode.skill } : {}) } : null;
   useAssistantNode(askNode);
   const selectedQuest = recommendedQuest?.skillId === sel ? recommendedQuest : null;
   const routedQuest = selectedQuest?.signals[0]?.preparation ? selectedQuest : undefined;
@@ -323,13 +324,14 @@ function TreeView() {
         <div className="relative flex h-[620px] min-w-0 flex-col overflow-hidden rounded-lg border-2 border-edge bg-panel">
           <div className="flex flex-wrap items-center justify-between gap-2 border-b border-line px-3 py-2">
             <Legend />
-            {mode === "employment" && <div role="tablist" aria-label="스킬트리 영역" className="flex gap-2">
+            {s.startupPlanError && <p role="alert" className="text-xs text-danger">{s.startupPlanError}</p>}
+            {<div role="tablist" aria-label="스킬트리 영역" className="flex gap-2">
               {(["common", "specialist"] as const).map(value => {
                 const group = allTree.filter(n => routeFor(n).domain === value);
                 const core = group.filter(countsTowardTrack);
                 const pct = core.length ? Math.round(core.reduce((sum, n) => sum + (n.state === "verified" ? 1 : n.state === "self" ? 0.6 : 0), 0) / core.length * 100) : 0;
                 return <button key={value} role="tab" aria-selected={domain === value} className={domain === value ? "btn-primary text-xs" : "btn-ghost text-xs"} onClick={() => { setDomain(value); setSel(null); }}>
-                  {value === "common" ? "공통 역량" : "전공·직무 전문"} · {group.length}개 · {pct}%
+                  {mode === "startup" ? value === "common" ? "공통 준비" : "우리 팀 맞춤" : value === "common" ? "공통 역량" : "전공·직무 전문"} · {group.length}개 · {pct}%
                 </button>;
               })}
             </div>}
@@ -371,19 +373,23 @@ function TreeView() {
               <p className="pr-4 text-xs text-slate-500">{selNode.name} · {outcome.label}</p>
               <h3 className="font-bold">{outcome.title}</h3>
               <p className="mt-2 text-xs"><strong>완료 기준</strong> {outcome.completion}</p>
+              {selNode.personalReason && <p className="mt-2 text-xs">{selNode.personalReason}</p>}
+              {selNode.personalCompletion && !!selNode.evidence?.length && <div className="mt-2 text-xs"><EvidenceLinks signals={selNode.evidence} /></div>}
+              {selNode.skill.startsWith("SUP-") && s.startupPlan?.nodes.find(n => n.id === selNode.skill)?.action === "choose_opportunity" &&
+                <Link href="/opportunities" className="mt-2 block text-xs underline">지원할 창업 공고 고르기</Link>}
               {askNode && <AskNodeButton node={askNode} />}
               {selNode.commonExamOption && !countsTowardTrack(selNode) && <p className="mt-2 text-xs text-ink/70">목표에 맞으면 선택하세요. 취득 결과를 기록하면 추가 경험치를 받아요.</p>}
               {selNode.credentialOption && !selectedRoutes?.some(s => s.preparation?.action === selNode.credentialOption?.reason) &&
                 <p className="mt-2 text-xs"><strong>직무와의 연결</strong> {selNode.credentialOption.reason}</p>}
               <p className="mt-1 text-xs text-go">{progressionStage(selNode.depth, mode, mode === "employment" ? routeFor(selNode).domain : undefined).title}</p>
-              {[...selNode.prereq, ...selNode.sequence ?? []].some(id => allTree.some(n => n.skill === id && mode === "employment" && routeFor(n).domain !== domain)) &&
-                <div className="mt-2 space-y-1 text-xs"><p>다른 트리에서 이어지는 준비</p>{[...new Set([...selNode.prereq, ...selNode.sequence ?? []])].map(id => allTree.find(n => n.skill === id)).filter(n => n && mode === "employment" && routeFor(n).domain !== domain).map(n => n &&
+              {[...selNode.prereq, ...selNode.sequence ?? []].some(id => allTree.some(n => n.skill === id && routeFor(n).domain !== domain)) &&
+                <div className="mt-2 space-y-1 text-xs"><p>다른 트리에서 이어지는 준비</p>{[...new Set([...selNode.prereq, ...selNode.sequence ?? []])].map(id => allTree.find(n => n.skill === id)).filter(n => n && routeFor(n).domain !== domain).map(n => n &&
                   <button key={n.skill} className="block text-go underline" onClick={() => openNode(n.skill)}>{routeFor(n).domain === "common" ? "공통 역량" : "전공·직무 전문"} · {n.name} · {n.state === "none" ? "준비 전" : "완료"}</button>)}</div>}
               {selNode.route?.reason && <p className="mt-2 text-xs text-ink/70">{selNode.route.reason}</p>}
               {!!selNode.sequence?.length && <p className="mt-2 text-xs text-ink/70">먼저 준비하면 좋은 과제: {selNode.sequence.map(id => allTree.find(n => n.skill === id)?.name).join(", ")} · 지원 자격과는 별개인 권장 순서예요.</p>}
               {selNode.startup && <StartupDetail node={selNode} recommended={!!selectedQuest} />}
               {!selNode.startup && selectedQuest && !routedQuest && (
-                <QuestDetail node={selNode} quest={selectedQuest} loadAction={s.getQuestAction} showAction={!selectedRoutes?.length && !selNode.practice} />
+                <QuestDetail node={selNode} quest={selectedQuest} loadAction={s.getQuestAction} showAction={!selectedRoutes?.length && !selNode.practice && !selNode.personalCompletion} />
               )}
               {!selNode.startup && !!selectedRoutes?.length && <PreparationDetail node={selNode} signals={selectedRoutes} quest={routedQuest} />}
               {!selNode.startup && !selectedQuest && !selectedRoutes?.length && !!selNode.evidence?.length && (

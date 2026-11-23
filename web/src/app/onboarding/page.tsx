@@ -11,6 +11,8 @@ import type { Profile, SkillState } from "@/lib/types";
 import { careerInterestOf } from "@/lib/interest";
 import { startupSkills } from "@/lib/startup";
 
+import { AssistantChat } from "@/components/Assistant";
+
 const STEPS = ["기본 정보", "보유 역량 진단", "목표", "준비 시간"];
 const YEARS = Array.from({ length: 12 }, (_, i) => 2026 - i);
 
@@ -57,11 +59,20 @@ function Form({ start }: { start: Profile }) {
 
   const finish = () => {
     setProfile({ ...f, careerInterest: startup ? 'startup' : 'employment', jobId: startup ? 'founder' : f.jobId,
-      startup: startup ? { ...f.startup, stage: f.startup?.stage || 'pre' } : f.startup,
+      startup: startup ? { ...f.startup, stage: f.startup?.stage || undefined } : f.startup,
       pseudoId: session ?? f.pseudoId, createdAt: f.createdAt || new Date().toISOString() });
     router.push("/tree");
   };
 
+  if (startup && step > 0) return <div className="card mx-auto max-w-3xl p-6">
+    <h1 className="text-xl font-bold">우리 팀의 다음 준비를 찾아요</h1>
+    <AssistantChat large />
+    <div className="mt-4 flex gap-2">
+      <button className="btn-primary" onClick={finish}>내 스킬트리 보기</button>
+      <button className="btn-ghost" onClick={finish}>나중에 답하기</button>
+      <button className="btn-ghost" onClick={() => setStep(0)}>기본 정보 수정</button>
+    </div>
+  </div>;
   return (
     <div className="mx-auto max-w-3xl">
       <div className="card p-6">
@@ -83,7 +94,7 @@ function Form({ start }: { start: Profile }) {
                   <label key={value} className="rounded-lg border border-line px-4 py-2 text-sm">
                     <input type="radio" name="careerInterest" checked={careerInterestOf(f) === value} onChange={() => setF({ ...f, careerInterest: value,
                       jobId: value === 'startup' ? 'founder' : (jobById(f.jobId)?.base === 'founder' || f.jobId === 'founder' ? '' : f.jobId),
-                      startup: value === 'startup' ? { ...f.startup, stage: f.startup?.stage || 'pre' } : f.startup })} className="mr-2" />
+                      startup: value === 'startup' ? { ...f.startup, stage: f.startup?.stage || undefined } : f.startup })} className="mr-2" />
                     {value === 'startup' ? '창업' : '취업'}
                   </label>
                 ))}

@@ -5,7 +5,7 @@ import { useRouter } from "next/navigation";
 import { ChevronRight, KeyRound, Swords } from "lucide-react";
 import { useStore } from "@/lib/store";
 import { useMounted } from "@/lib/useMounted";
-import { buildCareerPath, dday, recommend } from "@/lib/engine";
+import { buildCareerPath, dday } from "@/lib/engine";
 import { DEPARTMENTS } from "@/lib/data/departments";
 import { PERSONAS } from "@/lib/data/personas";
 import { recommendedTitle } from "@/lib/questOutcome";
@@ -99,7 +99,7 @@ function Today() {
   const s = useStore();
   const p = s.profile!;
   const now = s.nowDate;
-  const recs = useMemo(() => recommend(s.opportunities, p, now), [s.opportunities, p, now]);
+  const recs = s.recommendations;
   const urgent = [...recs].sort((a, b) => dday(a.opp, now) - dday(b.opp, now)).slice(0, 3);
   const { recommendedQuest: next, treeProgress, tree } = s.careerPath!;
   const nextNode = next && tree.find(n => n.skill === next.skillId);

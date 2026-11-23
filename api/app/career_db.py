@@ -5,7 +5,7 @@ from contextlib import closing
 from pathlib import Path
 from typing import Any
 
-from sqlalchemy import JSON, BigInteger, String, create_engine
+from sqlalchemy import JSON, BigInteger, Integer, String, Text, create_engine
 from sqlalchemy.engine import make_url
 from sqlalchemy.orm import DeclarativeBase, Mapped, mapped_column, sessionmaker
 
@@ -29,6 +29,22 @@ class Posting(CareerBase):
     raw_hash: Mapped[str] = mapped_column(String(64))
     data: Mapped[dict[str, Any] | None] = mapped_column(JSON, nullable=True)
     checked_at: Mapped[int] = mapped_column(BigInteger)
+
+
+class SearchSection(CareerBase):
+    __tablename__ = "opportunity_search_sections"
+    id: Mapped[str] = mapped_column(String(64), primary_key=True)
+    posting_id: Mapped[str] = mapped_column(String(80), index=True)
+    kind: Mapped[str] = mapped_column(String(20), index=True)
+    version: Mapped[int] = mapped_column(Integer)
+    section_id: Mapped[str] = mapped_column(String(200))
+    title: Mapped[str] = mapped_column(Text)
+    source_url: Mapped[str] = mapped_column(Text)
+    quote: Mapped[str] = mapped_column(Text)
+    content_hash: Mapped[str] = mapped_column(String(64))
+    embedding: Mapped[list | None] = mapped_column(JSON, nullable=True)
+    embedding_model: Mapped[str | None] = mapped_column(String(100), nullable=True)
+    embedding_dimensions: Mapped[int | None] = mapped_column(Integer, nullable=True)
 
 
 CareerBase.metadata.create_all(career_engine)

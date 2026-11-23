@@ -102,7 +102,9 @@ def select_opportunities(data: CareerData, screen: Screen, message: str, facts: 
         return (-sum(r.verdict == "pass" for r in item.conditions),
                 -sum(len(term) >= 2 and term in text for term in interests), item.deadline, item.id)
 
-    eligible.sort(key=score)
+    focused = getattr(data, "focused_ids", lambda: None)()
+    if focused is None:
+        eligible.sort(key=score)
     return eligible[:3], None if eligible else "no_matching_opportunity"
 
 

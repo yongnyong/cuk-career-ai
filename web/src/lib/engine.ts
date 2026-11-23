@@ -14,7 +14,7 @@ import { questOutcome } from "./questOutcome";
 import { discoveredSignals, discoveredSkillById } from "./discoveredSkills";
 import { employmentRelevance, matchesEmploymentRole } from "./employmentMatch";
 import { credentialsForJob, type CareerCredential } from "./data/careerCredentials";
-import type { StartupCatalog, StartupNode } from "./types";
+import type { StartupCatalog, StartupNode, StartupPlan } from "./types";
 import type {
   ChatAnswer,
   Condition,
@@ -153,6 +153,7 @@ export interface Recommendation {
   score: number;
   reasons: string[];
   verdict: Verdict;
+  retrievalEvidence?: import("./types").OpportunityEvidence[];
 }
 
 export function recommend(opps: Opportunity[], p: Profile, now: Date): Recommendation[] {
@@ -220,6 +221,8 @@ export function preparationReferences(opps: Opportunity[], p: Profile, now: Date
 
 // ───────── 스킬트리
 export interface TreeNode {
+  personalCompletion?: string;
+  personalReason?: string;
   commonExamOption?: boolean;
   route?: import("./types").SkillRoute;
   startup?: StartupNode;
@@ -399,8 +402,8 @@ export function countsTowardTrack(node: TreeNode) {
     (e.basis === "required" || e.basis === "preferred") && e.preparation?.kind !== "suggested");
 }
 
-export function buildCareerPath(p: Profile, opps: Opportunity[], now: Date, snapshotSignals: TreeSignal[], startupCatalog?: StartupCatalog) {
-  if (careerInterestOf(p) === "startup" && startupCatalog) return buildStartupPath(p, opps, now, startupCatalog);
+export function buildCareerPath(p: Profile, opps: Opportunity[], now: Date, snapshotSignals: TreeSignal[], startupCatalog?: StartupCatalog, startupPlan?: StartupPlan) {
+  if (careerInterestOf(p) === "startup" && startupCatalog) return buildStartupPath(p, opps, now, startupCatalog, startupPlan);
   const job = jobById(p.jobId);
   const templateSkills = new Set(job?.nodes.map((node) => node.skill));
   const schoolSignals: TreeSignal[] = [];

@@ -144,6 +144,55 @@ def test_rule_engine_focus_limits_which_postings_are_recommended(fake):
     assert [o["id"] for o in focused["opportunities"]] == ["w24-77"]
 
 
+def test_rag_endpoints_share_rank_and_verified_evidence_with_chat(fake):
+    rows = []
+    for number in (1, 2):
+        row = {**OPP, "id": f"rag-{number}", "title": f"LLM 응답 평가 {number}",
+               "required": [], "applyUrl": f"https://example.org/rag/{number}",
+               "sections": [{"id": "role", "title": "업무", "text": "LLM 응답 비교 평가. SQL 활용 우대."}]}
+        rows.append(row)
+    with CareerSessionLocal() as db:
+        for row in rows:
+            db.merge(Posting(id=row["id"], raw_hash="rag", data=row, checked_at=1))
+        db.commit()
+    client = TestClient(main.app)
+    headers = demo_headers("demo-rag-api")
+    search = client.post("/api/assistant/opportunity-search",
+                         json={"query": "LLM 응답 평가", "kind": "employment"}, headers=headers)
+    assert search.status_code == 200, search.text
+    ids = [hit["postingId"] for hit in search.json()["hits"] if hit["postingId"].startswith("rag-")]
+    assert len(ids) == 2
+    response = client.post("/api/assistant/chat", headers=headers, json={
+        "message": "나한테 맞는 공고 알려줘", "conversationId": "rag-ranked",
+        "retrieval": {"query": "LLM 응답 평가", "postingIds": list(reversed(ids))}})
+    assert response.status_code == 200, response.text
+    assert [item["id"] for item in response.json()["opportunities"]] == list(reversed(ids))
+    assert "LLM 응답 비교 평가" in response.json()["answer"]
+    empty = client.post("/api/assistant/chat", headers=headers, json={
+        "message": "나한테 맞는 공고 알려줘", "conversationId": "rag-empty",
+        "retrieval": {"query": "아무 결과도 없음", "postingIds": []}})
+    assert empty.json()["opportunities"] == []
+    explanation = client.post("/api/assistant/opportunity-explanation", headers=headers,
+                              json={"query": "SQL 활용", "postingIds": [ids[0]]})
+    assert explanation.status_code == 200
+    source = explanation.json()["items"][0]["related"][0]
+    assert source["quote"] == "LLM 응답 비교 평가. SQL 활용 우대."
+    assert source["version"] == 2 and source["postingId"] == ids[0]
+    assert "SQLD 필수" not in str(explanation.json())
+    unknown = {**rows[0], "id": "rag-unknown", "deadlineStatus": "unknown",
+               "applyUrl": "https://example.org/rag/unknown"}
+    with CareerSessionLocal() as db:
+        db.merge(Posting(id=unknown["id"], raw_hash="rag", data=unknown, checked_at=1))
+        db.commit()
+    unverified = client.post("/api/assistant/chat", headers=headers, json={
+        "message": "이 공고 원문을 설명해줘", "conversationId": "rag-unverified",
+        "context": {"page": "opportunities", "opportunityId": unknown["id"]}})
+    assert unverified.status_code == 200, unverified.text
+    assert "원문에서 확인" in unverified.json()["answer"]
+    assert "LLM 응답 비교 평가" in unverified.json()["answer"]
+    assert "unverified_opportunity_deadline" in unverified.json()["contextIssues"]
+
+
 def test_demo_identity_is_a_server_cookie_not_the_header(fake):
     a, b = TestClient(main.app), TestClient(main.app)
     for c in (a, b):  # 같은 시연 계정 이름이어도 쿠키(브라우저)가 다르면 대화·기억이 섞이지 않는다

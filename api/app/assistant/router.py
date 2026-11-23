@@ -5,6 +5,8 @@ from datetime import datetime
 from threading import Lock
 from time import monotonic
 from urllib.parse import quote
+from typing import Literal
+from pydantic import Field
 
 from fastapi import APIRouter, Depends, HTTPException, Request, Response
 from fastapi.concurrency import run_in_threadpool
@@ -53,6 +55,19 @@ class HistoryResponse(Contract):
     messages: list[HistoryItem]
 
 
+class OpportunitySearchRequest(Contract):
+    query: str = Field(max_length=600)
+    kind: Literal["employment", "startup"]
+    focus: str = Field(default="", max_length=240)
+    offset: int = Field(default=0, ge=0)
+    limit: int = Field(default=100, ge=1, le=500)
+
+
+class OpportunityExplanationRequest(Contract):
+    query: str = Field(max_length=600)
+    posting_ids: list[Identifier] = Field(min_length=1, max_length=3)
+
+
 class _RateLimit:
     def __init__(self, limit: int = 20, window: int = 60):
         self.limit = limit
@@ -90,7 +105,75 @@ def make_router(current_user: Callable, service: AssistantService) -> APIRouter:
 
     @router.post("/chat", response_model=ChatResult)
     def chat(body: ChatRequest, user_id: str = Depends(limited_owner)):
-        return service.chat(user_id, body)
+        from .startup_plan import chat_plan, is_plan_message
+        from .service_data import FOCUS, RETRIEVAL_QUERY
+        focus = FOCUS.set(tuple(body.retrieval.posting_ids)) if body.retrieval is not None else None
+        query = RETRIEVAL_QUERY.set(body.retrieval.query) if body.retrieval is not None else None
+        try:
+            state = service.store.get_state(user_id)
+            if body.mode == "startup_intake" or body.context.startup_node_id or (
+                state.startup_plan and is_plan_message(body.message)):
+                return chat_plan(service, user_id, body)
+            return service.chat(user_id, body)
+        finally:
+            if focus is not None:
+                FOCUS.reset(focus)
+            if query is not None:
+                RETRIEVAL_QUERY.reset(query)
+
+    @router.post("/opportunity-search")
+    def search_opportunities(body: OpportunitySearchRequest, user_id: str = Depends(owner)):
+        search = getattr(getattr(service, "data", None), "search", None)
+        if search is None:
+            raise HTTPException(503, "공고 검색을 준비 중이에요.")
+        return search.search(body.query, body.kind, offset=body.offset, limit=body.limit, focus=body.focus)
+
+    @router.post("/opportunity-explanation")
+    def explain_opportunities(body: OpportunityExplanationRequest, user_id: str = Depends(limited_owner)):
+        from ..career.opportunity_rag import explain
+        search = getattr(getattr(service, "data", None), "search", None)
+        if search is None:
+            raise HTTPException(503, "공고 근거를 읽지 못했어요.")
+        return explain(search, service.model, body.query, body.posting_ids)
+
+    from .startup_plan import PlanPatch, StartupPlan, select_opportunity, update_plan
+
+    @router.get("/startup-plan")
+    def startup_plan(user_id: str = Depends(owner)):
+        state = service.store.get_state(user_id)
+        return {"revision": state.revision, "plan": state.startup_plan}
+
+    @router.patch("/startup-plan")
+    def patch_startup_plan(body: PlanPatch, user_id: str = Depends(owner)):
+        from .errors import Conflict
+        state = service.store.get_state(user_id)
+        if state.revision != body.revision:
+            raise Conflict("다른 창에서 변경됐어요. 최신 계획을 읽고 다시 적용해 주세요.")
+        if any(k not in ("idea", "customer", "artifacts", "goal", "action") or len(v) > 240 for k, v in body.fields.items()):
+            raise HTTPException(422, "허용된 창업 정보만 수정할 수 있어요.")
+        if body.fields.get("action") not in (None, "", "preorder", "demo", "launch", "competition", "customer"):
+            raise HTTPException(422, "지원하는 창업 목표를 선택해 주세요.")
+        plan = update_plan(state.startup_plan or StartupPlan(), body.fields, new_project=body.new_project)
+        if body.opportunity_id:
+            if not plan.idea or not plan.customer or not plan.goal or plan.action != "competition":
+                raise HTTPException(422, "팀 정보와 대회·지원사업 목표를 먼저 설정해 주세요.")
+            posting = service.data.get_startup_posting(body.opportunity_id)
+            selected = select_opportunity(posting)
+            for node in plan.nodes:
+                if node.active and node.action == "choose_opportunity":
+                    node.completed = True
+            plan.opportunity = selected
+        if body.node_id:
+            node = next((n for n in plan.nodes if n.id == body.node_id), None)
+            if node is None or body.completed is None:
+                raise HTTPException(422, "이 계정의 퀘스트와 완료 여부를 확인하세요.")
+            if body.completed and any(n.id in node.requires and not n.completed for n in plan.nodes):
+                raise HTTPException(422, "먼저 필요한 시제품 퀘스트를 완료해 주세요.")
+            node.completed = body.completed
+        plan = update_plan(plan, {})
+        state.startup_plan = plan
+        service.store.save_state(user_id, state)
+        return {"revision": state.revision + 1, "plan": plan}
 
     @router.get("/conversations/{conversation_id}", response_model=HistoryResponse)
     def history(conversation_id: Identifier, user_id: str = Depends(owner)):

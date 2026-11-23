@@ -288,6 +288,17 @@ class AssistantService:
     def _opportunity_answer(self, message, opportunities):
         include_description = bool(re.search("무슨|내용|역할|활동|혜택|무엇|지원금|추천", message))
         answer = "\n\n".join(describe_opportunity(item, include_description) for item in opportunities)
+        search = getattr(self.data, "search", None)
+        if search is not None:
+            from ..career.opportunity_rag import explain, format_explanation
+            from .service_data import RETRIEVAL_QUERY
+            explanation_model = self.model if re.search("추천|이유|연결|맞|근거", message) else None
+            explanation = explain(search, explanation_model, RETRIEVAL_QUERY.get() or message,
+                                  [item.id for item in opportunities])
+            grounded = format_explanation(explanation)
+            if grounded:
+                answer += "\n\n목표와 연결되는 공고 근거\n" + grounded
+            return answer
         if re.search("준비|추천|방법|계획", message):
             try:
                 suggested = generate_for(
@@ -736,6 +747,20 @@ class AssistantService:
             elif issue == "unknown_opportunity":
                 topic_opportunity = None
                 result.answer = "이 공고를 찾지 못했어요. 공고를 다시 선택해 주세요."
+                search = getattr(self.data, "search", None)
+                selected_id = screen.opportunity_id or (previous.topic_opportunity_id if previous else None)
+                if search is not None and selected_id:
+                    from ..career.opportunity_rag import explain, format_explanation
+                    from .service_data import RETRIEVAL_QUERY
+                    _, postings = search.refresh()
+                    posting = postings.get(selected_id)
+                    if posting:
+                        grounded = format_explanation(explain(search, None, RETRIEVAL_QUERY.get() or message,
+                                                              [selected_id]))
+                        topic_opportunity = selected_id
+                        result.context_issues = ["unverified_opportunity_deadline"]
+                        result.answer = (catalog_text(posting["title"]) + "\n모집 일정과 지원 자격은 원문에서 확인해 주세요."
+                                         + ("\n\n" + grounded if grounded else ""))
             elif issue == "no_matching_opportunity":
                 result.answer = "현재 제공된 공고에서 조건에 맞는 접수 중인 공고를 찾지 못했어요."
             elif result.context_issues:

@@ -39,7 +39,8 @@ STAGE = {"pre": "예비창업자", "1": "창업 1년 미만", "3": "창업 3년 
 ID = re.compile(r"^[A-Za-z0-9][A-Za-z0-9._-]{0,79}$")
 URL = re.compile(r"^https?://[^\s]+$")
 # 이번 요청에서 웹 규칙 엔진이 이 학생에게 고른 공고 ID(직무·역량·전공 기준). 있으면 비서는 이 안에서만 공고를 고른다
-FOCUS: ContextVar[tuple[str, ...]] = ContextVar("assistant_focus", default=())
+FOCUS: ContextVar[tuple[str, ...] | None] = ContextVar("assistant_focus", default=None)
+RETRIEVAL_QUERY: ContextVar[str] = ContextVar("assistant_retrieval_query", default="")
 
 
 def _fact_id(text: str) -> str:
@@ -101,6 +102,8 @@ def to_opportunity(o: dict) -> Opportunity | None:
         deadline = datetime.fromisoformat(str(v["deadline"]).replace("Z", "+00:00"))
         if deadline.tzinfo is None:
             deadline = deadline.replace(tzinfo=KST)
+        if o.get("deadlineStatus") == "date_only":
+            deadline = deadline.astimezone(KST).replace(hour=23, minute=59, second=59, microsecond=999999)
         body = "\n".join(f"{s.get('title', '')}: {s.get('text', '')}" for s in o.get("sections") or [])
         url = o.get("applyUrl") or (o.get("source") or {}).get("url") or ""
         return Opportunity(
@@ -127,6 +130,17 @@ class ServiceCareerData:
         self._cache: tuple[float, dict[str, Opportunity]] = (0.0, {})
         self._lock = Lock()
 
+    def public_postings(self) -> list[dict]:
+        with self.career_session() as db:
+            rows = [row for row in db.scalars(select(self.Posting.data)).all() if row]
+        from ..startup_catalog import catalog
+        from ..startup_db import DEFAULT_DB, connect
+        if Path(DEFAULT_DB).is_file():
+            with connect(DEFAULT_DB) as db:
+                rows.extend(catalog(db)["opportunities"])
+        from ..career.opportunity_search import current_postings
+        return current_postings(rows)
+
     def get_profile(self, user_id: str) -> Profile:
         return profile_facts(self.profile_of(user_id))
 
@@ -134,20 +148,38 @@ class ServiceCareerData:
         with self._lock:
             at, items = self._cache
             if time.monotonic() - at > self.ttl:
-                with self.career_session() as db:
-                    rows = db.scalars(select(self.Posting.data)).all()
+                rows = self.public_postings()
                 items = {o.id: o for o in (to_opportunity(r) for r in rows if r) if o}
                 self._cache = (time.monotonic(), items)
             return items
 
     def get_opportunity(self, opportunity_id: str) -> Opportunity | None:
-        item = self._all().get(opportunity_id)
-        return item.model_copy(deep=True) if item else None
+        row = next((row for row in self.public_postings() if row["id"] == opportunity_id), None)
+        return to_opportunity(row) if row else None
+
+    def get_startup_posting(self, opportunity_id: str) -> dict | None:
+        with self.career_session() as db:
+            row = db.get(self.Posting, opportunity_id)
+            if row and row.data and row.data.get("startup"):
+                return row.data
+        # The public startup catalog has its own database and publish path.
+        # Read the same source as GET /api/startup/catalog when no career copy exists.
+        from ..startup_catalog import catalog
+        from ..startup_db import DEFAULT_DB, connect
+        if Path(DEFAULT_DB).is_file():
+            with connect(DEFAULT_DB) as db:
+                return next((item for item in catalog(db)["opportunities"] if item["id"] == opportunity_id), None)
+        return None
 
     def list_opportunities(self) -> list[Opportunity]:
-        items = self._all()
-        focus = [items[i] for i in FOCUS.get() if i in items]
-        return [item.model_copy(deep=True) for item in (focus or items.values())]
+        focus = FOCUS.get()
+        if focus is not None:
+            items = {item.id: item for item in (to_opportunity(row) for row in self.public_postings()) if item}
+            return [items[pid] for pid in focus if pid in items]
+        return [item.model_copy(deep=True) for item in self._all().values()]
+
+    def focused_ids(self):
+        return FOCUS.get()
 
     def get_skill_node(self, job_id, skill_id):
         return self.skills.get_skill_node(job_id, skill_id)

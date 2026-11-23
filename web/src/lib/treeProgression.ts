@@ -36,6 +36,7 @@ const startupId = (key: string) => key.startsWith("SU-") ? key : "SU-PREP-" + ke
 
 function initialDepth(node: TreeNode, mode: TreeMode) {
   if (mode === "startup") {
+    if (node.personalCompletion) return node.route?.stage ?? node.depth;
     const index = startupStages.findIndex(stage => stage.skills.some(key => startupId(key) === node.skill));
     return index < 0 ? 2 : index;
   }
@@ -67,13 +68,20 @@ export function assignProgression(nodes: TreeNode[], mode: TreeMode): TreeNode[]
     const node = byId.get(id);
     if (!node) throw new Error(`없는 선행 스킬: ${id}`);
     active.add(id);
-    const required = mode === "startup" ? [] : node.prereq;
+    const required = node.prereq;
     for (const parent of required) visit(parent);
     let depth = Math.max(initialDepth(node, mode), ...required.map(parent => depths.get(parent)! + 1));
-    const suggestions = mode === "startup" ? (startupSequence[id.replace("SU-PREP-", "")] ?? []).map(startupId)
+    const suggestions = mode === "startup" ? node.personalCompletion ? node.sequence ?? []
+      : (startupSequence[id.replace("SU-PREP-", "")] ?? []).map(startupId)
       : routeFor(node).recommendedBefore ?? [];
     const sequence: string[] = [];
     for (const parent of suggestions) {
+      if (node.personalCompletion) {
+        visit(parent);
+        sequence.push(parent);
+        depth = Math.max(depth, depths.get(parent)! + 1);
+        continue;
+      }
       // A suggested path must never contradict a mandatory path.
       const reaches = (current: string, seen = new Set<string>()): boolean => {
         if (current === id) return true;
