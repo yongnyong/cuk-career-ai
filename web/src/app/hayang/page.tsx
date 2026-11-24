@@ -25,7 +25,7 @@ function HayangBook() {
   return (
     <div className="space-y-6">
       <section className="window flex flex-wrap items-center gap-8 p-6">
-        <HayangFigure stage={stage} outfit={outfit} size="lg" className={stage >= 3 ? "ml-12" : ""} />
+        <HayangFigure stage={stage} outfit={outfit} size="lg" />
         <div className="min-w-60 flex-1 space-y-2">
           <p className="text-sm text-ink/65">하양이 도감 · 노드 {evo.done}/{evo.total} 완료({evo.pct}%)</p>
           <h1 className="text-2xl font-bold">{stageTitle(stage, outfit)}</h1>

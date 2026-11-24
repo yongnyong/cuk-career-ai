@@ -155,6 +155,25 @@ export interface RecommendedQuest {
   targetSkill?: string;
 }
 
+export interface CustomNode {
+  id: string;
+  name: string;
+  kind: SkillKind;
+  weight: 1 | 2 | 3; // 중요도(★). 원형 파형의 막대 길이
+  prereq: string[];
+  done: boolean;
+  note?: string; // 준비 팁·메모
+}
+
+export interface CustomTree {
+  id: string;
+  title: string; // 예: 토브넷 입사 루트
+  goal: string; // 목표 회사·직무, 원형 파형 가운데에 보인다
+  nodes: CustomNode[];
+  createdAt: string;
+  updatedAt: string;
+}
+
 export interface Profile {
   careerInterest?: CareerInterest;
   pseudoId: string; // 로그인 아이디(가명) — 이름·연락처·학번 전체는 받지 않는다
@@ -174,6 +193,7 @@ export interface Profile {
   // 창업 공고 판정에만 쓰는 선택 정보. stage: none(계획 없음) | pre(예비창업자) | 1·3·7·10(창업 n년 미만)
   startup?: { stage?: string; region?: string; birthYear?: number }; // 점수제·등급제 자격의 내 점수·등급(자기 보고)
   title?: string; // 장착한 칭호 id(하양이 도감에서 고름)
+  customTrees?: CustomTree[]; // 직접 만든 트리(예: 회사 입사 루트)
   createdAt: string;
 }
 

@@ -7,6 +7,7 @@ import { equippedTitle, RARITY_LABEL, titlesFor, type Title } from "@/lib/titles
 import { nodeWeights } from "@/lib/treeRadial";
 import { careerInterestOf } from "@/lib/interest";
 import { useStore } from "@/lib/store";
+import { useMounted } from "@/lib/useMounted";
 
 // 자동차·아파트는 하양이와 같은 굵은 남색 외곽선·단색 채색으로 그린 소품이다
 function Car() {
@@ -36,8 +37,11 @@ function Apartment() {
 /** 진화 단계 그림 하나(후광·자동차·아파트 포함) */
 export function HayangFigure({ stage, outfit, size = "md", className = "" }: { stage: HayangStage; outfit: Outfit; size?: "sm" | "md" | "lg"; className?: string }) {
   const box = size === "lg" ? "h-56 w-44" : size === "sm" ? "h-24 w-[4.7rem]" : "h-36 w-28";
+  // 자동차(왼쪽)·아파트(오른쪽)가 그림 밖으로 나가므로 그만큼 자리를 비워 둬 옆 글자를 가리지 않게 한다
+  const width = size === "lg" ? 176 : size === "sm" ? 75 : 112;
+  const room = { marginLeft: stage >= 3 ? Math.round(width * 0.4) : 0, marginRight: stage >= 4 ? Math.round(width * 0.5) : 0 };
   return (
-    <div className={`hayang relative ${box} ${className}`} data-stage={stage}>
+    <div className={`hayang relative shrink-0 ${box} ${className}`} style={room} data-stage={stage}>
       {stage >= 4 && <div className="absolute -right-[46%] bottom-[8%] h-[80%] w-[70%]"><Apartment /></div>}
       {stage >= 2 && <div className="hayang-halo absolute left-1/2 top-[-14%] aspect-square w-[160%] -translate-x-1/2 rounded-full" />}
       {/* eslint-disable-next-line @next/next/no-img-element */}
@@ -131,7 +135,7 @@ export function Hayang({ owner, jobId, startup, size = "md" }: {
   const newTitle = evolution ? titles.find((t) => t.id === STAGE_TITLE_ID[evolution.to]) : undefined;
 
   return (
-    <figure className={`flex shrink-0 flex-col items-center ${stage >= 4 ? "mx-12" : stage >= 3 ? "ml-10" : ""}`} aria-label={`${stageTitle(stage, outfit)}, 진화 ${stage}단계`}>
+    <figure className="flex shrink-0 flex-col items-center" aria-label={`${stageTitle(stage, outfit)}, 진화 ${stage}단계`}>
       <Link href="/hayang" aria-label="하양이 도감 열기"><HayangFigure stage={stage} outfit={outfit} size={size} /></Link>
       <figcaption className="mt-1 text-center text-[11px] leading-tight">
         <span className="block font-bold">{stageTitle(stage, outfit)}</span>
@@ -139,5 +143,27 @@ export function Hayang({ owner, jobId, startup, size = "md" }: {
       </figcaption>
       {evolution && <EvolutionOverlay {...evolution} outfit={outfit} newTitle={newTitle} onClose={() => setEvolution(null)} />}
     </figure>
+  );
+}
+
+/** 넓은 화면 왼쪽 기둥: 하양이와 칭호, 진화 진행도 */
+export function HayangRail() {
+  const s = useStore();
+  const mounted = useMounted();
+  const p = mounted ? s.profile : null;
+  const { equipped, evolution: evo } = useTitles();
+  if (!p) return null;
+  return (
+    <div className="window sticky top-20 flex flex-col items-center gap-3 px-3 py-5 text-center">
+      <Hayang owner={p.pseudoId} jobId={p.jobId} startup={careerInterestOf(p) === "startup"} />
+      {equipped && <TitleBadge title={equipped} />}
+      <div className="w-full space-y-1">
+        <div className="h-2 overflow-hidden rounded-full bg-line">
+          <div className="h-full bg-gradient-to-r from-go to-gold transition-all" style={{ width: `${evo.pct}%` }} />
+        </div>
+        <p className="text-[11px] text-ink/60">노드 {evo.done}/{evo.total} 완료</p>
+      </div>
+      <Link href="/hayang" className="btn-ghost w-full !py-1 text-xs">하양이 도감 · 칭호</Link>
+    </div>
   );
 }

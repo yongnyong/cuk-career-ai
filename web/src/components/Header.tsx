@@ -1,7 +1,7 @@
 "use client";
 import Link from "next/link";
 import { usePathname, useRouter } from "next/navigation";
-import { Bell, Clock, GitBranch, Home, LogOut, ScrollText, Sparkles, UserRound } from "lucide-react";
+import { Bell, Clock, GitBranch, Home, LogOut, PenLine, ScrollText, Sparkles, UserRound } from "lucide-react";
 import { DEMO_START, useStore } from "@/lib/store";
 import { fmt } from "@/lib/engine";
 import { useMounted } from "@/lib/useMounted";
@@ -10,6 +10,7 @@ const NAV = [
   { href: "/", label: "홈", icon: Home },
   { href: "/tree", label: "스킬트리", icon: GitBranch },
   { href: "/hayang", label: "하양이", icon: Sparkles },
+  { href: "/trees", label: "내 트리", icon: PenLine },
   { href: "/opportunities", label: "기회", icon: ScrollText },
   { href: "/notifications", label: "알림", icon: Bell },
 ];
@@ -24,7 +25,7 @@ export function Header() {
   const session = mounted ? store.session : null;
   const now = mounted ? store.now : DEMO_START;
   const unread = mounted ? store.notices.filter((n) => n.status === "sent").length : 0;
-  const active = (href: string) => (href === "/" ? path === "/" : path.startsWith(href));
+  const active = (href: string) => (href === "/" ? path === "/" : path === href || path.startsWith(href + "/"));
   const badge = (href: string) =>
     href === "/notifications" && unread > 0 ? (
       <span className="rounded-sm bg-gold px-1 text-[10px] font-bold text-on-gold">{unread}</span>
@@ -33,7 +34,7 @@ export function Header() {
   return (
     <>
       <header className="sticky top-0 z-20 border-b-2 border-edge bg-panel">
-        <div className="mx-auto flex h-14 max-w-6xl items-center gap-6 px-4">
+        <div className="mx-auto flex h-14 max-w-6xl items-center gap-6 px-4 2xl:max-w-[1880px]">
           <Link href="/" className="font-display text-xl leading-none">
             CUK Career AI
           </Link>

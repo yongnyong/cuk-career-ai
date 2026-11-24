@@ -339,7 +339,8 @@ export function AssistantHero() {
 }
 
 // 다른 모든 페이지 왼쪽 아래의 챗봇 버튼
-export function AssistantDock() {
+/** rail: 2xl 이상에서 오른쪽 기둥에 붙는 패널. float: 그보다 좁은 화면에서 오른쪽 아래에 뜨는 창 */
+export function AssistantDock({ variant = "float" }: { variant?: "rail" | "float" }) {
   const path = usePathname();
   const { profile } = useStore();
   const { open, setOpen } = useAssistant();
@@ -350,10 +351,11 @@ export function AssistantDock() {
   if (path.startsWith("/print")) return null;
   // 직접 열거나 닫기 전에는 넓은 화면에서 열어 둔다. 휴대폰과 가입·온보딩 화면에서는 입력란을 가리므로 닫아 둔다.
   const shown = open ?? (window.matchMedia("(min-width: 640px)").matches && !/^\/(signup|login|onboarding)/.test(path));
+  const rail = variant === "rail";
   return (
-    <div className="fixed bottom-20 left-4 z-40 sm:bottom-6 print:hidden">
+    <div className={rail ? "sticky top-20 print:hidden" : "fixed bottom-20 right-4 z-40 sm:bottom-6 print:hidden"}>
       {shown ? (
-        <div className="window flex h-[min(34rem,calc(100vh-8rem))] w-[min(24rem,calc(100vw-2rem))] flex-col overflow-hidden">
+        <div className={`window flex flex-col overflow-hidden ${rail ? "h-[calc(100vh-6.5rem)] w-full" : "h-[min(34rem,calc(100vh-8rem))] w-[min(24rem,calc(100vw-2rem))]"}`}>
           <div className="flex items-center gap-2 border-b-2 border-edge bg-navy px-3 py-2 text-white">
             <Bot size={16} />
             <span className="flex-1 text-sm font-bold">CUK Career AI</span>

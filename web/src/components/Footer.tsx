@@ -3,7 +3,7 @@ import Link from "next/link";
 export function Footer() {
   return (
     <footer className="mt-10 border-t border-line bg-panel pb-16 sm:pb-0">
-      <div className="mx-auto max-w-6xl space-y-1 px-4 py-5 text-xs text-slate-500">
+      <div className="mx-auto max-w-6xl space-y-1 px-4 py-5 text-xs text-slate-500 2xl:max-w-[1880px]">
         <p>
           AI가 정리한 정보이니 원문을 확인하세요. 신청·선발은 각 공식 신청처에서 진행되며, 이 서비스의 이동 버튼은 신청 완료를 의미하지
           않습니다.

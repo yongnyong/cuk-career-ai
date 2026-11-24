@@ -81,7 +81,8 @@ export function SkillWave({ tree, weights, current, title, subtitle, recommended
     const tip = R0 + bar.length / 2;
     const x = CX + Math.cos(bar.angle) * tip, y = CY + Math.sin(bar.angle) * tip;
     setZoom({ skill: bar.node.skill, origin: `${(x / W) * 100}% ${(y / H) * 100}%` });
-    window.setTimeout(() => onPick(bar.node.skill), 330);
+    // 트리 화면은 자세히 보기로 넘어가며 사라지고, 트리 만들기 화면은 그대로 남으니 확대를 되돌린다
+    window.setTimeout(() => { onPick(bar.node.skill); setZoom(null); }, 330);
   };
   const onKey = (e: KeyboardEvent) => {
     if (e.key === "ArrowRight" || e.key === "ArrowDown") setNeedle((s) => (s + 1) % SEMESTERS.length);
