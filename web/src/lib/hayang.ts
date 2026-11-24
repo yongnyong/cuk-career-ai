@@ -30,9 +30,26 @@ export function outfitFor(jobId: string, startup = false): Outfit {
   return BY_JOB[jobId] ?? (job?.base ? BY_JOB[job.base] : undefined) ?? "business";
 }
 
-/** 진화 단계: 1 과잠 학생 → 2 직업 착장 → 3 + 자동차 → 4 + 아파트. 스킬트리 EXP %로 정한다 */
+/**
+ * 진화 단계: 1 과잠 학생 → 2 직업 착장 → 3 + 자동차 → 4 + 아파트.
+ * EXP는 자기 체크를 60%만 인정해 검증 없이는 90%에 못 닿으므로, 진화는 '완료한 노드 비율'로 정한다.
+ * 노드 몇 개만 찍어도 변화가 보이도록 문턱을 낮게 잡았다.
+ */
 export type HayangStage = 1 | 2 | 3 | 4;
-export const STAGE_FROM = [0, 30, 60, 90] as const;
+export const STAGE_FROM = [0, 15, 40, 70] as const;
+
+/** 진화 진행도: 트리에서 완료한 노드 비율과 다음 단계까지 남은 노드 수 */
+export function evolution(tree: readonly { state: string }[]) {
+  const total = tree.length;
+  const done = tree.filter((n) => n.state !== "none").length;
+  const pct = total ? Math.round((done / total) * 100) : 0;
+  const stage = hayangStage(pct);
+  const nextPct = stage < 4 ? STAGE_FROM[stage as 1 | 2 | 3] : null;
+  // 반올림한 비율이 다음 문턱에 닿는 최소 추가 완료 수
+  let need = 0;
+  if (nextPct !== null) while (Math.round(((done + need) / Math.max(total, 1)) * 100) < nextPct && done + need < total) need++;
+  return { pct, stage, done, total, toNext: nextPct === null ? null : need };
+}
 
 export function hayangStage(pct: number): HayangStage {
   return pct >= STAGE_FROM[3] ? 4 : pct >= STAGE_FROM[2] ? 3 : pct >= STAGE_FROM[1] ? 2 : 1;

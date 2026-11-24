@@ -14,7 +14,7 @@ test('a fresh student only has the starter title, with progress shown for the re
   assert.equal(t['first-step'].earned, false);
   assert.equal(t.collector.progress, '0/2');
   assert.equal(t.job.name, '상담가 하양이');
-  assert.equal(t.job.progress, '0/30%');
+  assert.equal(t.job.progress, '0/15%');
 });
 
 test('titles come only from recorded progress', () => {

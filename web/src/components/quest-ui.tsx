@@ -107,7 +107,7 @@ export function StatusWindow({ profile, children, treeProgress }: {
   return (
     <section className="window p-4 sm:p-5">
       <div className="flex flex-wrap items-end gap-x-6 gap-y-3">
-        <Hayang owner={profile.pseudoId} jobId={profile.jobId} startup={careerInterestOf(profile) === "startup"} pct={prog.pct} />
+        <Hayang owner={profile.pseudoId} jobId={profile.jobId} startup={careerInterestOf(profile) === "startup"} />
         <div className="font-display leading-none">
           <span className="text-lg">Lv.</span>
           <span className="text-5xl">{prog.level}</span>

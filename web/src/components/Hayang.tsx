@@ -2,11 +2,10 @@
 import { useEffect, useMemo, useState } from "react";
 import { createPortal } from "react-dom";
 import Link from "next/link";
-import { hayangImage, hayangStage, outfitFor, STAGE_FROM, stageTitle, type HayangStage, type Outfit } from "@/lib/hayang";
+import { evolution, hayangImage, outfitFor, stageTitle, type HayangStage, type Outfit } from "@/lib/hayang";
 import { equippedTitle, RARITY_LABEL, titlesFor, type Title } from "@/lib/titles";
 import { nodeWeights } from "@/lib/treeRadial";
 import { careerInterestOf } from "@/lib/interest";
-import { progress } from "@/lib/engine";
 import { useStore } from "@/lib/store";
 
 // 자동차·아파트는 하양이와 같은 굵은 남색 외곽선·단색 채색으로 그린 소품이다
@@ -93,14 +92,15 @@ export function useTitles() {
   const s = useStore();
   const p = s.profile;
   const tree = useMemo(() => s.careerPath?.tree ?? [], [s.careerPath]);
-  const pct = s.careerPath?.treeProgress.pct ?? (p ? progress(p).pct : 0);
+  const evo = useMemo(() => evolution(tree), [tree]);
+  const pct = evo.pct;
   const titles = useMemo(() => {
     if (!p) return [];
     const weights = nodeWeights(tree);
     const core = new Set([...weights].filter(([, w]) => w.tier === 3).map(([skill]) => skill));
     return titlesFor({ tree, pct, outfit: outfitFor(p.jobId, careerInterestOf(p) === "startup"), questsStarted: s.followed.length, coreSkills: core });
   }, [p, tree, pct, s.followed.length]);
-  return { titles, equipped: titles.length ? equippedTitle(titles, p?.title) : undefined };
+  return { titles, equipped: titles.length ? equippedTitle(titles, p?.title) : undefined, evolution: evo };
 }
 
 export function EquippedTitle() {
@@ -108,13 +108,13 @@ export function EquippedTitle() {
   return equipped ? <TitleBadge title={equipped} /> : null;
 }
 
-/** 스킬트리 진행에 따라 진화하는 하양이. 단계가 오르면 전체 화면 진화 연출을 한 번 보여 준다 */
-export function Hayang({ owner, jobId, startup, pct, size = "md" }: {
-  owner: string; jobId: string; startup?: boolean; pct: number; size?: "md" | "lg";
+/** 스킬트리 노드를 완료할수록 진화하는 하양이. 단계가 오르면 전체 화면 진화 연출을 한 번 보여 준다 */
+export function Hayang({ owner, jobId, startup, size = "md" }: {
+  owner: string; jobId: string; startup?: boolean; size?: "md" | "lg";
 }) {
-  const stage = hayangStage(pct);
   const outfit = outfitFor(jobId, startup);
-  const { titles } = useTitles();
+  const { titles, evolution: evo } = useTitles();
+  const stage = evo.stage;
   const [evolution, setEvolution] = useState<{ from: HayangStage; to: HayangStage } | null>(null);
   useEffect(() => {
     // 이 브라우저에서 마지막으로 본 단계보다 올라갔으면 진화 연출. 저장소를 못 쓰면 연출만 생략한다
@@ -128,7 +128,6 @@ export function Hayang({ owner, jobId, startup, pct, size = "md" }: {
       }
     } catch { /* 저장소 없음 */ }
   }, [owner, stage]);
-  const next = stage < 4 ? STAGE_FROM[stage as Exclude<HayangStage, 4>] : null;
   const newTitle = evolution ? titles.find((t) => t.id === STAGE_TITLE_ID[evolution.to]) : undefined;
 
   return (
@@ -136,7 +135,7 @@ export function Hayang({ owner, jobId, startup, pct, size = "md" }: {
       <Link href="/hayang" aria-label="하양이 도감 열기"><HayangFigure stage={stage} outfit={outfit} size={size} /></Link>
       <figcaption className="mt-1 text-center text-[11px] leading-tight">
         <span className="block font-bold">{stageTitle(stage, outfit)}</span>
-        <span className="text-ink/60">{next === null ? "최종 진화 완료" : `다음 진화까지 ${next - pct}%`}</span>
+        <span className="text-ink/60">{evo.toNext === null ? "최종 진화 완료" : `다음 진화까지 노드 ${evo.toNext}개`}</span>
       </figcaption>
       {evolution && <EvolutionOverlay {...evolution} outfit={outfit} newTitle={newTitle} onClose={() => setEvolution(null)} />}
     </figure>

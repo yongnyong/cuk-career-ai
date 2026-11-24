@@ -1,5 +1,5 @@
 import type { TreeNode } from "./engine";
-import { OUTFIT_LABEL, type Outfit } from "./hayang";
+import { OUTFIT_LABEL, STAGE_FROM, type Outfit } from "./hayang";
 
 // 칭호: 스킬트리에서 실제로 한 일로만 얻는다. 희귀도는 색으로 구분한다
 export type Rarity = "common" | "rare" | "epic" | "legend";
@@ -7,7 +7,7 @@ export const RARITY_LABEL: Record<Rarity, string> = { common: "일반", rare: "�
 
 export interface TitleInput {
   tree: TreeNode[];
-  pct: number;
+  pct: number; // 완료한 노드 비율(진화 진행도)
   outfit: Outfit;
   questsStarted: number; // 지원 퀘스트로 시작한 공고 수
   coreSkills: ReadonlySet<string>; // 핵심(크기 '대') 노드
@@ -39,10 +39,10 @@ export function titlesFor(input: TitleInput): Title[] {
     { id: "maker", name: "프로젝트 장인", rarity: "rare", how: "프로젝트 노드 3개 완료", check: () => step(count(tree, (n) => n.kind === "프로젝트"), 3) },
     { id: "proven", name: "증명하는 자", rarity: "rare", how: "검증된 노드 1개", check: () => step(tree.filter((n) => n.state === "verified").length, 1) },
     { id: "core", name: "핵심만 찍는 자", rarity: "epic", how: "★ 핵심 노드 모두 완료", check: () => cores.length ? step(cores.filter(done).length, cores.length) : { earned: false, progress: "핵심 노드 없음" } },
-    { id: "job", name: `${OUTFIT_LABEL[outfit]} 하양이`, rarity: "epic", how: "진화 2단계(EXP 30%)", check: () => byPct(30) },
-    { id: "car", name: "차 뽑은 하양이", rarity: "epic", how: "진화 3단계(EXP 60%)", check: () => byPct(60) },
-    { id: "home", name: "내 집 마련", rarity: "legend", how: "진화 4단계(EXP 90%)", check: () => byPct(90) },
-    { id: "allclear", name: "올클리어", rarity: "legend", how: "스킬트리 100%", check: () => byPct(100) },
+    { id: "job", name: `${OUTFIT_LABEL[outfit]} 하양이`, rarity: "epic", how: `진화 2단계(노드 ${STAGE_FROM[1]}% 완료)`, check: () => byPct(STAGE_FROM[1]) },
+    { id: "car", name: "차 뽑은 하양이", rarity: "epic", how: `진화 3단계(노드 ${STAGE_FROM[2]}% 완료)`, check: () => byPct(STAGE_FROM[2]) },
+    { id: "home", name: "내 집 마련", rarity: "legend", how: `진화 4단계(노드 ${STAGE_FROM[3]}% 완료)`, check: () => byPct(STAGE_FROM[3]) },
+    { id: "allclear", name: "올클리어", rarity: "legend", how: "스킬트리 노드 전부 완료", check: () => byPct(100) },
   ];
   return list.map(({ check, ...t }) => {
     const r = check();
