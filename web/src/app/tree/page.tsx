@@ -3,33 +3,69 @@ import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import Link from "next/link";
 import { Background, Controls, Handle, MarkerType, Position, ReactFlow, type Edge, type Node, type NodeProps, type ReactFlowInstance } from "@xyflow/react";
 import "@xyflow/react/dist/style.css";
-import { Award, Check, KeyRound, Printer, Swords, X } from "lucide-react";
+import { AudioWaveform, Award, Check, ChevronRight, KeyRound, Network, Printer, Rows3, Swords, X, ZoomIn } from "lucide-react";
 import { RequireProfile } from "@/components/RequireProfile";
 import { OppCard } from "@/components/OppCard";
 import { ProofField } from "@/components/ProofField";
 import { listProofs, type ProofMeta } from "@/lib/files";
-import { Legend, NodeBox, StatusWindow } from "@/components/quest-ui";
+import { COMPACT_DIAMETER, Legend, NodeBox, StatusWindow } from "@/components/quest-ui";
 import { AiNotice, DDay, TypeTag, VirtualTag } from "@/components/ui";
 import { useStore } from "@/lib/store";
 import { dday, recommend, type TreeNode } from "@/lib/engine";
 import type { RecommendedQuest, TreeSignal } from "@/lib/types";
 import { formatScore, jobById, meetsTarget, scaleOf, skillById } from "@/lib/data/catalog";
 import { AskNodeButton, useAssistantNode } from "@/components/Assistant";
+import { SkillWave } from "@/components/SkillWave";
 import { questProgress } from "@/lib/quest";
 import { questOutcome, recommendedTitle } from "@/lib/questOutcome";
 import { careerInterestOf } from "@/lib/interest";
 import { layoutProgression, progressionStage } from "@/lib/treeProgression";
+import { currentSemester, layoutFocus, layoutRadial, nodeWeights, RADIAL_RX, RADIAL_RY, type Advantage, type WeightTier } from "@/lib/treeRadial";
 
-type SkillNodeData = { node: TreeNode; isNew: boolean; now: Date; proof: boolean; recommended: boolean };
+type SkillNodeData = { node: TreeNode; isNew: boolean; now: Date; proof: boolean; recommended: boolean; weight: WeightTier; radial: boolean; compact: boolean };
+// 방사형에서는 간선을 노드 중심끼리 직선으로 잇는다
+const CENTER_HANDLE = { top: "50%", left: "50%", opacity: 0 };
 
 function SkillNode({ data }: NodeProps<Node<SkillNodeData>>) {
+  // 원형 노드는 간선을 원의 중심에 잇는다
+  const handle = data.compact ? { ...CENTER_HANDLE, top: COMPACT_DIAMETER[data.weight] / 2 } : data.radial ? CENTER_HANDLE : undefined;
   return (
     <>
-      <Handle type="target" position={Position.Top} className="!border-0 !bg-edge" />
-      <NodeBox node={data.node} isNew={data.isNew} now={data.now} proof={data.proof} recommended={data.recommended} />
-      <Handle type="source" position={Position.Bottom} className="!border-0 !bg-edge" />
+      <Handle type="target" position={Position.Top} className="!border-0 !bg-edge" style={handle} />
+      <NodeBox node={data.node} isNew={data.isNew} now={data.now} proof={data.proof} recommended={data.recommended} weight={data.weight} compact={data.compact} />
+      <Handle type="source" position={Position.Bottom} className="!border-0 !bg-edge" style={handle} />
     </>
   );
+}
+type RingsData = { rings: { rx: number; ry: number }[]; sectors: { start: number; end: number }[]; width: number; height: number };
+function RingsNode({ data }: NodeProps<Node<RingsData>>) {
+  const cx = data.width / 2, cy = data.height / 2;
+  return <svg width={data.width} height={data.height} className="pointer-events-none">
+    {data.rings.map((r) => <ellipse key={r.rx} cx={cx} cy={cy} rx={r.rx} ry={r.ry} fill="none" stroke="#3d4680" strokeDasharray="4 6" />)}
+    {data.sectors.length > 1 && data.sectors.map((sector) => <line key={sector.start} x1={cx} y1={cy}
+      x2={cx + Math.cos(sector.start) * (cx - 10)} y2={cy + Math.sin(sector.start) * (cy - 10)} stroke="#2f3560" />)}
+  </svg>;
+}
+function HubNode({ data }: NodeProps<Node<{ title: string; detail: string }>>) {
+  return <div className="w-32 rounded-full border-2 border-go bg-paper px-3 py-2 text-center shadow-[0_0_24px_rgb(70_166_255/0.35)]">
+    <Handle type="source" position={Position.Top} style={CENTER_HANDLE} />
+    <p className="text-[11px] text-go">{data.detail}</p>
+    <p className="text-sm font-bold leading-tight">{data.title}</p>
+  </div>;
+}
+function SectorNode({ data }: NodeProps<Node<{ kind: string; count: number }>>) {
+  return <span className="chip border border-line bg-panel px-2 py-1 text-xs text-ink/80">{data.kind} {data.count}</span>;
+}
+function AdvantageNode({ data }: NodeProps<Node<Advantage>>) {
+  return <div className="w-48 rounded-md border-2 border-gold/70 bg-panel p-2 text-left">
+    <Handle type="target" position={Position.Top} style={CENTER_HANDLE} />
+    <p className="text-sm font-bold leading-tight">{data.label}</p>
+    <p className="flex items-center gap-1 text-[11px] font-bold text-gold">
+      {data.count > 0 ? <><KeyRound size={11} /> 공고 {data.count}건</> : <span className="font-normal text-ink/60">지금 열린 공고 없음</span>}
+      {data.detail && <span className="font-normal text-ink/60">· {data.detail}</span>}
+    </p>
+    {data.orgs.length > 0 && <p className="mt-0.5 text-[11px] text-ink/70">{data.orgs.join(" · ")}</p>}
+  </div>;
 }
 type StageData = { title: string; detail: string; width: number; count: number };
 function StageNode({ data }: NodeProps<Node<StageData>>) {
@@ -38,7 +74,7 @@ function StageNode({ data }: NodeProps<Node<StageData>>) {
     <p className="mt-1 text-xs text-ink/65">{data.detail}</p>
   </div>;
 }
-const nodeTypes = { skill: SkillNode, stage: StageNode };
+const nodeTypes = { skill: SkillNode, stage: StageNode, rings: RingsNode, hub: HubNode, sector: SectorNode, advantage: AdvantageNode };
 
 const ACTION_TEXT: Record<string, string> = {
   review_record: "보유 기록과 시험·자격의 인정 조건을 비교해 보세요.",
@@ -238,6 +274,16 @@ function TreeView() {
     return () => observer.disconnect();
   }, []);
   const layout = useMemo(() => layoutProgression(tree, columns), [tree, columns]);
+  const [view, setView] = useState<"wave" | "radial" | "steps">("wave");
+  // 자세히 보기로 들어간 노드들. 마지막이 지금 가운데에 있는 노드
+  const [focusPath, setFocusPath] = useState<string[]>([]);
+  const trail = useMemo(() => focusPath.filter((id) => tree.some((n) => n.skill === id)), [focusPath, tree]);
+  const focus = trail.length ? trail[trail.length - 1] : undefined;
+  const weights = useMemo(() => nodeWeights(tree), [tree]);
+  const radial = useMemo(() => layoutRadial(tree), [tree]);
+  const focusLayout = useMemo(() => focus ? layoutFocus(tree, focus, s.opportunities, now, p.jobId) : null, [tree, focus, s.opportunities, now, p.jobId]);
+  const centered = view === "radial" || !!focusLayout;
+  const openFocus = (skill: string) => { setFocusPath((path) => [...path.filter((id) => id !== skill), skill]); setSel(skill); };
   const focusStage = (depth: number) => {
     const band = layout.bands.find(b => b.depth === depth);
     if (band) void flow.current?.fitView({ nodes: [{ id: `stage-${depth}` }, ...band.skills.slice(0, columns * 2).map(id => ({ id }))], padding: 0.15, maxZoom: 1, duration: 300 });
@@ -251,25 +297,54 @@ function TreeView() {
   const cancel = (skill: string) => (s.setScore(skill, ""), s.setSkill(skill, "none"));
 
   const { nodes, edges } = useMemo(() => {
-    const nodes: Node[] = tree.map((n) => {
+    const positionOf = (skill: string) => focusLayout ? focusLayout.positions.get(skill) : view === "radial" ? radial.positions.get(skill) : layout.positions.get(skill);
+    const shown = tree.filter((n) => positionOf(n.skill));
+    const nodes: Node[] = shown.map((n) => {
       return {
         id: n.skill,
         type: "skill",
-        position: layout.positions.get(n.skill)!,
-        data: { node: n, isNew: n.opportunities.some((o) => newSet.has(o.id)), now, proof: !!proofs[n.skill], recommended: n.skill === questSkill },
+        position: positionOf(n.skill)!,
+        data: { node: n, isNew: n.opportunities.some((o) => newSet.has(o.id)), now, proof: !!proofs[n.skill], recommended: n.skill === questSkill, weight: weights.get(n.skill)?.tier ?? 2, radial: centered, compact: view === "radial" && !focusLayout },
       };
     });
-    nodes.push(...layout.bands.map(band => ({ id: `stage-${band.depth}`, type: "stage", position: { x: 0, y: band.y }, selectable: false, data: { ...progressionStage(band.depth, mode), width: band.width, count: band.skills.length } })));
-    const edges: Edge[] = tree.flatMap((n) =>
+    if (focusLayout) {
+      const radii = [...focusLayout.rings.map((ring) => Math.hypot(focusLayout.positions.get(ring[0].skill)!.x, focusLayout.positions.get(ring[0].skill)!.y)), focusLayout.outer];
+      const size = 2 * focusLayout.outer + 260;
+      nodes.unshift({ id: "rings", type: "rings", position: { x: 0, y: 0 }, selectable: false, zIndex: -1, data: { rings: radii.map((r) => ({ rx: r, ry: r })), sectors: [], width: size, height: size } });
+      nodes.push(...focusLayout.advantages.map((a) => ({ id: `adv-${a.id}`, type: "advantage", position: focusLayout.advantagePositions.get(a.id)!, selectable: false, data: a })));
+    } else if (view === "radial") {
+      const edge = radial.outer + 80;
+      nodes.unshift({ id: "rings", type: "rings", position: { x: 0, y: 0 }, selectable: false, zIndex: -1, data: {
+        rings: radial.rings.map(({ r }) => ({ rx: r * RADIAL_RX, ry: r * RADIAL_RY })), sectors: radial.sectors, width: 2 * edge * RADIAL_RX, height: 2 * edge * RADIAL_RY } });
+      nodes.push({ id: "hub", type: "hub", position: { x: 0, y: 0 }, selectable: false, data: { title: jobById(p.jobId)?.name ?? "목표 직무", detail: mode === "startup" ? "창업 준비" : "목표 직무" } });
+      nodes.push(...radial.sectors.map((sector) => {
+        const angle = (sector.start + sector.end) / 2;
+        return { id: `sector-${sector.kind}`, type: "sector", position: { x: Math.cos(angle) * (radial.outer + 100) * RADIAL_RX, y: Math.sin(angle) * (radial.outer + 100) * RADIAL_RY }, selectable: false, data: { kind: sector.kind, count: sector.count } };
+      }));
+    } else {
+      nodes.push(...layout.bands.map(band => ({ id: `stage-${band.depth}`, type: "stage", position: { x: 0, y: band.y }, selectable: false, data: { ...progressionStage(band.depth, mode), width: band.width, count: band.skills.length } })));
+    }
+    const edges: Edge[] = shown.flatMap((n) =>
       [...n.prereq.map((q) => ({ id: `${q}-${n.skill}`, source: q, target: n.skill, animated: n.state === "none" && !n.locked, style: { stroke: n.locked ? "#4a5078" : "#7c6cff", strokeWidth: 2 } })),
        ...(n.sequence ?? []).map((q) => ({ id: `startup-${q}-${n.skill}`, source: q, target: n.skill, style: { stroke: '#7c6cff', strokeWidth: 1.5, strokeDasharray: '5 4' } }))],
     );
-    for (const edge of edges) {
-      edge.markerEnd = { type: MarkerType.ArrowClosed, color: "#7c6cff" };
+    const visible = new Set(shown.map((n) => n.skill));
+    const kept: Edge[] = edges.filter((edge) => visible.has(edge.source) && visible.has(edge.target));
+    if (view === "radial" && !focusLayout) {
+      // 선수가 없는 노드는 가운데 목표 직무에서 뻗어 나간다
+      kept.push(...shown.filter((n) => ![...n.prereq, ...(n.sequence ?? [])].some((q) => visible.has(q)))
+        .map((n) => ({ id: `hub-${n.skill}`, source: "hub", target: n.skill, style: { stroke: "#46a6ff", strokeWidth: 1, strokeDasharray: "2 6" } })));
+    }
+    if (focusLayout) {
+      kept.push(...focusLayout.advantages.map((a) => ({ id: `adv-${a.id}`, source: focusLayout.center, target: `adv-${a.id}`, style: { stroke: "#f5c451", strokeWidth: 1.5, strokeDasharray: "5 4" } })));
+    }
+    for (const edge of kept) {
+      if (centered) edge.type = "straight";
+      else edge.markerEnd = { type: MarkerType.ArrowClosed, color: "#7c6cff" };
       edge.style = { ...edge.style, opacity: sel ? (edge.source === sel || edge.target === sel ? 1 : 0.12) : 0.4 };
     }
-    return { nodes, edges };
-  }, [tree, layout, mode, newSet, now, proofs, questSkill, sel]);
+    return { nodes, edges: kept };
+  }, [tree, layout, radial, focusLayout, view, centered, weights, p.jobId, mode, newSet, now, proofs, questSkill, sel]);
 
   const newOpp = s.opportunities.find((o) => newSet.has(o.id) && tree.some((n) => n.opportunities.includes(o)));
   const activeQuest = s.followed
@@ -293,29 +368,62 @@ function TreeView() {
       </StatusWindow>
 
       <div className="grid gap-4 lg:grid-cols-[1fr_340px]">
-        <div className="relative flex h-[620px] min-w-0 flex-col overflow-hidden rounded-lg border-2 border-edge bg-panel">
+        <div className={`relative flex ${view !== "steps" || focusLayout ? "h-[760px]" : "h-[620px]"} min-w-0 flex-col overflow-hidden rounded-lg border-2 border-edge bg-panel`}>
           <div className="flex flex-wrap items-center justify-between gap-2 border-b border-line px-3 py-2">
             <Legend />
             <span className="text-xs text-ink/60">전체 {tree.length}개 · 지금 도전 {readyCount}개</span>
           </div>
           <div className="space-y-2 border-b border-line px-3 py-2">
-            <p className="text-xs text-ink/70">위에서 아래로 기초 → 심화 · 수행 권장 순서{mode === "startup" && " · 점선은 권장 흐름"}</p>
-            <div className="flex flex-wrap gap-1" aria-label="준비 단계 이동">
-              {layout.bands.map((band, index) => <button key={band.depth} className="btn-ghost !px-2 !py-1 text-xs" onClick={() => focusStage(band.depth)}>{index + 1}. {progressionStage(band.depth, mode).title}</button>)}
-            </div>
+            {focusLayout ? <>
+              <nav className="flex flex-wrap items-center gap-1 text-xs" aria-label="자세히 보기 경로">
+                <button className="btn-ghost !px-2 !py-1 text-xs" onClick={() => setFocusPath([])}>전체 트리</button>
+                {trail.map((id, index) => <span key={id} className="flex items-center gap-1">
+                  <ChevronRight size={12} className="text-ink/50" />
+                  <button className={`btn-ghost !px-2 !py-1 text-xs ${index === trail.length - 1 ? "font-bold text-go" : ""}`} onClick={() => setFocusPath(trail.slice(0, index + 1))}>{tree.find((n) => n.skill === id)!.name}</button>
+                </span>)}
+              </nav>
+              <p className="text-xs text-ink/70">
+                안쪽 고리: 이 노드 다음에 열리는 노드{focusLayout.rings.length === 0 && "(아직 없어요)"} · 바깥 노란 카드: 이 역량이 쓰이는 직무와 공고를 낸 기관
+                {focusLayout.advantages.length === 0 && " · 아직 연결된 직무나 공고가 없어요"}
+              </p>
+            </> : <>
+              <div className="flex flex-wrap items-center gap-2">
+                <div className="flex overflow-hidden rounded-md border border-line text-xs" role="group" aria-label="트리 보기 방식">
+                  <button className={`flex items-center gap-1 px-2 py-1 ${view === "wave" ? "bg-go text-white" : ""}`} aria-pressed={view === "wave"} onClick={() => setView("wave")}><AudioWaveform size={12} /> 파형</button>
+                  <button className={`flex items-center gap-1 px-2 py-1 ${view === "radial" ? "bg-go text-white" : ""}`} aria-pressed={view === "radial"} onClick={() => setView("radial")}><Network size={12} /> 방사형</button>
+                  <button className={`flex items-center gap-1 px-2 py-1 ${view === "steps" ? "bg-go text-white" : ""}`} aria-pressed={view === "steps"} onClick={() => setView("steps")}><Rows3 size={12} /> 단계별</button>
+                </div>
+                <p className="text-xs text-ink/70">
+                  {view === "wave" ? "12시 1학년부터 시계방향으로 졸업까지 · 막대 길이는 중요도" : view === "radial" ? "가운데에서 바깥으로 기초 → 심화 · 방향은 분류" : "위에서 아래로 기초 → 심화 · 수행 권장 순서"}
+                  {mode === "startup" && " · 점선은 권장 흐름"} · <span className="text-gold">큰 노드(★ 핵심)부터 찍으면 돼요</span>
+                </p>
+              </div>
+              {view === "steps" && <div className="flex flex-wrap gap-1" aria-label="준비 단계 이동">
+                {layout.bands.map((band, index) => <button key={band.depth} className="btn-ghost !px-2 !py-1 text-xs" onClick={() => focusStage(band.depth)}>{index + 1}. {progressionStage(band.depth, mode).title}</button>)}
+              </div>}
+            </>}
           </div>
           <div ref={canvas} className="min-h-0 flex-1">
-            {tree.length === 0 ? <p className="p-5 text-sm text-ink/70">이 직무에 연결된 자격이나 작업물 퀘스트를 준비 중이에요.</p> : <ReactFlow
-              key={mode + columns + nodes.map((node) => node.id).sort().join("|")}
+            {tree.length === 0 ? <p className="p-5 text-sm text-ink/70">이 직무에 연결된 자격이나 작업물 퀘스트를 준비 중이에요.</p> : view === "wave" && !focusLayout ? <SkillWave
+              tree={tree}
+              weights={weights}
+              current={currentSemester(p.grade, now)}
+              title={jobById(p.jobId)?.name ?? "목표 직무"}
+              subtitle={mode === "startup" ? "창업 준비" : "목표 직무"}
+              recommended={questSkill}
+              onPick={openFocus}
+            /> : <ReactFlow
+              key={mode + columns + view + (focus ?? "") + nodes.map((node) => node.id).sort().join("|")}
               nodes={nodes}
               edges={edges}
               nodeTypes={nodeTypes}
               fitView
               minZoom={0.2}
-              fitViewOptions={{ nodes: nodes.filter(n => n.id === `stage-${layout.bands[0]?.depth}` || layout.bands[0]?.skills.slice(0, columns * 2).includes(n.id)), padding: 0.15, maxZoom: 1 }}
+              nodeOrigin={centered ? [0.5, 0.5] : [0, 0]}
+              fitViewOptions={centered ? { nodes: nodes.filter(n => n.id !== "rings"), padding: 0.08, maxZoom: 1 } : { nodes: nodes.filter(n => n.id === `stage-${layout.bands[0]?.depth}` || layout.bands[0]?.skills.slice(0, columns * 2).includes(n.id)), padding: 0.15, maxZoom: 1 }}
               onInit={(instance) => { flow.current = instance; }}
-              panOnScroll
-              zoomOnScroll={false}
+              panOnScroll={!centered}
+              zoomOnScroll={centered}
               onNodeClick={(_, n) => { if (n.type === "skill") setSel(n.id); }}
               nodesDraggable={false}
               colorMode="dark"
@@ -333,6 +441,11 @@ function TreeView() {
               <p className="pr-4 text-xs text-slate-500">{selNode.name} · {outcome.label}</p>
               <h3 className="font-bold">{outcome.title}</h3>
               <p className="mt-2 text-xs"><strong>완료 기준</strong> {outcome.completion}</p>
+              {focus !== selNode.skill && (
+                <button className="btn-ghost mt-2 w-full !py-1 text-xs" onClick={() => openFocus(selNode.skill)}>
+                  <ZoomIn size={12} /> 자세히 보기 · 다음 노드와 유리한 곳
+                </button>
+              )}
               {askNode && <AskNodeButton node={askNode} />}
               {selNode.credentialOption && !selectedRoutes?.some(s => s.preparation?.action === selNode.credentialOption?.reason) &&
                 <p className="mt-2 text-xs"><strong>직무와의 연결</strong> {selNode.credentialOption.reason}</p>}

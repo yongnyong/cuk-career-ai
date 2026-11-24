@@ -1,5 +1,5 @@
 "use client";
-import { Check, KeyRound, Lock, Swords } from "lucide-react";
+import { Check, KeyRound, Lock, Star, Swords } from "lucide-react";
 import { dday, progress, type TreeNode } from "@/lib/engine";
 import { formatScore, jobById } from "@/lib/data/catalog";
 import { getDepartment } from "@/lib/data/departments";
@@ -16,8 +16,14 @@ const STATUS = {
 
 export const nodeStatus = (n: TreeNode) => (n.state !== "none" ? "done" : n.locked ? "lock" : "go");
 
-export function NodeBox({ node, isNew, now, proof, recommended }: {
-  node: TreeNode; isNew?: boolean; now: Date; proof?: boolean; recommended?: boolean;
+// 중요도 크기: 1 작게, 2 보통, 3 크게(먼저 찍을 노드)
+const WEIGHT_BOX = { 1: "w-44 opacity-90", 2: "w-48", 3: "w-[216px] ring-2 ring-gold/70" } as const;
+
+// 방사형 전체 보기용 원형 노드(최대 112×86px). 원 크기가 중요도이고, 상세는 노드를 눌러 본다
+export const COMPACT_DIAMETER = { 1: 30, 2: 40, 3: 54 } as const;
+
+export function NodeBox({ node, isNew, now, proof, recommended, weight, compact }: {
+  node: TreeNode; isNew?: boolean; now: Date; proof?: boolean; recommended?: boolean; weight?: 1 | 2 | 3; compact?: boolean;
 }) {
   const st = STATUS[nodeStatus(node)];
   const outcome = questOutcome(node);
@@ -27,14 +33,28 @@ export function NodeBox({ node, isNew, now, proof, recommended }: {
   const hasPosting = node.evidence?.some(s => s.reference.scope === "role" && (s.basis === "required" || s.basis === "preferred"));
   const credential = node.kind === "자격증" || node.kind === "어학";
   const source = credential ? outcome?.label : node.startup ? '창업 공고 근거' : hasPosting ? "공고 근거" : node.practice ? "직무 연습" : node.evidence?.some(s => s.basis === "activity") ? "연계 활동" : undefined;
+  if (compact) {
+    const size = COMPACT_DIAMETER[weight ?? 2];
+    return (
+      <div title={title} className="flex w-28 flex-col items-center text-center">
+        <span style={{ width: size, height: size }} className={`relative grid place-items-center rounded-full border-2 ${st.box} ${st.badge} ${weight === 3 ? "ring-4 ring-gold/60" : ""} ${recommended ? "outline outline-2 outline-offset-4 outline-go" : ""} ${isNew ? "unlock" : ""}`}>
+          {weight === 3 ? <Star size={22} fill="currentColor" /> : <st.icon size={size / 2.4} />}
+          {opps.length > 0 && <span className="absolute -right-1 -top-1 grid size-4 place-items-center rounded-full bg-gold text-on-gold"><KeyRound size={9} /></span>}
+        </span>
+        <span className={`mt-1 line-clamp-2 leading-tight ${weight === 3 ? "text-[13px] font-bold text-gold" : weight === 1 ? "text-[11px] text-ink/75" : "text-xs font-semibold"}`}>{title}</span>
+        {recommended && <span className="text-[10px] font-bold leading-none text-go">추천 퀘스트</span>}
+      </div>
+    );
+  }
   return (
-    <div className={`w-48 overflow-hidden rounded-md border-2 bg-panel text-left ${st.box} ${isNew ? "unlock" : ""}`}>
-      <div className="flex items-center gap-2 px-2 py-2">
+    <div className={`${WEIGHT_BOX[weight ?? 2]} overflow-hidden rounded-md border-2 bg-panel text-left ${st.box} ${isNew ? "unlock" : ""}`}>
+      <div className={`flex items-center gap-2 px-2 ${weight === 3 ? "py-3" : "py-2"}`}>
         <span className={`grid size-7 shrink-0 place-items-center rounded ${st.badge}`}>
           <st.icon size={15} />
         </span>
         <span className="min-w-0">
-          <span title={title} className="block text-sm font-bold leading-tight">{title}</span>
+          <span title={title} className={`block font-bold leading-tight ${weight === 3 ? "text-base" : "text-sm"}`}>{title}</span>
+          {weight === 3 && <span className="flex items-center gap-0.5 text-[11px] font-bold text-gold"><Star size={11} fill="currentColor" /> 핵심 노드</span>}
           {recommended && <span className="block text-[11px] font-bold text-go">추천 퀘스트</span>}
           <span className="block text-[11px] opacity-70">
             {node.state === "none" ? st.label : node.score ? `완료 · ${formatScore(node.skill, node.score)}` : node.state === "verified" ? "완료 · 검증됨" : "완료 · 자기 보고"}

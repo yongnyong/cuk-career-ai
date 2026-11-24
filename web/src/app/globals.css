@@ -128,9 +128,37 @@ body {
 @utility unlock {
   animation: unlock 1.6s ease-out infinite;
 }
+/* 스킬트리 원형 파형: 처음 열 때 막대가 안쪽에서 자라고, 누른 노드로 빨려 들어간다 */
+@keyframes wave-grow {
+  from {
+    transform: scaleY(0);
+  }
+}
+.wave-bar {
+  transform-box: fill-box;
+  transform-origin: 50% 100%;
+  animation: wave-grow 0.7s cubic-bezier(0.2, 0.8, 0.2, 1) both;
+  transition: fill 0.4s, opacity 0.3s;
+}
+.wave-needle {
+  transition: transform 0.35s cubic-bezier(0.2, 0.8, 0.2, 1);
+}
+.wave-stage {
+  transform-origin: 50% 50%;
+  transition: transform 0.35s ease-in, opacity 0.35s ease-in;
+}
+.wave-stage.wave-zoom {
+  transform: scale(1.8);
+  opacity: 0;
+}
 @media (prefers-reduced-motion: reduce) {
-  .unlock {
+  .unlock,
+  .wave-bar {
     animation: none;
+  }
+  .wave-needle,
+  .wave-stage {
+    transition: none;
   }
 }
 
