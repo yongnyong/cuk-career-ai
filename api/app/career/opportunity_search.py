@@ -109,6 +109,21 @@ def posting_sections(rows):
 
 
 _STOP = {"취업", "창업", "추천", "공고", "준비", "지원", "위한", "모집", "있는", "하고", "싶어", "주세요"}
+_STOP.update({"에서", "에게", "으로", "자를", "기관", "학교", "기업", "연구원", "관련",
+              "담당", "업무", "경험", "기초", "활용", "가능", "우대", "채용", "인턴",
+              "합니다", "수행합니다", "담당합니다", "만난다", "개발한다"})
+# Only known domain nouns are extracted from compounds. Arbitrary two-character
+# overlaps (근무자를 / 내담자를) never become retrieval terms.
+_COMPOUNDS = (
+    "인공지능", "머신러닝", "딥러닝", "데이터셋", "벤치마크", "알고리즘",
+    "심리", "상담", "면접", "내담자", "청소년", "임상", "설문조사", "심리통계",
+    "사회조사분석사", "조직문화", "인사", "회계", "세무", "시제품", "제작비",
+    "개발비", "판로", "구매처", "바이어", "판매망", "유통", "사업계획서", "발표자료",
+    "창업경진대회", "소프트웨어", "프로토타입",
+    "모델", "학습", "평가", "배포", "쿼리",
+)
+_PARTICLES = re.compile(r"(?:에서는|에게는|으로는|에서|에게|으로|을|를|은|는|이|가|의|에|과|와)$")
+_BROAD = {"ai", "인공지능", "데이터", "분석", "연구", "모델", "개발", "학습", "상담"}
 _SUPPORT_TOPICS = (
     (r"판로|바이어|구매처", ("판로", "바이어", "구매처", "판매망", "유통")),
     (r"시제품.*(?:제작|지원|자금|개발)|제작비|개발비", ("시제품", "제작비", "개발비", "프로토타입", "poc")),
@@ -119,11 +134,19 @@ _SUPPORT_TOPICS = (
 def tokens(text):
     terms = []
     for word in re.findall(r"[a-z][a-z0-9+#.]*|[0-9]+|[가-힣]+", text.lower()):
+        root = _PARTICLES.sub("", word)
+        if len(root) >= 2:
+            word = root
         if word in _STOP:
             continue
         terms.append(word)
-        if re.fullmatch(r"[가-힣]{3,}", word):
-            terms.extend(word[i:i + 2] for i in range(len(word) - 1))
+        terms.extend(term for term in _COMPOUNDS if term != word and term in word)
+        if "-" in word:
+            terms.extend(term for term in word.split("-") if len(term) >= 2)
+        if word in {"ai", "인공지능"}:
+            terms.append("인공지능" if word == "ai" else "ai")
+        if word in {"시제품", "프로토타입"}:
+            terms.append("프로토타입" if word == "시제품" else "시제품")
     return terms
 
 
@@ -139,7 +162,8 @@ def keyword_scores(sections, query):
         for term in words & document.keys():
             frequency = document[term]
             idf = math.log(1 + (len(documents) - frequencies[term] + .5) / (frequencies[term] + .5))
-            score += idf * frequency * 2.2 / (frequency + 1.2 * (.25 + .75 * length / max(average, 1)))
+            weight = .15 if term in _BROAD else 1.
+            score += weight * idf * frequency * 2.2 / (frequency + 1.2 * (.25 + .75 * length / max(average, 1)))
         if score > 0:
             scores[section.id] = score
     return scores

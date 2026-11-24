@@ -7,6 +7,7 @@ import { Award, Check, KeyRound, Printer, Swords, X } from "lucide-react";
 import { RequireProfile } from "@/components/RequireProfile";
 import { OppCard } from "@/components/OppCard";
 import { ProofField } from "@/components/ProofField";
+import { CredentialEligibility } from "@/components/CredentialEligibility";
 import { listProofs, type ProofMeta } from "@/lib/files";
 import { Legend, NodeBox, StatusWindow } from "@/components/quest-ui";
 import { AiNotice, DDay, TypeTag, VirtualTag } from "@/components/ui";
@@ -228,7 +229,8 @@ function TreeView() {
     setSel(id);
     requestAnimationFrame(() => requestAnimationFrame(() => { void flow.current?.fitView({ nodes: [{ id }], maxZoom: 1, duration: 300, padding: 0.5 }); }));
   };
-  const readyCount = tree.filter((node) => node.state === "none" && !node.locked).length;
+  const readyCount = tree.filter((node) => node.state === "none" && !node.locked
+    && (!node.credentialEligibility || node.credentialEligibility.status === "ready")).length;
   const recs = s.recommendations;
   const [sel, setSel] = useState<string | null>(null);
   const selNode = allTree.find((n) => n.skill === sel);
@@ -373,6 +375,7 @@ function TreeView() {
               <p className="pr-4 text-xs text-slate-500">{selNode.name} · {outcome.label}</p>
               <h3 className="font-bold">{outcome.title}</h3>
               <p className="mt-2 text-xs"><strong>완료 기준</strong> {outcome.completion}</p>
+              <CredentialEligibility node={selNode} />
               {selNode.personalReason && <p className="mt-2 text-xs">{selNode.personalReason}</p>}
               {selNode.personalCompletion && !!selNode.evidence?.length && <div className="mt-2 text-xs"><EvidenceLinks signals={selNode.evidence} /></div>}
               {selNode.skill.startsWith("SUP-") && s.startupPlan?.nodes.find(n => n.id === selNode.skill)?.action === "choose_opportunity" &&

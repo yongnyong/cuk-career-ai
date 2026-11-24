@@ -14,6 +14,7 @@ import { questOutcome } from "./questOutcome";
 import { discoveredSignals, discoveredSkillById } from "./discoveredSkills";
 import { employmentRelevance, matchesEmploymentRole } from "./employmentMatch";
 import { credentialsForJob, type CareerCredential } from "./data/careerCredentials";
+import { assessCredential, type CredentialEligibility } from "./credentialEligibility";
 import type { StartupCatalog, StartupNode, StartupPlan } from "./types";
 import type {
   ChatAnswer,
@@ -243,6 +244,7 @@ export interface TreeNode {
   evidence?: TreeSignal[];
   practice?: Practice;
   credentialOption?: CareerCredential;
+  credentialEligibility?: CredentialEligibility;
 }
 
 export function buildTree(p: Profile, opps: Opportunity[], now: Date, extraSkills: readonly string[] = [], signals: ReadonlyMap<string, TreeSignal[]> = new Map()): TreeNode[] {
@@ -282,6 +284,7 @@ export function buildTree(p: Profile, opps: Opportunity[], now: Date, extraSkill
       route: n.route ?? (discovery ? { domain: discovery.domain, stage: sk.kind === "자격증" ? 1 : 2 } : undefined),
       name: plan?.discovery && sk.kind === "프로젝트" ? plan.action : sk.name,
       kind: sk.kind,
+      credentialEligibility: assessCredential(n.skill, p),
       required: n.required,
       prereq: n.prereq ?? [],
       depth: 0,

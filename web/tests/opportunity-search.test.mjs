@@ -74,3 +74,34 @@ test("employment and startup query construction excludes personal identifiers an
   assert.ok(!query.includes("2003") && !query.includes("부산"));
 });
 
+test("common held qualifications cannot redirect a counseling profile's search", () => {
+  const p = PERSONAS.find(p => p.id === "demo-jiwoo").profile;
+  assert.equal(opportunityQuery(p), opportunityQuery({ ...p, skills: { "SK-SQLD": "self", "SK-COMP": "self" } }));
+  assert(!opportunityQuery(p).includes("학교에서"));
+});
+
+test("unclassified counseling candidates need concrete work in verified source text", () => {
+  const p = PERSONAS.find(p => p.id === "demo-jiwoo").profile;
+  const restaurant = { ...posting("restaurant"), title: "홀 근무자", sections: [
+    { id: "duties", title: "업무", text: "고객 전화상담과 상품 판매" }] };
+  const counselor = { ...posting("counselor"), title: "심리상담", sections: [
+    { id: "duties", title: "업무", text: "내담자 심리검사와 상담면접을 보조합니다." }] };
+  const metadata = { ...hit(counselor), evidence: [{ ...hit(counselor).evidence[0],
+    basis: "metadata", sectionId: "title:0", quote: counselor.title }] };
+  assert.equal(retrievedRecommendations([counselor], p, now, result([metadata])).length, 0);
+  const rows = [restaurant, counselor];
+  assert.deepEqual(retrievedRecommendations(rows, p, now, result(rows.map(hit))).map(r => r.opp.id), ["counselor"]);
+});
+
+test("retrieval preserves rule-backed candidates even when text is sparse or no hits are returned", () => {
+  const mapped = { ...posting("mapped"), jobs: [profile.jobId], sections: [] };
+  assert.equal(recommend([mapped], profile, now).length, 1);
+  assert.deepEqual(retrievedRecommendations([mapped], profile, now, result([])).map(r => r.opp.id), ["mapped"]);
+});
+
+test("AI industry mentions and common Python preferences do not establish AI work", () => {
+  const row = posting("news");
+  row.sections[0].text = "인공지능 업계 소식과 Python 사용 우대";
+  assert.equal(retrievedRecommendations([row], profile, now, result([hit(row)])).length, 0);
+});
+

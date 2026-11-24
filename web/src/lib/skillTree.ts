@@ -1,6 +1,7 @@
 import type { Job, RecommendedQuest, SkillState, TreeSignal } from "./types";
+import type { CredentialEligibility } from "./credentialEligibility";
 
-type NodeInput = Job["nodes"][number] & { kind: string; state: SkillState };
+type NodeInput = Job["nodes"][number] & { kind: string; state: SkillState; credentialEligibility?: CredentialEligibility };
 
 const basisRank: Record<TreeSignal["basis"], number> = {
   required: 6, preferred: 5, activity: 2, school: 1,
@@ -72,6 +73,7 @@ export function selectRecommendedQuest(
 
   const candidates = nodes.flatMap((node) => {
     if (node.locked) return [];
+    if (node.state === "none" && node.credentialEligibility && node.credentialEligibility.status !== "ready") return [];
     const direct = signals.get(node.skill)?.filter((s) => s.status !== "matched") ?? [];
     const route = inherited.get(node.skill);
     const improve = belowTarget.has(node.skill);

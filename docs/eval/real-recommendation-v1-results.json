@@ -1,0 +1,1224 @@
+{
+  "baselineRef": "84e1de7",
+  "asOf": "2026-11-24T00:00:00.000Z",
+  "postings": 425,
+  "note": "실제 로컬 공개 공고의 동작 비교. 독립적인 적합성 정답표가 없어 추천 개선율을 계산하지 않음.",
+  "cases": [
+    {
+      "id": "demo-minji-3",
+      "beforeQuery": "AI 연구원 IT 기업에서 모델을 연구·개발한다 인공지능학과 Python 기초 머신러닝·딥러닝",
+      "currentQuery": "AI 연구원 Python 기초 머신러닝·딥러닝 인공지능 캡스톤디자인",
+      "rules": {
+        "count": 26,
+        "top3": [
+          {
+            "id": "hist-supp-webtoon-ai-202611",
+            "title": "네이버웹툰 AI Engineer 체험형 인턴",
+            "verdict": "check",
+            "sources": []
+          },
+          {
+            "id": "hist-9192c191b2c936082939",
+            "title": "㈜웨이버스 정기채용(개발/사업기획/PM/영업/AI 개발)",
+            "verdict": "check",
+            "sources": []
+          },
+          {
+            "id": "hist-supp-netmarble-ai-202611",
+            "title": "넷마블네오 AI Game Maker 채용연계형 인턴",
+            "verdict": "check",
+            "sources": []
+          }
+        ]
+      },
+      "rulesPreparation": {
+        "count": 4,
+        "top3": [
+          {
+            "id": "hist-supp-gangnamunni-eval-202611",
+            "title": "강남언니 AI Research Engineer · Agent Evaluation 인턴",
+            "verdict": "check",
+            "sources": []
+          },
+          {
+            "id": "hist-supp-naver-product-202611",
+            "title": "2027 NAVER 동계 인턴십 Product · AI 에이전트 평가 과제",
+            "verdict": "check",
+            "sources": []
+          },
+          {
+            "id": "hist-supp-wins-eval-202611",
+            "title": "윈스테크넷 상반기 인턴 · AI 평가·검증",
+            "verdict": "fail",
+            "sources": []
+          }
+        ]
+      },
+      "before": {
+        "count": 52,
+        "top3": [
+          {
+            "id": "hist-supp-webtoon-ai-202611",
+            "title": "네이버웹툰 AI Engineer 체험형 인턴",
+            "verdict": "check",
+            "sources": [
+              {
+                "postingId": "hist-supp-webtoon-ai-202611",
+                "version": 1,
+                "sectionId": "title:0",
+                "quote": "네이버웹툰 AI Engineer 체험형 인턴",
+                "sourceUrl": "https://recruit.webtoonscorp.com/rcrt/list.do?entTypeCdArr=0010&entTypeCdData=0010",
+                "basis": "metadata"
+              }
+            ]
+          },
+          {
+            "id": "hist-9192c191b2c936082939",
+            "title": "㈜웨이버스 정기채용(개발/사업기획/PM/영업/AI 개발)",
+            "verdict": "check",
+            "sources": [
+              {
+                "postingId": "hist-9192c191b2c936082939",
+                "version": 1,
+                "sectionId": "title:0",
+                "quote": "㈜웨이버스 정기채용(개발/사업기획/PM/영업/AI 개발)",
+                "sourceUrl": "https://www.jobkorea.co.kr/Recruit/GI_Read/50377164",
+                "basis": "metadata"
+              },
+              {
+                "postingId": "hist-9192c191b2c936082939",
+                "version": 1,
+                "sectionId": "전공1:0",
+                "quote": "기본우대 유관업무 경험자(인턴·알바), 석사학위 수여자, 박사학위 수여자, 관련 학과 전공자",
+                "sourceUrl": "https://www.jobkorea.co.kr/Recruit/GI_Read/50377164",
+                "basis": "source"
+              }
+            ]
+          },
+          {
+            "id": "hist-supp-netmarble-ai-202611",
+            "title": "넷마블네오 AI Game Maker 채용연계형 인턴",
+            "verdict": "check",
+            "sources": [
+              {
+                "postingId": "hist-supp-netmarble-ai-202611",
+                "version": 1,
+                "sectionId": "title:0",
+                "quote": "넷마블네오 AI Game Maker 채용연계형 인턴",
+                "sourceUrl": "https://www.seoil.ac.kr/seoil/595/subview.do?enc=Zm5jdDF8QEB8JTJGYmJzJTJGc2VvaWwlMkY3MCUyRjQxMDE4MCUyRmFydGNsVmlldy5kbyUzRg%3D%3D",
+                "basis": "metadata"
+              }
+            ]
+          }
+        ]
+      },
+      "current": {
+        "count": 26,
+        "top3": [
+          {
+            "id": "hist-supp-webtoon-ai-202611",
+            "title": "네이버웹툰 AI Engineer 체험형 인턴",
+            "verdict": "check",
+            "sources": [
+              {
+                "postingId": "hist-supp-webtoon-ai-202611",
+                "version": 1,
+                "sectionId": "title:0",
+                "quote": "네이버웹툰 AI Engineer 체험형 인턴",
+                "sourceUrl": "https://recruit.webtoonscorp.com/rcrt/list.do?entTypeCdArr=0010&entTypeCdData=0010",
+                "basis": "metadata"
+              }
+            ]
+          },
+          {
+            "id": "hist-supp-netmarble-ai-202611",
+            "title": "넷마블네오 AI Game Maker 채용연계형 인턴",
+            "verdict": "check",
+            "sources": [
+              {
+                "postingId": "hist-supp-netmarble-ai-202611",
+                "version": 1,
+                "sectionId": "title:0",
+                "quote": "넷마블네오 AI Game Maker 채용연계형 인턴",
+                "sourceUrl": "https://www.seoil.ac.kr/seoil/595/subview.do?enc=Zm5jdDF8QEB8JTJGYmJzJTJGc2VvaWwlMkY3MCUyRjQxMDE4MCUyRmFydGNsVmlldy5kbyUzRg%3D%3D",
+                "basis": "metadata"
+              }
+            ]
+          },
+          {
+            "id": "hist-9192c191b2c936082939",
+            "title": "㈜웨이버스 정기채용(개발/사업기획/PM/영업/AI 개발)",
+            "verdict": "check",
+            "sources": [
+              {
+                "postingId": "hist-9192c191b2c936082939",
+                "version": 1,
+                "sectionId": "title:0",
+                "quote": "㈜웨이버스 정기채용(개발/사업기획/PM/영업/AI 개발)",
+                "sourceUrl": "https://www.jobkorea.co.kr/Recruit/GI_Read/50377164",
+                "basis": "metadata"
+              }
+            ]
+          }
+        ]
+      },
+      "beforePreparation": {
+        "count": 39,
+        "top3": [
+          {
+            "id": "hist-supp-wins-eval-202611",
+            "title": "윈스테크넷 상반기 인턴 · AI 평가·검증",
+            "verdict": "fail",
+            "sources": [
+              {
+                "postingId": "hist-supp-wins-eval-202611",
+                "version": 1,
+                "sectionId": "skill-0:0",
+                "quote": "Python 기본 문법 지식",
+                "sourceUrl": "https://jobs.pathsdog.com/jobs/5054-%EC%9C%88%EC%8A%A4%ED%85%8C%ED%81%AC%EB%84%B7-2027%EB%85%84-%EC%83%81%EB%B0%98%EA%B8%B0-%EC%9D%B8%ED%84%B4-ai%ED%8F%89%EA%B0%80-%EA%B2%80%EC%A6%9D-ax%EA%B0%9C%EB%B0%9C",
+                "basis": "source"
+              },
+              {
+                "postingId": "hist-supp-wins-eval-202611",
+                "version": 1,
+                "sectionId": "title:0",
+                "quote": "윈스테크넷 상반기 인턴 · AI 평가·검증",
+                "sourceUrl": "https://jobs.pathsdog.com/jobs/5054-%EC%9C%88%EC%8A%A4%ED%85%8C%ED%81%AC%EB%84%B7-2027%EB%85%84-%EC%83%81%EB%B0%98%EA%B8%B0-%EC%9D%B8%ED%84%B4-ai%ED%8F%89%EA%B0%80-%EA%B2%80%EC%A6%9D-ax%EA%B0%9C%EB%B0%9C",
+                "basis": "metadata"
+              }
+            ]
+          },
+          {
+            "id": "hist-supp-gangnamunni-eval-202611",
+            "title": "강남언니 AI Research Engineer · Agent Evaluation 인턴",
+            "verdict": "check",
+            "sources": [
+              {
+                "postingId": "hist-supp-gangnamunni-eval-202611",
+                "version": 1,
+                "sectionId": "title:0",
+                "quote": "강남언니 AI Research Engineer · Agent Evaluation 인턴",
+                "sourceUrl": "https://tailf.teamgrit.co/p/4995/",
+                "basis": "metadata"
+              }
+            ]
+          },
+          {
+            "id": "hist-supp-naver-product-202611",
+            "title": "2027 NAVER 동계 인턴십 Product · AI 에이전트 평가 과제",
+            "verdict": "check",
+            "sources": [
+              {
+                "postingId": "hist-supp-naver-product-202611",
+                "version": 1,
+                "sectionId": "title:0",
+                "quote": "2027 NAVER 동계 인턴십 Product · AI 에이전트 평가 과제",
+                "sourceUrl": "https://recruit.navercorp.com/rcrt/view.do?annoId=30005630&lang=en",
+                "basis": "metadata"
+              },
+              {
+                "postingId": "hist-supp-naver-product-202611",
+                "version": 1,
+                "sectionId": "준비1:0",
+                "quote": "AI 에이전트 평가 시스템을 구성해 본 경험이 있으신 분",
+                "sourceUrl": "https://recruit.navercorp.com/rcrt/view.do?annoId=30005630&lang=en",
+                "basis": "source"
+              }
+            ]
+          }
+        ]
+      },
+      "currentPreparation": {
+        "count": 4,
+        "top3": [
+          {
+            "id": "hist-supp-wins-eval-202611",
+            "title": "윈스테크넷 상반기 인턴 · AI 평가·검증",
+            "verdict": "fail",
+            "sources": [
+              {
+                "postingId": "hist-supp-wins-eval-202611",
+                "version": 1,
+                "sectionId": "skill-0:0",
+                "quote": "Python 기본 문법 지식",
+                "sourceUrl": "https://jobs.pathsdog.com/jobs/5054-%EC%9C%88%EC%8A%A4%ED%85%8C%ED%81%AC%EB%84%B7-2027%EB%85%84-%EC%83%81%EB%B0%98%EA%B8%B0-%EC%9D%B8%ED%84%B4-ai%ED%8F%89%EA%B0%80-%EA%B2%80%EC%A6%9D-ax%EA%B0%9C%EB%B0%9C",
+                "basis": "source"
+              },
+              {
+                "postingId": "hist-supp-wins-eval-202611",
+                "version": 1,
+                "sectionId": "title:0",
+                "quote": "윈스테크넷 상반기 인턴 · AI 평가·검증",
+                "sourceUrl": "https://jobs.pathsdog.com/jobs/5054-%EC%9C%88%EC%8A%A4%ED%85%8C%ED%81%AC%EB%84%B7-2027%EB%85%84-%EC%83%81%EB%B0%98%EA%B8%B0-%EC%9D%B8%ED%84%B4-ai%ED%8F%89%EA%B0%80-%EA%B2%80%EC%A6%9D-ax%EA%B0%9C%EB%B0%9C",
+                "basis": "metadata"
+              }
+            ]
+          },
+          {
+            "id": "hist-supp-gangnamunni-eval-202611",
+            "title": "강남언니 AI Research Engineer · Agent Evaluation 인턴",
+            "verdict": "check",
+            "sources": [
+              {
+                "postingId": "hist-supp-gangnamunni-eval-202611",
+                "version": 1,
+                "sectionId": "title:0",
+                "quote": "강남언니 AI Research Engineer · Agent Evaluation 인턴",
+                "sourceUrl": "https://tailf.teamgrit.co/p/4995/",
+                "basis": "metadata"
+              }
+            ]
+          },
+          {
+            "id": "hist-supp-naver-product-202611",
+            "title": "2027 NAVER 동계 인턴십 Product · AI 에이전트 평가 과제",
+            "verdict": "check",
+            "sources": [
+              {
+                "postingId": "hist-supp-naver-product-202611",
+                "version": 1,
+                "sectionId": "준비1:0",
+                "quote": "AI 에이전트 평가 시스템을 구성해 본 경험이 있으신 분",
+                "sourceUrl": "https://recruit.navercorp.com/rcrt/view.do?annoId=30005630&lang=en",
+                "basis": "source"
+              },
+              {
+                "postingId": "hist-supp-naver-product-202611",
+                "version": 1,
+                "sectionId": "title:0",
+                "quote": "2027 NAVER 동계 인턴십 Product · AI 에이전트 평가 과제",
+                "sourceUrl": "https://recruit.navercorp.com/rcrt/view.do?annoId=30005630&lang=en",
+                "basis": "metadata"
+              }
+            ]
+          }
+        ]
+      }
+    },
+    {
+      "id": "demo-minji-4",
+      "beforeQuery": "AI 연구원 IT 기업에서 모델을 연구·개발한다 인공지능학과 Python 기초 머신러닝·딥러닝",
+      "currentQuery": "AI 연구원 Python 기초 머신러닝·딥러닝 인공지능 캡스톤디자인",
+      "rules": {
+        "count": 27,
+        "top3": [
+          {
+            "id": "hist-supp-webtoon-ai-202611",
+            "title": "네이버웹툰 AI Engineer 체험형 인턴",
+            "verdict": "check",
+            "sources": []
+          },
+          {
+            "id": "hist-9192c191b2c936082939",
+            "title": "㈜웨이버스 정기채용(개발/사업기획/PM/영업/AI 개발)",
+            "verdict": "check",
+            "sources": []
+          },
+          {
+            "id": "hist-supp-bos-ai-202611",
+            "title": "보스반도체 하반기 신입 엔지니어 · AI SW",
+            "verdict": "check",
+            "sources": []
+          }
+        ]
+      },
+      "rulesPreparation": {
+        "count": 3,
+        "top3": [
+          {
+            "id": "hist-supp-gangnamunni-eval-202611",
+            "title": "강남언니 AI Research Engineer · Agent Evaluation 인턴",
+            "verdict": "check",
+            "sources": []
+          },
+          {
+            "id": "hist-supp-naver-product-202611",
+            "title": "2027 NAVER 동계 인턴십 Product · AI 에이전트 평가 과제",
+            "verdict": "check",
+            "sources": []
+          },
+          {
+            "id": "hist-supp-wins-eval-202611",
+            "title": "윈스테크넷 상반기 인턴 · AI 평가·검증",
+            "verdict": "check",
+            "sources": []
+          }
+        ]
+      },
+      "before": {
+        "count": 53,
+        "top3": [
+          {
+            "id": "hist-supp-webtoon-ai-202611",
+            "title": "네이버웹툰 AI Engineer 체험형 인턴",
+            "verdict": "check",
+            "sources": [
+              {
+                "postingId": "hist-supp-webtoon-ai-202611",
+                "version": 1,
+                "sectionId": "title:0",
+                "quote": "네이버웹툰 AI Engineer 체험형 인턴",
+                "sourceUrl": "https://recruit.webtoonscorp.com/rcrt/list.do?entTypeCdArr=0010&entTypeCdData=0010",
+                "basis": "metadata"
+              }
+            ]
+          },
+          {
+            "id": "hist-9192c191b2c936082939",
+            "title": "㈜웨이버스 정기채용(개발/사업기획/PM/영업/AI 개발)",
+            "verdict": "check",
+            "sources": [
+              {
+                "postingId": "hist-9192c191b2c936082939",
+                "version": 1,
+                "sectionId": "title:0",
+                "quote": "㈜웨이버스 정기채용(개발/사업기획/PM/영업/AI 개발)",
+                "sourceUrl": "https://www.jobkorea.co.kr/Recruit/GI_Read/50377164",
+                "basis": "metadata"
+              },
+              {
+                "postingId": "hist-9192c191b2c936082939",
+                "version": 1,
+                "sectionId": "전공1:0",
+                "quote": "기본우대 유관업무 경험자(인턴·알바), 석사학위 수여자, 박사학위 수여자, 관련 학과 전공자",
+                "sourceUrl": "https://www.jobkorea.co.kr/Recruit/GI_Read/50377164",
+                "basis": "source"
+              }
+            ]
+          },
+          {
+            "id": "hist-supp-netmarble-ai-202611",
+            "title": "넷마블네오 AI Game Maker 채용연계형 인턴",
+            "verdict": "check",
+            "sources": [
+              {
+                "postingId": "hist-supp-netmarble-ai-202611",
+                "version": 1,
+                "sectionId": "title:0",
+                "quote": "넷마블네오 AI Game Maker 채용연계형 인턴",
+                "sourceUrl": "https://www.seoil.ac.kr/seoil/595/subview.do?enc=Zm5jdDF8QEB8JTJGYmJzJTJGc2VvaWwlMkY3MCUyRjQxMDE4MCUyRmFydGNsVmlldy5kbyUzRg%3D%3D",
+                "basis": "metadata"
+              }
+            ]
+          }
+        ]
+      },
+      "current": {
+        "count": 27,
+        "top3": [
+          {
+            "id": "hist-supp-webtoon-ai-202611",
+            "title": "네이버웹툰 AI Engineer 체험형 인턴",
+            "verdict": "check",
+            "sources": [
+              {
+                "postingId": "hist-supp-webtoon-ai-202611",
+                "version": 1,
+                "sectionId": "title:0",
+                "quote": "네이버웹툰 AI Engineer 체험형 인턴",
+                "sourceUrl": "https://recruit.webtoonscorp.com/rcrt/list.do?entTypeCdArr=0010&entTypeCdData=0010",
+                "basis": "metadata"
+              }
+            ]
+          },
+          {
+            "id": "hist-supp-netmarble-ai-202611",
+            "title": "넷마블네오 AI Game Maker 채용연계형 인턴",
+            "verdict": "check",
+            "sources": [
+              {
+                "postingId": "hist-supp-netmarble-ai-202611",
+                "version": 1,
+                "sectionId": "title:0",
+                "quote": "넷마블네오 AI Game Maker 채용연계형 인턴",
+                "sourceUrl": "https://www.seoil.ac.kr/seoil/595/subview.do?enc=Zm5jdDF8QEB8JTJGYmJzJTJGc2VvaWwlMkY3MCUyRjQxMDE4MCUyRmFydGNsVmlldy5kbyUzRg%3D%3D",
+                "basis": "metadata"
+              }
+            ]
+          },
+          {
+            "id": "hist-supp-bos-ai-202611",
+            "title": "보스반도체 하반기 신입 엔지니어 · AI SW",
+            "verdict": "check",
+            "sources": [
+              {
+                "postingId": "hist-supp-bos-ai-202611",
+                "version": 1,
+                "sectionId": "title:0",
+                "quote": "보스반도체 하반기 신입 엔지니어 · AI SW",
+                "sourceUrl": "https://cse.skku.edu/cse/notice_recruit.do?articleNo=228566&mode=view",
+                "basis": "metadata"
+              }
+            ]
+          }
+        ]
+      },
+      "beforePreparation": {
+        "count": 38,
+        "top3": [
+          {
+            "id": "hist-supp-wins-eval-202611",
+            "title": "윈스테크넷 상반기 인턴 · AI 평가·검증",
+            "verdict": "check",
+            "sources": [
+              {
+                "postingId": "hist-supp-wins-eval-202611",
+                "version": 1,
+                "sectionId": "skill-0:0",
+                "quote": "Python 기본 문법 지식",
+                "sourceUrl": "https://jobs.pathsdog.com/jobs/5054-%EC%9C%88%EC%8A%A4%ED%85%8C%ED%81%AC%EB%84%B7-2027%EB%85%84-%EC%83%81%EB%B0%98%EA%B8%B0-%EC%9D%B8%ED%84%B4-ai%ED%8F%89%EA%B0%80-%EA%B2%80%EC%A6%9D-ax%EA%B0%9C%EB%B0%9C",
+                "basis": "source"
+              },
+              {
+                "postingId": "hist-supp-wins-eval-202611",
+                "version": 1,
+                "sectionId": "title:0",
+                "quote": "윈스테크넷 상반기 인턴 · AI 평가·검증",
+                "sourceUrl": "https://jobs.pathsdog.com/jobs/5054-%EC%9C%88%EC%8A%A4%ED%85%8C%ED%81%AC%EB%84%B7-2027%EB%85%84-%EC%83%81%EB%B0%98%EA%B8%B0-%EC%9D%B8%ED%84%B4-ai%ED%8F%89%EA%B0%80-%EA%B2%80%EC%A6%9D-ax%EA%B0%9C%EB%B0%9C",
+                "basis": "metadata"
+              }
+            ]
+          },
+          {
+            "id": "hist-supp-gangnamunni-eval-202611",
+            "title": "강남언니 AI Research Engineer · Agent Evaluation 인턴",
+            "verdict": "check",
+            "sources": [
+              {
+                "postingId": "hist-supp-gangnamunni-eval-202611",
+                "version": 1,
+                "sectionId": "title:0",
+                "quote": "강남언니 AI Research Engineer · Agent Evaluation 인턴",
+                "sourceUrl": "https://tailf.teamgrit.co/p/4995/",
+                "basis": "metadata"
+              }
+            ]
+          },
+          {
+            "id": "hist-supp-naver-product-202611",
+            "title": "2027 NAVER 동계 인턴십 Product · AI 에이전트 평가 과제",
+            "verdict": "check",
+            "sources": [
+              {
+                "postingId": "hist-supp-naver-product-202611",
+                "version": 1,
+                "sectionId": "title:0",
+                "quote": "2027 NAVER 동계 인턴십 Product · AI 에이전트 평가 과제",
+                "sourceUrl": "https://recruit.navercorp.com/rcrt/view.do?annoId=30005630&lang=en",
+                "basis": "metadata"
+              },
+              {
+                "postingId": "hist-supp-naver-product-202611",
+                "version": 1,
+                "sectionId": "준비1:0",
+                "quote": "AI 에이전트 평가 시스템을 구성해 본 경험이 있으신 분",
+                "sourceUrl": "https://recruit.navercorp.com/rcrt/view.do?annoId=30005630&lang=en",
+                "basis": "source"
+              }
+            ]
+          }
+        ]
+      },
+      "currentPreparation": {
+        "count": 3,
+        "top3": [
+          {
+            "id": "hist-supp-wins-eval-202611",
+            "title": "윈스테크넷 상반기 인턴 · AI 평가·검증",
+            "verdict": "check",
+            "sources": [
+              {
+                "postingId": "hist-supp-wins-eval-202611",
+                "version": 1,
+                "sectionId": "skill-0:0",
+                "quote": "Python 기본 문법 지식",
+                "sourceUrl": "https://jobs.pathsdog.com/jobs/5054-%EC%9C%88%EC%8A%A4%ED%85%8C%ED%81%AC%EB%84%B7-2027%EB%85%84-%EC%83%81%EB%B0%98%EA%B8%B0-%EC%9D%B8%ED%84%B4-ai%ED%8F%89%EA%B0%80-%EA%B2%80%EC%A6%9D-ax%EA%B0%9C%EB%B0%9C",
+                "basis": "source"
+              },
+              {
+                "postingId": "hist-supp-wins-eval-202611",
+                "version": 1,
+                "sectionId": "title:0",
+                "quote": "윈스테크넷 상반기 인턴 · AI 평가·검증",
+                "sourceUrl": "https://jobs.pathsdog.com/jobs/5054-%EC%9C%88%EC%8A%A4%ED%85%8C%ED%81%AC%EB%84%B7-2027%EB%85%84-%EC%83%81%EB%B0%98%EA%B8%B0-%EC%9D%B8%ED%84%B4-ai%ED%8F%89%EA%B0%80-%EA%B2%80%EC%A6%9D-ax%EA%B0%9C%EB%B0%9C",
+                "basis": "metadata"
+              }
+            ]
+          },
+          {
+            "id": "hist-supp-gangnamunni-eval-202611",
+            "title": "강남언니 AI Research Engineer · Agent Evaluation 인턴",
+            "verdict": "check",
+            "sources": [
+              {
+                "postingId": "hist-supp-gangnamunni-eval-202611",
+                "version": 1,
+                "sectionId": "title:0",
+                "quote": "강남언니 AI Research Engineer · Agent Evaluation 인턴",
+                "sourceUrl": "https://tailf.teamgrit.co/p/4995/",
+                "basis": "metadata"
+              }
+            ]
+          },
+          {
+            "id": "hist-supp-naver-product-202611",
+            "title": "2027 NAVER 동계 인턴십 Product · AI 에이전트 평가 과제",
+            "verdict": "check",
+            "sources": [
+              {
+                "postingId": "hist-supp-naver-product-202611",
+                "version": 1,
+                "sectionId": "준비1:0",
+                "quote": "AI 에이전트 평가 시스템을 구성해 본 경험이 있으신 분",
+                "sourceUrl": "https://recruit.navercorp.com/rcrt/view.do?annoId=30005630&lang=en",
+                "basis": "source"
+              },
+              {
+                "postingId": "hist-supp-naver-product-202611",
+                "version": 1,
+                "sectionId": "title:0",
+                "quote": "2027 NAVER 동계 인턴십 Product · AI 에이전트 평가 과제",
+                "sourceUrl": "https://recruit.navercorp.com/rcrt/view.do?annoId=30005630&lang=en",
+                "basis": "metadata"
+              }
+            ]
+          }
+        ]
+      }
+    },
+    {
+      "id": "demo-jiwoo-3",
+      "beforeQuery": "상담심리 상담기관·학교에서 내담자를 만난다 심리학과 심리통계·연구법 상담면접 실습",
+      "currentQuery": "상담심리 심리통계·연구법 상담면접 실습",
+      "rules": {
+        "count": 0,
+        "top3": []
+      },
+      "rulesPreparation": {
+        "count": 9,
+        "top3": [
+          {
+            "id": "hist-chungbuk-child-2026012",
+            "title": "2026-12 유아특수교사·상담전문요원",
+            "verdict": "check",
+            "sources": []
+          },
+          {
+            "id": "hist-gwanak-social-202610",
+            "title": "2026 사회복지사 대체인력",
+            "verdict": "check",
+            "sources": []
+          },
+          {
+            "id": "hist-supp-eunpyeong-counsel-202609",
+            "title": "은평구청소년상담복지센터 전문상담사 채용",
+            "verdict": "check",
+            "sources": []
+          }
+        ]
+      },
+      "before": {
+        "count": 47,
+        "top3": [
+          {
+            "id": "hist-e6136ff7f98515b9376d",
+            "title": "목석정에서 홀 근무자를 모집합니다",
+            "verdict": "check",
+            "sources": [
+              {
+                "postingId": "hist-e6136ff7f98515b9376d",
+                "version": 1,
+                "sectionId": "title:0",
+                "quote": "목석정에서 홀 근무자를 모집합니다",
+                "sourceUrl": "https://www.jobkorea.co.kr/Recruit/GI_Read/50377852",
+                "basis": "metadata"
+              }
+            ]
+          },
+          {
+            "id": "hist-cfe41eb4d0b27b7d22fd",
+            "title": "(주)베이직테크 LED 전광판 영업 담당자 모집 공공기관 및 조달영업",
+            "verdict": "check",
+            "sources": [
+              {
+                "postingId": "hist-cfe41eb4d0b27b7d22fd",
+                "version": 1,
+                "sectionId": "title:0",
+                "quote": "(주)베이직테크 LED 전광판 영업 담당자 모집 공공기관 및 조달영업",
+                "sourceUrl": "https://www.jobkorea.co.kr/Recruit/GI_Read/50356593",
+                "basis": "metadata"
+              }
+            ]
+          },
+          {
+            "id": "hist-e0c2b55f414e1a768489",
+            "title": "[조달우수기업] 기업부설연구소 신입 및 경력 연구원 채용",
+            "verdict": "check",
+            "sources": [
+              {
+                "postingId": "hist-e0c2b55f414e1a768489",
+                "version": 1,
+                "sectionId": "title:0",
+                "quote": "[조달우수기업] 기업부설연구소 신입 및 경력 연구원 채용",
+                "sourceUrl": "https://www.jobkorea.co.kr/Recruit/GI_Read/50371725",
+                "basis": "metadata"
+              }
+            ]
+          }
+        ]
+      },
+      "current": {
+        "count": 0,
+        "top3": []
+      },
+      "beforePreparation": {
+        "count": 36,
+        "top3": [
+          {
+            "id": "hist-supp-pbcg-202611",
+            "title": "이음심리상담연구소 인턴 모집",
+            "verdict": "fail",
+            "sources": [
+              {
+                "postingId": "hist-supp-pbcg-202611",
+                "version": 1,
+                "sectionId": "title:0",
+                "quote": "이음심리상담연구소 인턴 모집",
+                "sourceUrl": "https://psychology.chungbuk.ac.kr/post/1690",
+                "basis": "metadata"
+              },
+              {
+                "postingId": "hist-supp-pbcg-202611",
+                "version": 1,
+                "sectionId": "major-0:0",
+                "quote": "상담학 및 관련 전공자 (학부 졸업예정자 가능)",
+                "sourceUrl": "https://psychology.chungbuk.ac.kr/post/1690",
+                "basis": "source"
+              }
+            ]
+          },
+          {
+            "id": "hist-chungbuk-child-2026012",
+            "title": "2026-12 유아특수교사·상담전문요원",
+            "verdict": "check",
+            "sources": [
+              {
+                "postingId": "hist-chungbuk-child-2026012",
+                "version": 1,
+                "sectionId": "§2:0",
+                "quote": "상담전문요원은 관련 학사 또는 상담 관련 자격 경로가 있고 임상심리사 2급 이상을 우대한다. 유아특수교사 분야는 교원 자격과 보육교사 경력·교육 경로가 복합적으로 기재돼 있다.",
+                "sourceUrl": "https://chungbuk.childcare.go.kr/ccef/community/common/DownloadBoardFile.jsp?ATCHMNFLSEQ=3&BBSGB=47&BID=214279",
+                "basis": "source"
+              },
+              {
+                "postingId": "hist-chungbuk-child-2026012",
+                "version": 1,
+                "sectionId": "title:0",
+                "quote": "2026-12 유아특수교사·상담전문요원",
+                "sourceUrl": "https://chungbuk.childcare.go.kr/ccef/community/common/DownloadBoardFile.jsp?ATCHMNFLSEQ=3&BBSGB=47&BID=214279",
+                "basis": "metadata"
+              }
+            ]
+          },
+          {
+            "id": "hist-supp-eunpyeong-counsel-202609",
+            "title": "은평구청소년상담복지센터 전문상담사 채용",
+            "verdict": "check",
+            "sources": [
+              {
+                "postingId": "hist-supp-eunpyeong-counsel-202609",
+                "version": 1,
+                "sectionId": "title:0",
+                "quote": "은평구청소년상담복지센터 전문상담사 채용",
+                "sourceUrl": "https://www.ep1318.or.kr/bbs/board.php?bo_table=notice&wr_id=266",
+                "basis": "metadata"
+              }
+            ]
+          }
+        ]
+      },
+      "currentPreparation": {
+        "count": 9,
+        "top3": [
+          {
+            "id": "hist-supp-pbcg-202611",
+            "title": "이음심리상담연구소 인턴 모집",
+            "verdict": "fail",
+            "sources": [
+              {
+                "postingId": "hist-supp-pbcg-202611",
+                "version": 1,
+                "sectionId": "title:0",
+                "quote": "이음심리상담연구소 인턴 모집",
+                "sourceUrl": "https://psychology.chungbuk.ac.kr/post/1690",
+                "basis": "metadata"
+              },
+              {
+                "postingId": "hist-supp-pbcg-202611",
+                "version": 1,
+                "sectionId": "major-0:0",
+                "quote": "상담학 및 관련 전공자 (학부 졸업예정자 가능)",
+                "sourceUrl": "https://psychology.chungbuk.ac.kr/post/1690",
+                "basis": "source"
+              }
+            ]
+          },
+          {
+            "id": "hist-chungbuk-child-2026012",
+            "title": "2026-12 유아특수교사·상담전문요원",
+            "verdict": "check",
+            "sources": [
+              {
+                "postingId": "hist-chungbuk-child-2026012",
+                "version": 1,
+                "sectionId": "§2:0",
+                "quote": "상담전문요원은 관련 학사 또는 상담 관련 자격 경로가 있고 임상심리사 2급 이상을 우대한다. 유아특수교사 분야는 교원 자격과 보육교사 경력·교육 경로가 복합적으로 기재돼 있다.",
+                "sourceUrl": "https://chungbuk.childcare.go.kr/ccef/community/common/DownloadBoardFile.jsp?ATCHMNFLSEQ=3&BBSGB=47&BID=214279",
+                "basis": "source"
+              },
+              {
+                "postingId": "hist-chungbuk-child-2026012",
+                "version": 1,
+                "sectionId": "title:0",
+                "quote": "2026-12 유아특수교사·상담전문요원",
+                "sourceUrl": "https://chungbuk.childcare.go.kr/ccef/community/common/DownloadBoardFile.jsp?ATCHMNFLSEQ=3&BBSGB=47&BID=214279",
+                "basis": "metadata"
+              }
+            ]
+          },
+          {
+            "id": "hist-supp-eunpyeong-counsel-202609",
+            "title": "은평구청소년상담복지센터 전문상담사 채용",
+            "verdict": "check",
+            "sources": [
+              {
+                "postingId": "hist-supp-eunpyeong-counsel-202609",
+                "version": 1,
+                "sectionId": "title:0",
+                "quote": "은평구청소년상담복지센터 전문상담사 채용",
+                "sourceUrl": "https://www.ep1318.or.kr/bbs/board.php?bo_table=notice&wr_id=266",
+                "basis": "metadata"
+              }
+            ]
+          }
+        ]
+      }
+    },
+    {
+      "id": "demo-jiwoo-4",
+      "beforeQuery": "상담심리 상담기관·학교에서 내담자를 만난다 심리학과 심리통계·연구법 상담면접 실습",
+      "currentQuery": "상담심리 심리통계·연구법 상담면접 실습",
+      "rules": {
+        "count": 0,
+        "top3": []
+      },
+      "rulesPreparation": {
+        "count": 9,
+        "top3": [
+          {
+            "id": "hist-chungbuk-child-2026012",
+            "title": "2026-12 유아특수교사·상담전문요원",
+            "verdict": "check",
+            "sources": []
+          },
+          {
+            "id": "hist-gwanak-social-202610",
+            "title": "2026 사회복지사 대체인력",
+            "verdict": "check",
+            "sources": []
+          },
+          {
+            "id": "hist-supp-eunpyeong-counsel-202609",
+            "title": "은평구청소년상담복지센터 전문상담사 채용",
+            "verdict": "check",
+            "sources": []
+          }
+        ]
+      },
+      "before": {
+        "count": 47,
+        "top3": [
+          {
+            "id": "hist-e6136ff7f98515b9376d",
+            "title": "목석정에서 홀 근무자를 모집합니다",
+            "verdict": "check",
+            "sources": [
+              {
+                "postingId": "hist-e6136ff7f98515b9376d",
+                "version": 1,
+                "sectionId": "title:0",
+                "quote": "목석정에서 홀 근무자를 모집합니다",
+                "sourceUrl": "https://www.jobkorea.co.kr/Recruit/GI_Read/50377852",
+                "basis": "metadata"
+              }
+            ]
+          },
+          {
+            "id": "hist-cfe41eb4d0b27b7d22fd",
+            "title": "(주)베이직테크 LED 전광판 영업 담당자 모집 공공기관 및 조달영업",
+            "verdict": "check",
+            "sources": [
+              {
+                "postingId": "hist-cfe41eb4d0b27b7d22fd",
+                "version": 1,
+                "sectionId": "title:0",
+                "quote": "(주)베이직테크 LED 전광판 영업 담당자 모집 공공기관 및 조달영업",
+                "sourceUrl": "https://www.jobkorea.co.kr/Recruit/GI_Read/50356593",
+                "basis": "metadata"
+              }
+            ]
+          },
+          {
+            "id": "hist-e0c2b55f414e1a768489",
+            "title": "[조달우수기업] 기업부설연구소 신입 및 경력 연구원 채용",
+            "verdict": "check",
+            "sources": [
+              {
+                "postingId": "hist-e0c2b55f414e1a768489",
+                "version": 1,
+                "sectionId": "title:0",
+                "quote": "[조달우수기업] 기업부설연구소 신입 및 경력 연구원 채용",
+                "sourceUrl": "https://www.jobkorea.co.kr/Recruit/GI_Read/50371725",
+                "basis": "metadata"
+              }
+            ]
+          }
+        ]
+      },
+      "current": {
+        "count": 0,
+        "top3": []
+      },
+      "beforePreparation": {
+        "count": 36,
+        "top3": [
+          {
+            "id": "hist-supp-pbcg-202611",
+            "title": "이음심리상담연구소 인턴 모집",
+            "verdict": "check",
+            "sources": [
+              {
+                "postingId": "hist-supp-pbcg-202611",
+                "version": 1,
+                "sectionId": "title:0",
+                "quote": "이음심리상담연구소 인턴 모집",
+                "sourceUrl": "https://psychology.chungbuk.ac.kr/post/1690",
+                "basis": "metadata"
+              },
+              {
+                "postingId": "hist-supp-pbcg-202611",
+                "version": 1,
+                "sectionId": "major-0:0",
+                "quote": "상담학 및 관련 전공자 (학부 졸업예정자 가능)",
+                "sourceUrl": "https://psychology.chungbuk.ac.kr/post/1690",
+                "basis": "source"
+              }
+            ]
+          },
+          {
+            "id": "hist-chungbuk-child-2026012",
+            "title": "2026-12 유아특수교사·상담전문요원",
+            "verdict": "check",
+            "sources": [
+              {
+                "postingId": "hist-chungbuk-child-2026012",
+                "version": 1,
+                "sectionId": "§2:0",
+                "quote": "상담전문요원은 관련 학사 또는 상담 관련 자격 경로가 있고 임상심리사 2급 이상을 우대한다. 유아특수교사 분야는 교원 자격과 보육교사 경력·교육 경로가 복합적으로 기재돼 있다.",
+                "sourceUrl": "https://chungbuk.childcare.go.kr/ccef/community/common/DownloadBoardFile.jsp?ATCHMNFLSEQ=3&BBSGB=47&BID=214279",
+                "basis": "source"
+              },
+              {
+                "postingId": "hist-chungbuk-child-2026012",
+                "version": 1,
+                "sectionId": "title:0",
+                "quote": "2026-12 유아특수교사·상담전문요원",
+                "sourceUrl": "https://chungbuk.childcare.go.kr/ccef/community/common/DownloadBoardFile.jsp?ATCHMNFLSEQ=3&BBSGB=47&BID=214279",
+                "basis": "metadata"
+              }
+            ]
+          },
+          {
+            "id": "hist-supp-eunpyeong-counsel-202609",
+            "title": "은평구청소년상담복지센터 전문상담사 채용",
+            "verdict": "check",
+            "sources": [
+              {
+                "postingId": "hist-supp-eunpyeong-counsel-202609",
+                "version": 1,
+                "sectionId": "title:0",
+                "quote": "은평구청소년상담복지센터 전문상담사 채용",
+                "sourceUrl": "https://www.ep1318.or.kr/bbs/board.php?bo_table=notice&wr_id=266",
+                "basis": "metadata"
+              }
+            ]
+          }
+        ]
+      },
+      "currentPreparation": {
+        "count": 9,
+        "top3": [
+          {
+            "id": "hist-supp-pbcg-202611",
+            "title": "이음심리상담연구소 인턴 모집",
+            "verdict": "check",
+            "sources": [
+              {
+                "postingId": "hist-supp-pbcg-202611",
+                "version": 1,
+                "sectionId": "title:0",
+                "quote": "이음심리상담연구소 인턴 모집",
+                "sourceUrl": "https://psychology.chungbuk.ac.kr/post/1690",
+                "basis": "metadata"
+              },
+              {
+                "postingId": "hist-supp-pbcg-202611",
+                "version": 1,
+                "sectionId": "major-0:0",
+                "quote": "상담학 및 관련 전공자 (학부 졸업예정자 가능)",
+                "sourceUrl": "https://psychology.chungbuk.ac.kr/post/1690",
+                "basis": "source"
+              }
+            ]
+          },
+          {
+            "id": "hist-chungbuk-child-2026012",
+            "title": "2026-12 유아특수교사·상담전문요원",
+            "verdict": "check",
+            "sources": [
+              {
+                "postingId": "hist-chungbuk-child-2026012",
+                "version": 1,
+                "sectionId": "§2:0",
+                "quote": "상담전문요원은 관련 학사 또는 상담 관련 자격 경로가 있고 임상심리사 2급 이상을 우대한다. 유아특수교사 분야는 교원 자격과 보육교사 경력·교육 경로가 복합적으로 기재돼 있다.",
+                "sourceUrl": "https://chungbuk.childcare.go.kr/ccef/community/common/DownloadBoardFile.jsp?ATCHMNFLSEQ=3&BBSGB=47&BID=214279",
+                "basis": "source"
+              },
+              {
+                "postingId": "hist-chungbuk-child-2026012",
+                "version": 1,
+                "sectionId": "title:0",
+                "quote": "2026-12 유아특수교사·상담전문요원",
+                "sourceUrl": "https://chungbuk.childcare.go.kr/ccef/community/common/DownloadBoardFile.jsp?ATCHMNFLSEQ=3&BBSGB=47&BID=214279",
+                "basis": "metadata"
+              }
+            ]
+          },
+          {
+            "id": "hist-supp-eunpyeong-counsel-202609",
+            "title": "은평구청소년상담복지센터 전문상담사 채용",
+            "verdict": "check",
+            "sources": [
+              {
+                "postingId": "hist-supp-eunpyeong-counsel-202609",
+                "version": 1,
+                "sectionId": "title:0",
+                "quote": "은평구청소년상담복지센터 전문상담사 채용",
+                "sourceUrl": "https://www.ep1318.or.kr/bbs/board.php?bo_table=notice&wr_id=266",
+                "basis": "metadata"
+              }
+            ]
+          }
+        ]
+      }
+    },
+    {
+      "id": "startup-시제품 제작비",
+      "beforeQuery": "학원 상담 요약 AI 학원장 시제품 제작비",
+      "currentQuery": "학원 상담 요약 AI 학원장 시제품 제작비",
+      "rules": {
+        "count": 0,
+        "top3": []
+      },
+      "rulesPreparation": {
+        "count": 0,
+        "top3": []
+      },
+      "before": {
+        "count": 0,
+        "top3": []
+      },
+      "current": {
+        "count": 0,
+        "top3": []
+      },
+      "beforePreparation": {
+        "count": 5,
+        "top3": [
+          {
+            "id": "startup-biz-PBLN_000000000123352",
+            "title": "[인천] 2026년 시제품 제작터 지원 공고",
+            "verdict": "check",
+            "sources": [
+              {
+                "postingId": "startup-biz-PBLN_000000000123352",
+                "version": 1,
+                "sectionId": "title:0",
+                "quote": "[인천] 2026년 시제품 제작터 지원 공고",
+                "sourceUrl": "https://www.bizinfo.go.kr/sii/siia/selectSIIA200Detail.do?pblancId=PBLN_000000000123352",
+                "basis": "metadata"
+              },
+              {
+                "postingId": "startup-biz-PBLN_000000000123352",
+                "version": 1,
+                "sectionId": "startup-body:0",
+                "quote": "소관부처·지자체\n인천광역시\n사업수행기관\n인천창조경제혁신센터\n신청기간\n예산 소진시까지\n사업개요\n인천지역 내 (예비)창업자분의 아이디어 제품화를 통해 빠른 시장 진입 기회를 제공하기 위해 시제품 제작 지원 사업을 운영합니다. 시제품 제작이 필요한 (예비) 창업자분들의 적극적인 참여 바랍니다. 자세한 문의사항이나 참여를 희망하시는 경우, 아래 접수처로 연락해 주시기 바랍니다.\n☞ 인천 지역 내 (예비)창업자, 인천창조경제혁신센터 보육기업\n☞ 시제품 제작 지원(3D 프린터, 레이저 커터, UV프린터)\n사업신청 방법\n온라인 접수(구글폼)\n사업신청 사이트\n온라인신청 바로가기\n문의처\n연세대학교 메이커스페이스단 032-749-3902",
+                "sourceUrl": "https://www.bizinfo.go.kr/sii/siia/selectSIIA200Detail.do?pblancId=PBLN_000000000123352",
+                "basis": "source"
+              }
+            ]
+          },
+          {
+            "id": "startup-biz-PBLN_000000000119021",
+            "title": "[경기] 2026 ICT 제조창업 시제품 제작 및 제품화 지원 모집공고",
+            "verdict": "check",
+            "sources": [
+              {
+                "postingId": "startup-biz-PBLN_000000000119021",
+                "version": 1,
+                "sectionId": "title:0",
+                "quote": "[경기] 2026 ICT 제조창업 시제품 제작 및 제품화 지원 모집공고",
+                "sourceUrl": "https://www.bizinfo.go.kr/sii/siia/selectSIIA200Detail.do?pblancId=PBLN_000000000119021",
+                "basis": "metadata"
+              },
+              {
+                "postingId": "startup-biz-PBLN_000000000119021",
+                "version": 1,
+                "sectionId": "startup-body:0",
+                "quote": "소관부처·지자체\n경기도\n사업수행기관\n차세대융합기술연구원\n신청기간\n2026.03.06 ~\n2026.03.19\n사업개요\n차세대융합기술연구원 '메이커스페이스 접문랩-경기스케일업팩토리'에서「2026 경기도 ICT 재조창업 시제품 제작 및 제품화 지원사업 모집공고」를 통해 경기도 내 (예비)창업기업 중 중소기업을 모집하오니 많은 참여 바랍니다.\n☞ 도내 거주 제조 분야 (예비)창업자 또는 소재지 창업 7년 이내의 중소기업\n- 신산업분야 (시스템반도체, 바이오헬스, 미래 모빌리티, 친환경 에너지, 로봇, AI빅데이터 등) 창업 10년 이내 중소기업\n☞ 도내 중소기업 기술개발 및 ICT 융합기술을 적용한 시제품 제작(HW)지원\n- 시제품 제작을 통한 제품화 지원 컨설팅을 통한 ICT 제조분야 개발 방향 제시 및 기술 고도화 지원\n사업신청 방법\n온라인 접수(차세대융합기술연구원 메이커스페이스 전문랩)\n사업신청 사이트\n온라인신청 바로가기\n문의처\n차세대융합기술연구원 연구기획실 메이커스페이스 전문랩 경기스케일업팩토리 031-888-9555",
+                "sourceUrl": "https://www.bizinfo.go.kr/sii/siia/selectSIIA200Detail.do?pblancId=PBLN_000000000119021",
+                "basis": "source"
+              }
+            ]
+          },
+          {
+            "id": "startup-biz-PBLN_000000000120276",
+            "title": "[서울] 2026년 서울기후테크산업지원센터 시제품 제작지원 사업 모집 공고",
+            "verdict": "check",
+            "sources": [
+              {
+                "postingId": "startup-biz-PBLN_000000000120276",
+                "version": 1,
+                "sectionId": "startup-body:0",
+                "quote": "소관부처·지자체\n서울특별시\n사업수행기관\n국가녹색기술연구소\n신청기간\n2026.04.01 ~\n2026.04.30\n사업개요\n국가녹색기술연구소 서울기후테크산업지원센터에서는 서울시 소재 기후테크 기술 및 제품을 보유한 중소기업/예비창업자 대상으로 사업화ㆍ상용화 단계의 시제품 제작을 지원하여 기술사업화를 촉진하고, 상용화에 기여하고자 하오니 많은 참여 부탁드립니다.\n☞ 서울시 소재 기후테크 기술 또는 제품을 보유하며, 제품의 사업화ㆍ상용화를 앞두고 있는 중소기업ㆍ예비창업자\n☞ 사업화ㆍ상용화 단계의 기후테크 및 시제품 제작비용(기업당 최대 500만원) 지원\n사업신청 방법\n이메일 접수 (shapeall@shapewayskorea.com)\n문의처\n국가녹색기술연구소 서울기후테크산업지원센터 02-3393-3947",
+                "sourceUrl": "https://www.bizinfo.go.kr/sii/siia/selectSIIA200Detail.do?pblancId=PBLN_000000000120276",
+                "basis": "source"
+              },
+              {
+                "postingId": "startup-biz-PBLN_000000000120276",
+                "version": 1,
+                "sectionId": "title:0",
+                "quote": "[서울] 2026년 서울기후테크산업지원센터 시제품 제작지원 사업 모집 공고",
+                "sourceUrl": "https://www.bizinfo.go.kr/sii/siia/selectSIIA200Detail.do?pblancId=PBLN_000000000120276",
+                "basis": "metadata"
+              }
+            ]
+          }
+        ]
+      },
+      "currentPreparation": {
+        "count": 5,
+        "top3": [
+          {
+            "id": "startup-biz-PBLN_000000000120276",
+            "title": "[서울] 2026년 서울기후테크산업지원센터 시제품 제작지원 사업 모집 공고",
+            "verdict": "check",
+            "sources": [
+              {
+                "postingId": "startup-biz-PBLN_000000000120276",
+                "version": 1,
+                "sectionId": "startup-body:0",
+                "quote": "소관부처·지자체\n서울특별시\n사업수행기관\n국가녹색기술연구소\n신청기간\n2026.04.01 ~\n2026.04.30\n사업개요\n국가녹색기술연구소 서울기후테크산업지원센터에서는 서울시 소재 기후테크 기술 및 제품을 보유한 중소기업/예비창업자 대상으로 사업화ㆍ상용화 단계의 시제품 제작을 지원하여 기술사업화를 촉진하고, 상용화에 기여하고자 하오니 많은 참여 부탁드립니다.\n☞ 서울시 소재 기후테크 기술 또는 제품을 보유하며, 제품의 사업화ㆍ상용화를 앞두고 있는 중소기업ㆍ예비창업자\n☞ 사업화ㆍ상용화 단계의 기후테크 및 시제품 제작비용(기업당 최대 500만원) 지원\n사업신청 방법\n이메일 접수 (shapeall@shapewayskorea.com)\n문의처\n국가녹색기술연구소 서울기후테크산업지원센터 02-3393-3947",
+                "sourceUrl": "https://www.bizinfo.go.kr/sii/siia/selectSIIA200Detail.do?pblancId=PBLN_000000000120276",
+                "basis": "source"
+              },
+              {
+                "postingId": "startup-biz-PBLN_000000000120276",
+                "version": 1,
+                "sectionId": "title:0",
+                "quote": "[서울] 2026년 서울기후테크산업지원센터 시제품 제작지원 사업 모집 공고",
+                "sourceUrl": "https://www.bizinfo.go.kr/sii/siia/selectSIIA200Detail.do?pblancId=PBLN_000000000120276",
+                "basis": "metadata"
+              }
+            ]
+          },
+          {
+            "id": "startup-biz-PBLN_000000000123352",
+            "title": "[인천] 2026년 시제품 제작터 지원 공고",
+            "verdict": "check",
+            "sources": [
+              {
+                "postingId": "startup-biz-PBLN_000000000123352",
+                "version": 1,
+                "sectionId": "title:0",
+                "quote": "[인천] 2026년 시제품 제작터 지원 공고",
+                "sourceUrl": "https://www.bizinfo.go.kr/sii/siia/selectSIIA200Detail.do?pblancId=PBLN_000000000123352",
+                "basis": "metadata"
+              },
+              {
+                "postingId": "startup-biz-PBLN_000000000123352",
+                "version": 1,
+                "sectionId": "startup-body:0",
+                "quote": "소관부처·지자체\n인천광역시\n사업수행기관\n인천창조경제혁신센터\n신청기간\n예산 소진시까지\n사업개요\n인천지역 내 (예비)창업자분의 아이디어 제품화를 통해 빠른 시장 진입 기회를 제공하기 위해 시제품 제작 지원 사업을 운영합니다. 시제품 제작이 필요한 (예비) 창업자분들의 적극적인 참여 바랍니다. 자세한 문의사항이나 참여를 희망하시는 경우, 아래 접수처로 연락해 주시기 바랍니다.\n☞ 인천 지역 내 (예비)창업자, 인천창조경제혁신센터 보육기업\n☞ 시제품 제작 지원(3D 프린터, 레이저 커터, UV프린터)\n사업신청 방법\n온라인 접수(구글폼)\n사업신청 사이트\n온라인신청 바로가기\n문의처\n연세대학교 메이커스페이스단 032-749-3902",
+                "sourceUrl": "https://www.bizinfo.go.kr/sii/siia/selectSIIA200Detail.do?pblancId=PBLN_000000000123352",
+                "basis": "source"
+              }
+            ]
+          },
+          {
+            "id": "startup-biz-PBLN_000000000119021",
+            "title": "[경기] 2026 ICT 제조창업 시제품 제작 및 제품화 지원 모집공고",
+            "verdict": "check",
+            "sources": [
+              {
+                "postingId": "startup-biz-PBLN_000000000119021",
+                "version": 1,
+                "sectionId": "title:0",
+                "quote": "[경기] 2026 ICT 제조창업 시제품 제작 및 제품화 지원 모집공고",
+                "sourceUrl": "https://www.bizinfo.go.kr/sii/siia/selectSIIA200Detail.do?pblancId=PBLN_000000000119021",
+                "basis": "metadata"
+              },
+              {
+                "postingId": "startup-biz-PBLN_000000000119021",
+                "version": 1,
+                "sectionId": "startup-body:0",
+                "quote": "소관부처·지자체\n경기도\n사업수행기관\n차세대융합기술연구원\n신청기간\n2026.03.06 ~\n2026.03.19\n사업개요\n차세대융합기술연구원 '메이커스페이스 접문랩-경기스케일업팩토리'에서「2026 경기도 ICT 재조창업 시제품 제작 및 제품화 지원사업 모집공고」를 통해 경기도 내 (예비)창업기업 중 중소기업을 모집하오니 많은 참여 바랍니다.\n☞ 도내 거주 제조 분야 (예비)창업자 또는 소재지 창업 7년 이내의 중소기업\n- 신산업분야 (시스템반도체, 바이오헬스, 미래 모빌리티, 친환경 에너지, 로봇, AI빅데이터 등) 창업 10년 이내 중소기업\n☞ 도내 중소기업 기술개발 및 ICT 융합기술을 적용한 시제품 제작(HW)지원\n- 시제품 제작을 통한 제품화 지원 컨설팅을 통한 ICT 제조분야 개발 방향 제시 및 기술 고도화 지원\n사업신청 방법\n온라인 접수(차세대융합기술연구원 메이커스페이스 전문랩)\n사업신청 사이트\n온라인신청 바로가기\n문의처\n차세대융합기술연구원 연구기획실 메이커스페이스 전문랩 경기스케일업팩토리 031-888-9555",
+                "sourceUrl": "https://www.bizinfo.go.kr/sii/siia/selectSIIA200Detail.do?pblancId=PBLN_000000000119021",
+                "basis": "source"
+              }
+            ]
+          }
+        ]
+      }
+    },
+    {
+      "id": "startup-판로 상담",
+      "beforeQuery": "학원 상담 요약 AI 학원장 판로 상담",
+      "currentQuery": "학원 상담 요약 AI 학원장 판로 상담",
+      "rules": {
+        "count": 0,
+        "top3": []
+      },
+      "rulesPreparation": {
+        "count": 0,
+        "top3": []
+      },
+      "before": {
+        "count": 0,
+        "top3": []
+      },
+      "current": {
+        "count": 0,
+        "top3": []
+      },
+      "beforePreparation": {
+        "count": 0,
+        "top3": []
+      },
+      "currentPreparation": {
+        "count": 0,
+        "top3": []
+      }
+    }
+  ]
+}

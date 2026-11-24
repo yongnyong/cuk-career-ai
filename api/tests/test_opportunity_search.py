@@ -17,6 +17,27 @@ from sqlalchemy.orm import sessionmaker
 from app.career_db import CareerBase, SearchSection
 from app.career.opportunity_search import OpportunitySearch, posting_sections
 from app.career.opportunity_rag import explain
+from app.career.opportunity_search import tokens
+
+
+def test_korean_particles_never_connect_counseling_to_restaurant_or_generic_lab(index):
+    search, rows, _ = index
+    rows.extend([
+        posting("restaurant", "목석정에서 홀 근무자를 모집합니다", "홀 근무와 서빙"),
+        posting("lab", "공공기관 기업부설연구소 연구원", "문서작성 우대"),
+        posting("counsel", "심리상담 인턴", "내담자를 만나 상담면접과 심리검사를 보조합니다."),
+    ])
+    result = search.search("상담심리 상담기관 학교에서 내담자를 만난다", "employment")
+    assert "counsel" in [hit["postingId"] for hit in result["hits"]]
+    assert not {"restaurant", "lab"} & {hit["postingId"] for hit in result["hits"]}
+    assert not {"에서", "자를"} & set(tokens("학교에서 내담자를 만난다"))
+
+
+def test_exact_credentials_are_not_expanded_to_a_different_qualification(index):
+    search, rows, _ = index
+    rows.append(posting("sqld", "SQLD 자격증 우대", "SQLD 자격증 소지자를 우대합니다."))
+    ids = [hit["postingId"] for hit in search.search("SQLD", "employment")["hits"]]
+    assert ids == ["sqld"]
 
 
 def posting(pid, title, body, kind="employment", version=1):
