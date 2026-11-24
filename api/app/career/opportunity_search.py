@@ -108,7 +108,11 @@ def posting_sections(rows):
     return sections
 
 
-_STOP = {"취업", "창업", "추천", "공고", "준비", "지원", "위한", "모집", "있는", "하고", "싶어", "주세요"}
+_STOP = {"취업", "창업", "추천", "공고", "준비", "지원", "위한", "모집", "있는", "하고", "싶어", "주세요",
+         # 채용 공고 어디에나 나오는 말: 이 단어 하나로 간호사·물류직 공고가 AI 연구원 추천에 걸렸다
+         "연구원", "신입", "경력", "사원", "직원", "채용", "담당", "업무", "학과"}
+# 긴 단어를 두 글자씩 나눌 때 생기는 흔한 조각("인공지능학과" → "공지"·"학과")
+_STOP_GRAMS = {"공지", "학과", "모집", "채용", "업무", "담당", "지원", "신입", "경력", "사원", "직원"}
 _SUPPORT_TOPICS = (
     (r"판로|바이어|구매처", ("판로", "바이어", "구매처", "판매망", "유통")),
     (r"시제품.*(?:제작|지원|자금|개발)|제작비|개발비", ("시제품", "제작비", "개발비", "프로토타입", "poc")),
@@ -123,7 +127,7 @@ def tokens(text):
             continue
         terms.append(word)
         if re.fullmatch(r"[가-힣]{3,}", word):
-            terms.extend(word[i:i + 2] for i in range(len(word) - 1))
+            terms.extend(gram for gram in (word[i:i + 2] for i in range(len(word) - 1)) if gram not in _STOP_GRAMS)
     return terms
 
 
