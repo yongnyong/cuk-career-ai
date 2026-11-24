@@ -54,7 +54,7 @@ function errorText(d: unknown): string {
 type Ctx = {
   msgs: AssistantMsg[]; busy: boolean; saved: boolean; ask: (q: string, path: string) => void; clear: () => void;
   memory: Fact[] | null; loadMemory: () => void; forget: (id: string) => void;
-  node: AssistantNode | null; setNode: (n: AssistantNode | null) => void; open: boolean; setOpen: (o: boolean) => void;
+  node: AssistantNode | null; setNode: (n: AssistantNode | null) => void; open: boolean | null; setOpen: (o: boolean) => void;
 };
 const AssistantContext = createContext<Ctx | null>(null);
 
@@ -70,8 +70,8 @@ export function AssistantProvider({ children }: { children: React.ReactNode }) {
   const [mem, setMem] = useState<{ owner: string | null; facts: Fact[] } | null>(null);
   const memory = mem?.owner === owner ? mem.facts : null;
   const [node, setNode] = useState<AssistantNode | null>(null);
-  // 넓은 화면에서는 처음부터 열어 둔다. 휴대폰에서는 화면을 가리므로 닫아 둔다.
-  const [open, setOpen] = useState(() => typeof window === "undefined" || window.matchMedia("(min-width: 640px)").matches);
+  // null = 아직 열거나 닫은 적 없음. 이때 열지 말지는 AssistantDock이 화면에 맞춰 정한다.
+  const [open, setOpen] = useState<boolean | null>(null);
 
   // 웹 규칙 엔진이 이 학생에게 고른 공고(직무·역량·전공 기준). 비서는 이 안에서 공고를 골라 조건을 다시 판정한다
   const focus = useMemo(
@@ -348,9 +348,11 @@ export function AssistantDock() {
   if (!mounted) return null;
   if (path === "/" && profile) return null; // 홈에는 큰 챗봇이 있다
   if (path.startsWith("/print")) return null;
+  // 직접 열거나 닫기 전에는 넓은 화면에서 열어 둔다. 휴대폰과 가입·온보딩 화면에서는 입력란을 가리므로 닫아 둔다.
+  const shown = open ?? (window.matchMedia("(min-width: 640px)").matches && !/^\/(signup|login|onboarding)/.test(path));
   return (
     <div className="fixed bottom-20 left-4 z-40 sm:bottom-6 print:hidden">
-      {open ? (
+      {shown ? (
         <div className="window flex h-[min(34rem,calc(100vh-8rem))] w-[min(24rem,calc(100vw-2rem))] flex-col overflow-hidden">
           <div className="flex items-center gap-2 border-b-2 border-edge bg-navy px-3 py-2 text-white">
             <Bot size={16} />
