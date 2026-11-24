@@ -1,0 +1,144 @@
+"use client";
+import { useEffect, useMemo, useState } from "react";
+import { createPortal } from "react-dom";
+import Link from "next/link";
+import { hayangImage, hayangStage, outfitFor, STAGE_FROM, stageTitle, type HayangStage, type Outfit } from "@/lib/hayang";
+import { equippedTitle, RARITY_LABEL, titlesFor, type Title } from "@/lib/titles";
+import { nodeWeights } from "@/lib/treeRadial";
+import { careerInterestOf } from "@/lib/interest";
+import { progress } from "@/lib/engine";
+import { useStore } from "@/lib/store";
+
+// 자동차·아파트는 하양이와 같은 굵은 남색 외곽선·단색 채색으로 그린 소품이다
+function Car() {
+  return (
+    <svg viewBox="0 0 120 64" className="h-full w-full" aria-hidden>
+      <path d="M10 44 Q8 30 22 28 L34 14 Q38 10 46 10 L78 10 Q86 10 90 16 L100 28 Q114 30 112 44 Z" fill="#7cc4ff" stroke="#1b2550" strokeWidth="4" strokeLinejoin="round" />
+      <path d="M40 16 L50 16 L50 28 L30 28 Z M56 16 L76 16 Q80 16 83 20 L89 28 L56 28 Z" fill="#eef7ff" stroke="#1b2550" strokeWidth="3" strokeLinejoin="round" />
+      <circle cx="32" cy="46" r="10" fill="#1b2550" /><circle cx="32" cy="46" r="4" fill="#d9dce8" />
+      <circle cx="90" cy="46" r="10" fill="#1b2550" /><circle cx="90" cy="46" r="4" fill="#d9dce8" />
+      <rect x="104" y="32" width="6" height="5" rx="2" fill="#f7c63d" />
+    </svg>
+  );
+}
+function Apartment() {
+  const windows = [0, 1, 2, 3, 4].flatMap((r) => [0, 1, 2].map((c) => ({ x: 14 + c * 18, y: 16 + r * 18, lit: (r + c) % 3 === 0 })));
+  return (
+    <svg viewBox="0 0 120 130" className="h-full w-full" aria-hidden>
+      <rect x="76" y="40" width="38" height="86" rx="4" fill="#cfd9ff" stroke="#1b2550" strokeWidth="4" />
+      {[0, 1, 2].map((r) => <rect key={r} x="86" y={52 + r * 22} width="18" height="10" rx="2" fill="#f7e7a8" stroke="#1b2550" strokeWidth="2" />)}
+      <rect x="6" y="6" width="70" height="120" rx="5" fill="#ffd9e2" stroke="#1b2550" strokeWidth="4" />
+      {windows.map((w) => <rect key={`${w.x}-${w.y}`} x={w.x} y={w.y} width="12" height="10" rx="2" fill={w.lit ? "#ffe58a" : "#eef7ff"} stroke="#1b2550" strokeWidth="2" />)}
+      <rect x="32" y="104" width="16" height="22" rx="3" fill="#a77b5b" stroke="#1b2550" strokeWidth="3" />
+    </svg>
+  );
+}
+
+/** 진화 단계 그림 하나(후광·자동차·아파트 포함) */
+export function HayangFigure({ stage, outfit, size = "md", className = "" }: { stage: HayangStage; outfit: Outfit; size?: "sm" | "md" | "lg"; className?: string }) {
+  const box = size === "lg" ? "h-56 w-44" : size === "sm" ? "h-24 w-[4.7rem]" : "h-36 w-28";
+  return (
+    <div className={`hayang relative ${box} ${className}`} data-stage={stage}>
+      {stage >= 4 && <div className="absolute -right-[46%] bottom-[8%] h-[80%] w-[70%]"><Apartment /></div>}
+      {stage >= 2 && <div className="hayang-halo absolute left-1/2 top-[-14%] aspect-square w-[160%] -translate-x-1/2 rounded-full" />}
+      {/* eslint-disable-next-line @next/next/no-img-element */}
+      <img src={hayangImage(stage, outfit)} alt="" title="가톨릭대학교 캐릭터 하양이" className="relative h-full w-full object-contain drop-shadow-[0_6px_10px_rgb(0_0_0/0.35)]" />
+      {stage >= 3 && <div className="absolute -left-[38%] bottom-0 h-[26%] w-[66%]"><Car /></div>}
+    </div>
+  );
+}
+
+const STAGE_TITLE_ID: Record<HayangStage, string | null> = { 1: null, 2: "job", 3: "car", 4: "home" };
+
+/** 전체 화면 진화 연출: 이전·새 모습이 흰 실루엣으로 번갈아 깜박이다가 섬광과 함께 새 모습이 드러난다 */
+export function EvolutionOverlay({ from, to, outfit, newTitle, onClose }: {
+  from: HayangStage; to: HayangStage; outfit: Outfit; newTitle?: Title; onClose: () => void;
+}) {
+  useEffect(() => {
+    const onKey = (e: KeyboardEvent) => { if (e.key === "Escape") onClose(); };
+    window.addEventListener("keydown", onKey);
+    return () => window.removeEventListener("keydown", onKey);
+  }, [onClose]);
+  return createPortal(
+    <div className="evo fixed inset-0 z-50 grid place-items-center bg-paper/90 backdrop-blur-sm" role="dialog" aria-modal="true" aria-label="하양이 진화" onClick={onClose}>
+      <div className="flex flex-col items-center gap-4 px-4 text-center" onClick={(e) => e.stopPropagation()}>
+        <p className="evo-intro font-display text-lg text-go">어라…? 하양이의 모습이…!</p>
+        <div className="relative grid h-72 w-72 place-items-center">
+          <span className="evo-ring absolute inset-0 rounded-full" />
+          <span className="evo-ring evo-ring-2 absolute inset-0 rounded-full" />
+          {/* eslint-disable-next-line @next/next/no-img-element */}
+          <img src={hayangImage(from, outfit)} alt="" className="evo-old absolute h-64 object-contain" />
+          {/* eslint-disable-next-line @next/next/no-img-element */}
+          <img src={hayangImage(to, outfit)} alt="" className="evo-new absolute h-64 object-contain" />
+          <div className="evo-final absolute"><HayangFigure stage={to} outfit={outfit} size="lg" /></div>
+          <span className="evo-flash pointer-events-none absolute -inset-[50%] rounded-full" />
+        </div>
+        <div className="evo-text space-y-2">
+          <p className="text-xl font-bold">축하해요! {stageTitle(from, outfit)}는<br /><span className="text-gold">{stageTitle(to, outfit)}</span>로 진화했어요!</p>
+          {newTitle && <p className="text-sm">{newTitle.earned ? "새 칭호 획득" : "진화하면 얻는 칭호"} <TitleBadge title={newTitle} /></p>}
+          <button className="btn-gold mt-2" onClick={onClose} autoFocus>확인</button>
+        </div>
+      </div>
+    </div>,
+    document.body,
+  );
+}
+
+export function TitleBadge({ title }: { title: Title }) {
+  return <span className={`title-badge title-${title.rarity}`} title={`${RARITY_LABEL[title.rarity]} 칭호 · ${title.how}`}>[{RARITY_LABEL[title.rarity]}] {title.name}</span>;
+}
+
+/** 지금 프로필의 칭호 목록과 장착 칭호 */
+export function useTitles() {
+  const s = useStore();
+  const p = s.profile;
+  const tree = useMemo(() => s.careerPath?.tree ?? [], [s.careerPath]);
+  const pct = s.careerPath?.treeProgress.pct ?? (p ? progress(p).pct : 0);
+  const titles = useMemo(() => {
+    if (!p) return [];
+    const weights = nodeWeights(tree);
+    const core = new Set([...weights].filter(([, w]) => w.tier === 3).map(([skill]) => skill));
+    return titlesFor({ tree, pct, outfit: outfitFor(p.jobId, careerInterestOf(p) === "startup"), questsStarted: s.followed.length, coreSkills: core });
+  }, [p, tree, pct, s.followed.length]);
+  return { titles, equipped: titles.length ? equippedTitle(titles, p?.title) : undefined };
+}
+
+export function EquippedTitle() {
+  const { equipped } = useTitles();
+  return equipped ? <TitleBadge title={equipped} /> : null;
+}
+
+/** 스킬트리 진행에 따라 진화하는 하양이. 단계가 오르면 전체 화면 진화 연출을 한 번 보여 준다 */
+export function Hayang({ owner, jobId, startup, pct, size = "md" }: {
+  owner: string; jobId: string; startup?: boolean; pct: number; size?: "md" | "lg";
+}) {
+  const stage = hayangStage(pct);
+  const outfit = outfitFor(jobId, startup);
+  const { titles } = useTitles();
+  const [evolution, setEvolution] = useState<{ from: HayangStage; to: HayangStage } | null>(null);
+  useEffect(() => {
+    // 이 브라우저에서 마지막으로 본 단계보다 올라갔으면 진화 연출. 저장소를 못 쓰면 연출만 생략한다
+    const key = `hayang-stage:${owner}`;
+    try {
+      const seen = Number(localStorage.getItem(key) ?? stage) as HayangStage;
+      localStorage.setItem(key, String(stage));
+      if (stage > seen) {
+        const t = window.setTimeout(() => setEvolution({ from: seen, to: stage }), 0);
+        return () => window.clearTimeout(t);
+      }
+    } catch { /* 저장소 없음 */ }
+  }, [owner, stage]);
+  const next = stage < 4 ? STAGE_FROM[stage as Exclude<HayangStage, 4>] : null;
+  const newTitle = evolution ? titles.find((t) => t.id === STAGE_TITLE_ID[evolution.to]) : undefined;
+
+  return (
+    <figure className={`flex shrink-0 flex-col items-center ${stage >= 4 ? "mx-12" : stage >= 3 ? "ml-10" : ""}`} aria-label={`${stageTitle(stage, outfit)}, 진화 ${stage}단계`}>
+      <Link href="/hayang" aria-label="하양이 도감 열기"><HayangFigure stage={stage} outfit={outfit} size={size} /></Link>
+      <figcaption className="mt-1 text-center text-[11px] leading-tight">
+        <span className="block font-bold">{stageTitle(stage, outfit)}</span>
+        <span className="text-ink/60">{next === null ? "최종 진화 완료" : `다음 진화까지 ${next - pct}%`}</span>
+      </figcaption>
+      {evolution && <EvolutionOverlay {...evolution} outfit={outfit} newTitle={newTitle} onClose={() => setEvolution(null)} />}
+    </figure>
+  );
+}

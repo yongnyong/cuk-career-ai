@@ -173,6 +173,7 @@ export interface Profile {
   scores?: Record<string, string>;
   // 창업 공고 판정에만 쓰는 선택 정보. stage: none(계획 없음) | pre(예비창업자) | 1·3·7·10(창업 n년 미만)
   startup?: { stage?: string; region?: string; birthYear?: number }; // 점수제·등급제 자격의 내 점수·등급(자기 보고)
+  title?: string; // 장착한 칭호 id(하양이 도감에서 고름)
   createdAt: string;
 }
 

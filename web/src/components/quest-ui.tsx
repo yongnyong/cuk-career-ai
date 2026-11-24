@@ -6,6 +6,7 @@ import { getDepartment } from "@/lib/data/departments";
 import type { Profile } from "@/lib/types";
 import { careerInterestOf } from "@/lib/interest";
 import { questOutcome } from "@/lib/questOutcome";
+import { EquippedTitle, Hayang } from "@/components/Hayang";
 
 // 노드 상태 3가지 + 기회 열림. 색·아이콘·글자를 항상 같이 쓴다.
 const STATUS = {
@@ -106,13 +107,14 @@ export function StatusWindow({ profile, children, treeProgress }: {
   return (
     <section className="window p-4 sm:p-5">
       <div className="flex flex-wrap items-end gap-x-6 gap-y-3">
+        <Hayang owner={profile.pseudoId} jobId={profile.jobId} startup={careerInterestOf(profile) === "startup"} pct={prog.pct} />
         <div className="font-display leading-none">
           <span className="text-lg">Lv.</span>
           <span className="text-5xl">{prog.level}</span>
         </div>
         <div className="min-w-52 flex-1">
-          <p className="text-sm text-ink/65">
-            {dept?.name} {profile.grade}학년 · {profile.pseudoId}
+          <p className="flex flex-wrap items-center gap-1.5 text-sm text-ink/65">
+            <EquippedTitle /> {dept?.name} {profile.grade}학년 · {profile.pseudoId}
           </p>
           <h1 className="text-xl font-bold">{careerInterestOf(profile) === 'startup' ? '창업 준비' : `취업 · ${job?.name}`}</h1>
           <div className="mt-2 flex items-center gap-2">
