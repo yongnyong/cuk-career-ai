@@ -8,6 +8,7 @@ import { RequireProfile } from "@/components/RequireProfile";
 import { OppCard } from "@/components/OppCard";
 import { ProofField } from "@/components/ProofField";
 import { CredentialEligibility } from "@/components/CredentialEligibility";
+import { StartupApplication } from "@/components/StartupApplication";
 import { listProofs, type ProofMeta } from "@/lib/files";
 import { Legend, NodeBox, StatusWindow } from "@/components/quest-ui";
 import { AiNotice, DDay, TypeTag, VirtualTag } from "@/components/ui";
@@ -321,6 +322,7 @@ function TreeView() {
           </Link>
         )}
       </StatusWindow>
+      {mode === "startup" && <StartupApplication key={`${p.pseudoId}-${s.startupPlan?.application?.project_id ?? s.startupPlan?.idea ?? "new"}`} />}
 
       <div className="grid gap-4 lg:grid-cols-[1fr_340px]">
         <div className="relative flex h-[620px] min-w-0 flex-col overflow-hidden rounded-lg border-2 border-edge bg-panel">
@@ -377,6 +379,11 @@ function TreeView() {
               <p className="mt-2 text-xs"><strong>완료 기준</strong> {outcome.completion}</p>
               <CredentialEligibility node={selNode} />
               {selNode.personalReason && <p className="mt-2 text-xs">{selNode.personalReason}</p>}
+              {s.startupPlan?.nodes.find(n => n.id === selNode.skill)?.action === "application_draft" &&
+                <a href="#startup-application" className="block text-xs underline" onClick={() => {
+                  const panel = document.getElementById("startup-application");
+                  if (panel instanceof HTMLDetailsElement) panel.open = true;
+                }}>신청서 초안 열기</a>}
               {selNode.personalCompletion && !!selNode.evidence?.length && <div className="mt-2 text-xs"><EvidenceLinks signals={selNode.evidence} /></div>}
               {selNode.skill.startsWith("SUP-") && s.startupPlan?.nodes.find(n => n.id === selNode.skill)?.action === "choose_opportunity" &&
                 <Link href="/opportunities" className="mt-2 block text-xs underline">지원할 창업 공고 고르기</Link>}

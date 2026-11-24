@@ -140,6 +140,9 @@ interface Ctx extends State {
   startupCatalog: StartupCatalog;
   startupPlan: StartupPlan | null;
   startupPlanError: string;
+  startupApplicationStale: Record<string, boolean>;
+  startupPlanRevision: number;
+  saveStartupApplication: (body: object, revision?: number) => Promise<void>;
   refreshStartupPlan: () => Promise<void>;
   editStartupPlan: (fields: Record<string, string>, newProject?: boolean) => Promise<void>;
   selectStartupOpportunity: (id: string) => Promise<void>;
@@ -176,11 +179,23 @@ export function StoreProvider({ children }: { children: React.ReactNode }) {
   const [startupPlanError, setStartupPlanError] = useState("");
   const [ownedPlan, setOwnedPlan] = useState<{ owner: string | null; plan: StartupPlan | null; revision: number }>({ owner: null, plan: null, revision: 0 });
   const startupPlan = ownedPlan.owner === state.session ? ownedPlan.plan : null;
+  const [startupApplicationStale, setStartupApplicationStale] = useState<Record<string, boolean>>({});
   const refreshStartupPlan = useCallback(async () => {
     const r = await call("/assistant/startup-plan", "GET", undefined, state.session);
+    if (r?.ok) setStartupApplicationStale(r.data.application_stale ?? {});
     if (r?.ok) setOwnedPlan(previous => previous.owner === state.session && previous.revision > r.data.revision
       ? previous : { owner: state.session, ...r.data });
   }, [state.session]);
+  const saveStartupApplication = useCallback(async (body: object, revision = ownedPlan.revision) => {
+    const r = await call("/assistant/startup-application", "POST", { ...body, revision }, state.session);
+    if (!r?.ok) {
+      if (r?.status === 409) throw new Error("다른 창에서 변경됐어요. 팀 정보를 다시 불러온 뒤 수정 내용을 확인해 주세요.");
+      throw new Error("초안을 저장하지 못했어요. 팀 아이디어·대상 고객과 서버 연결을 확인해 주세요.");
+    }
+    setOwnedPlan(previous => previous.owner === state.session && previous.revision > r.data.revision
+      ? previous : { owner: state.session, ...r.data });
+    setStartupApplicationStale(r.data.application_stale ?? {});
+  }, [ownedPlan.revision, state.session]);
   const patchStartupPlan = useCallback(async (body: object) => {
     const latest = await call("/assistant/startup-plan", "GET", undefined, state.session);
     if (!latest?.ok) throw new Error("계획을 읽지 못했어요. 다시 시도해 주세요.");
@@ -418,6 +433,8 @@ export function StoreProvider({ children }: { children: React.ReactNode }) {
       opportunities: visible,
       startupCatalog,
       startupPlan, startupPlanError, refreshStartupPlan, editStartupPlan, selectStartupOpportunity,
+      startupApplicationStale, saveStartupApplication,
+      startupPlanRevision: ownedPlan.revision,
       careerPath,
       getQuestAction,
       isAdmin,
@@ -571,7 +588,7 @@ export function StoreProvider({ children }: { children: React.ReactNode }) {
       },
       resetDemo: () => update(() => initial()),
     }),
-    [state, update, ready, mode, isAdmin, catalog, catalogVersion, visible, careerPath, getQuestAction, startupCatalog, startupPlan, startupPlanError, refreshStartupPlan, editStartupPlan, selectStartupOpportunity, patchStartupPlan, recommendations, preparationRecommendations, opportunitySearch, explainOpportunity],
+    [state, update, ready, mode, isAdmin, catalog, catalogVersion, visible, careerPath, getQuestAction, startupCatalog, startupPlan, startupPlanError, refreshStartupPlan, editStartupPlan, selectStartupOpportunity, patchStartupPlan, recommendations, preparationRecommendations, opportunitySearch, explainOpportunity, startupApplicationStale, saveStartupApplication, ownedPlan.revision],
   );
 
   return <StoreCtx.Provider value={api}>{children}</StoreCtx.Provider>;

@@ -8,6 +8,7 @@ from pydantic import BaseModel, ConfigDict, Field
 
 from .errors import ModelUnavailable
 from .startup_tasks import Task, artifact_types, goal_intent, task_for
+from .startup_application import StartupApplication
 
 FACT_FIELDS = ("idea", "customer", "artifacts", "goal", "action")
 
@@ -56,6 +57,7 @@ class StartupPlan(BaseModel):
     project_id: str = ""
     goal_id: str = ""
     opportunity: SelectedOpportunity | None = None
+    application: StartupApplication | None = None
 
 
 class PlanPatch(BaseModel):
@@ -88,6 +90,7 @@ def update_plan(plan: StartupPlan, fields: dict[str, str], *, new_project: bool 
         result.goal = ""
         result.action = ""
         result.opportunity = None
+        result.application = None
     for key in FACT_FIELDS:
         if key in fields:
             setattr(result, key, _clean(fields[key]))
@@ -145,6 +148,17 @@ def update_plan(plan: StartupPlan, fields: dict[str, str], *, new_project: bool 
             tasks.append(Task("verify_documents", f"{result.opportunity.title} 제출물 원문 확인",
                 "공고의 첨부파일에서 제출자료 목록과 지정 양식을 확인하고 원문 링크를 기록하세요.",
                 "document_list", 4))
+
+    if result.application and result.action == "competition" and result.application.goal_id == result.goal_id:
+        # Starting this form explicitly chooses the named demonstration target.
+        tasks = [task for task in tasks if task.action != "choose_opportunity"]
+        if not result.application.feedback:
+            tasks.append(Task("application_feedback", "신청서에 반영할 학생 피드백 기록",
+                f"{result.customer}에게 현재 서비스 사용의 어려움을 확인하고 들은 반응을 신청서 초안의 고객 피드백에 저장하세요.",
+                "customer_findings", 2))
+        tasks.append(Task("application_draft", "글로벌 창업경진대회 신청서 초안 작성",
+            "아이템명·아이템 개요·문제 인식의 초안을 작성하고 팀 자료와 대조해 저장하세요.",
+            "application_draft", 4))
 
     old_nodes = result.nodes
     active_nodes = []

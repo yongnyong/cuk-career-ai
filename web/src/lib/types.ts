@@ -240,6 +240,13 @@ export interface ChatAnswer {
 }
 
 export interface StartupPlan {
+  application?: {
+    template_id: "cuk-global-2026"; source_url: string; project_id: string; goal_id: string; feedback: string;
+    fields: Partial<Record<"name" | "overview" | "problem", {
+      value: string; status: "draft" | "edited" | "missing"; sources: string[];
+      input_snapshot: Record<string, string>;
+    }>>;
+  } | null;
   idea: string; customer: string; artifacts: string; goal: string; action: string; turns: number;
   opportunity?: { id: string; title: string; version: number; source_url: string } | null;
   nodes: {

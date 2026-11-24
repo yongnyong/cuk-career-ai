@@ -137,11 +137,31 @@ def make_router(current_user: Callable, service: AssistantService) -> APIRouter:
         return explain(search, service.model, body.query, body.posting_ids)
 
     from .startup_plan import PlanPatch, StartupPlan, select_opportunity, update_plan
+    from .startup_application import ApplicationRequest, apply_request, application_view
 
     @router.get("/startup-plan")
     def startup_plan(user_id: str = Depends(owner)):
         state = service.store.get_state(user_id)
-        return {"revision": state.revision, "plan": state.startup_plan}
+        return {"revision": state.revision, "plan": state.startup_plan,
+                "application_stale": application_view(state.startup_plan)}
+
+    @router.post("/startup-application")
+    def startup_application(body: ApplicationRequest, user_id: str = Depends(limited_owner)):
+        from .errors import Conflict
+        state = service.store.get_state(user_id)
+        if state.revision != body.revision:
+            raise Conflict("다른 창에서 변경됐어요. 최신 계획을 읽고 다시 적용해 주세요.")
+        plan = state.startup_plan
+        if not plan or not plan.idea or not plan.customer or not plan.project_id:
+            raise HTTPException(422, "팀의 아이디어와 대상 고객을 먼저 등록해 주세요.")
+        try:
+            plan = apply_request(plan.model_copy(deep=True), body)
+        except ValueError as error:
+            raise HTTPException(422, str(error)) from None
+        state.startup_plan = update_plan(plan, {})
+        service.store.save_state(user_id, state)
+        return {"revision": state.revision + 1, "plan": state.startup_plan,
+                "application_stale": application_view(state.startup_plan)}
 
     @router.patch("/startup-plan")
     def patch_startup_plan(body: PlanPatch, user_id: str = Depends(owner)):
