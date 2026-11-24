@@ -70,7 +70,8 @@ export function AssistantProvider({ children }: { children: React.ReactNode }) {
   const [mem, setMem] = useState<{ owner: string | null; facts: Fact[] } | null>(null);
   const memory = mem?.owner === owner ? mem.facts : null;
   const [node, setNode] = useState<AssistantNode | null>(null);
-  const [open, setOpen] = useState(false);
+  // 넓은 화면에서는 처음부터 열어 둔다. 휴대폰에서는 화면을 가리므로 닫아 둔다.
+  const [open, setOpen] = useState(() => typeof window === "undefined" || window.matchMedia("(min-width: 640px)").matches);
 
   // 웹 규칙 엔진이 이 학생에게 고른 공고(직무·역량·전공 기준). 비서는 이 안에서 공고를 골라 조건을 다시 판정한다
   const focus = useMemo(
