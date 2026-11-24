@@ -156,6 +156,8 @@ export function recommend(opps: Opportunity[], p: Profile, now: Date): Recommend
       score += 50;
       reasons.push('창업 준비와 연결된 공고');
     } else if (o.jobs.length === 0) {
+      // 직무 태그가 없는 채용 공고는 아직 분류가 안 된 기업 공고이지, 모든 학생 대상 공지가 아니다
+      if (o.type === "채용") continue;
       score += 30;
       reasons.push("모든 학생 대상 공지");
     } else if (o.jobs.includes(p.jobId) || (job?.base && o.jobs.includes(job.base))) {

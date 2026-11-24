@@ -71,6 +71,9 @@ test("keeps a graduation-only posting as preparation evidence without offering i
     assert.equal(recommendedQuest.signals[0].reference.id, posting.id);
     assert.equal(tree.find((node) => node.skill === "SK-SQLD").opportunities.length, 0);
     assert.equal(recommend([posting], profile, now).length, 0);
+    const untagged = { ...posting, id: "untagged-job", jobs: [], required: [], preferred: [] };
+    const notice = { ...untagged, id: "all-students-notice", type: "비교과" };
+    assert.deepEqual(recommend([untagged, notice], profile, now).map((r) => r.opp.id), [notice.id]);
     const afterSql = buildCareerPath({ ...profile, skills: { "SK-SQL": "self" } }, [posting], now, []);
     assert.equal(afterSql.recommendedQuest.skillId, "SK-SQLD");
     assert.equal(afterSql.treeProgress.exp, 60);
