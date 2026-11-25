@@ -324,3 +324,20 @@ body {
 @media (prefers-reduced-motion: reduce) {
   .duel-in-left, .duel-in-right, .duel-vs, .duel-bar, .duel-item { animation: none; }
 }
+
+/* 성장 재생: 고리가 그려지고, 노드가 켜지고, 선이 이어진다 */
+@keyframes grow-ring { from { opacity: 0; transform: scale(0.7); } }
+@keyframes grow-node { 0% { transform: scale(0); } 60% { transform: scale(1.5); } 100% { transform: scale(1); } }
+@keyframes grow-edge { from { stroke-dashoffset: 1; } to { stroke-dashoffset: 0; } }
+@keyframes grow-caption { from { opacity: 0; transform: translateY(10px); } }
+@keyframes grow-evolve { 0% { filter: brightness(4); transform: scale(0.6); } 50% { filter: brightness(2); transform: scale(1.25); } 100% { filter: none; transform: scale(1); } }
+@keyframes grow-banner { 0% { opacity: 0; transform: scale(2); } 20% { opacity: 1; transform: scale(1); } 80% { opacity: 1; } 100% { opacity: 0; } }
+.grow-ring { animation: grow-ring 0.4s ease-out both; }
+.grow-node { animation: grow-node 0.35s cubic-bezier(0.2, 0.8, 0.2, 1) both; }
+.grow-edge { stroke-dasharray: 1; animation: grow-edge 0.4s ease-out both; }
+.grow-caption { animation: grow-caption 0.25s ease-out both; }
+.grow-evolve { animation: grow-evolve 0.9s ease-out both; }
+.grow-banner { animation: grow-banner 1.5s ease-out both; text-shadow: 0 0 20px rgb(247 198 61 / 0.7); }
+@media (prefers-reduced-motion: reduce) {
+  .grow-ring, .grow-node, .grow-edge, .grow-caption, .grow-evolve, .grow-banner { animation: none; }
+}

@@ -20,6 +20,7 @@ import { questProgress } from "@/lib/quest";
 import { questOutcome, recommendedTitle } from "@/lib/questOutcome";
 import { careerInterestOf } from "@/lib/interest";
 import { layoutProgression, progressionStage } from "@/lib/treeProgression";
+import { GrowthReplayButton } from "@/components/GrowthReplay";
 import { MyNodeForm } from "@/components/MyNodeForm";
 import { nodeIdeas, removeNode } from "@/lib/customTree";
 import type { CustomNode } from "@/lib/types";
@@ -393,7 +394,7 @@ function TreeView() {
         <div className={`relative flex ${view !== "steps" || focusLayout ? "h-[760px]" : "h-[620px]"} min-w-0 flex-col overflow-hidden rounded-lg border-2 border-edge bg-panel`}>
           <div className="flex flex-wrap items-center justify-between gap-2 border-b border-line px-3 py-2">
             <Legend />
-            <span className="text-xs text-ink/60">전체 {tree.length}개 · 지금 도전 {readyCount}개</span>
+            <span className="flex items-center gap-2 text-xs text-ink/60">전체 {tree.length}개 · 지금 도전 {readyCount}개 <GrowthReplayButton className="btn-ghost !px-2 !py-1 text-xs" /></span>
           </div>
           <div className="space-y-2 border-b border-line px-3 py-2">
             {focusLayout ? <>
