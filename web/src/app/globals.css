@@ -309,3 +309,18 @@ body {
     padding: 0 !important;
   }
 }
+
+/* 스킬트리 대전: 양쪽에서 들어오는 하양이, 차오르는 막대 */
+@keyframes duel-left { from { transform: translateX(-60px); opacity: 0; } }
+@keyframes duel-right { from { transform: translateX(60px); opacity: 0; } }
+@keyframes duel-vs { 0% { transform: scale(3); opacity: 0; } 60% { transform: scale(0.9); opacity: 1; } 100% { transform: scale(1); } }
+@keyframes duel-bar { from { max-width: 0; } to { max-width: 100%; } }
+@keyframes duel-item { from { transform: translateY(8px); opacity: 0; } }
+.duel-in-left { animation: duel-left 0.45s ease-out both; }
+.duel-in-right { animation: duel-right 0.45s ease-out both; }
+.duel-vs { animation: duel-vs 0.5s 0.3s ease-out both; text-shadow: 0 0 18px rgb(247 198 61 / 0.6); }
+.duel-bar { animation: duel-bar 0.9s 0.45s ease-out both; }
+.duel-item { animation: duel-item 0.35s ease-out both; }
+@media (prefers-reduced-motion: reduce) {
+  .duel-in-left, .duel-in-right, .duel-vs, .duel-bar, .duel-item { animation: none; }
+}
