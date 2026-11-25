@@ -89,6 +89,8 @@ def canonical(url):
 
 def notice_id(url):
     params = urllib.parse.parse_qs(urllib.parse.urlsplit(url).query)
+    if urllib.parse.urlsplit(url).hostname == 'www.k-startup.go.kr' and 'pbancSn' in params:
+        return 'kstartup-' + params['pbancSn'][0]
     return "cuk-" + params["articleNo"][0] if "articleNo" in params else "biz-" + params["pblancId"][0]
 
 
@@ -209,7 +211,7 @@ def build_posting(url, title, published, sources, attachments, now):
         r"지원|활동비|상금|시상|멘토링|보육|장비|창업\s*자금", line))
     posting = {
         "id": notice_id(url), "title": title, "source_url": url,
-        "source_site": "기업마당" if "bizinfo" in url else "가톨릭대학교",
+        "source_site": "K-Startup(창업진흥원)" if 'k-startup.go.kr' in url else "기업마당" if "bizinfo" in url else "가톨릭대학교",
         "category": category(title), "published_date": published,
         "application_period": period, "application_start": start, "application_end": end,
         "application_end_precision": "day" if end else None,

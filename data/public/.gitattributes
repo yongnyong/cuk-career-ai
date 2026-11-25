@@ -1,0 +1,3 @@
+# Keep manifest checksums stable on Windows and other platforms.
+*.jsonl text eol=lf
+manifest.json text eol=lf
