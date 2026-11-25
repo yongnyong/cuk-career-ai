@@ -231,6 +231,7 @@ export function buildTree(p: Profile, opps: Opportunity[], now: Date, extraSkill
   for (const practice of PRACTICE) {
     const anchor = practice.anchors.find((id) => trackSkills.has(id));
     if (!anchor || definitions.has(practice.id)) continue;
+    if (practice.only.length && !practice.only.some((id) => trackSkills.has(id))) continue;
     definitions.set(practice.id, { skill: practice.id, required: false, prereq: anchor && !practice.independent ? [anchor] : [] });
     practices.set(practice.id, practice);
   }

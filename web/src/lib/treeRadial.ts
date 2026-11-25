@@ -94,9 +94,11 @@ export function layoutRadial(tree: TreeNode[]): RadialLayout {
       const nodes = ring.filter((node) => node.kind === sector.kind).sort((a, b) => center(a) - center(b) || a.depth - b.depth);
       return nodes.map((node, index) => ({ node, target: sector.start + ((sector.end - sector.start) * (index + 0.5)) / nodes.length }));
     }).sort((a, b) => a.target - b.target);
-    const r = Math.max(rings.length ? rings[rings.length - 1].r + R_GAP : R_FIRST, (items.length * R_SEP) / (2 * Math.PI));
+    // 간격은 호가 아니라 현(직선 거리)으로 잰다. 작은 고리에서는 호 길이가 같아도 실제 거리가 더 짧다
+    const fit = items.length > 1 ? R_SEP / (2 * Math.sin(Math.PI / items.length)) : 0;
+    const r = Math.max(rings.length ? rings[rings.length - 1].r + R_GAP : R_FIRST, fit);
     rings.push({ stage, r });
-    spread(items.map((item) => item.target), R_SEP / r).forEach((angle, index) => {
+    spread(items.map((item) => item.target), 2 * Math.asin(Math.min(1, R_SEP / (2 * r)))).forEach((angle, index) => {
       const { node } = items[index];
       angles.set(node.skill, angle);
       positions.set(node.skill, { x: Math.cos(angle) * r * RADIAL_RX, y: Math.sin(angle) * r * RADIAL_RY });

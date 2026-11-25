@@ -9,7 +9,7 @@ export type Outfit =
 const BY_JOB: Record<string, Outfit> = {
   "ai-engineer": "dev", "data-analyst": "dev", "sw-developer": "dev", electronics: "dev",
   "bio-researcher": "research", "bio-qa": "research", pharma: "research", food: "research",
-  clinical: "medical", "env-engineer": "engineer",
+  clinical: "medical", nurse: "medical", "env-engineer": "engineer",
   finance: "business", marketer: "global", "overseas-sales": "global",
   "public-sector": "public", legal: "law", welfare: "care", educator: "edu",
   "content-planner": "creative", designer: "creative", "arts-planner": "creative",
