@@ -60,6 +60,7 @@ export function NodeBox({ node, isNew, now, proof, recommended, weight, compact 
           <span className="block text-[11px] opacity-70">
             {node.state === "none" ? st.label : node.score ? `완료 · ${formatScore(node.skill, node.score)}` : node.state === "verified" ? "완료 · 검증됨" : "완료 · 자기 보고"}
             {node.required ? " · 트랙 기본" : ""}
+            {node.mine ? " · 내 노드" : ""}
             {source && ` · ${source}`}
             {proof ? " · 증빙 첨부" : ""}
           </span>

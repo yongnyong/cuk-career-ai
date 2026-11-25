@@ -2,36 +2,15 @@ import type { TreeNode } from "./engine";
 import type { CustomNode, CustomTree, SkillKind } from "./types";
 import type { WeightTier } from "./treeRadial";
 
-// 학생이 직접 만드는 트리(예: '토브넷 입사 루트'). 프로필에 함께 저장된다.
+// 학생이 스킬트리에 직접 더하는 노드(예: '토브넷 입사 준비'). 프로필에 직무별로 저장된다.
 export const KINDS: SkillKind[] = ["역량", "자격증", "어학", "교육", "프로젝트", "경험"];
-export const LIMITS = { trees: 10, nodes: 40, name: 40, note: 300 } as const;
+export const LIMITS = { nodes: 40, name: 40, note: 300 } as const;
 
 const newId = () => (typeof crypto !== "undefined" && crypto.randomUUID ? crypto.randomUUID() : `${Date.now()}-${Math.random()}`).slice(0, 12);
 
-export function emptyTree(now: Date): CustomTree {
-  return { id: newId(), title: "새 트리", goal: "", nodes: [], createdAt: now.toISOString(), updatedAt: now.toISOString() };
-}
-
 export function newNode(name = "새 노드"): CustomNode {
-  return { id: newId(), name, kind: "역량", weight: 2, prereq: [], done: false };
-}
-
-/** 지금 스킬트리를 복사해 고쳐 쓸 수 있게 한다. 가중치는 화면의 노드 크기를 그대로 옮긴다 */
-export function fromCareerTree(title: string, goal: string, tree: TreeNode[], weights: Map<string, { tier: WeightTier }>, now: Date): CustomTree {
-  const ids = new Set(tree.map((n) => n.skill));
-  return {
-    ...emptyTree(now),
-    title,
-    goal,
-    nodes: tree.slice(0, LIMITS.nodes).map((n) => ({
-      id: n.skill,
-      name: n.name,
-      kind: n.kind as SkillKind,
-      weight: weights.get(n.skill)?.tier ?? 2,
-      prereq: n.prereq.filter((q) => ids.has(q)),
-      done: n.state !== "none",
-    })),
-  };
+  // 카탈로그 노드 id와 겹치지 않게 접두어를 붙인다
+  return { id: `my-${newId()}`, name, kind: "역량", weight: 2, prereq: [], done: false };
 }
 
 /** parent를 child의 선수로 넣으면 순환이 생기는지 */
@@ -52,6 +31,43 @@ export function wouldCycle(nodes: CustomNode[], child: string, parent: string): 
 
 export function removeNode(nodes: CustomNode[], id: string): CustomNode[] {
   return nodes.filter((n) => n.id !== id).map((n) => ({ ...n, prereq: n.prereq.filter((q) => q !== id) }));
+}
+
+/** 스킬트리에 내 노드를 합친다. 선수 노드는 기존 노드나 다른 내 노드이고, 깊이는 선수 관계의 가장 긴 경로 */
+export function withMyNodes(tree: TreeNode[], mine: CustomNode[] = []): TreeNode[] {
+  if (!mine.length) return tree;
+  const base = new Map(tree.map((n) => [n.skill, n]));
+  const byId = new Map(mine.map((n) => [n.id, n]));
+  const exists = (id: string) => base.has(id) || byId.has(id);
+  const done = (id: string) => (base.has(id) ? base.get(id)!.state !== "none" : !!byId.get(id)?.done);
+  const depth = new Map<string, number>();
+  const depthOf = (id: string, trail = new Set<string>()): number => {
+    if (base.has(id)) return base.get(id)!.depth;
+    if (depth.has(id)) return depth.get(id)!;
+    if (trail.has(id)) return 0; // 저장된 데이터가 꼬였어도 멈추지 않게
+    trail.add(id);
+    const parents = byId.get(id)!.prereq.filter(exists);
+    const d = parents.length ? Math.max(...parents.map((q) => depthOf(q, trail) + 1)) : 0;
+    depth.set(id, d);
+    return d;
+  };
+  const added: TreeNode[] = mine.map((n) => {
+    const prereq = n.prereq.filter(exists);
+    return {
+      skill: n.id,
+      name: n.name,
+      kind: n.kind,
+      required: false,
+      prereq,
+      depth: depthOf(n.id),
+      state: n.done ? "self" : "none",
+      locked: !n.done && prereq.some((q) => !done(q)),
+      opportunities: [],
+      sequence: [],
+      mine: { weight: n.weight, ...(n.note ? { note: n.note } : {}) },
+    };
+  });
+  return [...tree, ...added].sort((a, b) => a.depth - b.depth);
 }
 
 /** 원형 파형·하양이가 그대로 쓰도록 스킬트리 노드 모양으로 바꾼다. 깊이는 선수 관계의 가장 긴 경로 */

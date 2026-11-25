@@ -3,7 +3,7 @@ import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import Link from "next/link";
 import { Background, Controls, Handle, MarkerType, Position, ReactFlow, type Edge, type Node, type NodeProps, type ReactFlowInstance } from "@xyflow/react";
 import "@xyflow/react/dist/style.css";
-import { AudioWaveform, Award, Check, ChevronRight, KeyRound, Network, Printer, Rows3, Swords, X, ZoomIn } from "lucide-react";
+import { AudioWaveform, Award, Check, ChevronRight, KeyRound, Network, Pencil, Plus, Printer, Rows3, Swords, Trash2, X, ZoomIn } from "lucide-react";
 import { RequireProfile } from "@/components/RequireProfile";
 import { OppCard } from "@/components/OppCard";
 import { ProofField } from "@/components/ProofField";
@@ -20,6 +20,9 @@ import { questProgress } from "@/lib/quest";
 import { questOutcome, recommendedTitle } from "@/lib/questOutcome";
 import { careerInterestOf } from "@/lib/interest";
 import { layoutProgression, progressionStage } from "@/lib/treeProgression";
+import { MyNodeForm } from "@/components/MyNodeForm";
+import { removeNode } from "@/lib/customTree";
+import type { CustomNode } from "@/lib/types";
 import { currentSemester, layoutFocus, layoutRadial, nodeWeights, RADIAL_RX, RADIAL_RY, type Advantage, type WeightTier } from "@/lib/treeRadial";
 
 type SkillNodeData = { node: TreeNode; isNew: boolean; now: Date; proof: boolean; recommended: boolean; weight: WeightTier; radial: boolean; compact: boolean };
@@ -294,7 +297,20 @@ function TreeView() {
     listProofs(p.pseudoId).then(setProofs).catch(() => setProofs({}));
   }, [p.pseudoId]);
   useEffect(loadProofs, [loadProofs]);
-  const cancel = (skill: string) => (s.setScore(skill, ""), s.setSkill(skill, "none"));
+  // 내가 추가한 노드는 완료 여부를 노드에 저장한다(직무 카탈로그 기록과 섞지 않는다)
+  const myNodes = useMemo(() => p.myNodes?.[p.jobId] ?? [], [p.myNodes, p.jobId]);
+  const saveMine = (nodes: CustomNode[]) => s.setProfile({ ...p, myNodes: { ...p.myNodes, [p.jobId]: nodes } });
+  const setMineDone = (skill: string, done: boolean) => saveMine(myNodes.map((n) => (n.id === skill ? { ...n, done } : n)));
+  const isMine = (skill: string) => myNodes.some((n) => n.id === skill);
+  const markDone = (skill: string) => (isMine(skill) ? setMineDone(skill, true) : s.setSkill(skill, "self"));
+  const cancel = (skill: string) => (isMine(skill) ? setMineDone(skill, false) : (s.setScore(skill, ""), s.setSkill(skill, "none")));
+  // 내 노드 추가·수정 창: parent가 있으면 그 노드 다음에 붙인다
+  const [editing, setEditing] = useState<{ parent?: string; node?: CustomNode } | null>(null);
+  const saveEdited = (node: CustomNode) => {
+    saveMine(myNodes.some((n) => n.id === node.id) ? myNodes.map((n) => (n.id === node.id ? node : n)) : [...myNodes, node]);
+    setEditing(null);
+    setSel(node.id);
+  };
 
   const { nodes, edges } = useMemo(() => {
     const positionOf = (skill: string) => focusLayout ? focusLayout.positions.get(skill) : view === "radial" ? radial.positions.get(skill) : layout.positions.get(skill);
@@ -446,6 +462,26 @@ function TreeView() {
                   <ZoomIn size={12} /> 자세히 보기 · 다음 노드와 유리한 곳
                 </button>
               )}
+              {selNode.mine?.note && <p className="mt-2 rounded bg-paper px-2 py-1 text-xs">메모 · {selNode.mine.note}</p>}
+              {editing && (editing.parent === selNode.skill || editing.node?.id === selNode.skill) ? (
+                <MyNodeForm tree={tree} mine={myNodes} parent={editing.parent} initial={editing.node} onSave={saveEdited} onCancel={() => setEditing(null)} />
+              ) : (
+                <div className="mt-2 flex flex-wrap gap-1">
+                  <button className="btn-ghost !px-2 !py-1 text-xs" onClick={() => setEditing({ parent: selNode.skill })}>
+                    <Plus size={12} /> 이 다음에 내 노드 추가
+                  </button>
+                  {selNode.mine && (
+                    <>
+                      <button className="btn-ghost !px-2 !py-1 text-xs" onClick={() => setEditing({ node: myNodes.find((n) => n.id === selNode.skill) })}>
+                        <Pencil size={12} /> 수정
+                      </button>
+                      <button className="btn-ghost !px-2 !py-1 text-xs text-danger" onClick={() => { if (window.confirm(`내 노드 ‘${selNode.name}’를 삭제할까요?`)) { saveMine(removeNode(myNodes, selNode.skill)); setSel(null); } }}>
+                        <Trash2 size={12} /> 삭제
+                      </button>
+                    </>
+                  )}
+                </div>
+              )}
               {askNode && <AskNodeButton node={askNode} />}
               {selNode.credentialOption && !selectedRoutes?.some(s => s.preparation?.action === selNode.credentialOption?.reason) &&
                 <p className="mt-2 text-xs"><strong>직무와의 연결</strong> {selNode.credentialOption.reason}</p>}
@@ -485,7 +521,7 @@ function TreeView() {
               )}
               {selNode.state === "none" ? (
                 !scaleOf(selNode.skill) && (
-                  <button className="btn-gold mt-3 w-full" onClick={() => s.setSkill(selNode.skill, "self")}>
+                  <button className="btn-gold mt-3 w-full" onClick={() => markDone(selNode.skill)}>
                     <Check size={16} /> 완료로 표시
                   </button>
                 )
@@ -521,10 +557,21 @@ function TreeView() {
             <h2 className="font-bold">
               노드 체크리스트 <span className="text-sm font-normal text-ink/60">완료 {tree.filter((n) => n.state !== "none").length} / {tree.length}</span>
             </h2>
-            <Link href="/print" className="btn-ghost !py-1 text-xs">
-              <Printer size={12} /> 완료 내역·증빙 인쇄
-            </Link>
+            <div className="flex flex-wrap gap-2">
+              <button className="btn-primary !py-1 text-xs" onClick={() => setEditing({})}>
+                <Plus size={12} /> 내 노드 추가
+              </button>
+              <Link href="/print" className="btn-ghost !py-1 text-xs">
+                <Printer size={12} /> 완료 내역·증빙 인쇄
+              </Link>
+            </div>
           </div>
+          {editing && !editing.parent && !editing.node && (
+            <div className="mt-2 rounded-md border border-go p-3">
+              <p className="text-xs text-ink/70">‘토브넷 입사 준비’처럼 목표 회사나 나만의 계획을 노드로 더해요. 중요도(★)가 노드 크기가 되고, 완료하면 하양이 진화에도 반영돼요.</p>
+              <MyNodeForm tree={tree} mine={myNodes} onSave={saveEdited} onCancel={() => setEditing(null)} />
+            </div>
+          )}
           <ul className="mt-2 divide-y divide-line">
             {tree.map((n, index) => {
               const done = n.state !== "none";
@@ -539,6 +586,7 @@ function TreeView() {
                     <span className="ml-1.5 text-xs text-ink/60">
                       {n.kind}
                       {n.required && " · 트랙 기본"}
+                      {n.mine && " · 내 노드"}
                       {n.score && ` · ${formatScore(n.skill, n.score)}`}
                       {proofs[n.skill] && " · 증빙 첨부"}
                       {!done && n.locked && " · 앞 단계를 먼저 권장"}
@@ -553,7 +601,7 @@ function TreeView() {
                       점수·등급 입력
                     </button>
                   ) : (
-                    <button className="btn-primary !py-1 text-xs" onClick={() => s.setSkill(n.skill, "self")}>
+                    <button className="btn-primary !py-1 text-xs" onClick={() => markDone(n.skill)}>
                       <Check size={14} /> 완료로 표시
                     </button>
                   )}

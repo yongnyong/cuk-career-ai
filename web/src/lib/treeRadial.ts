@@ -13,8 +13,8 @@ const parentsOf = (node: TreeNode) => [...node.prereq, ...(node.sequence ?? [])]
 /** 노드 중요도. 트랙 필수, 공고 근거, 열린 공고 수, 이 노드를 선수로 쓰는 노드 수만 쓴다. 근거 없는 난이도는 넣지 않는다. */
 export function nodeWeights(tree: TreeNode[]): Map<string, { score: number; tier: WeightTier }> {
   const dependents = new Map<string, number>();
-  for (const node of tree) for (const parent of parentsOf(node)) dependents.set(parent, (dependents.get(parent) ?? 0) + 1);
-  const scores = tree.map((node) => {
+  for (const node of tree) if (!node.mine) for (const parent of parentsOf(node)) dependents.set(parent, (dependents.get(parent) ?? 0) + 1);
+  const scores = tree.filter((node) => !node.mine).map((node) => {
     const refs = new Map<string, number>();
     for (const signal of node.evidence ?? []) {
       refs.set(signal.reference.id, Math.max(refs.get(signal.reference.id) ?? 0, BASIS_WEIGHT[signal.basis]));
@@ -29,10 +29,13 @@ export function nodeWeights(tree: TreeNode[]): Map<string, { score: number; tier
   // 상위 약 25%는 대, 다음 35%는 중. 같은 점수는 같은 크기로 묶는다
   const bigCut = ranked[Math.max(0, Math.round(tree.length * 0.25) - 1)] ?? Infinity;
   const midCut = ranked[Math.min(ranked.length, Math.round(tree.length * 0.6)) - 1] ?? Infinity;
-  return new Map(scores.map(([skill, score]) => [skill, {
-    score,
-    tier: flat ? 2 : score > 0 && score >= bigCut ? 3 : score > 0 && score >= midCut ? 2 : 1,
-  }]));
+  return new Map([
+    ...scores.map(([skill, score]) => [skill, {
+      score,
+      tier: (flat ? 2 : score > 0 && score >= bigCut ? 3 : score > 0 && score >= midCut ? 2 : 1) as WeightTier,
+    }] as const),
+    ...tree.filter((node) => node.mine).map((node) => [node.skill, { score: 0, tier: node.mine!.weight as WeightTier }] as const),
+  ]);
 }
 
 const KIND_ORDER = ["역량", "자격증", "어학", "교육", "프로젝트", "경험"];

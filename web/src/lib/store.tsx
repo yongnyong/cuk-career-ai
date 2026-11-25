@@ -11,6 +11,7 @@ import { PERSONAS, restoreDemoProfile } from "./data/personas";
 import { startupSkills } from "./startup";
 import { careerInterestOf } from "./interest";
 import { buildCareerPath, evaluate, latest, syncNotices, fmt } from "./engine";
+import { withMyNodes } from "./customTree";
 import type { CareerInterest, Notice, Opportunity, Profile, SkillState, StartupCatalog, TreeSignal } from "./types";
 
 const STARTUP_CATALOG = startupData as StartupCatalog;
@@ -277,7 +278,8 @@ export function StoreProvider({ children }: { children: React.ReactNode }) {
   }, [ready, signalKey, signalRequest]);
   const careerPath = useMemo(() => {
     if (!profile) return null;
-    return buildCareerPath(profile, visible, new Date(asOf), snapshot?.key === signalKey ? snapshot.signals : [], startupCatalog);
+    const path = buildCareerPath(profile, visible, new Date(asOf), snapshot?.key === signalKey ? snapshot.signals : [], startupCatalog);
+    return { ...path, tree: withMyNodes(path.tree, profile.myNodes?.[profile.jobId]) };
   }, [profile, signalKey, visible, asOf, snapshot, startupCatalog]);
   const recommendation = careerPath?.recommendedQuest;
   const questRequestKey = recommendation && profile

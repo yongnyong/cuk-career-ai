@@ -1,7 +1,7 @@
 "use client";
 import Link from "next/link";
 import { usePathname, useRouter } from "next/navigation";
-import { Bell, Clock, GitBranch, Home, LogOut, PenLine, ScrollText, Sparkles, UserRound } from "lucide-react";
+import { Bell, Clock, GitBranch, Home, LogOut, ScrollText, Sparkles, UserRound } from "lucide-react";
 import { DEMO_START, useStore } from "@/lib/store";
 import { fmt } from "@/lib/engine";
 import { useMounted } from "@/lib/useMounted";
@@ -10,7 +10,6 @@ const NAV = [
   { href: "/", label: "홈", icon: Home },
   { href: "/tree", label: "스킬트리", icon: GitBranch },
   { href: "/hayang", label: "하양이", icon: Sparkles },
-  { href: "/trees", label: "내 트리", icon: PenLine },
   { href: "/opportunities", label: "기회", icon: ScrollText },
   { href: "/notifications", label: "알림", icon: Bell },
 ];

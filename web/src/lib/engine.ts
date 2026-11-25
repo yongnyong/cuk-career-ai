@@ -215,6 +215,7 @@ export interface TreeNode {
   evidence?: TreeSignal[];
   practice?: Practice;
   credentialOption?: CareerCredential;
+  mine?: { weight: 1 | 2 | 3; note?: string }; // 학생이 직접 추가한 노드. 크기는 직접 정한 중요도(★)
 }
 
 export function buildTree(p: Profile, opps: Opportunity[], now: Date, extraSkills: readonly string[] = [], signals: ReadonlyMap<string, TreeSignal[]> = new Map()): TreeNode[] {
