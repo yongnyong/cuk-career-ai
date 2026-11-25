@@ -194,6 +194,7 @@ export interface Profile {
   startup?: { stage?: string; region?: string; birthYear?: number }; // 점수제·등급제 자격의 내 점수·등급(자기 보고)
   title?: string; // 장착한 칭호 id(하양이 도감에서 고름)
   customTrees?: CustomTree[]; // 직접 만든 트리(예: 회사 입사 루트)
+  mentorId?: string; // 명예의 전당에서 멘토로 지정한 사람
   createdAt: string;
 }
 

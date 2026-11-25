@@ -2,6 +2,7 @@
 import { useState } from "react";
 import { Check, Lock, Play } from "lucide-react";
 import { RequireProfile } from "@/components/RequireProfile";
+import { HallOfFame } from "@/components/HallOfFame";
 import { EvolutionOverlay, HayangFigure, TitleBadge, useTitles } from "@/components/Hayang";
 import { useStore } from "@/lib/store";
 import { careerInterestOf } from "@/lib/interest";
@@ -54,6 +55,8 @@ function HayangBook() {
           })}
         </ol>
       </section>
+
+      <HallOfFame profile={p} onMentor={(id) => s.setProfile({ ...p, mentorId: id })} />
 
       <section className="card p-5">
         <h2 className="font-bold">칭호 <span className="text-sm font-normal text-ink/60">{titles.filter((t) => t.earned).length} / {titles.length} 획득 · 얻은 칭호를 눌러 장착</span></h2>
