@@ -7734,7 +7734,8 @@
       "kind": "자격증",
       "verifiable": true,
       "from": "학과",
-      "srcUrl": "https://psychology.catholic.ac.kr/psychology/info/qualifications.do"
+      "srcUrl": "https://psychology.catholic.ac.kr/psychology/info/qualifications.do",
+      "officialUrl": "https://www.q-net.or.kr/crf005.do?gId=&id=crf00503&jmCd=9540"
     },
     {
       "id": "PSY-C-MH",
@@ -7830,7 +7831,8 @@
       "kind": "자격증",
       "verifiable": true,
       "from": "커리어넷",
-      "srcUrl": "https://www.career.go.kr/cloud/w/major/uView?seq=330"
+      "srcUrl": "https://www.career.go.kr/cloud/w/major/uView?seq=330",
+      "officialUrl": "https://www.q-net.or.kr/crf005.do?id=crf00503&jmCd=9521"
     },
     {
       "id": "PSY-GRAD",
@@ -10105,6 +10107,27 @@
       "srcUrl": "https://pharmacy.catholic.ac.kr/pharmacy/info/career.do"
     },
     {
+      "id": "CERT-YOUTH-2",
+      "name": "청소년상담사 2급",
+      "kind": "자격증",
+      "verifiable": true,
+      "officialUrl": "https://www.q-net.or.kr/qnet/html/guide67/guide_01.html"
+    },
+    {
+      "id": "CERT-AWS-AI",
+      "name": "AWS Certified AI Practitioner",
+      "kind": "자격증",
+      "verifiable": true,
+      "officialUrl": "https://aws.amazon.com/ko/certification/certified-ai-practitioner/"
+    },
+    {
+      "id": "CERT-NVIDIA-LLM",
+      "name": "NVIDIA-Certified Associate · Generative AI LLMs",
+      "kind": "자격증",
+      "verifiable": true,
+      "officialUrl": "https://www.nvidia.com/en-us/learn/certification/generative-ai-llm-associate/"
+    },
+    {
       "id": "CERT-ACP-PREMIERE",
       "name": "Adobe Certified Professional · Premiere",
       "kind": "자격증",
@@ -10528,6 +10551,30 @@
       "verifiable": false
     },
     {
+      "id": "PR-PSY-PROGRAM",
+      "name": "심리교육 프로그램 운영 패키지",
+      "kind": "프로젝트",
+      "verifiable": false
+    },
+    {
+      "id": "PR-AGENT-EVAL",
+      "name": "AI 에이전트 평가 시스템",
+      "kind": "프로젝트",
+      "verifiable": false
+    },
+    {
+      "id": "PR-EVAL-DATASET",
+      "name": "AI 평가 데이터셋과 검증 코드",
+      "kind": "프로젝트",
+      "verifiable": false
+    },
+    {
+      "id": "PR-JUDGE-AUDIT",
+      "name": "LLM 평가와 사람 평가 비교 보고서",
+      "kind": "프로젝트",
+      "verifiable": false
+    },
+    {
       "id": "PR-IMAGE-RETOUCH",
       "name": "포토샵 이미지 보정 시트",
       "kind": "프로젝트",
@@ -10698,6 +10745,24 @@
       "kind": "경험",
       "verifiable": false,
       "officialUrl": "https://accounting.catholic.ac.kr/accounting/community/notice.do?articleNo=277410&mode=view"
+    },
+    {
+      "id": "CW-EVIDENCE",
+      "name": "프로젝트 경험·증빙 모음",
+      "kind": "프로젝트",
+      "verifiable": false
+    },
+    {
+      "id": "CW-BUDGET",
+      "name": "프로젝트 예산·정산 워크북",
+      "kind": "프로젝트",
+      "verifiable": false
+    },
+    {
+      "id": "CW-JOB-INTERVIEW",
+      "name": "지원 직무 모의면접 녹화본",
+      "kind": "프로젝트",
+      "verifiable": false
     },
     {
       "id": "SK-TOEIC",
@@ -11462,6 +11527,10 @@
     }
   },
   "postingProjectPatterns": {
+    "PR-PSY-PROGRAM": "프로그램\\s*기획",
+    "PR-AGENT-EVAL": "AI\\s*에이전트\\s*평가\\s*시스템",
+    "PR-EVAL-DATASET": "평가\\s*데이터셋을\\s*직접\\s*구성",
+    "PR-JUDGE-AUDIT": "LLM-as-a-judge를\\s*사람의\\s*평가와\\s*비교",
     "PR-IMAGE-RETOUCH": "포토샵|Photoshop",
     "PR-STORE-OPS": "자사몰\\s*운영",
     "PR-NOTION": "(?<![A-Za-z])Notion(?![A-Za-z])|노션",
@@ -11481,6 +11550,11 @@
     "PR-FIELD-EXPERIENCE": "유관업무\\s*경험자\\s*\\(인턴[·ㆍ]알바\\)"
   },
   "credentialPatterns": {
+    "CERT-YOUTH-2": "청소년\\s*상담사\\s*2\\s*급",
+    "PSY-C-CLIN": "(?<!정신건강)임상\\s*심리사\\s*2\\s*급",
+    "PSY-C-SURVEY": "사회\\s*조사\\s*분석사\\s*2\\s*급",
+    "CERT-AWS-AI": "AWS\\s+Certified\\s+AI\\s+Practitioner\\b",
+    "CERT-NVIDIA-LLM": "NVIDIA[\\s-]*(?:Certified\\s+Associate|NCA)[\\s:·-]*(?:Generative\\s+AI(?:\\s+and)?\\s+LLMs|GENL)\\b",
     "CERT-ACP-PREMIERE": "(?:Adobe Certified Professional|\\bACP)\\s*(?:[·:–-]\\s*)?(?:in\\s+)?(?:Digital Video Using (?:Adobe )?)?Premiere(?:\\s+Pro)?\\b",
     "CERT-ACP-AE": "(?:Adobe Certified Professional|\\bACP)\\s*(?:[·:–-]\\s*)?(?:in\\s+)?(?:Visual Effects (?:&|and) Motion Graphics Using (?:Adobe )?)?After Effects\\b",
     "CERT-ACP-PS": "(?:Adobe Certified Professional|\\bACP)\\s*(?:[·:–-]\\s*)?(?:in\\s+)?(?:Visual Design Using (?:Adobe )?)?Photoshop\\b",

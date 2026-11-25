@@ -133,6 +133,7 @@ def test_chat_context_history_and_retry_stay_in_one_conversation(http_app):
         first = http.post(f"{ASSISTANT}/chat", json=SKILL_CHAT)
         assert first.status_code == 200 and first.headers["cache-control"] == "no-store"
         assert first.json() == {
+            "startupPlanUpdated": False,
             "answer": SKILL_ANSWER,
             "conversationId": CONVERSATION,
             "mockData": True,
@@ -173,8 +174,9 @@ def test_chat_context_history_and_retry_stay_in_one_conversation(http_app):
         turns = history.json()["messages"]
         assert len(turns) == 2 and set(turns[0]) == {"timestamp", "message", "result", "context"}
         assert turns[0]["timestamp"] == "2026-11-22T01:00:00Z"
-        assert turns[0]["context"] == {**CONTEXT, "opportunityId": None, "documentId": None}
+        assert turns[0]["context"] == {**CONTEXT, "opportunityId": None, "documentId": None, "startupNodeId": None}
         assert turns[1]["context"] == {
+            "startupNodeId": None,
             "page": "profile", "jobId": None, "skillId": None, "opportunityId": None, "documentId": None,
         }
         assert [turn["result"] for turn in turns] == [first.json(), second.json()]
@@ -253,7 +255,7 @@ def test_openapi_and_existing_posting_chat_coexist(http_app):
         paths = schema.json()["paths"]
         assert "post" in paths["/api/chat"] and "post" in paths[f"{ASSISTANT}/chat"]
         components = schema.json()["components"]["schemas"]
-        assert set(components["ChatRequest"]["properties"]) == {"message", "context", "conversationId", "requestId"}
+        assert set(components["ChatRequest"]["properties"]) == {"message", "context", "conversationId", "requestId", "mode", "retrieval"}
         assert {"opportunityId", "jobId", "skillId"} <= set(components["Screen"]["properties"])
 
         legacy = http.post("/api/chat", json={"oppId": "missing-fixture", "question": "언제가 마감인가요?"})

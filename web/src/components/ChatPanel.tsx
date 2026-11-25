@@ -84,8 +84,8 @@ export function ChatPanel({ opp }: { opp: Opportunity }) {
               {m.a.citations.length > 0 && (
                 <div className="mt-1 flex gap-1">
                   {m.a.citations.map((c) => (
-                    <a key={c.sectionId} href={`#sec-${c.sectionId}`} className="chip bg-blue-100 text-blue-700">
-                      {c.sectionId} v{c.version}
+                    <a key={c.sectionId} href={opp.source.url} target="_blank" rel="noopener noreferrer" className="chip bg-blue-100 text-blue-700">
+                      원문 근거 · {c.sectionId} v{c.version}
                     </a>
                   ))}
                 </div>

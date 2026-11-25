@@ -5,6 +5,7 @@ import { ArrowUpRight, BellPlus, BellOff, CheckSquare, History, Square } from "l
 import { RequireProfile } from "@/components/RequireProfile";
 import { ChatPanel } from "@/components/ChatPanel";
 import { ProcessView } from "@/components/ProcessView";
+import { OpportunityReason } from "@/components/OpportunityReason";
 import { AiNotice, DDay, Empty, SourceLine, TypeTag, VerdictBadge, VerdictIcon, VirtualTag, Warn } from "@/components/ui";
 import { useStore } from "@/lib/store";
 import { evaluate, fmt, latest } from "@/lib/engine";
@@ -42,7 +43,15 @@ function Body() {
             {o.period && ` · 활동 ${o.period}`} · 마감 {o.deadlineStatus === "unknown" ? "원문 확인 필요" : fmt(v.deadline, o.deadlineStatus !== 'date_only')}
           </p>
           <SourceLine opp={o} />
+          <OpportunityReason id={o.id} />
           <AiNotice className="mt-1" />
+          {o.startup && p.careerInterest === "startup" && s.startupPlan?.action === "competition" && (
+            <div className="mt-3 space-y-2">
+              <button className="btn-primary" onClick={() => void s.selectStartupOpportunity(o.id)}>이 공고 준비하기</button>
+              {s.startupPlan.opportunity?.id === o.id && <Link href="/tree" className="ml-2 text-sm underline">우리 팀 제출물 트리 보기</Link>}
+              {s.startupPlanError && <p role="alert" className="text-sm text-danger">{s.startupPlanError}</p>}
+            </div>
+          )}
           {!o.reviewed && (
             <div className="mt-3">
               <Warn>{o.startup ? '공개 공고에서 자동 추출한 시연 자료예요. 모집 상태·지원 자격·제출물은 원문에서 확인해 주세요.' : `AI 구조화 신뢰도 ${o.confidence}로 검수 전이에요. 아래 내용보다 원문을 먼저 확인하세요.`}</Warn>
@@ -91,8 +100,8 @@ function Body() {
                 <div className="flex-1">
                   <b>{r.condition.label}</b> <span className="text-slate-600">— {r.reason}</span>
                 </div>
-                <a href={`#sec-${r.condition.src}`} className="chip bg-panel text-slate-500">
-                  원문 {r.condition.src}
+                <a href={o.source.url} target="_blank" rel="noopener noreferrer" className="chip bg-panel text-slate-500">
+                  원문 확인
                 </a>
               </li>
             ))}
@@ -217,21 +226,6 @@ function Body() {
             </ul>
           </div>
         )}
-
-        <div className="card p-5">
-          <h2 className="font-bold">원문 (의미 단위)</h2>
-          <p className="text-xs text-slate-500">챗봇과 판정은 아래 문단만 근거로 사용해요.</p>
-          <dl className="mt-3 space-y-2 text-sm">
-            {o.sections.map((sec) => (
-              <div key={sec.id} id={`sec-${sec.id}`} className="scroll-mt-20 rounded-lg border border-slate-100 px-3 py-2 target:ring-2 target:ring-accent">
-                <dt className="text-xs font-bold text-slate-500">
-                  {sec.id} {sec.title}
-                </dt>
-                <dd>{sec.text}</dd>
-              </div>
-            ))}
-          </dl>
-        </div>
 
         <Link href="/opportunities" className="text-sm underline">
           ← 기회 목록

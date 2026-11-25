@@ -2,6 +2,13 @@
 import type { Field } from "./data/departments";
 
 export type SkillKind = "어학" | "자격증" | "프로젝트" | "교육" | "경험" | "역량";
+export type TreeDomain = "common" | "specialist";
+export interface SkillRoute {
+  domain: TreeDomain;
+  stage: number;
+  recommendedBefore?: string[];
+  reason?: string;
+}
 
 export interface Skill {
   id: string; // 예: SK-PY-01
@@ -20,7 +27,7 @@ export interface Job {
   fields: Field[]; // 우선 추천 계열(전공은 출발점일 뿐, 모든 직무 선택 가능)
   // 스킬트리 노드: 순서대로 선행 관계, prereq로 분기
   // target: 학과가 권장한 점수·등급(예: "2급", "700")
-  nodes: { skill: string; prereq?: string[]; required: boolean; target?: string }[];
+  nodes: { skill: string; prereq?: string[]; required: boolean; target?: string; route?: SkillRoute }[];
   departments?: string[]; // 학과 전용 테크(해당 학과 id). 없으면 모든 학과 공통 직무
   base?: string; // 공고 연결에 쓰는 공통 직무 id
   srcUrl?: string; // 학과 진로 페이지
@@ -29,12 +36,15 @@ export interface Job {
 export type OppType = "현장실습" | "창업지원" | "채용" | "장학" | "학사" | "비교과";
 
 export interface Condition {
-  key: "status" | "grade" | "major" | "skill" | "degree" | "startup" | "age" | "region" | "other";
+  key: "status" | "grade" | "major" | "department" | "skill" | "degree" | "startup" | "age" | "region" | "other";
   label: string; // 화면 표시용
   // 규칙 엔진이 검사할 값(명시적 조건만). other는 자동 판정하지 않고 "확인 필요"
   status?: ("재학" | "휴학" | "졸업예정")[];
   grades?: number[];
   majors?: Field[];
+  departmentIds?: string[];
+  related?: boolean;
+  scope?: "role" | "posting";
   skill?: string;
   stages?: string[]; // 창업 단계: 예비창업자, 1년미만 … (K-Startup 공식 값)
   ages?: string[]; // 대상 연령대: u20, 20-39, 40+
@@ -65,6 +75,13 @@ export interface Opportunity {
   source: { name: string; url: string };
   isVirtual: boolean; // 가상 테스트 공고 여부 — 화면·통계에서 반드시 구분
   jobs: string[]; // 연결 직무
+  employmentMatch?: {
+    namedJobs: string[]; reviewedJobs: string[]; departmentIds: string[];
+    majorConditions?: {
+      basis: "required" | "preferred" | "unspecified"; departmentIds: string[]; fields: Field[];
+      related: boolean; unrestricted: boolean; quote: string; scope: "role" | "posting"; src: string;
+    }[];
+  };
   required: Condition[];
   preferred: string[]; // 우대 역량(skill id)
   skillEvidence?: {
@@ -74,6 +91,14 @@ export interface Opportunity {
     src: string;
     scope: "role" | "posting";
     minimum?: string;
+  }[];
+  discoveryEvidence?: {
+    term: string;
+    kind: "tool" | "credential" | "artifact";
+    basis: "required" | "preferred";
+    quote: string;
+    src: string;
+    scope: "role";
   }[];
   preparationEvidence?: {
     key: string;
@@ -92,6 +117,7 @@ export interface Opportunity {
   confidence: number; // AI 구조화 신뢰도 (0.8 미만이면 검수 대기)
   reviewed: boolean;
   deadlineStatus?: "announced" | "date_only" | "unknown";
+  opensAt?: string;
   startup?: {
     postingId: string; category: string; status: string; eligibility: string; support: string; reviewNotes: string[];
     requirements: { id: string; document_type: string; necessity: string; stage: string; condition_text: string;
@@ -116,6 +142,20 @@ export interface StartupCatalog {
 }
 export type CareerInterest = "employment" | "startup";
 
+export interface OpportunityEvidence {
+  postingId: string; version: number; sectionId: string; quote: string; sourceUrl: string;
+  basis?: "metadata" | "source";
+}
+export interface OpportunitySearchResult {
+  query: string; mode: "keyword" | "hybrid" | "keyword_fallback"; indexVersion: string;
+  total: number; nextOffset: number | null;
+  hits: { postingId: string; version: number; score: number; evidence: OpportunityEvidence[] }[];
+}
+export interface OpportunityExplanation {
+  query: string; mode: string;
+  items: { postingId: string; related: OpportunityEvidence[]; checks: OpportunityEvidence[] }[];
+}
+
 export type Verdict = "pass" | "fail" | "check";
 
 export interface ConditionResult {
@@ -131,7 +171,8 @@ export interface TreeSignal {
   basis: "required" | "preferred" | "school" | "activity";
   status: "gap" | "unknown" | "matched";
   minimum?: string;
-  preparation?: { kind: "direct" | "suggested"; action: string; completion: string };
+  preparation?: { kind: "direct" | "suggested"; action: string; completion: string;
+    discovery?: { term: string; domain: TreeDomain } };
   reference: {
     id: string;
     title: string;
@@ -190,6 +231,11 @@ export interface Profile {
   // 공고에서 새로 생긴 노드를 완료한 직무. 출처가 갱신돼도 완료 기록을 트리에 유지한다.
   completedPreparation?: Record<string, string[]>;
   scores?: Record<string, string>;
+  credentialFacts?: Record<string, {
+    eligibility?: "confirmed" | "not_met";
+    profileKey?: string;
+    clinicalPractice?: "training_year" | "work_two_years" | "none";
+  }>;
   // 창업 공고 판정에만 쓰는 선택 정보. stage: none(계획 없음) | pre(예비창업자) | 1·3·7·10(창업 n년 미만)
   startup?: { stage?: string; region?: string; birthYear?: number }; // 점수제·등급제 자격의 내 점수·등급(자기 보고)
   title?: string; // 장착한 칭호 id(하양이 도감에서 고름)
@@ -213,4 +259,21 @@ export interface ChatAnswer {
   text: string;
   citations: { sectionId: string; version: number }[];
   held: boolean; // 근거 부족으로 답변 보류
+}
+
+export interface StartupPlan {
+  application?: {
+    template_id: "cuk-global-2026"; source_url: string; project_id: string; goal_id: string; feedback: string;
+    fields: Partial<Record<"name" | "overview" | "problem", {
+      value: string; status: "draft" | "edited" | "missing"; sources: string[];
+      input_snapshot: Record<string, string>;
+    }>>;
+  } | null;
+  idea: string; customer: string; artifacts: string; goal: string; action: string; turns: number;
+  opportunity?: { id: string; title: string; version: number; source_url: string } | null;
+  nodes: {
+    id: string; title: string; action: string; completion: string; reason: string;
+    completed: boolean; active: boolean; reuse: string[]; requires?: string[]; stage?: number;
+    evidence?: { posting_id: string; version: number; title: string; quote: string; source_url: string }[];
+  }[];
 }

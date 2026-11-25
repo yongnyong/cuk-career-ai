@@ -7,19 +7,20 @@ import { AudioWaveform, Award, Check, ChevronRight, KeyRound, Network, Pencil, P
 import { RequireProfile } from "@/components/RequireProfile";
 import { OppCard } from "@/components/OppCard";
 import { ProofField } from "@/components/ProofField";
+import { StartupApplication } from "@/components/StartupApplication";
 import { listProofs, type ProofMeta } from "@/lib/files";
 import { COMPACT_DIAMETER, Legend, NodeBox, StatusWindow } from "@/components/quest-ui";
 import { AiNotice, DDay, TypeTag, VirtualTag } from "@/components/ui";
 import { useStore } from "@/lib/store";
-import { dday, recommend, type TreeNode } from "@/lib/engine";
-import type { RecommendedQuest, TreeSignal } from "@/lib/types";
+import { countsTowardTrack, dday, type TreeNode } from "@/lib/engine";
+import type { RecommendedQuest, TreeSignal, TreeDomain } from "@/lib/types";
 import { formatScore, jobById, meetsTarget, scaleOf, skillById } from "@/lib/data/catalog";
 import { AskNodeButton, useAssistantNode } from "@/components/Assistant";
 import { SkillWave } from "@/components/SkillWave";
 import { questProgress } from "@/lib/quest";
 import { questOutcome, recommendedTitle } from "@/lib/questOutcome";
 import { careerInterestOf } from "@/lib/interest";
-import { layoutProgression, progressionStage } from "@/lib/treeProgression";
+import { layoutProgression, progressionStage, routeFor } from "@/lib/treeProgression";
 import { GrowthReplayButton } from "@/components/GrowthReplay";
 import { MyNodeForm } from "@/components/MyNodeForm";
 import { nodeIdeas, removeNode } from "@/lib/customTree";
@@ -167,7 +168,9 @@ function PreparationDetail({ node, signals, quest }: {
       <p>{plan.kind === "direct"
         ? "공고에 명시된 항목을 준비하는 과제예요."
         : `공고에 나온 역량을 준비하는 방법으로 ‘${laterGoal ?? node.name}’을 추천해요.`}</p>
-      {employers.size > 1 && <p className="text-ink/70">이 준비 방법과 연결된 기업 {employers.size}곳</p>}
+      {employers.size > 1 && <p className="text-ink/70">{plan.discovery
+        ? `이 직무의 서로 다른 기업 ${employers.size}곳에서 ‘${plan.discovery.term}’을 언급해 생긴 퀘스트예요.`
+        : `이 준비 방법과 연결된 기업 ${employers.size}곳`}</p>}
       <dl className="space-y-1 pt-1">
         <div>
           <dt className="font-semibold">{laterGoal ? `‘${laterGoal}’ 단계에서 할 일` : "서비스가 제안하는 행동"}</dt>
@@ -209,7 +212,7 @@ function QuestDetail({ node, quest, loadAction, showAction }: {
   return (
     <div className="mt-2 space-y-1 border-l-2 border-go pl-2 text-xs">
       <p className="font-bold text-go">추천 퀘스트</p>
-      <p>{reason}</p>
+      <p>{node.personalReason ?? reason}</p>
       <EvidenceLinks signals={quest.signals} />
       {showAction && <p>{(actionId && Object.hasOwn(ACTION_TEXT, actionId) ? ACTION_TEXT[actionId] : undefined) ?? ACTION_TEXT[fallback]}</p>}
     </div>
@@ -258,22 +261,32 @@ function TreeView() {
   const s = useStore();
   const p = s.profile!;
   const now = s.nowDate;
-  const { tree, recommendedQuest, treeProgress } = s.careerPath!;
-  const readyCount = tree.filter((node) => node.state === "none" && !node.locked).length;
-  const recs = useMemo(() => recommend(s.opportunities, p, now), [s.opportunities, p, now]);
+  const { tree: allTree, recommendedQuest, treeProgress } = s.careerPath!;
+  const mode = careerInterestOf(p);
+  const [selectedDomain, setDomain] = useState<TreeDomain>("specialist");
+  const domain = mode === "startup" && !allTree.some(n => n.route?.domain === "specialist") ? "common" : selectedDomain;
+  const tree = useMemo(() => allTree.filter(n => routeFor(n).domain === domain), [allTree, domain]);
+  const openNode = (id: string) => {
+    const node = allTree.find(n => n.skill === id);
+    if (node) setDomain(routeFor(node).domain);
+    setSel(id);
+    requestAnimationFrame(() => requestAnimationFrame(() => { void flow.current?.fitView({ nodes: [{ id }], maxZoom: 1, duration: 300, padding: 0.5 }); }));
+  };
+  const readyCount = tree.filter((node) => node.state === "none" && !node.locked
+    && (!node.credentialEligibility || node.credentialEligibility.status === "ready")).length;
+  const recs = s.recommendations;
   const [sel, setSel] = useState<string | null>(null);
-  const selNode = tree.find((n) => n.skill === sel);
+  const selNode = allTree.find((n) => n.skill === sel);
   const outcome = selNode && questOutcome(selNode);
   // 비서 카탈로그에는 직무 기본 노드만 있다. 공고·활동에서 더해진 노드는 이름만 넘긴다
-  const askNode = selNode ? { name: selNode.name, ...(jobById(p.jobId)?.nodes.some((n) => n.skill === selNode.skill) ? { skillId: selNode.skill } : {}) } : null;
+  const askNode = selNode ? { name: selNode.name, ...(selNode.skill.startsWith("SUP-") ? { startupNodeId: selNode.skill } : {}), ...(jobById(p.jobId)?.nodes.some((n) => n.skill === selNode.skill) ? { skillId: selNode.skill } : {}) } : null;
   useAssistantNode(askNode);
   const selectedQuest = recommendedQuest?.skillId === sel ? recommendedQuest : null;
   const routedQuest = selectedQuest?.signals[0]?.preparation ? selectedQuest : undefined;
   const selectedRoutes = routedQuest?.signals ?? selNode?.preparationSignals;
   const newSet = useMemo(() => new Set(s.newOpps), [s.newOpps]);
   const questSkill = recommendedQuest?.skillId;
-  const questNode = tree.find(n => n.skill === questSkill);
-  const mode = careerInterestOf(p);
+  const questNode = allTree.find(n => n.skill === questSkill);
   const flow = useRef<ReactFlowInstance | null>(null);
   const canvas = useRef<HTMLDivElement>(null);
   const [columns, setColumns] = useState(3);
@@ -295,7 +308,7 @@ function TreeView() {
   const openFocus = (skill: string) => { setFocusPath((path) => [...path.filter((id) => id !== skill), skill]); setSel(skill); };
   const focusStage = (depth: number) => {
     const band = layout.bands.find(b => b.depth === depth);
-    if (band) void flow.current?.fitView({ nodes: [{ id: `stage-${depth}` }, ...band.skills.slice(0, columns * 2).map(id => ({ id }))], padding: 0.15, maxZoom: 1, duration: 300 });
+    if (band) void flow.current?.fitView({ nodes: band.skills.slice(0, columns * 2).map(id => ({ id })), padding: 0.3, maxZoom: 1, duration: 300 });
   };
   // 증빙 파일 목록(이 브라우저에만 저장)
   const [proofs, setProofs] = useState<Record<string, ProofMeta>>({});
@@ -389,6 +402,7 @@ function TreeView() {
           </Link>
         )}
       </StatusWindow>
+      {mode === "startup" && <StartupApplication key={`${p.pseudoId}-${s.startupPlan?.application?.project_id ?? s.startupPlan?.idea ?? "new"}`} />}
 
       <div className="grid gap-4 lg:grid-cols-[1fr_340px]">
         <div className={`relative flex ${view !== "steps" || focusLayout ? "h-[760px]" : "h-[620px]"} min-w-0 flex-col overflow-hidden rounded-lg border-2 border-edge bg-panel`}>
@@ -490,13 +504,18 @@ function TreeView() {
                 </div>
               )}
               {askNode && <AskNodeButton node={askNode} />}
+              {selNode.commonExamOption && !countsTowardTrack(selNode) && <p className="mt-2 text-xs text-ink/70">목표에 맞으면 선택하세요. 취득 결과를 기록하면 추가 경험치를 받아요.</p>}
               {selNode.credentialOption && !selectedRoutes?.some(s => s.preparation?.action === selNode.credentialOption?.reason) &&
                 <p className="mt-2 text-xs"><strong>직무와의 연결</strong> {selNode.credentialOption.reason}</p>}
-              <p className="mt-1 text-xs text-go">{progressionStage(selNode.depth, mode).title}</p>
-              {!!selNode.sequence?.length && <p className="mt-2 text-xs text-ink/70">먼저 준비하면 좋은 과제: {selNode.sequence.map(id => tree.find(n => n.skill === id)?.name).join(", ")} · 지원 자격과는 별개인 권장 순서예요.</p>}
+              <p className="mt-1 text-xs text-go">{progressionStage(selNode.depth, mode, mode === "employment" ? routeFor(selNode).domain : undefined).title}</p>
+              {[...selNode.prereq, ...selNode.sequence ?? []].some(id => allTree.some(n => n.skill === id && routeFor(n).domain !== domain)) &&
+                <div className="mt-2 space-y-1 text-xs"><p>다른 트리에서 이어지는 준비</p>{[...new Set([...selNode.prereq, ...selNode.sequence ?? []])].map(id => allTree.find(n => n.skill === id)).filter(n => n && routeFor(n).domain !== domain).map(n => n &&
+                  <button key={n.skill} className="block text-go underline" onClick={() => openNode(n.skill)}>{routeFor(n).domain === "common" ? "공통 역량" : "전공·직무 전문"} · {n.name} · {n.state === "none" ? "준비 전" : "완료"}</button>)}</div>}
+              {selNode.route?.reason && <p className="mt-2 text-xs text-ink/70">{selNode.route.reason}</p>}
+              {!!selNode.sequence?.length && <p className="mt-2 text-xs text-ink/70">먼저 준비하면 좋은 과제: {selNode.sequence.map(id => allTree.find(n => n.skill === id)?.name).join(", ")} · 지원 자격과는 별개인 권장 순서예요.</p>}
               {selNode.startup && <StartupDetail node={selNode} recommended={!!selectedQuest} />}
               {!selNode.startup && selectedQuest && !routedQuest && (
-                <QuestDetail node={selNode} quest={selectedQuest} loadAction={s.getQuestAction} showAction={!selectedRoutes?.length && !selNode.practice} />
+                <QuestDetail node={selNode} quest={selectedQuest} loadAction={s.getQuestAction} showAction={!selectedRoutes?.length && !selNode.practice && !selNode.personalCompletion} />
               )}
               {!selNode.startup && !!selectedRoutes?.length && <PreparationDetail node={selNode} signals={selectedRoutes} quest={routedQuest} />}
               {!selNode.startup && !selectedQuest && !selectedRoutes?.length && !!selNode.evidence?.length && (
@@ -584,11 +603,11 @@ function TreeView() {
               const done = n.state !== "none";
               return (
                 <li key={n.skill} className="flex flex-wrap items-center gap-2 py-2 text-sm">
-                  {(index === 0 || tree[index - 1].depth !== n.depth) && <p className="w-full py-2 font-bold text-go">{progressionStage(n.depth, mode).title}</p>}
+                  {(index === 0 || tree[index - 1].depth !== n.depth) && <p className="w-full py-2 font-bold text-go">{progressionStage(n.depth, mode, domain).title}</p>}
                   <span className={`grid size-6 shrink-0 place-items-center rounded ${done ? "bg-ok text-white" : "border border-line"}`}>
                     {done && <Check size={14} />}
                   </span>
-                  <button className="min-w-0 flex-1 text-left hover:underline" onClick={() => setSel(n.skill)}>
+                  <button className="min-w-0 flex-1 text-left hover:underline" onClick={() => openNode(n.skill)}>
                     <span className="font-semibold">{done && !proofs[n.skill] ? n.name : questOutcome(n)?.title ?? n.name}</span>
                     <span className="ml-1.5 text-xs text-ink/60">
                       {n.kind}
@@ -596,7 +615,7 @@ function TreeView() {
                       {n.mine && " · 내 노드"}
                       {n.score && ` · ${formatScore(n.skill, n.score)}`}
                       {proofs[n.skill] && " · 증빙 첨부"}
-                      {!done && n.locked && " · 앞 단계를 먼저 권장"}
+                      {!done && n.locked && " · 선행 작업 준비 필요"}
                     </span>
                   </button>
                   {done ? (
@@ -604,7 +623,7 @@ function TreeView() {
                       완료 취소
                     </button>
                   ) : scaleOf(n.skill) ? (
-                    <button className="btn-primary !py-1 text-xs" onClick={() => setSel(n.skill)}>
+                    <button className="btn-primary !py-1 text-xs" onClick={() => openNode(n.skill)}>
                       점수·등급 입력
                     </button>
                   ) : (
@@ -642,7 +661,7 @@ function TreeView() {
             )}
             {questNode && recommendedQuest && (
               <p className="mt-3 text-sm">
-                추천 퀘스트 · <button type="button" className="font-bold hover:underline" onClick={() => setSel(questNode.skill)}>{recommendedTitle(questNode, recommendedQuest)}</button>
+                추천 퀘스트 · <button type="button" className="font-bold hover:underline" onClick={() => openNode(questNode.skill)}>{recommendedTitle(questNode, recommendedQuest)}</button>
               </p>
             )}
             <p className="mt-3 flex items-center gap-1 text-xs text-slate-500">

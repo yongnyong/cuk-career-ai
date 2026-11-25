@@ -5,6 +5,7 @@ registerHooks({ resolve(s, c, next) { return next(c.parentURL?.endsWith('.ts') &
 const { JOBS, skillById } = await import('../src/lib/data/catalog.ts');
 const { buildCareerPath, suggestJobs } = await import('../src/lib/engine.ts');
 const { PERSONAS } = await import('../src/lib/data/personas.ts');
+const { routeFor } = await import('../src/lib/treeProgression.ts');
 
 const now = new Date('2026-11-25');
 const treeOf = (jobId, departmentId = 'business') => buildCareerPath({ ...PERSONAS[0].profile, departmentId, jobId, skills: {} }, [], now, []).tree;
@@ -29,7 +30,7 @@ test('model-operations practice only appears in tracks that have a machine learn
 
 test('the main common tracks are real trees: enough nodes, several stages, mostly connected', () => {
   for (const jobId of ['sw-developer', 'marketer', 'public-sector', 'nurse']) {
-    const tree = treeOf(jobId);
+    const tree = treeOf(jobId).filter(n => routeFor(n).domain === 'specialist');
     assert(tree.length >= 10, `${jobId}: ${tree.length}`);
     assert(new Set(tree.map(n => n.depth)).size >= 4, `${jobId}: stages`);
     assert(tree.filter(n => n.prereq.length).length >= tree.length / 2, `${jobId}: connected`);

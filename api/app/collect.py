@@ -567,7 +567,7 @@ def run_work24() -> None:
             for x in root.iter("dhsOpenEmpInfo"):
                 stats["seen"] += 1
                 pid = f"w24-{x.findtext('empSeqno')}"
-                digest = hashlib.sha256(b"w4" + ET.tostring(x)).hexdigest()
+                digest = hashlib.sha256(b"w5" + ET.tostring(x)).hexdigest()
                 row = db.get(Posting, pid)
                 if row and row.raw_hash == digest:
                     continue  # 목록 내용이 그대로면 상세를 다시 부르지 않는다
@@ -675,7 +675,7 @@ def run() -> None:
                 time.sleep(INTERVAL)
                 try:
                     body = scrub(parse_body(fetch(f"{LIST_URL}?mode=view&articleNo={item['no']}")))
-                    digest = hashlib.sha256((BUILD_VERSION + "prep1" + item["title"] + body).encode()).hexdigest()
+                    digest = hashlib.sha256((BUILD_VERSION + "prep2" + item["title"] + body).encode()).hexdigest()
                     row = db.get(Posting, f"cuk-{item['no']}")
                     now = datetime.now(KST)
                     if row and row.raw_hash == digest:

@@ -1,6 +1,7 @@
 import type { TreeNode } from "./engine";
 import type { RecommendedQuest } from "./types";
 import { scaleOf } from "./data/catalog";
+import { savedDiscoveryOutcome } from "./discoveredSkills";
 import { postingProjectById } from "./data/postingProjects";
 import { preparationCompletionBySkill } from "./preparationRoutes";
 
@@ -115,6 +116,7 @@ const startupTitles: Record<string, string> = {
 export function questOutcome(node: TreeNode) {
   const { name, skill, kind, startup } = node;
   if (node.mine) return { title: name, completion: "스스로 정한 기준을 채우면 완료로 표시하세요.", label: "내 노드" };
+  if (node.personalCompletion) return { title: name, completion: node.personalCompletion, label: "맞춤 작업물" };
   if (startup) {
     const title = startupTitles[skill.replace(/^SU-PREP-/, "")] ?? name;
     const completion = skill === "SU-PREP-problem"
@@ -126,7 +128,7 @@ export function questOutcome(node: TreeNode) {
     const language = kind === "어학";
     const suggested = node.evidence?.find(e => e.preparation?.kind === "suggested");
     const direct = node.evidence?.find(e => e.reference.scope === "role" && e.preparation?.kind !== "suggested" && (e.basis === "required" || e.basis === "preferred"));
-    const label = direct ? (direct.basis === "required" ? "공고 자격요건에 명시" : "공고 우대에 명시") : suggested ? "서비스 추천" : node.credentialOption ? "직무 선택 자격" : "트랙 준비";
+    const label = direct ? (direct.basis === "required" ? "공고 자격요건에 명시" : "공고 우대에 명시") : suggested ? "서비스 추천" : node.commonExamOption ? "공통 선택 시험" : node.credentialOption ? "직무 선택 자격" : "트랙 준비";
     const record = language ? "공식 성적표" : "취득한 자격증 또는 발급기관의 취득 확인서";
     const completion = scaleOf(skill) ? `${record}에 표시된 실제 점수·등급을 기록하세요.` : `${record}에서 본인의 취득 결과를 확인하세요.`;
     const credentialName = skill === "CERT-TAX" && direct?.minimum ? `${name} ${direct.minimum}` : name;
@@ -141,6 +143,7 @@ export function questOutcome(node: TreeNode) {
     label: route.kind === "direct" ? "공고 명시" : "추천 작업물",
   };
   if (sample) return { title: sample[0], completion: sample[1], label: "추천 작업물" };
+  if (node.state !== "none" && skill.startsWith("AUTO-")) return savedDiscoveryOutcome(skill);
   const project = postingProjectById.get(skill);
   if (project) return { title: project.name, completion: project.completion, label: "추천 작업물" };
   const savedCompletion = preparationCompletionBySkill.get(skill);

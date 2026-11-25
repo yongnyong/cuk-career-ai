@@ -4,6 +4,7 @@ from typing import Annotated, Literal
 
 from pydantic import AwareDatetime, BaseModel, ConfigDict, Field, StringConstraints, model_validator
 from pydantic.alias_generators import to_camel
+from .startup_plan import StartupPlan
 
 Identifier = Annotated[str, StringConstraints(pattern=r"^[A-Za-z0-9][A-Za-z0-9._-]{0,79}$")]
 ShortText = Annotated[str, StringConstraints(strip_whitespace=True, min_length=1, max_length=240)]
@@ -92,6 +93,7 @@ class CareerRole(Contract):
 
 
 class Screen(Contract):
+    startup_node_id: Identifier | None = None
     page: Identifier = "home"
     job_id: Identifier | None = None
     skill_id: Identifier | None = None
@@ -99,7 +101,14 @@ class Screen(Contract):
     document_id: Identifier | None = None
 
 
+class RetrievalSelection(Contract):
+    query: str = Field(max_length=600)
+    posting_ids: list[Identifier] = Field(default_factory=list, max_length=2000)
+
+
 class ChatRequest(Contract):
+    retrieval: RetrievalSelection | None = None
+    mode: Literal["startup_intake"] | None = None
     message: Message
     context: Screen = Field(default_factory=Screen)
     conversation_id: Identifier = "default"
@@ -156,6 +165,7 @@ class DocumentReference(Contract):
 
 
 class ChatResult(Contract):
+    startup_plan_updated: bool = False
     answer: str
     conversation_id: Identifier
     mock_data: bool = False
@@ -265,6 +275,7 @@ class DocumentRecord(Contract):
 
 
 class UserState(Contract):
+    startup_plan: StartupPlan | None = None
     revision: int = 0
     memory: list[Fact] = Field(default_factory=list)
     conversations: dict[Identifier, Conversation] = Field(default_factory=dict)

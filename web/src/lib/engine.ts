@@ -9,9 +9,14 @@ import { preparationSignals, replacedPreparationSignal } from "./preparationRout
 import { careerInterestOf } from "./interest";
 import { buildStartupPath } from "./startup";
 import { assignProgression } from "./treeProgression";
+import { COMMON_WORK, COMMON_EXAMS } from "./data/skillRoutes";
 import { questOutcome } from "./questOutcome";
+import { discoveredSignals, discoveredSkillById } from "./discoveredSkills";
+import { employmentRelevance, matchesEmploymentRole } from "./employmentMatch";
 import { credentialsForJob, type CareerCredential } from "./data/careerCredentials";
-import type { StartupCatalog, StartupNode } from "./types";
+import { assessCredential, type CredentialEligibility } from "./credentialEligibility";
+import { CAMPUS_NODES } from "./data/campusNodes";
+import type { StartupCatalog, StartupNode, StartupPlan } from "./types";
 import type {
   ChatAnswer,
   Condition,
@@ -36,6 +41,7 @@ export function dday(o: Opportunity, now: Date) {
   return Math.ceil(ms / 86_400_000);
 }
 export const isOpen = (o: Opportunity, now: Date) => o.startup?.status !== "closed" &&
+  (!o.opensAt || Date.parse(o.opensAt) <= now.getTime()) &&
   o.deadlineStatus !== "unknown" && (o.deadlineStatus === "date_only" ? dday(o, now) >= 0 : deadlineOf(o).getTime() > now.getTime());
 export function fmt(isoStr: string, withTime = true) {
   const d = new Date(isoStr);
@@ -51,6 +57,16 @@ export function evaluateCondition(c: Condition, p: Profile): ConditionResult {
   const dept = getDepartment(p.departmentId);
   const r = (verdict: Verdict, reason: string): ConditionResult => ({ condition: c, verdict, reason });
   switch (c.key) {
+    case "department": {
+      if (c.scope === "posting" || !dept) return r("check", "모집 부문별 전공 조건 확인 필요");
+      if (c.departmentIds?.includes(p.departmentId) || c.majors?.includes(dept.field)) {
+        return r("pass", "원문에 명시된 전공 범위에 해당해요");
+      }
+      if (c.related || !((c.departmentIds?.length ?? 0) + (c.majors?.length ?? 0))) {
+        return r("check", "관련 전공 인정 범위를 원문에서 확인하세요");
+      }
+      return r("fail", "원문에 명시된 필수 전공 범위와 달라요");
+    }
     case "status":
       return c.status!.includes(p.status)
         ? r("pass", `현재 학적 ${p.status}`)
@@ -139,37 +155,32 @@ export interface Recommendation {
   score: number;
   reasons: string[];
   verdict: Verdict;
+  retrievalEvidence?: import("./types").OpportunityEvidence[];
 }
 
 export function recommend(opps: Opportunity[], p: Profile, now: Date): Recommendation[] {
-  const job = jobById(p.jobId);
-  const dept = getDepartment(p.departmentId);
-  const scored: Recommendation[] = [];
+  const scored: (Recommendation & { tier: number })[] = [];
   for (const o of opps) {
     if (careerInterestOf(p) === "startup" ? o.type !== "창업지원" : o.type === "창업지원") continue;
     if (!isOpen(o, now)) continue;
     const { overall } = evaluate(o, p);
     if (overall === "fail") continue;
     let score = 0;
+    let tier = 5;
     const reasons: string[] = [];
     if (careerInterestOf(p) === 'startup') {
       score += 50;
       reasons.push('창업 준비와 연결된 공고');
-    } else if (o.jobs.length === 0) {
-      // 직무 태그가 없는 채용 공고는 아직 분류가 안 된 기업 공고이지, 모든 학생 대상 공지가 아니다
-      if (o.type === "채용") continue;
-      score += 30;
-      reasons.push("모든 학생 대상 공지");
-    } else if (o.jobs.includes(p.jobId) || (job?.base && o.jobs.includes(job.base))) {
-      score += 50;
-      reasons.push(`목표 직무(${job?.name}) 연결`);
-    } else if (dept && o.jobs.some((j) => jobById(j)?.fields.includes(dept.field))) {
-      score += 15;
-      reasons.push("전공 계열 관련 기회");
-    } else if (p.interests.some((i) => o.jobs.includes(i))) {
-      score += 20;
-      reasons.push("관심 분야");
-    } else continue;
+    } else {
+      const relevance = employmentRelevance(o, p);
+      if (!relevance) continue;
+      tier = relevance.tier;
+      score += tier * 10;
+      reasons.push(relevance.reason);
+      const major = o.employmentMatch?.majorConditions?.find(c => c.basis === "preferred" &&
+        c.scope === "role" && !c.unrestricted && c.departmentIds.includes(p.departmentId));
+      if (major && tier > 3) reasons.push("공고에 내 전공 우대 명시");
+    }
     const held = o.preferred.filter((s) => (p.skills[s] ?? "none") !== "none");
     if (held.length) {
       score += held.length * 10;
@@ -181,22 +192,41 @@ export function recommend(opps: Opportunity[], p: Profile, now: Date): Recommend
       reasons.push(`마감 임박 D-${d}`);
     }
     if (overall === "check") reasons.push("일부 조건 확인 필요");
-    scored.push({ opp: o, score, reasons, verdict: overall });
+    scored.push({ opp: o, score, reasons, verdict: overall, tier });
   }
-  scored.sort((a, b) => b.score - a.score);
+  scored.sort((a, b) => b.tier - a.tier || b.score - a.score);
   // 유형 다양화(MMR 단순화): 같은 유형이 연속 3개를 넘지 않게
   const out: Recommendation[] = [];
   const rest = [...scored];
   while (rest.length) {
     const lastTypes = out.slice(-2).map((x) => x.opp.type);
-    const idx = rest.findIndex((x) => !(lastTypes.length === 2 && lastTypes.every((t) => t === x.opp.type)));
+    const idx = rest.findIndex((x) => x.tier === rest[0].tier && !(lastTypes.length === 2 && lastTypes.every((t) => t === x.opp.type)));
     out.push(...rest.splice(idx === -1 ? 0 : idx, 1));
   }
   return out;
 }
 
+export function preparationReferences(opps: Opportunity[], p: Profile, now: Date): Recommendation[] {
+  if (careerInterestOf(p) !== "employment") return [];
+  const recommended = new Set(recommend(opps, p, now).map(r => r.opp.id));
+  return opps.flatMap(o => {
+    if (!o.reviewed || o.isVirtual || !["채용", "현장실습"].includes(o.type) || recommended.has(o.id)) return [];
+    const relevance = employmentRelevance(o, p);
+    if (!relevance || relevance.tier < 2) return [];
+    const verdict = evaluate(o, p).overall;
+    const timing = o.opensAt && Date.parse(o.opensAt) > now.getTime() ? "접수 예정 · 준비 참고"
+      : o.deadlineStatus === "unknown" ? "모집 상태 확인 · 준비 참고"
+        : !isOpen(o, now) ? "지난 공고 · 준비 참고" : "지원 조건 준비 · 참고 공고";
+    return [{ opp: o, verdict, score: relevance.tier, reasons: [timing, relevance.reason] }];
+  }).sort((a, b) => b.score - a.score || latest(b.opp).checkedAt.localeCompare(latest(a.opp).checkedAt));
+}
+
 // ───────── 스킬트리
 export interface TreeNode {
+  personalCompletion?: string;
+  personalReason?: string;
+  commonExamOption?: boolean;
+  route?: import("./types").SkillRoute;
   startup?: StartupNode;
   connections?: string[];
   sequence?: string[];
@@ -215,6 +245,7 @@ export interface TreeNode {
   evidence?: TreeSignal[];
   practice?: Practice;
   credentialOption?: CareerCredential;
+  credentialEligibility?: CredentialEligibility;
   mine?: { weight: 1 | 2 | 3; note?: string }; // 학생이 직접 추가한 노드. 크기는 직접 정한 중요도(★)
 }
 
@@ -229,6 +260,12 @@ const COMMON_PREP: [skill: string, prereq: string[]][] = [
   ["SK-RESUME", ["PR-ROLE-COMPARISON"]],
   ["SK-INTERVIEW", ["SK-RESUME"]],
 ];
+
+const STARTUP_ONLY_SKILLS = new Set<string>([
+  "SK-IDEA", "SK-BMC", "SK-BIZPLAN", "SK-MVP", "SK-IR", "PR-ASSUMPTION",
+  ...CAMPUS_NODES.filter(n => /창업|사업화|Startup\s+Challenge/i.test(n.name)).map(n => n.id),
+]);
+const employmentSkill = (id: string) => !STARTUP_ONLY_SKILLS.has(id) && !id.startsWith("SU-");
 
 export function buildTree(p: Profile, opps: Opportunity[], now: Date, extraSkills: readonly string[] = [], signals: ReadonlyMap<string, TreeSignal[]> = new Map()): TreeNode[] {
   const job = jobById(p.jobId);
@@ -248,18 +285,23 @@ export function buildTree(p: Profile, opps: Opportunity[], now: Date, extraSkill
     practices.set(practice.id, practice);
   }
   for (const skill of new Set(extraSkills)) {
-    if (skillById(skill) && !definitions.has(skill)) definitions.set(skill, { skill, required: false });
+    if (employmentSkill(skill) && skillById(skill) && !definitions.has(skill)) definitions.set(skill, { skill, required: false });
   }
   const available = opps.filter((o) => o.versions.length && isOpen(o, now) && evaluate(o, p).overall !== "fail");
-  const make = (n: { skill: string; required: boolean; prereq?: string[]; target?: string }): TreeNode => {
-    const sk = skillById(n.skill)!;
-    const state = p.skills[n.skill] ?? "none";
+  const make = (n: { skill: string; required: boolean; prereq?: string[]; target?: string; route?: import("./types").SkillRoute }): TreeNode => {
     const evidence = signals.get(n.skill);
+    const plan = evidence?.[0]?.preparation;
+    const discovery = plan?.discovery;
+    const sk = discoveredSkillById(n.skill, discovery?.term) ?? skillById(n.skill)!;
+    const state = p.skills[n.skill] ?? "none";
     const linked = available.filter((o) => o.preferred.includes(n.skill) || o.required.some((c) => c.skill === n.skill));
     return {
       skill: n.skill,
-      name: sk.name,
+      commonExamOption: COMMON_EXAMS.has(n.skill) && !trackSkills.has(n.skill),
+      route: n.route ?? (discovery ? { domain: discovery.domain, stage: sk.kind === "자격증" ? 1 : 2 } : undefined),
+      name: plan?.discovery && sk.kind === "프로젝트" ? plan.action : sk.name,
       kind: sk.kind,
+      credentialEligibility: assessCredential(n.skill, p),
       required: n.required,
       prereq: n.prereq ?? [],
       depth: 0,
@@ -283,6 +325,13 @@ export function buildTree(p: Profile, opps: Opportunity[], now: Date, extraSkill
     definitions.set(skill, definition);
     const practice = PRACTICE.find((item) => item.id === skill);
     if (practice) practices.set(skill, practice);
+    tree.push(make(definition));
+  }
+  // Keep main's specialist fallback decision separate from the common/elective tree.
+  for (const skill of [...COMMON_WORK, ...COMMON_EXAMS]) {
+    if (definitions.has(skill)) continue;
+    const definition = { skill, required: false };
+    definitions.set(skill, definition);
     tree.push(make(definition));
   }
   const quests = tree.filter(node => questOutcome(node) !== undefined);
@@ -329,7 +378,7 @@ function recordedScoreCheck(p: Profile, skill: string, target?: string) {
   return meetsTarget(skill, value, target);
 }
 
-function postingSignals(p: Profile, opps: Opportunity[], jobIds: string[], now: Date, templateSkills: ReadonlySet<string>): TreeSignal[] {
+function postingSignals(p: Profile, opps: Opportunity[], now: Date, templateSkills: ReadonlySet<string>): TreeSignal[] {
   const options = credentialsForJob(p.jobId);
   const latestPostings = new Map<string, Opportunity>();
   for (const opp of opps) {
@@ -337,9 +386,9 @@ function postingSignals(p: Profile, opps: Opportunity[], jobIds: string[], now: 
     const previous = latestPostings.get(opp.id);
     if (!previous || latest(previous).version < latest(opp).version) latestPostings.set(opp.id, opp);
   }
-  const signals: TreeSignal[] = [];
+  const signals = discoveredSignals(latestPostings.values(), p, o => !isOpen(o, now), id => jobById(id)?.base ?? id);
   for (const opp of latestPostings.values()) {
-    if (!opp.reviewed || !["채용", "현장실습"].includes(opp.type) || !opp.jobs.some((id) => jobIds.includes(id))) continue;
+    if (!opp.reviewed || !["채용", "현장실습"].includes(opp.type) || !matchesEmploymentRole(opp, p.jobId)) continue;
     const reference = { id: opp.id, url: opp.source.url, title: opp.title, organization: opp.org, version: latest(opp).version, historical: !isOpen(opp, now) };
     const requirements = new Set<string>();
     const cited = new Set<string>();
@@ -385,8 +434,14 @@ function postingSignals(p: Profile, opps: Opportunity[], jobIds: string[], now: 
   return signals;
 }
 
-export function buildCareerPath(p: Profile, opps: Opportunity[], now: Date, snapshotSignals: TreeSignal[], startupCatalog?: StartupCatalog) {
-  if (careerInterestOf(p) === "startup" && startupCatalog) return buildStartupPath(p, opps, now, startupCatalog);
+export function countsTowardTrack(node: TreeNode) {
+  if (!node.commonExamOption && !node.credentialOption) return true;
+  return !!node.evidence?.some(e => e.reference.scope === "role" &&
+    (e.basis === "required" || e.basis === "preferred") && e.preparation?.kind !== "suggested");
+}
+
+export function buildCareerPath(p: Profile, opps: Opportunity[], now: Date, snapshotSignals: TreeSignal[], startupCatalog?: StartupCatalog, startupPlan?: StartupPlan) {
+  if (careerInterestOf(p) === "startup" && startupCatalog) return buildStartupPath(p, opps, now, startupCatalog, startupPlan);
   const job = jobById(p.jobId);
   const templateSkills = new Set(job?.nodes.map((node) => node.skill));
   const schoolSignals: TreeSignal[] = [];
@@ -400,9 +455,9 @@ export function buildCareerPath(p: Profile, opps: Opportunity[], now: Date, snap
     }
   }
   const signals = groupTreeSignals([
-    ...postingSignals(p, opps, job?.base ? [job.id, job.base] : [p.jobId], now, templateSkills),
+    ...postingSignals(p, opps, now, templateSkills),
     ...snapshotSignals, ...schoolSignals,
-  ]);
+  ].filter(signal => employmentSkill(signal.skillId)));
   const extraSkills = (p.completedPreparation?.[p.jobId] ?? []).filter((id) => p.skills[id] && p.skills[id] !== "none");
   for (const [id, evidence] of signals) {
     if (!templateSkills.has(id) && evidence.some((s) =>
@@ -417,8 +472,7 @@ export function buildCareerPath(p: Profile, opps: Opportunity[], now: Date, snap
     signals.get(node.skill)?.some((signal) => signal.minimum && recordedScoreCheck(p, node.skill, signal.minimum) === false)
   )).map((node) => node.skill));
   // Optional issuer-backed paths never displace a core quest or dilute track progress.
-  const core = tree.filter(n => !n.credentialOption || n.evidence?.some(e =>
-    e.reference.scope === "role" && (e.basis === "required" || e.basis === "preferred") && e.preparation?.kind !== "suggested"));
+  const core = tree.filter(countsTowardTrack);
   const coreIds = new Set(core.map(n => n.skill));
   return { tree, recommendedQuest: selectRecommendedQuest(core, signals, focus, belowTarget),
     treeProgress: progress(p, core, tree.filter(n => !coreIds.has(n.skill))) };

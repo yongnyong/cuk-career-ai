@@ -6,7 +6,6 @@ import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { Bot, Brain, MessageSquareText, Send, Trash2, X } from "lucide-react";
 import { useStore } from "@/lib/store";
-import { recommend } from "@/lib/engine";
 import type { Profile } from "@/lib/types";
 import { AiNotice } from "./ui";
 
@@ -16,7 +15,7 @@ type Fact = { id: string; kind: string; value: string; source: string; progress?
 type ChatResult = { answer: string; memoryUpdated?: boolean; needsConfirmation?: string[]; opportunities?: OppRef[] };
 
 // 스킬트리에서 지금 열어 둔 노드. skillId는 비서 카탈로그(직무 기본 노드)에 있는 노드만 넣는다(없는 ID는 비서가 답을 멈춘다)
-export type AssistantNode = { name: string; skillId?: string };
+export type AssistantNode = { name: string; skillId?: string; startupNodeId?: string };
 
 const CONVERSATION = "main";
 const START = ["나한테 맞는 공고 있어?", "다음에 뭘 준비하면 돼?", "Python 7일 학습 계획 짜줘"];
@@ -31,7 +30,7 @@ const isDemo = (id: string | null) => !!id && id.startsWith("demo-");
 function screen(path: string, profile: Profile | null, node: AssistantNode | null) {
   const [first = "", second] = path.split("/").filter(Boolean);
   if (first === "opportunities" && second) return { page: "opportunities", opportunityId: decodeURIComponent(second) };
-  if (first === "tree") return { page: "tree", ...(profile?.jobId ? { jobId: profile.jobId } : {}), ...(node?.skillId ? { skillId: node.skillId } : {}) };
+  if (first === "tree") return { page: "tree", ...(profile?.jobId ? { jobId: profile.jobId } : {}), ...(node?.skillId ? { skillId: node.skillId } : {}), ...(node?.startupNodeId ? { startupNodeId: node.startupNodeId } : {}) };
   return { page: /^[a-z][a-z0-9-]{0,40}$/.test(first) ? first : "home" };
 }
 
@@ -61,6 +60,7 @@ const AssistantContext = createContext<Ctx | null>(null);
 export function AssistantProvider({ children }: { children: React.ReactNode }) {
   const s = useStore();
   const owner = s.session;
+  const refreshStartupPlan = s.refreshStartupPlan;
   const server = s.mode === "server" && !!owner && !isDemo(owner);
   // 대화는 계정(owner)별로 들고, 계정이 바뀌면 다른 계정의 대화를 보여주지 않는다
   const [conv, setConv] = useState<{ owner: string | null; msgs: AssistantMsg[] }>({ owner: null, msgs: [] });
@@ -74,14 +74,11 @@ export function AssistantProvider({ children }: { children: React.ReactNode }) {
   const [open, setOpen] = useState<boolean | null>(null);
 
   // 웹 규칙 엔진이 이 학생에게 고른 공고(직무·역량·전공 기준). 비서는 이 안에서 공고를 골라 조건을 다시 판정한다
-  const focus = useMemo(
-    () => (s.profile ? recommend(s.opportunities, s.profile, s.nowDate).filter((r) => !r.opp.isVirtual).slice(0, 8).map((r) => r.opp.id).join(",") : ""),
-    [s.opportunities, s.profile, s.nowDate],
-  );
+  const focus = useMemo(() => s.recommendations.filter(r => !r.opp.isVirtual).map(r => r.opp.id), [s.recommendations]);
 
   // 시연·비로그인: 서버가 HttpOnly 쿠키로 브라우저를 구분하고, 여기서는 시연 계정 이름만 보낸다(계정이 바뀌면 다른 대화)
   const headers = useCallback((): Record<string, string> => {
-    const f: Record<string, string> = focus ? { "x-assistant-focus": focus } : {};
+    const f: Record<string, string> = {};
     if (server) return f;
     const h: Record<string, string> = { ...f, "x-demo-id": (owner ?? "guest").replace(/[^a-z0-9-]/g, "").slice(0, 40) || "guest" };
     const p = s.profile;
@@ -91,7 +88,7 @@ export function AssistantProvider({ children }: { children: React.ReactNode }) {
       h["x-demo-profile"] = btoa(String.fromCharCode(...new TextEncoder().encode(JSON.stringify(brief))));
     }
     return h;
-  }, [server, owner, s.profile, focus]);
+  }, [server, owner, s.profile]);
 
   const call = useCallback(
     (url: string, init: RequestInit = {}) =>
@@ -131,10 +128,11 @@ export function AssistantProvider({ children }: { children: React.ReactNode }) {
       try {
         const r = await call("/chat", {
           method: "POST",
-          body: JSON.stringify({ message, conversationId: CONVERSATION, requestId: `r${Date.now().toString(36)}${Math.random().toString(36).slice(2, 8)}`, context: screen(path, s.profile, node) }),
+          body: JSON.stringify({ message, conversationId: CONVERSATION, requestId: `r${Date.now().toString(36)}${Math.random().toString(36).slice(2, 8)}`, context: screen(path, s.profile, node), retrieval: { query: s.opportunitySearch.query, postingIds: focus }, ...(path === "/onboarding" ? { mode: "startup_intake" } : {}) }),
         });
         const d = r.headers.get("content-type")?.includes("application/json") ? await r.json() : null;
         reply = r.ok && d ? toMsg(d) : { role: "bot", text: errorText(d), held: true };
+        if (r.ok && d?.startupPlanUpdated) await refreshStartupPlan();
         if (r.ok && d?.memoryUpdated && memory) loadMemory();
       } catch {
         reply = { role: "bot", text: "서버에 연결하지 못했어요. 잠시 뒤 다시 시도해 주세요.", held: true };
@@ -142,7 +140,7 @@ export function AssistantProvider({ children }: { children: React.ReactNode }) {
       setMsgs((m) => [...m, reply]);
       setBusy(false);
     },
-    [busy, setMsgs, call, s.profile, node, memory, loadMemory],
+    [busy, setMsgs, call, s.profile, s.opportunitySearch.query, focus, refreshStartupPlan, node, memory, loadMemory],
   );
 
   const clear = useCallback(() => {
@@ -168,10 +166,11 @@ export function useAssistantNode(node: AssistantNode | null) {
   const { setNode } = useAssistant();
   const name = node?.name;
   const skillId = node?.skillId;
+  const startupNodeId = node?.startupNodeId;
   useEffect(() => {
-    setNode(name ? { name, skillId } : null);
+    setNode(name ? { name, skillId, startupNodeId } : null);
     return () => setNode(null);
-  }, [name, skillId, setNode]);
+  }, [name, skillId, startupNodeId, setNode]);
 }
 
 // 노드 상세의 "이 노드 물어보기": 챗봇 창을 열고 이 노드를 주제로 바로 묻는다
@@ -218,9 +217,10 @@ function MemoryPanel() {
 
 export function AssistantChat({ large = false }: { large?: boolean }) {
   const { msgs, busy, saved, ask, clear, loadMemory, node } = useAssistant();
-  const { profile } = useStore();
+  const { profile, startupPlan, startupPlanError, editStartupPlan } = useStore();
   const path = usePathname();
   const [q, setQ] = useState("");
+  const startupIntake = path === "/onboarding";
   const [showMemory, setShowMemory] = useState(false);
   const end = useRef<HTMLDivElement>(null);
   useEffect(() => {
@@ -233,6 +233,26 @@ export function AssistantChat({ large = false }: { large?: boolean }) {
 
   return (
     <div className="flex min-h-0 flex-1 flex-col">
+      {startupIntake && <div className="space-y-2 p-4">
+        <p>누가 어떤 상황에서 쓸 제품이나 서비스를 만들고 있어요?</p>
+        <p className="text-xs">어떤 사람의 문제를 어떻게 해결하는지 편하게 설명해 주세요. 대화로 서비스 내용을 구체화해 볼게요.</p>
+      </div>}
+      {startupPlanError && <p role="alert" className="p-3 text-danger">{startupPlanError}</p>}
+      {startupPlan && <details className="px-4 text-sm"><summary>우리 팀 정보 수정</summary>
+        <form key={JSON.stringify(startupPlan)} onSubmit={e => {
+          e.preventDefault();
+          const form = e.currentTarget;
+          const newProject = new FormData(form).has("newProject");
+          const changed = [...form.querySelectorAll<HTMLInputElement>("input[data-plan-field]")]
+            .filter(input => newProject || input.value !== input.defaultValue)
+            .map(input => [input.name, input.value]);
+          void editStartupPlan(Object.fromEntries(changed), newProject);
+        }}>
+          {[["idea","아이디어"],["customer","고객"],["artifacts","준비한 결과물"],["goal","가까운 목표"]].map(([k,label]) =>
+            <label className="block" key={k}>{label}<input className="input" data-plan-field name={k} maxLength={240} defaultValue={startupPlan[k as "idea"]} /></label>)}
+          <label className="mt-2 block"><input type="checkbox" name="newProject" /> 새로운 아이디어로 시작</label>
+          <button className="btn-primary">수정 반영</button>
+        </form></details>}
       <div className={`min-h-0 flex-1 space-y-3 overflow-y-auto p-4 ${large ? "max-h-[26rem]" : ""}`}>
         {showMemory ? (
           <MemoryPanel />
@@ -240,7 +260,9 @@ export function AssistantChat({ large = false }: { large?: boolean }) {
           <>
             {msgs.length === 0 && (
               <p className="text-sm text-ink/70">
-                {profile
+                {startupIntake
+                  ? "예: 대학생이 수강 이력과 관심 직무를 바탕으로 취업 준비 계획을 세우는 AI 서비스를 만들고 있어요."
+                  : profile
                   ? "내 학과·학년·목표 직무·스킬트리와 대화에서 말한 내용을 기억해서 답해요. 공고 조건은 서버가 직접 판정해요."
                   : "로그인하거나 시연 계정으로 들어오면 내 프로필에 맞춰 답해요."}
               </p>
@@ -284,7 +306,7 @@ export function AssistantChat({ large = false }: { large?: boolean }) {
         {node && path.startsWith("/tree") && !showMemory && (
           <p className="mb-2 truncate text-[11px] text-ink/60">지금 보는 노드: <strong>{node.name}</strong> · 이 노드 기준으로 답해요</p>
         )}
-        {!showMemory && (
+        {!showMemory && !startupIntake && (
           <div className="mb-2 flex flex-wrap gap-1.5">
             {START.map((x) => (
               <button key={x} className="rounded-full border border-line px-2.5 py-1 text-xs hover:bg-paper" disabled={busy} onClick={() => send(x)}>
@@ -298,7 +320,7 @@ export function AssistantChat({ large = false }: { large?: boolean }) {
             value={q}
             onChange={(e) => setQ(e.target.value)}
             maxLength={500}
-            placeholder="진로·공고·공부 계획을 물어보세요"
+            placeholder={startupIntake ? "만들고 있는 제품이나 서비스를 설명해 주세요" : "진로·공고·공부 계획을 물어보세요"}
             aria-label="챗봇에게 질문"
             className="min-w-0 flex-1 rounded-md border border-line bg-panel px-3 py-2 text-sm"
           />

@@ -62,13 +62,16 @@ def make_assistant(Base, SessionLocal, career_session, Posting, User, session_us
             return ((user.state or {}).get("profile") if user else None) or None
 
     data = ServiceCareerData(career_session, Posting, profile_of)
+    from ..career.embeddings import configured_embeddings
+    from ..career.opportunity_search import OpportunitySearch
+    data.search = OpportunitySearch(career_session, data.public_postings, configured_embeddings())
     store = RoutingStore(accounts, demo_store)
     service = AssistantService(data, store, model or default_model())
 
     # async: 여기서 정한 FOCUS가 같은 요청의 엔드포인트(스레드풀)까지 이어지도록 이벤트 루프의 컨텍스트에서 실행한다
     async def owner(request: Request, response: Response, user=Depends(session_user)):
-        focus = [x for x in request.headers.get("x-assistant-focus", "").split(",") if ID.match(x)][:12]
-        FOCUS.set(tuple(focus))
+        focus = [x for x in request.headers.get("x-assistant-focus", "").split(",") if ID.match(x)]
+        FOCUS.set(tuple(focus) if "x-assistant-focus" in request.headers else None)
         if user:
             return user
         demo_id = request.headers.get("x-demo-id", "")

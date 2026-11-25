@@ -2,7 +2,7 @@
 // 클라이언트 상태.
 // - 서버 모드: 계정·세션은 API 서버가 관리하고(HttpOnly 쿠키), 내 데이터는 서버에 저장한다.
 // - 로컬 모드: API 서버에 닿지 않을 때의 대체 동작. 계정이 이 브라우저 안에서만 유효하다(비밀번호는 salt+PBKDF2 해시).
-// 공고 목록과 가상 시계는 아직 브라우저에만 있다.
+// 수집 공고는 서버에서 다시 읽고, 개인 상태·수동 공고·가상 시계는 브라우저에도 저장한다.
 import { createContext, useCallback, useContext, useEffect, useMemo, useRef, useState } from "react";
 import { SEED_OPPORTUNITIES } from "./data/opportunities";
 import { applyOverrides, jobById, registerStartupSkills, type CatalogOverrides } from "./data/catalog";
@@ -10,14 +10,17 @@ import startupData from "./data/startupCatalog.json";
 import { PERSONAS, restoreDemoProfile } from "./data/personas";
 import { startupSkills } from "./startup";
 import { careerInterestOf } from "./interest";
+import { opportunityQuery, retrievedRecommendations } from "./opportunitySearch";
+import type { Recommendation } from "./engine";
+import type { OpportunityExplanation, OpportunitySearchResult } from "./types";
 import { buildCareerPath, evaluate, latest, syncNotices, fmt } from "./engine";
 import { withMyNodes } from "./customTree";
-import type { CareerInterest, Notice, Opportunity, Profile, SkillState, StartupCatalog, TreeSignal } from "./types";
+import type { CareerInterest, Notice, Opportunity, Profile, SkillState, StartupCatalog, StartupPlan, TreeSignal } from "./types";
 
 const STARTUP_CATALOG = startupData as StartupCatalog;
 registerStartupSkills(startupSkills(STARTUP_CATALOG));
 
-export const DEMO_START = "2026-11-16T09:00:00+09:00";
+export const DEMO_START = "2026-11-22T09:00:00+09:00";
 const KEY = "cuk-career-ai:v2";
 
 function recordSkill(profile: Profile, skill: string, value: SkillState, inTree: boolean): Profile {
@@ -45,18 +48,18 @@ interface Account {
   hash: string; // 시연용 계정은 빈 문자열(비밀번호 없음)
   data: UserData;
 }
-const isCollected = (o: Opportunity) => /^(cuk|kst|w24|man|hist)-/.test(o.id); // 서버 수집 공고(학교 공지·K-Startup·고용24·직접 등록·채용 이력)
+const isCollected = (o: Opportunity) => /^(cuk|kst|w24|man|hist|startup)-/.test(o.id); // 서버 수집 공고
 // 실제 공고가 있으면 실제 계정에는 가상 공고를 보여주지 않는다(시연용 계정은 둘 다 본다)
 const visibleOpps = (s: { opportunities: Opportunity[]; session: string | null }, isAdmin: boolean) =>
   !isAdmin && !isDemo(s.session) && s.opportunities.some(isCollected) ? s.opportunities.filter((o) => !o.isVirtual) : s.opportunities;
 const isDemo = (id: string | null) => !!id && id.startsWith("demo-"); // 시연용 계정은 서버에 저장하지 않는다
 
 // API 호출. 서버에 닿지 않거나 JSON이 아니면 null(= 서버 없음)
-async function call(path: string, method = "GET", body?: unknown) {
+async function call(path: string, method = "GET", body?: unknown, demoOwner?: string | null) {
   try {
     const r = await fetch("/api" + path, {
       method,
-      headers: body ? { "Content-Type": "application/json" } : undefined,
+      headers: { ...(body ? { "Content-Type": "application/json" } : {}), ...(demoOwner?.startsWith("demo-") ? { "x-demo-id": demoOwner } : {}) },
       body: body ? JSON.stringify(body) : undefined,
       credentials: "same-origin",
     });
@@ -122,6 +125,10 @@ const initial = (): State => ({
 });
 
 interface Ctx extends State {
+  recommendations: Recommendation[];
+  preparationRecommendations: Recommendation[];
+  opportunitySearch: { query: string; status: "idle" | "loading" | "ready" | "fallback"; mode?: string };
+  explainOpportunity: (id: string) => Promise<OpportunityExplanation | null>;
   ready: boolean; // 저장소 복원과 서버 세션 확인 완료 여부
   mode: "server" | "local";
   isAdmin: boolean;
@@ -132,6 +139,14 @@ interface Ctx extends State {
   nowDate: Date;
   careerPath: ReturnType<typeof buildCareerPath> | null;
   startupCatalog: StartupCatalog;
+  startupPlan: StartupPlan | null;
+  startupPlanError: string;
+  startupApplicationStale: Record<string, boolean>;
+  startupPlanRevision: number;
+  saveStartupApplication: (body: object, revision?: number) => Promise<void>;
+  refreshStartupPlan: () => Promise<void>;
+  editStartupPlan: (fields: Record<string, string>, newProject?: boolean) => Promise<void>;
+  selectStartupOpportunity: (id: string) => Promise<void>;
   getQuestAction: (() => Promise<string | undefined>) | null;
   signup: (id: string, pw: string, interest?: CareerInterest) => Promise<string | null>; // 실패 시 사유 반환
   login: (id: string, pw: string) => Promise<string | null>;
@@ -162,6 +177,54 @@ export function StoreProvider({ children }: { children: React.ReactNode }) {
   const [catalog, setCatalog] = useState<CatalogOverrides>({ skills: {}, jobs: {} });
   const [catalogVersion, setCatalogVersion] = useState(0);
   const [isAdmin, setIsAdmin] = useState(false); // 서버가 알려준 관리자 여부(저장하지 않는다)
+  const [startupPlanError, setStartupPlanError] = useState("");
+  const [ownedPlan, setOwnedPlan] = useState<{ owner: string | null; plan: StartupPlan | null; revision: number }>({ owner: null, plan: null, revision: 0 });
+  const startupPlan = ownedPlan.owner === state.session ? ownedPlan.plan : null;
+  const [startupApplicationStale, setStartupApplicationStale] = useState<Record<string, boolean>>({});
+  const refreshStartupPlan = useCallback(async () => {
+    const r = await call("/assistant/startup-plan", "GET", undefined, state.session);
+    if (r?.ok) setStartupApplicationStale(r.data.application_stale ?? {});
+    if (r?.ok) setOwnedPlan(previous => previous.owner === state.session && previous.revision > r.data.revision
+      ? previous : { owner: state.session, ...r.data });
+  }, [state.session]);
+  const saveStartupApplication = useCallback(async (body: object, revision = ownedPlan.revision) => {
+    const r = await call("/assistant/startup-application", "POST", { ...body, revision }, state.session);
+    if (!r?.ok) {
+      if (r?.status === 409) throw new Error("다른 창에서 변경됐어요. 팀 정보를 다시 불러온 뒤 수정 내용을 확인해 주세요.");
+      throw new Error("초안을 저장하지 못했어요. 팀 아이디어·대상 고객과 서버 연결을 확인해 주세요.");
+    }
+    setOwnedPlan(previous => previous.owner === state.session && previous.revision > r.data.revision
+      ? previous : { owner: state.session, ...r.data });
+    setStartupApplicationStale(r.data.application_stale ?? {});
+  }, [ownedPlan.revision, state.session]);
+  const patchStartupPlan = useCallback(async (body: object) => {
+    const latest = await call("/assistant/startup-plan", "GET", undefined, state.session);
+    if (!latest?.ok) throw new Error("계획을 읽지 못했어요. 다시 시도해 주세요.");
+    let r = await call("/assistant/startup-plan", "PATCH", { ...body, revision: latest.data.revision }, state.session);
+    if (r?.status === 409) {
+      const fresh = await call("/assistant/startup-plan", "GET", undefined, state.session);
+      if (fresh?.ok) r = await call("/assistant/startup-plan", "PATCH", { ...body, revision: fresh.data.revision }, state.session);
+    }
+    if (!r?.ok) throw new Error("계획을 저장하지 못했어요. 새로고침 후 다시 시도해 주세요.");
+    setOwnedPlan(previous => previous.owner === state.session && previous.revision > r.data.revision
+      ? previous : { owner: state.session, ...r.data });
+  }, [state.session]);
+  const editStartupPlan = useCallback(async (fields: Record<string, string>, newProject = false) => {
+    if (!Object.keys(fields).length && !newProject) return;
+    try { await patchStartupPlan({ fields, new_project: newProject }); setStartupPlanError(""); }
+    catch { setStartupPlanError("계획을 저장하지 못했어요. 다시 시도해 주세요."); }
+  }, [patchStartupPlan]);
+  const selectStartupOpportunity = useCallback(async (id: string) => {
+    try { await patchStartupPlan({ opportunity_id: id }); setStartupPlanError(""); }
+    catch { setStartupPlanError("공고를 연결하지 못했어요. 팀 정보와 대회·지원사업 목표, 서버에 저장된 공고를 확인해 주세요."); }
+  }, [patchStartupPlan]);
+  useEffect(() => {
+    if (!ready || !state.session) return;
+    const sync = () => { void refreshStartupPlan(); };
+    sync();
+    window.addEventListener("focus", sync);
+    return () => window.removeEventListener("focus", sync);
+  }, [ready, state.session, refreshStartupPlan]);
   const [startupCatalog, setStartupCatalog] = useState<StartupCatalog>(STARTUP_CATALOG);
 
   // 브라우저 저장소(외부 시스템)에서 한 번 복원한다
@@ -201,13 +264,17 @@ export function StoreProvider({ children }: { children: React.ReactNode }) {
   }, []);
   /* eslint-enable react-hooks/set-state-in-effect */
 
+  const lastSaved = useRef<string | null>(null);
   useEffect(() => {
     if (!ready) return;
     try {
-      localStorage.setItem(KEY, JSON.stringify(state));
-    } catch {
-      /* 무시 */
-    }
+      // Exclude public snapshots before serialization, rather than after a quota failure.
+      const saved = JSON.stringify({ ...state,
+        opportunities: state.opportunities.filter(o => !isCollected(o) || o.id.startsWith("man-")) });
+      if (saved === lastSaved.current) return;
+      localStorage.setItem(KEY, saved);
+      lastSaved.current = saved;
+    } catch { /* Browser storage may be disabled. */ }
   }, [state, ready]);
 
   // 서버 모드: 내 데이터가 바뀌면 잠시 모아 서버에 저장
@@ -233,10 +300,24 @@ export function StoreProvider({ children }: { children: React.ReactNode }) {
   // 서버가 수집한 실제 공고. 이전에 받아 둔 실제 공고는 서버 목록으로 바꿔 끼운다
   useEffect(() => {
     if (!ready) return;
-    call("/opportunities").then((r) => {
-      if (r?.ok && Array.isArray(r.data))
-        update((s) => ({ ...s, opportunities: [...s.opportunities.filter((o) => !isCollected(o)), ...r.data] }));
-    });
+    let active = true;
+    let sequence = 0;
+    let lastSignature = "";
+    const refresh = async () => {
+      const request = ++sequence;
+      const r = await call("/opportunities");
+      if (!active || request !== sequence || !r?.ok || !Array.isArray(r.data)) return;
+      const signature = JSON.stringify(r.data.map((o: Opportunity) => [o.id, o.versions]));
+      if (signature === lastSignature) return;
+      lastSignature = signature;
+      update((s) => ({ ...s, opportunities: [...s.opportunities.filter((o) => !isCollected(o)), ...r.data] }));
+    };
+    void refresh();
+    window.addEventListener("focus", refresh);
+    const interval = window.setInterval(() => {
+      if (document.visibilityState === "visible") void refresh();
+    }, 60_000);
+    return () => { active = false; window.removeEventListener("focus", refresh); window.clearInterval(interval); };
   }, [ready, update]);
 
   useEffect(() => {
@@ -251,12 +332,73 @@ export function StoreProvider({ children }: { children: React.ReactNode }) {
     return () => { current = false; };
   }, [ready]);
   const visible = useMemo(() => {
-    const merged = [...state.opportunities.filter((o) => !o.startup), ...startupCatalog.opportunities];
-    const all = visibleOpps({ opportunities: merged, session }, isAdmin);
+    const merged = new Map(startupCatalog.opportunities.map(o => [o.id, o]));
+    for (const posting of state.opportunities) {
+      const previous = merged.get(posting.id);
+      if (!previous || latest(posting).version > latest(previous).version
+        || latest(posting).version === latest(previous).version && latest(posting).checkedAt >= latest(previous).checkedAt) {
+        merged.set(posting.id, posting);
+      }
+    }
+    const all = visibleOpps({ opportunities: [...merged.values()], session }, isAdmin);
     if (!profile || isAdmin) return all;
-    return all.filter((o) => careerInterestOf(profile) === "startup" ? !!o.startup : o.type !== "창업지원");
+    return all.filter((o) => careerInterestOf(profile) === "startup" ? o.type === "창업지원" : o.type !== "창업지원");
   }, [state.opportunities, session, isAdmin, profile, startupCatalog]);
   const asOf = state.now;
+  const searchQuery = useMemo(() => profile ? opportunityQuery(profile, startupPlan) : "", [profile, startupPlan]);
+  const searchFocus = profile && careerInterestOf(profile) === "startup" ? startupPlan?.goal ?? "" : "";
+  const searchKey = useMemo(() => session && searchQuery ? JSON.stringify([session, searchQuery,
+    visible.map(o => [o.id, o.versions, o.sections])]) : "", [session, searchQuery, visible]);
+  const [searchSnapshot, setSearchSnapshot] = useState<{ key: string; result: OpportunitySearchResult | null }>();
+  useEffect(() => {
+    if (!ready || !searchKey) return;
+    let current = true;
+    const load = async () => {
+      let offset = 0;
+      let combined: OpportunitySearchResult | null = null;
+      do {
+        const response = await call("/assistant/opportunity-search", "POST",
+          { query: searchQuery, kind: careerInterestOf(profile!), focus: searchFocus, offset, limit: 500 }, session);
+        if (!current) return;
+        if (!response?.ok || !Array.isArray(response.data.hits)) {
+          setSearchSnapshot({ key: searchKey, result: null });
+          return;
+        }
+        const page = response.data as OpportunitySearchResult;
+        if (combined && combined.indexVersion !== page.indexVersion) {
+          setSearchSnapshot({ key: searchKey, result: null });
+          return;
+        }
+        combined = combined ? { ...page, hits: [...combined.hits, ...page.hits] } : page;
+        if (page.nextOffset === null) break;
+        if (page.nextOffset <= offset) {
+          setSearchSnapshot({ key: searchKey, result: null });
+          return;
+        }
+        offset = page.nextOffset;
+      } while (current);
+      if (current) setSearchSnapshot({ key: searchKey, result: combined });
+    };
+    void load();
+    return () => { current = false; };
+  }, [ready, searchKey, searchQuery, searchFocus, profile, session]);
+  const searchResult = searchSnapshot?.key === searchKey ? searchSnapshot.result : null;
+  const recommendations = useMemo(() => profile
+    ? retrievedRecommendations(visible, profile, new Date(asOf), searchResult) : [],
+    [visible, profile, asOf, searchResult]);
+  const preparationRecommendations = useMemo(() => profile
+    ? retrievedRecommendations(visible, profile, new Date(asOf), searchResult, "preparation") : [],
+    [visible, profile, asOf, searchResult]);
+  const opportunitySearch = useMemo<Ctx["opportunitySearch"]>(() => ({
+    query: searchQuery,
+    status: !searchKey ? "idle" : searchSnapshot?.key !== searchKey ? "loading" : searchResult ? "ready" : "fallback",
+    mode: searchResult?.mode,
+  }), [searchQuery, searchKey, searchSnapshot, searchResult]);
+  const explainOpportunity = useCallback(async (id: string) => {
+    const response = await call("/assistant/opportunity-explanation", "POST",
+      { query: searchQuery, postingIds: [id] }, session);
+    return response?.ok ? response.data as OpportunityExplanation : null;
+  }, [searchQuery, session]);
   const signalRequest = useMemo(() => profile && careerInterestOf(profile) !== "startup" ? {
     asOf,
     profile: {
@@ -307,8 +449,12 @@ export function StoreProvider({ children }: { children: React.ReactNode }) {
   const api = useMemo<Ctx>(
     () => ({
       ...state,
+      recommendations, preparationRecommendations, opportunitySearch, explainOpportunity,
       opportunities: visible,
       startupCatalog,
+      startupPlan, startupPlanError, refreshStartupPlan, editStartupPlan, selectStartupOpportunity,
+      startupApplicationStale, saveStartupApplication,
+      startupPlanRevision: ownedPlan.revision,
       careerPath,
       getQuestAction,
       isAdmin,
@@ -390,8 +536,10 @@ export function StoreProvider({ children }: { children: React.ReactNode }) {
           const inTree = !!careerPath?.tree.some((node) => node.skill === skill);
           return { ...s, profile: { ...recordSkill(s.profile, skill, status, inTree), scores } };
         }),
-      setSkill: (skill, st) =>
-        update((s) => (s.profile ? { ...s, profile: recordSkill(s.profile, skill, st, !!careerPath?.tree.some((node) => node.skill === skill)) } : s)),
+      setSkill: (skill, st) => {
+        if (skill.startsWith("SUP-")) { void patchStartupPlan({ node_id: skill, completed: st !== "none" }).then(() => setStartupPlanError("")).catch(() => setStartupPlanError("완료 상태를 저장하지 못했어요. 다시 시도해 주세요.")); return; }
+        update((s) => (s.profile ? { ...s, profile: recordSkill(s.profile, skill, st, !!careerPath?.tree.some((node) => node.skill === skill)) } : s));
+      },
       follow: (id) => update((s) => (s.followed.includes(id) ? s : { ...s, followed: [...s.followed, id] })),
       unfollow: (id) =>
         update((s) => ({
@@ -460,7 +608,7 @@ export function StoreProvider({ children }: { children: React.ReactNode }) {
       },
       resetDemo: () => update(() => initial()),
     }),
-    [state, update, ready, mode, isAdmin, catalog, catalogVersion, visible, careerPath, getQuestAction, startupCatalog],
+    [state, update, ready, mode, isAdmin, catalog, catalogVersion, visible, careerPath, getQuestAction, startupCatalog, startupPlan, startupPlanError, refreshStartupPlan, editStartupPlan, selectStartupOpportunity, patchStartupPlan, recommendations, preparationRecommendations, opportunitySearch, explainOpportunity, startupApplicationStale, saveStartupApplication, ownedPlan.revision],
   );
 
   return <StoreCtx.Provider value={api}>{children}</StoreCtx.Provider>;

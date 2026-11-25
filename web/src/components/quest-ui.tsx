@@ -13,9 +13,11 @@ const STATUS = {
   done: { label: "완료", icon: Check, box: "border-ok shadow-[0_0_14px_rgb(47_211_154/0.35)]", badge: "bg-ok text-white" },
   go: { label: "지금 도전", icon: Swords, box: "border-go shadow-[0_0_14px_rgb(70_166_255/0.45)]", badge: "bg-go text-white" },
   lock: { label: "잠김", icon: Lock, box: "border-dashed border-lock text-lock", badge: "bg-slate-200 text-slate-400" },
+  check: { label: "응시요건 준비·확인", icon: KeyRound, box: "border-line", badge: "bg-slate-100 text-slate-600" },
 } as const;
 
-export const nodeStatus = (n: TreeNode) => (n.state !== "none" ? "done" : n.locked ? "lock" : "go");
+export const nodeStatus = (n: TreeNode) => (n.state !== "none" ? "done" : n.locked ? "lock"
+  : n.credentialEligibility && n.credentialEligibility.status !== "ready" ? "check" : "go");
 
 // 중요도 크기: 1 작게, 2 보통, 3 크게(먼저 찍을 노드)
 const WEIGHT_BOX = { 1: "w-44 opacity-90", 2: "w-48", 3: "w-[216px] ring-2 ring-gold/70" } as const;
@@ -57,6 +59,8 @@ export function NodeBox({ node, isNew, now, proof, recommended, weight, compact 
           <span title={title} className={`block font-bold leading-tight ${weight === 3 ? "text-base" : "text-sm"}`}>{title}</span>
           {weight === 3 && <span className="flex items-center gap-0.5 text-[11px] font-bold text-gold"><Star size={11} fill="currentColor" /> 핵심 노드</span>}
           {recommended && <span className="block text-[11px] font-bold text-go">추천 퀘스트</span>}
+          {node.state === "none" && node.credentialEligibility &&
+            <span className="block text-[11px] text-go">{node.credentialEligibility.label}</span>}
           <span className="block text-[11px] opacity-70">
             {node.state === "none" ? st.label : node.score ? `완료 · ${formatScore(node.skill, node.score)}` : node.state === "verified" ? "완료 · 검증됨" : "완료 · 자기 보고"}
             {node.required ? " · 트랙 기본" : ""}

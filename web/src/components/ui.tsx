@@ -29,6 +29,9 @@ export function TypeTag({ type }: { type: OppType }) {
 }
 
 export function DDay({ opp, now }: { opp: Opportunity; now: Date }) {
+  if (opp.opensAt && Date.parse(opp.opensAt) > now.getTime()) {
+    return <span className="chip bg-slate-100 text-slate-600">접수 예정</span>;
+  }
   const d = dday(opp, now);
   if (opp.deadlineStatus === "unknown") return <span className="chip bg-slate-100 text-slate-600">기한 확인</span>;
   if (d < 0) return <span className="chip bg-slate-200 text-slate-500">마감</span>;

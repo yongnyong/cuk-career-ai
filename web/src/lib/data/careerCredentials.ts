@@ -9,9 +9,45 @@ export interface CareerCredential {
   // Only a credential name can establish a direct posting requirement.
   explicitPattern: string;
   observation?: string;
+  reuseExisting?: boolean;
 }
 
 export const CAREER_CREDENTIALS: CareerCredential[] = [
+  {
+    id: "CERT-YOUTH-2", name: "청소년상담사 2급",
+    officialUrl: "https://www.q-net.or.kr/qnet/html/guide67/guide_01.html",
+    jobs: ["psy-counsel"], stage: 4,
+    reason: "청소년 전문상담을 이어갈 때 검토할 장기 목표예요. 상담 관련 석사 또는 학사·경력 등 응시 경로와 자격연수 요건을 공식 안내에서 확인하세요. 학부 재학생의 즉시 응시 여부는 자동 판정하지 않아요.",
+    explicitPattern: "청소년\\s*상담사\\s*2\\s*급",
+  },
+  {
+    id: "PSY-C-CLIN", name: "임상심리사 2급", reuseExisting: true,
+    officialUrl: "https://www.q-net.or.kr/crf005.do?gId=&id=crf00503&jmCd=9540",
+    jobs: ["psy-counsel", "psy-clinical"], stage: 3,
+    reason: "상담과 함께 심리평가 업무로 진로를 넓히려는 학생에게 제안해요. 학위와 실습수련·실무경력 등 응시요건을 확인한 뒤 준비 일정을 정하세요.",
+    explicitPattern: "(?<!정신건강)임상\\s*심리사\\s*2\\s*급",
+  },
+  {
+    id: "PSY-C-SURVEY", name: "사회조사분석사 2급", reuseExisting: true,
+    officialUrl: "https://www.q-net.or.kr/crf005.do?id=crf00503&jmCd=9521",
+    jobs: ["psy-org", "psy-research"], stage: 2,
+    reason: "HR·조직문화나 소비자 조사에서 설문 설계와 조사자료 분석 역량을 쌓고 싶을 때 선택할 수 있어요.",
+    explicitPattern: "사회\\s*조사\\s*분석사\\s*2\\s*급",
+  },
+  {
+    id: "CERT-AWS-AI", name: "AWS Certified AI Practitioner",
+    officialUrl: "https://aws.amazon.com/ko/certification/certified-ai-practitioner/",
+    jobs: ["ai-research", "ai-engineer", "ai-data"], stage: 1,
+    reason: "AWS의 AI·ML·생성형 AI 개념과 활용 사례를 정리하려는 학생을 위한 기초 선택지예요. 연구·개발 경험은 별도 프로젝트와 함께 준비하세요.",
+    explicitPattern: "AWS\\s+Certified\\s+AI\\s+Practitioner\\b",
+  },
+  {
+    id: "CERT-NVIDIA-LLM", name: "NVIDIA-Certified Associate · Generative AI LLMs",
+    officialUrl: "https://www.nvidia.com/en-us/learn/certification/generative-ai-llm-associate/",
+    jobs: ["ai-research", "ai-engineer"], stage: 2,
+    reason: "생성형 AI·LLM 응용을 개발하고 통합하는 기초 개념을 자격으로 정리하려는 학생에게 제안해요. 준비할 때 NVIDIA 솔루션 중심의 출제 범위를 확인하세요.",
+    explicitPattern: "NVIDIA[\\s-]*(?:Certified\\s+Associate|NCA)[\\s:·-]*(?:Generative\\s+AI(?:\\s+and)?\\s+LLMs|GENL)\\b",
+  },
   {
     id: "CERT-ACP-PREMIERE", name: "Adobe Certified Professional · Premiere",
     officialUrl: "https://certifiedprofessional.adobe.com/premiere",

@@ -1,0 +1,782 @@
+{
+  "labelProvenance": "개발자가 작성한 합성 회귀평가. 독립 검토자의 실제 공고 정답표가 아님. 명시되지 않은 공고는 무관(0), 1은 일부 관련, 2는 적합. 동일 직무의 표현 변형은 독립 표본이 아님.",
+  "baselineRef": "84e1de7",
+  "baseline": {
+    "metrics": {
+      "positiveCases": 27,
+      "emptyAnswerCases": 3,
+      "precision3": 0.3704,
+      "recall20": 0.9074,
+      "ndcg3": 0.96,
+      "top3Unrelated": 22,
+      "emptyAnswerFalsePositives": 0
+    },
+    "cases": [
+      {
+        "id": "ai-eval-1",
+        "query": "LLM 답변 비교 평가",
+        "top3": [
+          "ai-eval"
+        ],
+        "precision3": 0.3333333333333333,
+        "recall20": 0.5,
+        "ndcg3": 0.8262346571285599,
+        "falsePositiveCount": 0,
+        "milliseconds": 182.93
+      },
+      {
+        "id": "ai-eval-2",
+        "query": "모델 응답 평가 데이터셋",
+        "top3": [
+          "ai-eval",
+          "sql",
+          "psy-hr"
+        ],
+        "precision3": 0.3333333333333333,
+        "recall20": 1.0,
+        "ndcg3": 0.8262346571285599,
+        "falsePositiveCount": 2,
+        "milliseconds": 0.6
+      },
+      {
+        "id": "ai-eval-3",
+        "query": "AI 벤치마크 구성",
+        "top3": [
+          "ai-eval"
+        ],
+        "precision3": 0.3333333333333333,
+        "recall20": 0.5,
+        "ndcg3": 0.8262346571285599,
+        "falsePositiveCount": 0,
+        "milliseconds": 0.52
+      },
+      {
+        "id": "ai-ml-1",
+        "query": "머신러닝 모델 개발",
+        "top3": [
+          "ai-ml",
+          "sql-developer"
+        ],
+        "precision3": 0.3333333333333333,
+        "recall20": 0.5,
+        "ndcg3": 0.8262346571285599,
+        "falsePositiveCount": 1,
+        "milliseconds": 0.51
+      },
+      {
+        "id": "ai-ml-2",
+        "query": "딥러닝 학습 Python",
+        "top3": [
+          "ai-ml"
+        ],
+        "precision3": 0.3333333333333333,
+        "recall20": 0.5,
+        "ndcg3": 0.8262346571285599,
+        "falsePositiveCount": 0,
+        "milliseconds": 0.51
+      },
+      {
+        "id": "ai-ml-3",
+        "query": "AI 모델 학습 개발",
+        "top3": [
+          "ai-ml",
+          "ai-eval",
+          "sql-developer"
+        ],
+        "precision3": 0.6666666666666666,
+        "recall20": 1.0,
+        "ndcg3": 1.0,
+        "falsePositiveCount": 1,
+        "milliseconds": 0.5
+      },
+      {
+        "id": "sql-1",
+        "query": "SQL 쿼리 데이터 분석",
+        "top3": [
+          "sql",
+          "psy-hr",
+          "sql-developer"
+        ],
+        "precision3": 0.6666666666666666,
+        "recall20": 1.0,
+        "ndcg3": 0.9639404333166532,
+        "falsePositiveCount": 1,
+        "milliseconds": 0.53
+      },
+      {
+        "id": "sql-2",
+        "query": "pandas 분석 SQL",
+        "top3": [
+          "sql",
+          "sql-developer",
+          "psy-survey"
+        ],
+        "precision3": 0.6666666666666666,
+        "recall20": 1.0,
+        "ndcg3": 1.0,
+        "falsePositiveCount": 1,
+        "milliseconds": 0.51
+      },
+      {
+        "id": "sql-3",
+        "query": "SQLD 자격증 데이터",
+        "top3": [
+          "sql",
+          "psy-hr",
+          "ai-eval"
+        ],
+        "precision3": 0.3333333333333333,
+        "recall20": 0.5,
+        "ndcg3": 0.8262346571285599,
+        "falsePositiveCount": 2,
+        "milliseconds": 0.63
+      },
+      {
+        "id": "psy-counsel-1",
+        "query": "상담심리 상담기관 학교에서 내담자를 만난다",
+        "top3": [
+          "psy-counsel",
+          "restaurant",
+          "led"
+        ],
+        "precision3": 0.3333333333333333,
+        "recall20": 1.0,
+        "ndcg3": 1.0,
+        "falsePositiveCount": 2,
+        "milliseconds": 0.62
+      },
+      {
+        "id": "psy-counsel-2",
+        "query": "심리검사 상담면접",
+        "top3": [
+          "psy-counsel",
+          "phone-sales",
+          "psy-survey"
+        ],
+        "precision3": 0.3333333333333333,
+        "recall20": 1.0,
+        "ndcg3": 1.0,
+        "falsePositiveCount": 2,
+        "milliseconds": 0.71
+      },
+      {
+        "id": "psy-counsel-3",
+        "query": "청소년 심리상담",
+        "top3": [
+          "psy-counsel",
+          "phone-sales",
+          "psy-survey"
+        ],
+        "precision3": 0.3333333333333333,
+        "recall20": 1.0,
+        "ndcg3": 1.0,
+        "falsePositiveCount": 2,
+        "milliseconds": 0.58
+      },
+      {
+        "id": "psy-survey-1",
+        "query": "사회조사분석사 설문조사",
+        "top3": [
+          "psy-survey",
+          "psy-hr",
+          "sql"
+        ],
+        "precision3": 0.3333333333333333,
+        "recall20": 1.0,
+        "ndcg3": 1.0,
+        "falsePositiveCount": 2,
+        "milliseconds": 0.51
+      },
+      {
+        "id": "psy-survey-2",
+        "query": "심리통계 설문조사 분석",
+        "top3": [
+          "psy-survey",
+          "psy-hr",
+          "psy-counsel"
+        ],
+        "precision3": 0.3333333333333333,
+        "recall20": 1.0,
+        "ndcg3": 1.0,
+        "falsePositiveCount": 2,
+        "milliseconds": 0.5
+      },
+      {
+        "id": "psy-survey-3",
+        "query": "설문조사 연구원",
+        "top3": [
+          "psy-survey",
+          "generic-lab",
+          "psy-hr"
+        ],
+        "precision3": 0.3333333333333333,
+        "recall20": 1.0,
+        "ndcg3": 1.0,
+        "falsePositiveCount": 2,
+        "milliseconds": 0.49
+      },
+      {
+        "id": "psy-hr-1",
+        "query": "조직문화 HR 리서치",
+        "top3": [
+          "psy-hr"
+        ],
+        "precision3": 0.3333333333333333,
+        "recall20": 1.0,
+        "ndcg3": 1.0,
+        "falsePositiveCount": 0,
+        "milliseconds": 0.5
+      },
+      {
+        "id": "psy-hr-2",
+        "query": "조직문화 진단 인사",
+        "top3": [
+          "psy-hr"
+        ],
+        "precision3": 0.3333333333333333,
+        "recall20": 1.0,
+        "ndcg3": 1.0,
+        "falsePositiveCount": 0,
+        "milliseconds": 0.49
+      },
+      {
+        "id": "psy-hr-3",
+        "query": "HR 인사 데이터",
+        "top3": [
+          "psy-hr",
+          "sql",
+          "ai-eval"
+        ],
+        "precision3": 0.3333333333333333,
+        "recall20": 1.0,
+        "ndcg3": 1.0,
+        "falsePositiveCount": 2,
+        "milliseconds": 0.48
+      },
+      {
+        "id": "startup-proto-1",
+        "query": "학원 상담 요약 AI 시제품 제작비",
+        "top3": [
+          "startup-proto"
+        ],
+        "precision3": 0.3333333333333333,
+        "recall20": 1.0,
+        "ndcg3": 1.0,
+        "falsePositiveCount": 0,
+        "milliseconds": 0.65
+      },
+      {
+        "id": "startup-proto-2",
+        "query": "소프트웨어 개발비 시제품",
+        "top3": [
+          "startup-proto"
+        ],
+        "precision3": 0.3333333333333333,
+        "recall20": 1.0,
+        "ndcg3": 1.0,
+        "falsePositiveCount": 0,
+        "milliseconds": 0.37
+      },
+      {
+        "id": "startup-proto-3",
+        "query": "AI 프로토타입 제작비",
+        "top3": [
+          "startup-proto"
+        ],
+        "precision3": 0.3333333333333333,
+        "recall20": 1.0,
+        "ndcg3": 1.0,
+        "falsePositiveCount": 0,
+        "milliseconds": 0.34
+      },
+      {
+        "id": "startup-channel-1",
+        "query": "학원 상담 요약 AI 판로 상담",
+        "top3": [
+          "startup-channel"
+        ],
+        "precision3": 0.3333333333333333,
+        "recall20": 1.0,
+        "ndcg3": 1.0,
+        "falsePositiveCount": 0,
+        "milliseconds": 0.34
+      },
+      {
+        "id": "startup-channel-2",
+        "query": "창업팀 구매처 연결",
+        "top3": [
+          "startup-channel"
+        ],
+        "precision3": 0.3333333333333333,
+        "recall20": 1.0,
+        "ndcg3": 1.0,
+        "falsePositiveCount": 0,
+        "milliseconds": 0.33
+      },
+      {
+        "id": "startup-channel-3",
+        "query": "AI 서비스 판로",
+        "top3": [
+          "startup-channel"
+        ],
+        "precision3": 0.3333333333333333,
+        "recall20": 1.0,
+        "ndcg3": 1.0,
+        "falsePositiveCount": 0,
+        "milliseconds": 0.42
+      },
+      {
+        "id": "startup-contest-1",
+        "query": "AI 창업경진대회",
+        "top3": [
+          "startup-contest"
+        ],
+        "precision3": 0.3333333333333333,
+        "recall20": 1.0,
+        "ndcg3": 1.0,
+        "falsePositiveCount": 0,
+        "milliseconds": 0.47
+      },
+      {
+        "id": "startup-contest-2",
+        "query": "사업계획서 창업대회",
+        "top3": [
+          "startup-contest"
+        ],
+        "precision3": 0.3333333333333333,
+        "recall20": 1.0,
+        "ndcg3": 1.0,
+        "falsePositiveCount": 0,
+        "milliseconds": 0.46
+      },
+      {
+        "id": "startup-contest-3",
+        "query": "AI 창업팀 경진대회",
+        "top3": [
+          "startup-contest"
+        ],
+        "precision3": 0.3333333333333333,
+        "recall20": 1.0,
+        "ndcg3": 1.0,
+        "falsePositiveCount": 0,
+        "milliseconds": 0.37
+      },
+      {
+        "id": "empty-1",
+        "query": "항공정비 헬리콥터",
+        "top3": [],
+        "precision3": 0.0,
+        "recall20": null,
+        "ndcg3": null,
+        "falsePositiveCount": 0,
+        "milliseconds": 0.5
+      },
+      {
+        "id": "empty-2",
+        "query": "해외특허 출원비용",
+        "top3": [],
+        "precision3": 0.0,
+        "recall20": null,
+        "ndcg3": null,
+        "falsePositiveCount": 0,
+        "milliseconds": 0.37
+      },
+      {
+        "id": "empty-3",
+        "query": "오페라 성악 오디션",
+        "top3": [],
+        "precision3": 0.0,
+        "recall20": null,
+        "ndcg3": null,
+        "falsePositiveCount": 0,
+        "milliseconds": 0.5
+      }
+    ]
+  },
+  "current": {
+    "metrics": {
+      "positiveCases": 27,
+      "emptyAnswerCases": 3,
+      "precision3": 0.3827,
+      "recall20": 0.9074,
+      "ndcg3": 0.9665,
+      "top3Unrelated": 15,
+      "emptyAnswerFalsePositives": 0
+    },
+    "cases": [
+      {
+        "id": "ai-eval-1",
+        "query": "LLM 답변 비교 평가",
+        "top3": [
+          "ai-eval"
+        ],
+        "precision3": 0.3333333333333333,
+        "recall20": 0.5,
+        "ndcg3": 0.8262346571285599,
+        "falsePositiveCount": 0,
+        "milliseconds": 3.45
+      },
+      {
+        "id": "ai-eval-2",
+        "query": "모델 응답 평가 데이터셋",
+        "top3": [
+          "ai-eval",
+          "ai-ml"
+        ],
+        "precision3": 0.6666666666666666,
+        "recall20": 1.0,
+        "ndcg3": 1.0,
+        "falsePositiveCount": 0,
+        "milliseconds": 0.66
+      },
+      {
+        "id": "ai-eval-3",
+        "query": "AI 벤치마크 구성",
+        "top3": [
+          "ai-eval",
+          "news"
+        ],
+        "precision3": 0.3333333333333333,
+        "recall20": 0.5,
+        "ndcg3": 0.8262346571285599,
+        "falsePositiveCount": 1,
+        "milliseconds": 0.59
+      },
+      {
+        "id": "ai-ml-1",
+        "query": "머신러닝 모델 개발",
+        "top3": [
+          "ai-ml",
+          "sql-developer"
+        ],
+        "precision3": 0.3333333333333333,
+        "recall20": 0.5,
+        "ndcg3": 0.8262346571285599,
+        "falsePositiveCount": 1,
+        "milliseconds": 0.57
+      },
+      {
+        "id": "ai-ml-2",
+        "query": "딥러닝 학습 Python",
+        "top3": [
+          "ai-ml"
+        ],
+        "precision3": 0.3333333333333333,
+        "recall20": 0.5,
+        "ndcg3": 0.8262346571285599,
+        "falsePositiveCount": 0,
+        "milliseconds": 0.56
+      },
+      {
+        "id": "ai-ml-3",
+        "query": "AI 모델 학습 개발",
+        "top3": [
+          "ai-ml",
+          "news",
+          "ai-eval"
+        ],
+        "precision3": 0.6666666666666666,
+        "recall20": 1.0,
+        "ndcg3": 0.9639404333166532,
+        "falsePositiveCount": 1,
+        "milliseconds": 0.59
+      },
+      {
+        "id": "sql-1",
+        "query": "SQL 쿼리 데이터 분석",
+        "top3": [
+          "sql",
+          "sql-developer",
+          "psy-hr"
+        ],
+        "precision3": 0.6666666666666666,
+        "recall20": 1.0,
+        "ndcg3": 1.0,
+        "falsePositiveCount": 1,
+        "milliseconds": 0.56
+      },
+      {
+        "id": "sql-2",
+        "query": "pandas 분석 SQL",
+        "top3": [
+          "sql",
+          "sql-developer",
+          "psy-survey"
+        ],
+        "precision3": 0.6666666666666666,
+        "recall20": 1.0,
+        "ndcg3": 1.0,
+        "falsePositiveCount": 1,
+        "milliseconds": 0.55
+      },
+      {
+        "id": "sql-3",
+        "query": "SQLD 자격증 데이터",
+        "top3": [
+          "sql",
+          "psy-hr"
+        ],
+        "precision3": 0.3333333333333333,
+        "recall20": 0.5,
+        "ndcg3": 0.8262346571285599,
+        "falsePositiveCount": 1,
+        "milliseconds": 0.55
+      },
+      {
+        "id": "psy-counsel-1",
+        "query": "상담심리 상담기관 학교에서 내담자를 만난다",
+        "top3": [
+          "psy-counsel",
+          "psy-survey",
+          "phone-sales"
+        ],
+        "precision3": 0.3333333333333333,
+        "recall20": 1.0,
+        "ndcg3": 1.0,
+        "falsePositiveCount": 2,
+        "milliseconds": 0.58
+      },
+      {
+        "id": "psy-counsel-2",
+        "query": "심리검사 상담면접",
+        "top3": [
+          "psy-counsel",
+          "psy-survey",
+          "phone-sales"
+        ],
+        "precision3": 0.3333333333333333,
+        "recall20": 1.0,
+        "ndcg3": 1.0,
+        "falsePositiveCount": 2,
+        "milliseconds": 0.56
+      },
+      {
+        "id": "psy-counsel-3",
+        "query": "청소년 심리상담",
+        "top3": [
+          "psy-counsel",
+          "psy-survey",
+          "phone-sales"
+        ],
+        "precision3": 0.3333333333333333,
+        "recall20": 1.0,
+        "ndcg3": 1.0,
+        "falsePositiveCount": 2,
+        "milliseconds": 0.61
+      },
+      {
+        "id": "psy-survey-1",
+        "query": "사회조사분석사 설문조사",
+        "top3": [
+          "psy-survey"
+        ],
+        "precision3": 0.3333333333333333,
+        "recall20": 1.0,
+        "ndcg3": 1.0,
+        "falsePositiveCount": 0,
+        "milliseconds": 0.6
+      },
+      {
+        "id": "psy-survey-2",
+        "query": "심리통계 설문조사 분석",
+        "top3": [
+          "psy-survey",
+          "psy-counsel",
+          "sql"
+        ],
+        "precision3": 0.3333333333333333,
+        "recall20": 1.0,
+        "ndcg3": 1.0,
+        "falsePositiveCount": 2,
+        "milliseconds": 0.57
+      },
+      {
+        "id": "psy-survey-3",
+        "query": "설문조사 연구원",
+        "top3": [
+          "psy-survey"
+        ],
+        "precision3": 0.3333333333333333,
+        "recall20": 1.0,
+        "ndcg3": 1.0,
+        "falsePositiveCount": 0,
+        "milliseconds": 0.53
+      },
+      {
+        "id": "psy-hr-1",
+        "query": "조직문화 HR 리서치",
+        "top3": [
+          "psy-hr"
+        ],
+        "precision3": 0.3333333333333333,
+        "recall20": 1.0,
+        "ndcg3": 1.0,
+        "falsePositiveCount": 0,
+        "milliseconds": 0.54
+      },
+      {
+        "id": "psy-hr-2",
+        "query": "조직문화 진단 인사",
+        "top3": [
+          "psy-hr"
+        ],
+        "precision3": 0.3333333333333333,
+        "recall20": 1.0,
+        "ndcg3": 1.0,
+        "falsePositiveCount": 0,
+        "milliseconds": 0.53
+      },
+      {
+        "id": "psy-hr-3",
+        "query": "HR 인사 데이터",
+        "top3": [
+          "psy-hr",
+          "sql"
+        ],
+        "precision3": 0.3333333333333333,
+        "recall20": 1.0,
+        "ndcg3": 1.0,
+        "falsePositiveCount": 1,
+        "milliseconds": 0.55
+      },
+      {
+        "id": "startup-proto-1",
+        "query": "학원 상담 요약 AI 시제품 제작비",
+        "top3": [
+          "startup-proto"
+        ],
+        "precision3": 0.3333333333333333,
+        "recall20": 1.0,
+        "ndcg3": 1.0,
+        "falsePositiveCount": 0,
+        "milliseconds": 0.36
+      },
+      {
+        "id": "startup-proto-2",
+        "query": "소프트웨어 개발비 시제품",
+        "top3": [
+          "startup-proto"
+        ],
+        "precision3": 0.3333333333333333,
+        "recall20": 1.0,
+        "ndcg3": 1.0,
+        "falsePositiveCount": 0,
+        "milliseconds": 0.35
+      },
+      {
+        "id": "startup-proto-3",
+        "query": "AI 프로토타입 제작비",
+        "top3": [
+          "startup-proto"
+        ],
+        "precision3": 0.3333333333333333,
+        "recall20": 1.0,
+        "ndcg3": 1.0,
+        "falsePositiveCount": 0,
+        "milliseconds": 0.34
+      },
+      {
+        "id": "startup-channel-1",
+        "query": "학원 상담 요약 AI 판로 상담",
+        "top3": [
+          "startup-channel"
+        ],
+        "precision3": 0.3333333333333333,
+        "recall20": 1.0,
+        "ndcg3": 1.0,
+        "falsePositiveCount": 0,
+        "milliseconds": 0.34
+      },
+      {
+        "id": "startup-channel-2",
+        "query": "창업팀 구매처 연결",
+        "top3": [
+          "startup-channel"
+        ],
+        "precision3": 0.3333333333333333,
+        "recall20": 1.0,
+        "ndcg3": 1.0,
+        "falsePositiveCount": 0,
+        "milliseconds": 0.34
+      },
+      {
+        "id": "startup-channel-3",
+        "query": "AI 서비스 판로",
+        "top3": [
+          "startup-channel"
+        ],
+        "precision3": 0.3333333333333333,
+        "recall20": 1.0,
+        "ndcg3": 1.0,
+        "falsePositiveCount": 0,
+        "milliseconds": 0.33
+      },
+      {
+        "id": "startup-contest-1",
+        "query": "AI 창업경진대회",
+        "top3": [
+          "startup-contest"
+        ],
+        "precision3": 0.3333333333333333,
+        "recall20": 1.0,
+        "ndcg3": 1.0,
+        "falsePositiveCount": 0,
+        "milliseconds": 0.33
+      },
+      {
+        "id": "startup-contest-2",
+        "query": "사업계획서 창업대회",
+        "top3": [
+          "startup-contest"
+        ],
+        "precision3": 0.3333333333333333,
+        "recall20": 1.0,
+        "ndcg3": 1.0,
+        "falsePositiveCount": 0,
+        "milliseconds": 0.41
+      },
+      {
+        "id": "startup-contest-3",
+        "query": "AI 창업팀 경진대회",
+        "top3": [
+          "startup-contest"
+        ],
+        "precision3": 0.3333333333333333,
+        "recall20": 1.0,
+        "ndcg3": 1.0,
+        "falsePositiveCount": 0,
+        "milliseconds": 0.39
+      },
+      {
+        "id": "empty-1",
+        "query": "항공정비 헬리콥터",
+        "top3": [],
+        "precision3": 0.0,
+        "recall20": null,
+        "ndcg3": null,
+        "falsePositiveCount": 0,
+        "milliseconds": 0.71
+      },
+      {
+        "id": "empty-2",
+        "query": "해외특허 출원비용",
+        "top3": [],
+        "precision3": 0.0,
+        "recall20": null,
+        "ndcg3": null,
+        "falsePositiveCount": 0,
+        "milliseconds": 0.54
+      },
+      {
+        "id": "empty-3",
+        "query": "오페라 성악 오디션",
+        "top3": [],
+        "precision3": 0.0,
+        "recall20": null,
+        "ndcg3": null,
+        "falsePositiveCount": 0,
+        "milliseconds": 0.58
+      }
+    ]
+  }
+}

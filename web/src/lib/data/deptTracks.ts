@@ -61,7 +61,7 @@ export const DEPT_SKILLS: Skill[] = [
   d("PSY-C-YOUTH", "청소년상담사 3급", "자격증", psyQ),
   d("PSY-C-COUNSEL", "상담심리사 2급(학회)", "자격증", psyQ),
   d("PSY-C-JOB", "직업상담사", "자격증", psyQ),
-  d("PSY-C-CLIN", "임상심리사 2급", "자격증", psyQ),
+  { ...d("PSY-C-CLIN", "임상심리사 2급", "자격증", psyQ), officialUrl: "https://www.q-net.or.kr/crf005.do?gId=&id=crf00503&jmCd=9540" },
   d("PSY-C-MH", "정신건강임상심리사 2급", "자격증", psyQ),
   d("PSY-C-DEV", "발달심리사 2급(학회)", "자격증", psyQ),
   d("PSY-C-PLAY", "놀이심리재활사", "자격증", psyQ),
@@ -73,7 +73,7 @@ export const DEPT_SKILLS: Skill[] = [
   d("PSY-PATHO", "발달정신병리학", "교육", ROADMAP("psy")),
   d("PSY-CONSUMER", "소비자심리학", "교육", ROADMAP("psy")),
   d("PSY-ORG", "조직심리학·조직개발 실습", "교육", ROADMAP("psy")),
-  { ...d("PSY-C-SURVEY", "사회조사분석사 2급", "자격증", "https://www.career.go.kr/cloud/w/major/uView?seq=330"), from: "커리어넷" as const },
+  { ...d("PSY-C-SURVEY", "사회조사분석사 2급", "자격증", "https://www.career.go.kr/cloud/w/major/uView?seq=330"), from: "커리어넷" as const, officialUrl: "https://www.q-net.or.kr/crf005.do?id=crf00503&jmCd=9521" },
   d("PSY-GRAD", "대학원 진학(1급·전문가 자격은 석사 이상)", "경험", psyQ),
   // 에너지환경공학과
   d("ENV-AIR", "대기오염 제어·방지 실습", "교육", ROADMAP("env")),

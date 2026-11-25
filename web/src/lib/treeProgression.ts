@@ -1,4 +1,6 @@
 import type { TreeNode } from "./engine";
+import { COMMON_SKILLS, SKILL_ROUTES } from "./data/skillRoutes";
+import type { SkillRoute } from "./types";
 
 export type TreeMode = "employment" | "startup";
 
@@ -34,44 +36,90 @@ const startupId = (key: string) => key.startsWith("SU-") ? key : "SU-PREP-" + ke
 
 function initialDepth(node: TreeNode, mode: TreeMode) {
   if (mode === "startup") {
+    if (node.personalCompletion) return node.route?.stage ?? node.depth;
     const index = startupStages.findIndex(stage => stage.skills.some(key => startupId(key) === node.skill));
     return index < 0 ? 2 : index;
   }
-  if (["PR-ROLE-COMPARISON", "PR-COURSE-EVIDENCE"].includes(node.skill)) return 0;
-  if (/포트폴리오|이력서|자기소개서|지원서|취업 면접/.test(node.name)) return 4;
-  if (/배포|캡스톤|졸업연구|학부연구|논문 참여|실무실습|임상실습|인턴|현장실습|고급|심화/.test(node.name)) return 3;
-  if (/기초|입문|개론|기본기/.test(node.name)) return 0;
-  if (node.credentialOption) return node.credentialOption.stage;
-  if (node.kind === "어학" || node.kind === "자격증") return 1;
-  if (node.practice) return node.practice.independent ? 1 : 2;
-  return node.kind === "프로젝트" || node.kind === "경험" ? 2 : 1;
+  return routeFor(node).stage;
 }
 
+export function routeFor(node: TreeNode): SkillRoute {
+  if (node.route) return node.route;
+  const explicit = SKILL_ROUTES[node.skill];
+  if (explicit) return { ...explicit, stage: node.credentialOption?.stage ?? explicit.stage };
+  return {
+    domain: COMMON_SKILLS.has(node.skill) || node.kind === "어학" ? "common" : "specialist",
+    stage: node.credentialOption?.stage ?? (node.practice ? (node.practice.independent ? 1 : 2)
+      : node.kind === "프로젝트" || node.kind === "경험" ? 2 : node.kind === "교육" ? 0 : 1),
+  };
+}
+
+// Reject invalid prerequisites; optional preparation suggestions never change eligibility.
 export function assignProgression(nodes: TreeNode[], mode: TreeMode): TreeNode[] {
   const byId = new Map(nodes.map(node => [node.skill, node]));
+  if (byId.size !== nodes.length) throw new Error("스킬 경로에 중복 ID가 있어요.");
   const depths = new Map<string, number>();
-  function depthOf(id: string): number {
-    const known = depths.get(id);
-    if (known !== undefined) return known;
-    const node = byId.get(id)!;
-    const base = initialDepth(node, mode);
-    depths.set(id, base);
-    const parents = mode === "startup" ? (startupSequence[id.replace("SU-PREP-", "")] ?? []).map(startupId) : node.prereq;
-    const depth = Math.max(base, ...parents.filter(parent => byId.has(parent)).map(parent => depthOf(parent) + 1));
+  const active = new Set<string>();
+  const sequences = new Map<string, string[]>();
+  const ordered: TreeNode[] = [];
+  function visit(id: string) {
+    if (depths.has(id)) return;
+    if (active.has(id)) throw new Error(`스킬 경로 순환: ${[...active, id].join(" → ")}`);
+    const node = byId.get(id);
+    if (!node) throw new Error(`없는 선행 스킬: ${id}`);
+    active.add(id);
+    const required = node.prereq;
+    for (const parent of required) visit(parent);
+    let depth = Math.max(initialDepth(node, mode), ...required.map(parent => depths.get(parent)! + 1));
+    const suggestions = mode === "startup" ? node.personalCompletion ? node.sequence ?? []
+      : (startupSequence[id.replace("SU-PREP-", "")] ?? []).map(startupId)
+      : routeFor(node).recommendedBefore ?? [];
+    const sequence: string[] = [];
+    for (const parent of suggestions) {
+      if (node.personalCompletion) {
+        visit(parent);
+        sequence.push(parent);
+        depth = Math.max(depth, depths.get(parent)! + 1);
+        continue;
+      }
+      // A suggested path must never contradict a mandatory path.
+      const reaches = (current: string, seen = new Set<string>()): boolean => {
+        if (current === id) return true;
+        if (seen.has(current)) return false;
+        seen.add(current);
+        const other = byId.get(current);
+        return !!other && [...other.prereq, ...(mode === "startup" ? [] : routeFor(other).recommendedBefore ?? [])]
+          .some(next => reaches(next, seen));
+      };
+      if (!byId.has(parent) || active.has(parent) || reaches(parent)) continue;
+      visit(parent);
+      sequence.push(parent);
+      depth = Math.max(depth, depths.get(parent)! + 1);
+    }
+    active.delete(id);
     depths.set(id, depth);
-    return depth;
+    sequences.set(id, sequence);
+    ordered.push(node);
   }
-  return nodes.map(node => ({
-    ...node,
-    depth: depthOf(node.skill),
-    sequence: mode === "startup"
-      ? (startupSequence[node.skill.replace("SU-PREP-", "")] ?? []).map(startupId).filter(id => byId.has(id))
-      : [],
+  for (const node of nodes) visit(node.skill);
+  return ordered.map(node => ({ ...node,
+    route: mode === "employment" ? routeFor(node) : node.route,
+    depth: depths.get(node.skill)!, sequence: sequences.get(node.skill) ?? [],
   })).sort((a, b) => a.depth - b.depth);
 }
 
-export function progressionStage(depth: number, mode: TreeMode) {
+export function progressionStage(depth: number, mode: TreeMode, domain?: "common" | "specialist") {
   if (mode === "startup") return startupStages[Math.min(depth, startupStages.length - 1)];
+  if (domain === "common") {
+    const common = [
+      { title: "공통 기본기", detail: "여러 직무에서 함께 사용하는 기본 역량을 준비해요." },
+      { title: "어학·도구 활용", detail: "목표 직무에서 필요한 어학과 업무 도구를 선택해 준비해요." },
+      { title: "업무 결과물", detail: "문서·분석표·발표 자료처럼 활용할 수 있는 결과물을 만들어요." },
+      { title: "지원 서류", detail: "목표 공고에 맞춰 경력과 작업물을 설명해요." },
+      { title: "포트폴리오·면접", detail: "작업물을 제출용으로 묶고 면접에서 자신의 기여를 설명해요." },
+    ];
+    return common[Math.min(depth, common.length - 1)];
+  }
   if (depth > 4) return { title: `전문 심화 · 후속 ${depth - 4}`, detail: "앞선 실전·전문 과제를 마친 뒤 이어서 준비해요." };
   const stages = [
     { title: "직무 이해·기초", detail: "직무를 살펴보고 기초 지식을 익혀요." },
@@ -115,9 +163,10 @@ export function layoutProgression(tree: TreeNode[], columns = 3) {
       return parents.length ? parents.reduce((sum, x) => sum + x, 0) / parents.length : 0;
     };
     group.sort((a, b) => center(a) - center(b));
-    bands.push({ depth, y, skills: group.map(node => node.skill), width: columns * 226 - 20 });
-    group.forEach((node, index) => positions.set(node.skill, { x: index % columns * 226, y: y + 76 + Math.floor(index / columns) * 130 }));
-    y += 76 + Math.ceil(group.length / columns) * 130 + 64;
+    const width = Math.max(columns, group.length) * 226 - 20;
+    bands.push({ depth, y, skills: group.map(node => node.skill), width });
+    group.forEach((node, index) => positions.set(node.skill, { x: index * 226, y: y + 90 }));
+    y += 300;
   }
   return { positions, bands };
 }
