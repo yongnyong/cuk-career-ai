@@ -1,5 +1,5 @@
 import type { TreeNode } from "./engine";
-import { OUTFIT_LABEL, STAGE_FROM, type Outfit } from "./hayang";
+import { HOME_PROOFS, OUTFIT_LABEL, STAGE_FROM, type Outfit } from "./hayang";
 
 // 칭호: 스킬트리에서 실제로 한 일로만 얻는다. 희귀도는 색으로 구분한다
 export type Rarity = "common" | "rare" | "epic" | "legend";
@@ -11,6 +11,7 @@ export interface TitleInput {
   outfit: Outfit;
   questsStarted: number; // 지원 퀘스트로 시작한 공고 수
   coreSkills: ReadonlySet<string>; // 핵심(크기 '대') 노드
+  proofs?: number; // 증빙을 첨부한 완료 노드 수(내 집 마련 인증)
 }
 
 export interface Title {
@@ -27,7 +28,7 @@ const count = (tree: TreeNode[], pick: (n: TreeNode) => boolean) => tree.filter(
 const step = (have: number, need: number) => ({ earned: have >= need, progress: have >= need ? undefined : `${have}/${need}` });
 
 export function titlesFor(input: TitleInput): Title[] {
-  const { tree, pct, outfit, questsStarted, coreSkills } = input;
+  const { tree, pct, outfit, questsStarted, coreSkills, proofs = 0 } = input;
   const cores = tree.filter((n) => coreSkills.has(n.skill));
   const byPct = (need: number) => ({ earned: pct >= need, progress: `${pct}/${need}%` });
   const list: (Omit<Title, "earned" | "progress"> & { check: () => { earned: boolean; progress?: string } })[] = [
@@ -40,8 +41,10 @@ export function titlesFor(input: TitleInput): Title[] {
     { id: "proven", name: "증명하는 자", rarity: "rare", how: "검증된 노드 1개", check: () => step(tree.filter((n) => n.state === "verified").length, 1) },
     { id: "core", name: "핵심만 찍는 자", rarity: "epic", how: "★ 핵심 노드 모두 완료", check: () => cores.length ? step(cores.filter(done).length, cores.length) : { earned: false, progress: "핵심 노드 없음" } },
     { id: "job", name: `${OUTFIT_LABEL[outfit]} 하양이`, rarity: "epic", how: `진화 2단계(노드 ${STAGE_FROM[1]}% 완료)`, check: () => byPct(STAGE_FROM[1]) },
-    { id: "car", name: "차 뽑은 하양이", rarity: "epic", how: `진화 3단계(노드 ${STAGE_FROM[2]}% 완료)`, check: () => byPct(STAGE_FROM[2]) },
-    { id: "home", name: "내 집 마련", rarity: "legend", how: `진화 4단계(노드 ${STAGE_FROM[3]}% 완료)`, check: () => byPct(STAGE_FROM[3]) },
+    { id: "bag", name: "명품백 든 하양이", rarity: "epic", how: `진화 3단계(노드 ${STAGE_FROM[2]}% 완료)`, check: () => byPct(STAGE_FROM[2]) },
+    { id: "car", name: "차 뽑은 하양이", rarity: "epic", how: `진화 4단계(노드 ${STAGE_FROM[3]}% 완료)`, check: () => byPct(STAGE_FROM[3]) },
+    { id: "home", name: "내 집 마련", rarity: "legend", how: `진화 5단계(노드 ${STAGE_FROM[4]}% 완료 + 증빙 인증 ${HOME_PROOFS}개)`,
+      check: () => pct < STAGE_FROM[4] ? byPct(STAGE_FROM[4]) : { earned: proofs >= HOME_PROOFS, progress: `인증 ${proofs}/${HOME_PROOFS}` } },
     { id: "allclear", name: "올클리어", rarity: "legend", how: "스킬트리 노드 전부 완료", check: () => byPct(100) },
   ];
   return list.map(({ check, ...t }) => {

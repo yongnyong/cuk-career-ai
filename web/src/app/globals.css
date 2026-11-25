@@ -162,20 +162,25 @@ body {
   }
 }
 
-/* 하양이 후광: 진화할수록 진해지고 4단계에서는 빛줄기가 돈다 */
-.hayang[data-stage="2"] .hayang-halo {
+/* 하양이 후광: 진화할수록 진해지고, 내 집 마련(5단계)에서는 빛줄기가 돌면서 깜박인다 */
+.hayang[data-stage="2"] .hayang-halo,
+.hayang[data-stage="3"] .hayang-halo {
   background: radial-gradient(circle, rgb(190 225 255 / 0.55) 0%, rgb(124 196 255 / 0.18) 45%, transparent 70%);
 }
-.hayang[data-stage="3"] .hayang-halo {
+.hayang[data-stage="4"] .hayang-halo {
   background: radial-gradient(circle, rgb(255 232 150 / 0.7) 0%, rgb(247 198 61 / 0.25) 45%, transparent 70%);
   animation: halo-pulse 2.4s ease-in-out infinite;
 }
-.hayang[data-stage="4"] .hayang-halo {
+.hayang[data-stage="5"] .hayang-halo {
   background:
     radial-gradient(circle, rgb(255 240 180 / 0.85) 0%, rgb(247 198 61 / 0.3) 42%, transparent 66%),
     repeating-conic-gradient(rgb(247 198 61 / 0.28) 0deg 8deg, transparent 8deg 22deg);
   mask-image: radial-gradient(circle, black 35%, transparent 70%);
-  animation: halo-spin 14s linear infinite, halo-pulse 2.4s ease-in-out infinite;
+  animation: halo-spin 14s linear infinite, halo-blink 0.9s steps(1, end) infinite;
+}
+@keyframes halo-blink {
+  0%, 100% { opacity: 1; filter: brightness(1.5); }
+  50% { opacity: 0.35; filter: none; }
 }
 @keyframes halo-pulse {
   50% {

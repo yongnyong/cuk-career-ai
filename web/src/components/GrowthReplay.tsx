@@ -11,7 +11,8 @@ import { progressionStage } from "@/lib/treeProgression";
 import { recommendedTitle } from "@/lib/questOutcome";
 import { replayScript, replayState } from "@/lib/growthReplay";
 import type { TreeNode } from "@/lib/engine";
-import { HayangFigure } from "@/components/Hayang";
+import { HayangFigure, useTitles } from "@/components/Hayang";
+import { HOME_PROOFS } from "@/lib/hayang";
 
 const RADIUS = { 1: 11, 2: 15, 3: 21 } as const;
 
@@ -24,7 +25,8 @@ function Replay({ tree, onClose }: { tree: TreeNode[]; onClose: () => void }) {
   // 완료한 노드가 거의 없으면 밋밋하니 완성 미리보기부터 보여 준다
   const [full, setFull] = useState(doneCount < 3);
   const [index, setIndex] = useState(0);
-  const events = useMemo(() => replayScript(tree, full), [tree, full]);
+  const { proofs } = useTitles();
+  const events = useMemo(() => replayScript(tree, full, full || proofs >= HOME_PROOFS), [tree, full, proofs]);
   const layout = useMemo(() => layoutRadial(tree), [tree]);
   const weights = useMemo(() => nodeWeights(tree), [tree]);
   const state = replayState(events, index);

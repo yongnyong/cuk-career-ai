@@ -12,8 +12,8 @@ export type ReplayEvent =
   | { type: "evolve"; from: HayangStage; to: HayangStage; ms: number }
   | { type: "end"; ms: number };
 
-/** full이면 아직 안 한 노드까지 모두 켜는 '완성 미리보기' */
-export function replayScript(tree: readonly ReplayNode[], full = false): ReplayEvent[] {
+/** full이면 아직 안 한 노드까지 모두 켜는 '완성 미리보기'. certified는 내 집 마련 인증 여부(미리보기는 인증까지 마친 모습) */
+export function replayScript(tree: readonly ReplayNode[], full = false, certified = full): ReplayEvent[] {
   const lit = tree.filter((n) => full || n.state !== "none").map((n, index) => ({ n, index }))
     .sort((a, b) => ringOf(a.n.depth) - ringOf(b.n.depth) || a.n.depth - b.n.depth || a.index - b.index).map((x) => x.n);
   // 노드가 많아도 점등 구간이 12초 안팎이 되게 한 개당 시간을 맞춘다
@@ -23,7 +23,7 @@ export function replayScript(tree: readonly ReplayNode[], full = false): ReplayE
   let stage: HayangStage = 1;
   lit.forEach((node, index) => {
     events.push({ type: "node", skill: node.skill, name: node.name, ms: per });
-    const next = hayangStage(Math.round(((index + 1) / Math.max(tree.length, 1)) * 100));
+    const next = hayangStage(Math.round(((index + 1) / Math.max(tree.length, 1)) * 100), certified);
     if (next > stage) {
       events.push({ type: "evolve", from: stage, to: next, ms: 1500 });
       stage = next;

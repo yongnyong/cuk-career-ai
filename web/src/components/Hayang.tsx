@@ -3,6 +3,7 @@ import { useEffect, useMemo, useState } from "react";
 import { createPortal } from "react-dom";
 import Link from "next/link";
 import { evolution, hayangImage, outfitFor, stageTitle, type HayangStage, type Outfit } from "@/lib/hayang";
+import { listProofs, PROOFS_CHANGED } from "@/lib/files";
 import { equippedTitle, RARITY_LABEL, titlesFor, type Title } from "@/lib/titles";
 import { nodeWeights } from "@/lib/treeRadial";
 import { careerInterestOf } from "@/lib/interest";
@@ -34,24 +35,36 @@ function Apartment() {
   );
 }
 
-/** 진화 단계 그림 하나(후광·자동차·아파트 포함) */
+function Bag() {
+  return (
+    <svg viewBox="0 0 64 64" className="h-full w-full" aria-hidden>
+      <path d="M20 26 Q20 6 32 6 Q44 6 44 26" fill="none" stroke="#1b2550" strokeWidth="5" strokeLinecap="round" />
+      <path d="M8 24 L56 24 L60 56 Q60 60 56 60 L8 60 Q4 60 4 56 Z" fill="#ff8fb8" stroke="#1b2550" strokeWidth="4" strokeLinejoin="round" />
+      <path d="M6 36 L58 36" stroke="#1b2550" strokeWidth="3" />
+      <rect x="25" y="31" width="14" height="11" rx="3" fill="#f7c63d" stroke="#1b2550" strokeWidth="3" />
+    </svg>
+  );
+}
+
+/** 진화 단계 그림 하나(후광·명품백·자동차·아파트 포함) */
 export function HayangFigure({ stage, outfit, size = "md", className = "" }: { stage: HayangStage; outfit: Outfit; size?: "sm" | "md" | "lg"; className?: string }) {
   const box = size === "lg" ? "h-56 w-44" : size === "sm" ? "h-24 w-[4.7rem]" : "h-36 w-28";
   // 자동차(왼쪽)·아파트(오른쪽)가 그림 밖으로 나가므로 그만큼 자리를 비워 둬 옆 글자를 가리지 않게 한다
   const width = size === "lg" ? 176 : size === "sm" ? 75 : 112;
-  const room = { marginLeft: stage >= 3 ? Math.round(width * 0.4) : 0, marginRight: stage >= 4 ? Math.round(width * 0.5) : 0 };
+  const room = { marginLeft: stage >= 4 ? Math.round(width * 0.4) : 0, marginRight: stage >= 5 ? Math.round(width * 0.5) : 0 };
   return (
     <div className={`hayang relative shrink-0 ${box} ${className}`} style={room} data-stage={stage}>
-      {stage >= 4 && <div className="absolute -right-[46%] bottom-[8%] h-[80%] w-[70%]"><Apartment /></div>}
+      {stage >= 5 && <div className="absolute -right-[46%] bottom-[8%] h-[80%] w-[70%]"><Apartment /></div>}
       {stage >= 2 && <div className="hayang-halo absolute left-1/2 top-[-14%] aspect-square w-[160%] -translate-x-1/2 rounded-full" />}
       {/* eslint-disable-next-line @next/next/no-img-element */}
       <img src={hayangImage(stage, outfit)} alt="" title="가톨릭대학교 캐릭터 하양이" className="relative h-full w-full object-contain drop-shadow-[0_6px_10px_rgb(0_0_0/0.35)]" />
-      {stage >= 3 && <div className="absolute -left-[38%] bottom-0 h-[26%] w-[66%]"><Car /></div>}
+      {stage >= 3 && <div className="absolute right-[2%] bottom-[4%] h-[24%] w-[30%]"><Bag /></div>}
+      {stage >= 4 && <div className="absolute -left-[38%] bottom-0 h-[26%] w-[66%]"><Car /></div>}
     </div>
   );
 }
 
-const STAGE_TITLE_ID: Record<HayangStage, string | null> = { 1: null, 2: "job", 3: "car", 4: "home" };
+const STAGE_TITLE_ID: Record<HayangStage, string | null> = { 1: null, 2: "job", 3: "bag", 4: "car", 5: "home" };
 
 /** 전체 화면 진화 연출: 이전·새 모습이 흰 실루엣으로 번갈아 깜박이다가 섬광과 함께 새 모습이 드러난다 */
 export function EvolutionOverlay({ from, to, outfit, newTitle, onClose }: {
@@ -91,20 +104,36 @@ export function TitleBadge({ title }: { title: Title }) {
   return <span className={`title-badge title-${title.rarity}`} title={`${RARITY_LABEL[title.rarity]} 칭호 · ${title.how}`}>[{RARITY_LABEL[title.rarity]}] {title.name}</span>;
 }
 
+/** 이 브라우저에 증빙을 첨부해 둔 노드 id. 증빙이 바뀌면 다시 읽는다 */
+function useProofSkills(owner?: string) {
+  const [skills, setSkills] = useState<string[]>([]);
+  useEffect(() => {
+    if (!owner) return;
+    const load = () => { listProofs(owner).then((all) => setSkills(Object.keys(all))).catch(() => setSkills([])); };
+    load();
+    window.addEventListener(PROOFS_CHANGED, load);
+    return () => window.removeEventListener(PROOFS_CHANGED, load);
+  }, [owner]);
+  return skills;
+}
+
 /** 지금 프로필의 칭호 목록과 장착 칭호 */
 export function useTitles() {
   const s = useStore();
   const p = s.profile;
   const tree = useMemo(() => s.careerPath?.tree ?? [], [s.careerPath]);
-  const evo = useMemo(() => evolution(tree), [tree]);
+  const proofSkills = useProofSkills(p?.pseudoId);
+  // 인증으로 치는 것: 완료한 노드에 붙인 증빙
+  const proofs = useMemo(() => tree.filter((n) => n.state !== "none" && proofSkills.includes(n.skill)).length, [tree, proofSkills]);
+  const evo = useMemo(() => evolution(tree, proofs), [tree, proofs]);
   const pct = evo.pct;
   const titles = useMemo(() => {
     if (!p) return [];
     const weights = nodeWeights(tree);
     const core = new Set([...weights].filter(([, w]) => w.tier === 3).map(([skill]) => skill));
-    return titlesFor({ tree, pct, outfit: outfitFor(p.jobId, careerInterestOf(p) === "startup"), questsStarted: s.followed.length, coreSkills: core });
-  }, [p, tree, pct, s.followed.length]);
-  return { titles, equipped: titles.length ? equippedTitle(titles, p?.title) : undefined, evolution: evo };
+    return titlesFor({ tree, pct, outfit: outfitFor(p.jobId, careerInterestOf(p) === "startup"), questsStarted: s.followed.length, coreSkills: core, proofs });
+  }, [p, tree, pct, s.followed.length, proofs]);
+  return { titles, equipped: titles.length ? equippedTitle(titles, p?.title) : undefined, evolution: evo, proofs };
 }
 
 export function EquippedTitle() {
@@ -139,7 +168,7 @@ export function Hayang({ owner, jobId, startup, size = "md" }: {
       <Link href="/hayang" aria-label="하양이 도감 열기"><HayangFigure stage={stage} outfit={outfit} size={size} /></Link>
       <figcaption className="mt-1 text-center text-[11px] leading-tight">
         <span className="block font-bold">{stageTitle(stage, outfit)}</span>
-        <span className="text-ink/60">{evo.toNext === null ? "최종 진화 완료" : `다음 진화까지 노드 ${evo.toNext}개`}</span>
+        <span className="text-ink/60">{evo.toNext === null ? "최종 진화 완료" : evo.toNext === 0 ? `내 집 마련까지 증빙 인증 ${evo.proofsNeeded}개` : `다음 진화까지 노드 ${evo.toNext}개${evo.proofsNeeded ? ` + 인증 ${evo.proofsNeeded}개` : ""}`}</span>
       </figcaption>
       {evolution && <EvolutionOverlay {...evolution} outfit={outfit} newTitle={newTitle} onClose={() => setEvolution(null)} />}
     </figure>

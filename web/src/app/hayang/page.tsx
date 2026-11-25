@@ -6,11 +6,11 @@ import { HallOfFame } from "@/components/HallOfFame";
 import { EvolutionOverlay, HayangFigure, TitleBadge, useTitles } from "@/components/Hayang";
 import { useStore } from "@/lib/store";
 import { careerInterestOf } from "@/lib/interest";
-import { hayangImage, jobsWearing, OUTFIT_LABEL, OUTFITS, outfitFor, STAGE_FROM, stageTitle, type HayangStage } from "@/lib/hayang";
+import { hayangImage, HOME_PROOFS, jobsWearing, OUTFIT_LABEL, OUTFITS, outfitFor, STAGE_FROM, stageTitle, type HayangStage } from "@/lib/hayang";
 import { RARITY_LABEL, type Rarity } from "@/lib/titles";
 
-const STAGES: HayangStage[] = [1, 2, 3, 4];
-const STAGE_NAME = { 1: "과잠 새내기", 2: "취업", 3: "자동차", 4: "내 집 마련" } as const;
+const STAGES: HayangStage[] = [1, 2, 3, 4, 5];
+const STAGE_NAME = { 1: "과잠 새내기", 2: "취업", 3: "명품백", 4: "자동차", 5: "내 집 마련" } as const;
 const RARITIES: Rarity[] = ["legend", "epic", "rare", "common"];
 
 function HayangBook() {
@@ -20,7 +20,7 @@ function HayangBook() {
   const { titles, equipped, evolution: evo } = useTitles();
   const stage = evo.stage;
   const [replay, setReplay] = useState(false);
-  const replayFrom = Math.max(1, Math.min(stage, 4) - 1) as HayangStage;
+  const replayFrom = Math.max(1, stage - 1) as HayangStage;
   const replayTo = Math.max(2, stage) as HayangStage;
 
   return (
@@ -32,7 +32,9 @@ function HayangBook() {
           <h1 className="text-2xl font-bold">{stageTitle(stage, outfit)}</h1>
           {equipped && <p className="flex items-center gap-2 text-sm">장착한 칭호 <TitleBadge title={equipped} /></p>}
           <p className="text-sm text-ink/70">
-            {stage < 4 ? `노드 ${evo.toNext}개만 더 완료하면 ‘${STAGE_NAME[(stage + 1) as HayangStage]}’ 단계로 진화해요.` : "최종 진화까지 마쳤어요!"}
+            {stage === 5 ? "최종 진화까지 마쳤어요!"
+              : stage === 4 ? `내 집 마련은 노드 ${STAGE_FROM[4]}% 완료에 증빙 인증 ${HOME_PROOFS}개가 있어야 해요. 남은 것: 노드 ${evo.toNext}개, 인증 ${evo.proofsNeeded}개. 스킬트리 노드에 결과물이나 자격증을 첨부하면 인증돼요.`
+              : `노드 ${evo.toNext}개만 더 완료하면 ‘${STAGE_NAME[(stage + 1) as HayangStage]}’ 단계로 진화해요.`}
           </p>
           <button className="btn-primary" onClick={() => setReplay(true)}><Play size={14} /> 진화 모션 보기</button>
         </div>
@@ -40,7 +42,7 @@ function HayangBook() {
 
       <section className="card p-5">
         <h2 className="font-bold">진화 단계 <span className="text-sm font-normal text-ink/60">{OUTFIT_LABEL[outfit]} 하양이</span></h2>
-        <ol className="mt-4 grid grid-cols-2 gap-6 sm:grid-cols-4">
+        <ol className="mt-4 grid grid-cols-2 gap-4 sm:grid-cols-5">
           {STAGES.map((st) => {
             const open = st <= stage;
             return (
@@ -48,7 +50,7 @@ function HayangBook() {
                 <div className={open ? "" : "opacity-40 brightness-0 invert-[.35]"}><HayangFigure stage={st} outfit={outfit} size="sm" /></div>
                 <p className="text-center text-sm font-bold">{st}. {STAGE_NAME[st]}</p>
                 <p className="flex items-center gap-1 text-xs text-ink/60">
-                  {open ? <><Check size={12} className="text-ok" /> {st === stage ? "지금 단계" : "달성"}</> : <><Lock size={12} /> 노드 {STAGE_FROM[st - 1]}% 완료</>}
+                  {open ? <><Check size={12} className="text-ok" /> {st === stage ? "지금 단계" : "달성"}</> : <><Lock size={12} /> 노드 {STAGE_FROM[st - 1]}% 완료{st === 5 && ` + 인증 ${HOME_PROOFS}개`}</>}
                 </p>
               </li>
             );

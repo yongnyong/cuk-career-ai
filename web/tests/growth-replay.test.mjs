@@ -24,7 +24,11 @@ test('evolution cuts in exactly when the completion share crosses a threshold', 
   assert.equal(events[events.indexOf(evolve[0]) - 1].skill, 'B'); // 2/10 = 20% ≥ 15%
   const full = replayScript(tree, true);
   assert.equal(full.filter(e => e.type === 'node').length, tree.length);
-  assert.equal(replayState(full, full.length - 1).stage, 4);
+  assert.equal(replayState(full, full.length - 1).stage, 5); // 미리보기는 인증까지 마친 모습
+  const allDone = tree.map(n => ({ ...n, state: 'self' }));
+  const last = script => replayState(script, script.length - 1).stage;
+  assert.equal(last(replayScript(allDone)), 4); // 인증이 없으면 다 채워도 자동차까지
+  assert.equal(last(replayScript(allDone, false, true)), 5);
 });
 
 test('the lighting part stays near twelve seconds however many nodes there are', () => {

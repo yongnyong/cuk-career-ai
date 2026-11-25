@@ -36,10 +36,14 @@ async function run<T>(mode: IDBTransactionMode, fn: (s: IDBObjectStore) => IDBRe
   });
 }
 const keyOf = (owner: string, skill: string) => `${owner}::${skill}`;
+// 증빙이 바뀌면 하양이(내 집 마련 인증)가 다시 세도록 알린다
+export const PROOFS_CHANGED = "proofs-changed";
+const changed = () => { window.dispatchEvent(new Event(PROOFS_CHANGED)); };
 
 export async function putProof(owner: string, skill: string, file: File) {
   const row: Row = { key: keyOf(owner, skill), owner, skill, name: file.name, type: file.type, size: file.size, blob: file };
   await run("readwrite", (s) => s.put(row));
+  changed();
 }
 export function resultUrl(value: string) {
   try {
@@ -53,9 +57,10 @@ export async function putProofLink(owner: string, skill: string, value: string) 
   if (!url) throw new Error("올바른 작업물 주소를 입력하세요.");
   const row: Row = { key: keyOf(owner, skill), owner, skill, url, name: new URL(url).hostname, size: 0, type: "text/uri-list" };
   await run("readwrite", s => s.put(row));
+  changed();
 }
 export const getProof = (owner: string, skill: string) => run<Row | undefined>("readonly", (s) => s.get(keyOf(owner, skill)));
-export const deleteProof = (owner: string, skill: string) => run("readwrite", (s) => s.delete(keyOf(owner, skill)));
+export const deleteProof = (owner: string, skill: string) => run("readwrite", (s) => s.delete(keyOf(owner, skill))).then(changed);
 export async function listProofs(owner: string): Promise<Record<string, ProofMeta>> {
   const rows = await run<Row[]>("readonly", (s) => s.getAll());
   return Object.fromEntries(rows.filter((r) => r.owner === owner).map((r) => [r.skill, { name: r.name, type: r.type, size: r.size, url: r.url && resultUrl(r.url) }]));
