@@ -1,6 +1,7 @@
 // 직무 트랙에서 배운 내용을 적용해 볼 선택 과제. 기업의 채용 조건과는 출처가 다르다.
-function exercise(id: string, name: string, anchors: string[], action: string, completion: string) {
-  return { id, name, anchors, action, completion, independent: false };
+// only: 이 가운데 하나가 직무 트랙에 있을 때만 붙는다(예: 모델 운영 과제는 머신러닝 노드가 있는 직무에만)
+function exercise(id: string, name: string, anchors: string[], action: string, completion: string, only: string[] = []) {
+  return { id, name, anchors, action, completion, independent: false, only };
 }
 
 // An introductory task relates to the track skill but can be started before completing it.
@@ -12,11 +13,11 @@ export const PRACTICE = [
   starter("PR-ROLE-COMPARISON", "목표 직무 공고 비교표", [], "같은 직무의 공고 두 건을 골라 일의 내용, 지원 요건, 우대 조건을 각각 대조하세요.", "두 원문 링크와 확인 날짜, 공통 조건과 한 곳에서만 요구한 조건을 표로 남기세요."),
   starter("PR-COURSE-EVIDENCE", "전공 과제와 직무 역량 연결표", [], "수강한 과목이나 팀 과제 하나를 골라 목표 직무의 어느 업무에서 활용할 수 있는지 찾아보세요.", "결과물, 내가 한 일, 관련 업무와 연결한 이유를 한 줄씩 기록하세요."),
   starter("PR-LABEL-GUIDE", "학습 데이터 라벨링 지침", ["SK-ML-EVAL", "SK-DL"], "공개 예시 열 건을 분류하고 두 사람이 다르게 판단할 만한 경계 사례를 찾아보세요.", "라벨 정의, 경계 사례, 제외 기준을 적고 처음 보는 예시로 지침을 점검하세요."),
-  exercise("PR-SPLIT-AUDIT", "학습·평가 데이터 누수 검사", ["SK-DA"], "예측 시점과 관측 단위를 정하고 같은 개체나 미래 정보가 평가 데이터로 새어 들어가는지 점검하세요.", "분할 코드, 겹치는 개체 수, 제외한 열과 이유를 남기세요."),
-  exercise("PR-TRAIN-REPLAY", "학습 실험 재현 스크립트", ["SK-PY-01"], "간단한 모델 실험을 하나의 명령으로 다시 실행하도록 환경, 설정값과 난수 시드를 기록하세요.", "새 환경에서 실행한 명령과 재실행 결과, 값이 달랐다면 그 차이를 저장하세요."),
+  exercise("PR-SPLIT-AUDIT", "학습·평가 데이터 누수 검사", ["SK-DA"], "예측 시점과 관측 단위를 정하고 같은 개체나 미래 정보가 평가 데이터로 새어 들어가는지 점검하세요.", "분할 코드, 겹치는 개체 수, 제외한 열과 이유를 남기세요.", ["SK-ML-EVAL", "SK-DL", "AI-ML", "ABE-ML", "MAT-ML"]),
+  exercise("PR-TRAIN-REPLAY", "학습 실험 재현 스크립트", ["SK-PY-01"], "간단한 모델 실험을 하나의 명령으로 다시 실행하도록 환경, 설정값과 난수 시드를 기록하세요.", "새 환경에서 실행한 명령과 재실행 결과, 값이 달랐다면 그 차이를 저장하세요.", ["SK-ML-EVAL", "SK-DL", "AI-ML", "ABE-ML", "MAT-ML"]),
   exercise("PR-ERROR-TAXONOMY", "오분류 사례 원인 분석", ["SK-ML-EVAL"], "오분류 예측을 유형별로 나누고 특히 성능이 낮은 입력 조건을 찾아보세요.", "유형별 건수, 대표 사례와 다음 실험에서 확인할 가설을 남기세요."),
-  exercise("PR-INFERENCE-TESTS", "추론 입력 검증 테스트", ["SK-PY-01"], "모델에 들어갈 입력 형식을 정의하고 빈 값, 잘못된 자료형, 알 수 없는 범주를 검사하세요.", "정상 입력과 각 오류 입력의 기대 결과를 자동 테스트로 남기세요."),
-  exercise("PR-DEPLOY-ROLLBACK", "모델 버전 교체·복구 실습", ["SK-DEPLOY"], "로컬 데모에서 모델 버전을 교체한 뒤 이전 버전으로 복구해 보세요.", "교체 전후의 예측, 버전 식별자와 복구 후 확인 절차를 기록하세요."),
+  exercise("PR-INFERENCE-TESTS", "추론 입력 검증 테스트", ["SK-PY-01"], "모델에 들어갈 입력 형식을 정의하고 빈 값, 잘못된 자료형, 알 수 없는 범주를 검사하세요.", "정상 입력과 각 오류 입력의 기대 결과를 자동 테스트로 남기세요.", ["SK-ML-EVAL", "SK-DL", "AI-ML", "ABE-ML", "MAT-ML"]),
+  exercise("PR-DEPLOY-ROLLBACK", "모델 버전 교체·복구 실습", ["SK-DEPLOY"], "로컬 데모에서 모델 버전을 교체한 뒤 이전 버전으로 복구해 보세요.", "교체 전후의 예측, 버전 식별자와 복구 후 확인 절차를 기록하세요.", ["SK-ML-EVAL", "SK-DL", "AI-ML", "ABE-ML", "MAT-ML"]),
   starter("PR-COUNSEL-CONSENT", "모의 상담 첫 회기 안내문", ["PSY-INTERVIEW", "SK-COUNSEL", "SP-COUNSEL"], "가상 상담 실습을 처음 접하는 사람에게 진행 순서와 기록 방식을 설명하는 안내문을 쓰세요.", "실습 목적과 질문·중단 방법을 담아 동료에게 읽혀 보고 불분명한 표현을 수정하세요."),
   exercise("PR-FOLLOWUP-QUESTIONS", "후속 질문 자기피드백", ["PSY-INTERVIEW", "SP-COUNSEL"], "가상의 면접 대화를 읽고 답변을 유도한 질문을 열린 질문으로 다시 작성하세요.", "기존 질문, 수정 질문, 바뀐 의도를 나란히 비교한 피드백지를 남기세요."),
   starter("PR-RESEARCH-PLAN", "연구용 데이터 수집 명세서", ["PSY-STAT", "SW-RESEARCH", "SK-SCI-PAPER", "SK-RESEARCH"], "연구 질문을 검증할 자료의 각 열에 이름, 관찰 단위, 허용값과 결측 처리 기준을 정하세요.", "명세서와 같은 형식의 예시 데이터 행을 만들고 다른 사람이 그 기준대로 입력할 수 있는지 확인하세요."),
@@ -36,9 +37,9 @@ export const PRACTICE = [
   starter("PR-DESIGN-BRIEF", "디자인 브리프와 시안 비교", ["SK-DESIGN-TOOL", "CLO-PATTERN", "CLO-ILLUST", "SK-FASHION", "SK-ARTS-PLAN"], "이용자와 제약을 정의하고 같은 목적의 시안 두 개를 스케치하세요.", "선택 기준과 최종 시안을 결정한 이유를 남기세요."),
   starter("PR-CUSTOMER-JOURNEY", "고객 여정·이탈 지점 지도", ["SK-MKT", "CLO-BIGDATA", "SK-SNS", "SK-TRADE", "SK-CONTENT"], "한 제품을 처음 발견해서 구매하거나 문의하기까지 단계를 적어 보세요.", "단계별 고객 질문, 이탈 가능 지점과 검증할 개선안을 남기세요."),
   starter("PR-RECORD-TRACE", "기록 추적성 점검", ["SK-GMP", "SK-BIO-QC", "SK-HACCP", "SK-PHARM-INTERN", "SK-CLIN"], "가상 업무 기록에서 누가, 언제, 어떤 버전을 작성·수정했는지 거슬러 올라가 보세요.", "기록 연결표와 출처나 수정 이력을 확인할 수 없었던 항목을 정리하세요."),
-  exercise("PR-DATA-CHECKS", "데이터 품질 자동 검사", ["SK-DA", "SK-SQL"], "표 데이터에서 키 중복, 허용 범위, 누락값을 검사하는 규칙을 작성하세요.", "잘못된 예시 행을 넣었을 때 해당 규칙이 실패하는 실행 기록을 남기세요."),
+  exercise("PR-DATA-CHECKS", "데이터 품질 자동 검사", ["SK-SQL"], "표 데이터에서 키 중복, 허용 범위, 누락값을 검사하는 규칙을 작성하세요.", "잘못된 예시 행을 넣었을 때 해당 규칙이 실패하는 실행 기록을 남기세요."),
   exercise("PR-MODEL-CARD", "모델 카드 작성", ["SK-ML-EVAL"], "평가한 모델의 의도한 용도, 학습 데이터 범위와 적용하기 어려운 사례를 문서화하세요.", "모델 버전, 평가 세트, 사용상 제약을 다른 사람이 확인할 수 있는 카드로 저장하세요."),
-  exercise("PR-LATENCY", "추론 지연시간 측정", ["SK-DEPLOY"], "같은 모델 서비스에서 입력 크기나 배치 크기를 바꾸며 응답 시간을 재세요.", "실행 환경, 반복 횟수, 중앙값과 느린 요청의 시간을 표로 남기세요."),
+  exercise("PR-LATENCY", "추론 지연시간 측정", ["SK-DEPLOY"], "같은 모델 서비스에서 입력 크기나 배치 크기를 바꾸며 응답 시간을 재세요.", "실행 환경, 반복 횟수, 중앙값과 느린 요청의 시간을 표로 남기세요.", ["SK-ML-EVAL", "SK-DL", "AI-ML", "ABE-ML", "MAT-ML"]),
   exercise("PR-QUAL-CODING", "모의 면접 전사·코딩표", ["PSY-INTERVIEW", "SW-RESEARCH"], "가상 면접의 발화에 주제 코드를 붙이고 애매한 문장의 분류 기준을 정하세요.", "가상 발화, 코드 정의, 판단을 수정한 사례를 정리하세요."),
   exercise("PR-QUESTION-PILOT", "설문 문항 예비검토표", ["PSY-STAT", "PSY-TEST", "SW-RESEARCH"], "측정할 개념을 정하고 이중 질문이나 응답을 유도하는 표현을 찾아 고치세요.", "초안과 수정 문항, 수정 이유를 한 줄씩 대응시킨 표를 남기세요."),
   exercise("PR-REFERRAL", "상담기관 의뢰 절차도", ["PSY-COMM", "SP-COUNSEL"], "가상 상황을 정하고 공개된 지역기관 안내에서 접수 창구와 절차를 찾아보세요.", "연락 경로, 대상, 필요한 확인 사항과 출처를 넣은 절차도를 남기세요."),

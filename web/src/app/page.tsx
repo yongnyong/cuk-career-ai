@@ -14,6 +14,8 @@ import { Legend, NodeBox, StatusWindow } from "@/components/quest-ui";
 import { OppCard } from "@/components/OppCard";
 import { AiNotice, DDay } from "@/components/ui";
 import { AssistantHero } from "@/components/Assistant";
+import { Duel } from "@/components/Duel";
+import { GrowthReplayButton } from "@/components/GrowthReplay";
 
 const STEPS = [
   { title: "학과·학년·가진 것을 고른다", text: "이름과 학번은 묻지 않아요. 1분이면 끝나요." },
@@ -113,6 +115,7 @@ function Today() {
   return (
     <div className="space-y-8">
       <StatusWindow profile={p} treeProgress={treeProgress}>
+        <GrowthReplayButton />
         <Link href="/tree" className="btn-primary">
           스킬트리 열기 <ChevronRight size={16} />
         </Link>
@@ -134,6 +137,8 @@ function Today() {
           </ul>
         </section>
       )}
+
+      <Duel />
 
       <div className="grid gap-8 lg:grid-cols-2">
         <div className="space-y-6">

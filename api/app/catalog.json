@@ -1499,6 +1499,98 @@
   {
    "id": "SK-IR",
    "name": "IR 피칭"
+  },
+  {
+   "id": "SK-INTERN",
+   "name": "인턴·현장실습 참여"
+  },
+  {
+   "id": "SK-INTERVIEW",
+   "name": "취업 면접 준비"
+  },
+  {
+   "id": "SK-GIT",
+   "name": "Git·GitHub 협업"
+  },
+  {
+   "id": "SK-CSBASIC",
+   "name": "CS 기초 정리(자료구조·운영체제·네트워크)"
+  },
+  {
+   "id": "SK-API",
+   "name": "REST API 서버 만들기"
+  },
+  {
+   "id": "SK-TEAMPROJ",
+   "name": "팀 프로젝트(협업 개발)"
+  },
+  {
+   "id": "SK-CLOUD",
+   "name": "클라우드에 서비스 배포"
+  },
+  {
+   "id": "SK-INTERN-DEV",
+   "name": "개발 인턴·현장실습"
+  },
+  {
+   "id": "SK-TECH-INTERVIEW",
+   "name": "기술 면접 준비"
+  },
+  {
+   "id": "SK-MARKET-RESEARCH",
+   "name": "시장·경쟁사 조사 보고서"
+  },
+  {
+   "id": "SK-GA4",
+   "name": "웹 로그 분석(GA4) 실습"
+  },
+  {
+   "id": "SK-ADS",
+   "name": "소액 광고 집행·성과 분석"
+  },
+  {
+   "id": "SK-CONTEST-MKT",
+   "name": "마케팅 공모전 출품"
+  },
+  {
+   "id": "SK-INTERN-MKT",
+   "name": "마케팅 인턴·대외활동"
+  },
+  {
+   "id": "SK-PUBLIC-TARGET",
+   "name": "목표 기관·직렬 정하기"
+  },
+  {
+   "id": "SK-NCS-MOCK",
+   "name": "NCS 실전 모의고사"
+  },
+  {
+   "id": "SK-PUBLIC-INTERN",
+   "name": "공공기관 체험형 인턴"
+  },
+  {
+   "id": "SK-PUBLIC-INTERVIEW",
+   "name": "경험·상황 면접 준비"
+  },
+  {
+   "id": "NUR-BASIC",
+   "name": "핵심기본간호술 실습"
+  },
+  {
+   "id": "NUR-CASE",
+   "name": "임상실습 사례 보고서"
+  },
+  {
+   "id": "NUR-HOSPITAL",
+   "name": "목표 병원 정하기"
+  },
+  {
+   "id": "NUR-APPLY",
+   "name": "병원 지원서·면접 준비"
+  },
+  {
+   "id": "NUR-EXAM",
+   "name": "간호사 국가시험(면허)"
   }
  ],
  "jobs": [
@@ -1529,6 +1621,10 @@
   {
    "id": "pharma",
    "name": "제약·약무"
+  },
+  {
+   "id": "nurse",
+   "name": "간호사"
   },
   {
    "id": "clinical",

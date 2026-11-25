@@ -9,9 +9,36 @@ type Work = readonly [title: string, completion: string];
 
 // These are suggested work samples. They do not change the source skill or its requirements.
 const samples: Record<string, Work> = {
-  "CW-EVIDENCE": ["프로젝트 경험·증빙 모음 만들기", "수업·동아리·근로에서 실제로 끝낸 일의 원본 파일이나 시연 링크를 모으세요. 각 결과물에 본인이 맡은 부분과 확인 가능한 성과를 붙여 다시 꺼내 쓸 수 있는 색인을 만드세요."],
-  "CW-BUDGET": ["프로젝트 예산·정산 워크북 제작", "행사나 프로젝트의 수량·단가·실제 지출을 입력하면 항목별 합계와 예산 차이가 갱신되는 스프레드시트를 만드세요. 예시 거래를 넣고 총액을 대조한 파일을 저장하세요."],
-  "CW-JOB-INTERVIEW": ["지원 직무 모의면접 녹화본 완성", "목표 직무 공고에서 고른 업무에 맞춰 프로젝트 경험과 본인의 기여를 설명하고 후속 질문에도 답하세요. 질문 목록과 수정해 다시 답한 최종 영상 또는 음성을 함께 저장하세요."],
+  "SK-ALGO": ["코딩테스트 기출 풀이 기록", "유형별로 푼 문제와 풀이 코드를 저장소에 모으고, 틀린 문제는 원인과 다시 푼 날짜를 적으세요."],
+  "SK-GIT": ["브랜치·PR로 협업한 저장소 만들기", "기능 브랜치에서 작업해 PR로 합친 기록과 커밋 메시지 규칙을 README에 남기세요."],
+  "SK-CSBASIC": ["CS 기초 질문·답변 노트 작성", "자료구조, 운영체제, 네트워크에서 자주 묻는 질문을 골라 자기 말로 답을 적고 예시 코드나 그림을 붙이세요."],
+  "SK-WEB": ["동작하는 웹 서비스 만들기", "핵심 기능 하나가 끝까지 동작하는 서비스의 저장소, 실행 방법, 화면 캡처를 README에 담으세요."],
+  "SK-API": ["REST API 서버와 명세 만들기", "데이터베이스와 연결된 API를 만들고 요청·응답 예시와 오류 응답을 명세로 남기세요."],
+  "SK-TEAMPROJ": ["팀 프로젝트 결과물과 기여 기록", "팀 저장소 링크, 내가 맡은 기능, 협업 중 해결한 문제 하나를 적으세요."],
+  "SK-CLOUD": ["서비스를 클라우드에 배포하기", "배포 주소, 배포 절차, 환경 변수 관리 방법을 README에 남기세요."],
+  "SK-INTERN-DEV": ["개발 인턴·현장실습 참여 기록", "기간, 맡은 업무, 공개할 수 있는 결과와 확인서를 정리하세요."],
+  "SK-TECH-INTERVIEW": ["기술 면접 예상 질문 답변집", "내 프로젝트에서 나올 질문과 CS 질문을 뽑아 답을 적고, 모의 면접을 한 번 이상 녹음해 고칠 점을 적으세요."],
+  "SK-MARKET-RESEARCH": ["시장·경쟁사 조사 보고서 작성", "브랜드 하나를 정해 고객, 경쟁사 3곳, 차별점을 출처와 함께 정리하세요."],
+  "SK-WRITE": ["광고 카피·소개 글 묶음 작성", "같은 상품을 채널 세 곳에 맞춰 쓴 글과 그렇게 쓴 이유를 남기세요."],
+  "SK-GA4": ["채널 유입·전환 분석 리포트", "운영한 채널이나 데모 계정의 유입 경로, 주요 지표, 개선할 점 하나를 화면 캡처와 함께 정리하세요."],
+  "SK-ADS": ["소액 광고 집행 결과 보고서", "목표, 타깃, 예산, 소재와 노출·클릭·전환 결과를 표로 남기고 다음에 바꿀 점을 적으세요."],
+  "SK-CONTEST-MKT": ["마케팅 공모전 출품", "제출한 기획서와 접수 확인, 팀에서 맡은 역할을 남기세요."],
+  "SK-INTERN-MKT": ["마케팅 인턴·대외활동 참여 기록", "기간, 맡은 업무, 수치로 말할 수 있는 결과와 확인서를 정리하세요."],
+  "SK-PUBLIC-TARGET": ["목표 기관·직렬 비교표 작성", "관심 기관 세 곳의 채용 공고에서 직렬, 필기 과목, 가산 자격을 원문 링크와 함께 표로 정리하세요."],
+  "SK-NCS": ["NCS 영역별 학습 기록", "의사소통, 수리, 문제해결 영역의 기본서 진도와 틀린 유형을 기록하세요."],
+  "SK-NCS-MOCK": ["NCS 실전 모의고사 3회 풀이", "시간을 재고 푼 회차별 점수와 영역별 오답 원인을 기록하세요."],
+  "SK-POLICY": ["정책 리서치 보고서 작성", "목표 기관의 사업 하나를 골라 목적, 대상, 성과와 개선 제안을 공개 자료 출처와 함께 정리하세요."],
+  "SK-PUBLIC-INTERN": ["공공기관 체험형 인턴 참여 기록", "기관, 기간, 맡은 업무와 수료 확인서를 정리하세요."],
+  "SK-PUBLIC-INTERVIEW": ["경험·상황 면접 답변 준비", "경험 다섯 가지를 상황·행동·결과로 정리하고 모의 면접을 한 번 이상 해 보세요."],
+  "SK-INTERN": ["인턴·현장실습 참여 기록", "기관, 기간, 맡은 업무와 수료·참여 확인서를 정리하세요."],
+  "SK-INTERVIEW": ["면접 예상 질문 답변집", "지원 동기와 경험 질문 다섯 개의 답을 상황·행동·결과로 적고, 모의 면접을 한 번 이상 해 보세요."],
+  "SK-VOL": ["봉사·현장 활동 기록", "활동 기관, 기간, 맡은 일과 확인서를 정리하세요."],
+  "NUR-BASIC": ["핵심기본간호술 실습 점검표", "실습한 술기별로 수행 순서와 피드백 받은 점을 점검표에 기록하세요."],
+  "SK-CLIN": ["임상실습 이수 기록", "실습 기관·부서·기간과 배운 점을 기록하세요. 환자 정보는 적지 마세요."],
+  "NUR-CASE": ["임상실습 사례 보고서 작성", "개인 식별 정보를 뺀 사례 하나의 간호 문제, 수행한 간호, 평가를 정리하세요."],
+  "NUR-HOSPITAL": ["목표 병원 비교표 작성", "관심 병원 세 곳의 채용 공고에서 전형 절차와 지원 자격을 원문 링크와 함께 정리하세요."],
+  "NUR-APPLY": ["병원 지원서와 면접 답변 준비", "목표 병원 공고에 맞춘 자기소개서와 예상 질문 답변을 작성하세요."],
+  "SK-RESEARCH": ["임상 연구 참여 기록", "참여한 연구의 주제와 내가 맡은 일을 기록하세요."],
   "AI-WRITE": ["모델 카드 작성", "만든 모델의 용도, 학습 데이터, 평가 지표와 실패 사례를 모델 카드에 적고 실행 가능한 모델이나 저장소를 연결하세요."],
   "AI-CAP": ["AI 캡스톤 데모와 실행 안내서 만들기", "핵심 기능을 시연하는 링크나 영상, 예시 입력과 출력, 재실행 방법을 README에 남기세요."],
   "SK-PY-01": ["CSV 집계 스크립트 만들기", "예제 CSV를 읽어 항목별 건수를 출력하세요. 입력 파일, 코드, 예상 결과표를 함께 저장하고 다시 실행해 대조하세요."],
@@ -88,7 +115,7 @@ const startupTitles: Record<string, string> = {
 
 export function questOutcome(node: TreeNode) {
   const { name, skill, kind, startup } = node;
-  if (node.personalCompletion) return { title: name, completion: node.personalCompletion, label: "우리 팀 맞춤 · 서비스 추천" };
+  if (node.mine) return { title: name, completion: "스스로 정한 기준을 채우면 완료로 표시하세요.", label: "내 노드" };
   if (startup) {
     const title = startupTitles[skill.replace(/^SU-PREP-/, "")] ?? name;
     const completion = skill === "SU-PREP-problem"
@@ -120,8 +147,17 @@ export function questOutcome(node: TreeNode) {
   if (project) return { title: project.name, completion: project.completion, label: "추천 작업물" };
   const savedCompletion = preparationCompletionBySkill.get(skill);
   if (node.state !== "none" && savedCompletion) return { title: name, completion: savedCompletion, label: "작업물" };
-  return undefined;
+  // 예시 작업물이 없는 노드도 트리에 남긴다. 과목(교육)은 이수 기록이 완료 기준이다
+  const completion = fallbackCompletion[kind];
+  return completion ? { title: name, completion, label: kind === "교육" ? "전공 과목" : "트랙 준비" } : undefined;
 }
+
+const fallbackCompletion: Record<string, string> = {
+  교육: "과목을 이수하고, 과제·발표·시험 결과처럼 배운 내용을 보여 줄 기록을 하나 남기세요.",
+  경험: "참여한 기간과 맡은 역할을 적고, 확인서나 결과물처럼 확인할 수 있는 기록을 남기세요.",
+  프로젝트: "결과물과 본인이 한 일을 적고, 다시 확인할 수 있는 파일이나 링크를 연결하세요.",
+  역량: "이 역량을 쓴 결과물 하나를 골라 무엇을 어떻게 했는지 기록하세요.",
+};
 
 export function recommendedTitle(node: TreeNode, quest: RecommendedQuest) {
   if (quest.actionKind === "verify") return `${node.name} 보유 기록과 원문 조건 대조`;

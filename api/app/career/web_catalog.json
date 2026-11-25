@@ -6778,29 +6778,85 @@
           "required": true
         },
         {
-          "skill": "SK-WEB",
+          "skill": "SK-GIT",
+          "required": false
+        },
+        {
+          "skill": "SK-SQL",
+          "required": false
+        },
+        {
+          "skill": "SK-CSBASIC",
           "prereq": [
             "SK-ALGO"
+          ],
+          "required": false
+        },
+        {
+          "skill": "SK-WEB",
+          "prereq": [
+            "SK-ALGO",
+            "SK-GIT"
           ],
           "required": true
         },
         {
-          "skill": "SK-INFO-PE",
+          "skill": "SK-API",
+          "prereq": [
+            "SK-WEB",
+            "SK-SQL"
+          ],
           "required": false
         },
         {
-          "skill": "SK-DEPLOY",
+          "skill": "SK-TEAMPROJ",
           "prereq": [
             "SK-WEB"
+          ],
+          "required": false
+        },
+        {
+          "skill": "SK-INFO-PE",
+          "prereq": [
+            "SK-CSBASIC"
+          ],
+          "required": false
+        },
+        {
+          "skill": "SK-SQLD",
+          "prereq": [
+            "SK-SQL"
+          ],
+          "required": false
+        },
+        {
+          "skill": "SK-CLOUD",
+          "prereq": [
+            "SK-API"
+          ],
+          "required": false
+        },
+        {
+          "skill": "SK-INTERN-DEV",
+          "prereq": [
+            "SK-TEAMPROJ"
           ],
           "required": false
         },
         {
           "skill": "SK-PORT",
           "prereq": [
-            "SK-WEB"
+            "SK-TEAMPROJ"
           ],
           "required": true
+        },
+        {
+          "skill": "SK-TECH-INTERVIEW",
+          "prereq": [
+            "SK-CSBASIC",
+            "SK-PORT"
+          ],
+          "required": false
         }
       ]
     },
@@ -6931,6 +6987,73 @@
         {
           "skill": "SK-TOEIC",
           "required": false
+        }
+      ]
+    },
+    {
+      "id": "nurse",
+      "name": "간호사",
+      "summary": "병원과 지역사회에서 환자를 간호한다",
+      "fields": [
+        "nursing"
+      ],
+      "nodes": [
+        {
+          "skill": "SK-BLS",
+          "required": true
+        },
+        {
+          "skill": "NUR-BASIC",
+          "required": false
+        },
+        {
+          "skill": "SK-TOEIC",
+          "required": false
+        },
+        {
+          "skill": "SK-VOL",
+          "required": false
+        },
+        {
+          "skill": "SK-CLIN",
+          "prereq": [
+            "SK-BLS",
+            "NUR-BASIC"
+          ],
+          "required": true
+        },
+        {
+          "skill": "NUR-CASE",
+          "prereq": [
+            "SK-CLIN"
+          ],
+          "required": false
+        },
+        {
+          "skill": "NUR-HOSPITAL",
+          "required": false
+        },
+        {
+          "skill": "SK-RESEARCH",
+          "prereq": [
+            "SK-CLIN"
+          ],
+          "required": false
+        },
+        {
+          "skill": "NUR-APPLY",
+          "prereq": [
+            "NUR-HOSPITAL",
+            "NUR-CASE"
+          ],
+          "required": false
+        },
+        {
+          "skill": "NUR-EXAM",
+          "prereq": [
+            "SK-CLIN"
+          ],
+          "required": true
         }
       ]
     },
@@ -7094,15 +7217,44 @@
       ],
       "nodes": [
         {
+          "skill": "SK-MARKET-RESEARCH",
+          "required": false
+        },
+        {
+          "skill": "SK-WRITE",
+          "required": false
+        },
+        {
+          "skill": "SK-COMP",
+          "required": false
+        },
+        {
+          "skill": "SK-TOEIC",
+          "required": false
+        },
+        {
           "skill": "SK-MKT",
+          "prereq": [
+            "SK-MARKET-RESEARCH"
+          ],
           "required": true
         },
         {
           "skill": "SK-SNS",
+          "prereq": [
+            "SK-WRITE"
+          ],
           "required": false
         },
         {
           "skill": "SK-DA",
+          "required": false
+        },
+        {
+          "skill": "SK-GA4",
+          "prereq": [
+            "SK-SNS"
+          ],
           "required": false
         },
         {
@@ -7111,6 +7263,36 @@
             "SK-MKT"
           ],
           "required": true
+        },
+        {
+          "skill": "SK-CONTEST-MKT",
+          "prereq": [
+            "SK-MKT"
+          ],
+          "required": false
+        },
+        {
+          "skill": "SK-ADS",
+          "prereq": [
+            "SK-SNS",
+            "SK-MKT"
+          ],
+          "required": false
+        },
+        {
+          "skill": "SK-INTERN-MKT",
+          "prereq": [
+            "SK-CONTEST-MKT"
+          ],
+          "required": false
+        },
+        {
+          "skill": "SK-PORT",
+          "prereq": [
+            "SK-ADS",
+            "SK-PPT"
+          ],
+          "required": false
         }
       ]
     },
@@ -7125,19 +7307,74 @@
       ],
       "nodes": [
         {
+          "skill": "SK-PUBLIC-TARGET",
+          "required": false
+        },
+        {
           "skill": "SK-NCS",
           "required": true
         },
         {
           "skill": "SK-KHIST",
-          "required": false
-        },
-        {
-          "skill": "SK-POLICY",
+          "prereq": [
+            "SK-PUBLIC-TARGET"
+          ],
           "required": false
         },
         {
           "skill": "SK-COMP",
+          "prereq": [
+            "SK-PUBLIC-TARGET"
+          ],
+          "required": false
+        },
+        {
+          "skill": "SK-TOEIC",
+          "prereq": [
+            "SK-PUBLIC-TARGET"
+          ],
+          "required": false
+        },
+        {
+          "skill": "SK-VOL",
+          "required": false
+        },
+        {
+          "skill": "SK-POLICY",
+          "prereq": [
+            "SK-PUBLIC-TARGET"
+          ],
+          "required": false
+        },
+        {
+          "skill": "SK-NCS-MOCK",
+          "prereq": [
+            "SK-NCS"
+          ],
+          "required": false
+        },
+        {
+          "skill": "SK-PUBLIC-INTERN",
+          "prereq": [
+            "SK-NCS",
+            "SK-COMP"
+          ],
+          "required": false
+        },
+        {
+          "skill": "SK-RESUME",
+          "prereq": [
+            "SK-PUBLIC-TARGET",
+            "SK-PUBLIC-INTERN"
+          ],
+          "required": false
+        },
+        {
+          "skill": "SK-PUBLIC-INTERVIEW",
+          "prereq": [
+            "SK-RESUME",
+            "SK-NCS-MOCK"
+          ],
           "required": false
         }
       ]
@@ -10617,6 +10854,18 @@
       "verifiable": false
     },
     {
+      "id": "SK-INTERN",
+      "name": "인턴·현장실습 참여",
+      "kind": "경험",
+      "verifiable": false
+    },
+    {
+      "id": "SK-INTERVIEW",
+      "name": "취업 면접 준비",
+      "kind": "역량",
+      "verifiable": false
+    },
+    {
       "id": "SK-SQL-PROJECT",
       "name": "SQL 분석 쿼리와 결과표",
       "kind": "프로젝트",
@@ -11044,6 +11293,132 @@
       "name": "IR 피칭",
       "kind": "경험",
       "verifiable": false
+    },
+    {
+      "id": "SK-GIT",
+      "name": "Git·GitHub 협업",
+      "kind": "역량",
+      "verifiable": false
+    },
+    {
+      "id": "SK-CSBASIC",
+      "name": "CS 기초 정리(자료구조·운영체제·네트워크)",
+      "kind": "역량",
+      "verifiable": false
+    },
+    {
+      "id": "SK-API",
+      "name": "REST API 서버 만들기",
+      "kind": "프로젝트",
+      "verifiable": false
+    },
+    {
+      "id": "SK-TEAMPROJ",
+      "name": "팀 프로젝트(협업 개발)",
+      "kind": "프로젝트",
+      "verifiable": false
+    },
+    {
+      "id": "SK-CLOUD",
+      "name": "클라우드에 서비스 배포",
+      "kind": "프로젝트",
+      "verifiable": false
+    },
+    {
+      "id": "SK-INTERN-DEV",
+      "name": "개발 인턴·현장실습",
+      "kind": "경험",
+      "verifiable": false
+    },
+    {
+      "id": "SK-TECH-INTERVIEW",
+      "name": "기술 면접 준비",
+      "kind": "역량",
+      "verifiable": false
+    },
+    {
+      "id": "SK-MARKET-RESEARCH",
+      "name": "시장·경쟁사 조사 보고서",
+      "kind": "프로젝트",
+      "verifiable": false
+    },
+    {
+      "id": "SK-GA4",
+      "name": "웹 로그 분석(GA4) 실습",
+      "kind": "역량",
+      "verifiable": false
+    },
+    {
+      "id": "SK-ADS",
+      "name": "소액 광고 집행·성과 분석",
+      "kind": "프로젝트",
+      "verifiable": false
+    },
+    {
+      "id": "SK-CONTEST-MKT",
+      "name": "마케팅 공모전 출품",
+      "kind": "경험",
+      "verifiable": false
+    },
+    {
+      "id": "SK-INTERN-MKT",
+      "name": "마케팅 인턴·대외활동",
+      "kind": "경험",
+      "verifiable": false
+    },
+    {
+      "id": "SK-PUBLIC-TARGET",
+      "name": "목표 기관·직렬 정하기",
+      "kind": "역량",
+      "verifiable": false
+    },
+    {
+      "id": "SK-NCS-MOCK",
+      "name": "NCS 실전 모의고사",
+      "kind": "역량",
+      "verifiable": false
+    },
+    {
+      "id": "SK-PUBLIC-INTERN",
+      "name": "공공기관 체험형 인턴",
+      "kind": "경험",
+      "verifiable": false
+    },
+    {
+      "id": "SK-PUBLIC-INTERVIEW",
+      "name": "경험·상황 면접 준비",
+      "kind": "역량",
+      "verifiable": false
+    },
+    {
+      "id": "NUR-BASIC",
+      "name": "핵심기본간호술 실습",
+      "kind": "경험",
+      "verifiable": false
+    },
+    {
+      "id": "NUR-CASE",
+      "name": "임상실습 사례 보고서",
+      "kind": "프로젝트",
+      "verifiable": false
+    },
+    {
+      "id": "NUR-HOSPITAL",
+      "name": "목표 병원 정하기",
+      "kind": "역량",
+      "verifiable": false
+    },
+    {
+      "id": "NUR-APPLY",
+      "name": "병원 지원서·면접 준비",
+      "kind": "프로젝트",
+      "verifiable": false
+    },
+    {
+      "id": "NUR-EXAM",
+      "name": "간호사 국가시험(면허)",
+      "kind": "자격증",
+      "verifiable": true
     }
   ],
   "scales": {

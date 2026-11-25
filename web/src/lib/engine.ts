@@ -170,16 +170,21 @@ export function recommend(opps: Opportunity[], p: Profile, now: Date): Recommend
     if (careerInterestOf(p) === 'startup') {
       score += 50;
       reasons.push('창업 준비와 연결된 공고');
-    } else {
-      const relevance = employmentRelevance(o, p);
-      if (!relevance) continue;
-      tier = relevance.tier;
-      score += tier * 10;
-      reasons.push(relevance.reason);
-      const major = o.employmentMatch?.majorConditions?.find(c => c.basis === "preferred" &&
-        c.scope === "role" && !c.unrestricted && c.departmentIds.includes(p.departmentId));
-      if (major && tier > 3) reasons.push("공고에 내 전공 우대 명시");
-    }
+    } else if (o.jobs.length === 0) {
+      // 직무 태그가 없는 채용 공고는 아직 분류가 안 된 기업 공고이지, 모든 학생 대상 공지가 아니다
+      if (o.type === "채용") continue;
+      score += 30;
+      reasons.push("모든 학생 대상 공지");
+    } else if (o.jobs.includes(p.jobId) || (job?.base && o.jobs.includes(job.base))) {
+      score += 50;
+      reasons.push(`목표 직무(${job?.name}) 연결`);
+    } else if (dept && o.jobs.some((j) => jobById(j)?.fields.includes(dept.field))) {
+      score += 15;
+      reasons.push("전공 계열 관련 기회");
+    } else if (p.interests.some((i) => o.jobs.includes(i))) {
+      score += 20;
+      reasons.push("관심 분야");
+    } else continue;
     const held = o.preferred.filter((s) => (p.skills[s] ?? "none") !== "none");
     if (held.length) {
       score += held.length * 10;
@@ -244,8 +249,20 @@ export interface TreeNode {
   evidence?: TreeSignal[];
   practice?: Practice;
   credentialOption?: CareerCredential;
-  credentialEligibility?: CredentialEligibility;
+  mine?: { weight: 1 | 2 | 3; note?: string }; // 학생이 직접 추가한 노드. 크기는 직접 정한 중요도(★)
 }
+
+const COMMON_PREP_UNTIL = 12;
+const COMMON_PREP: [skill: string, prereq: string[]][] = [
+  ["PR-ROLE-COMPARISON", []],
+  ["PR-COURSE-EVIDENCE", []],
+  ["SK-TOEIC", []],
+  ["SK-PPT", ["PR-COURSE-EVIDENCE"]],
+  ["SK-INTERN", ["PR-ROLE-COMPARISON"]],
+  ["SK-PORT", ["PR-COURSE-EVIDENCE"]],
+  ["SK-RESUME", ["PR-ROLE-COMPARISON"]],
+  ["SK-INTERVIEW", ["SK-RESUME"]],
+];
 
 export function buildTree(p: Profile, opps: Opportunity[], now: Date, extraSkills: readonly string[] = [], signals: ReadonlyMap<string, TreeSignal[]> = new Map()): TreeNode[] {
   const job = jobById(p.jobId);
@@ -263,15 +280,17 @@ export function buildTree(p: Profile, opps: Opportunity[], now: Date, extraSkill
   for (const practice of PRACTICE) {
     const anchor = practice.anchors.find((id) => trackSkills.has(id));
     if (!anchor || definitions.has(practice.id)) continue;
+    if (practice.only.length && !practice.only.some((id) => trackSkills.has(id))) continue;
     definitions.set(practice.id, { skill: practice.id, required: false, prereq: anchor && !practice.independent ? [anchor] : [] });
     practices.set(practice.id, practice);
   }
   for (const skill of new Set(extraSkills)) {
     if (skillById(skill) && !definitions.has(skill)) definitions.set(skill, { skill, required: false });
   }
-  const available = opps.filter((o) => o.versions.length && isOpen(o, now) && evaluate(o, p).overall !== "fail" &&
-    (!["채용", "현장실습"].includes(o.type) || matchesEmploymentRole(o, p.jobId)));
-  const tree: TreeNode[] = Array.from(definitions.values(), (n) => {
+  const available = opps.filter((o) => o.versions.length && isOpen(o, now) && evaluate(o, p).overall !== "fail");
+  const make = (n: { skill: string; required: boolean; prereq?: string[]; target?: string }): TreeNode => {
+    const sk = skillById(n.skill)!;
+    const state = p.skills[n.skill] ?? "none";
     const evidence = signals.get(n.skill);
     const plan = evidence?.[0]?.preparation;
     const discovery = plan?.discovery;
@@ -298,7 +317,18 @@ export function buildTree(p: Profile, opps: Opportunity[], now: Date, extraSkill
       practice: practices.get(n.skill),
       credentialOption: trackSkills.has(n.skill) ? undefined : options.get(n.skill),
     };
-  });
+  };
+  const tree = Array.from(definitions.values(), make);
+  // 트랙이 작으면 어느 직무에나 필요한 공통 준비를 채운다(직무 이해 → 어학·발표 → 인턴 → 지원)
+  for (const [skill, prereq] of COMMON_PREP) {
+    if (tree.filter(node => questOutcome(node) !== undefined).length >= COMMON_PREP_UNTIL) break;
+    if (definitions.has(skill)) continue;
+    const definition = { skill, required: false, prereq: prereq.filter((id) => definitions.has(id)) };
+    definitions.set(skill, definition);
+    const practice = PRACTICE.find((item) => item.id === skill);
+    if (practice) practices.set(skill, practice);
+    tree.push(make(definition));
+  }
   const quests = tree.filter(node => questOutcome(node) !== undefined);
   const visible = new Set(quests.map(node => node.skill));
   // Follow a removed topic back to the nearest actionable prerequisites.

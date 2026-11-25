@@ -14,7 +14,8 @@ import { opportunityQuery, retrievedRecommendations } from "./opportunitySearch"
 import type { Recommendation } from "./engine";
 import type { OpportunityExplanation, OpportunitySearchResult } from "./types";
 import { buildCareerPath, evaluate, latest, syncNotices, fmt } from "./engine";
-import type { CareerInterest, Notice, Opportunity, Profile, SkillState, StartupCatalog, StartupPlan, TreeSignal } from "./types";
+import { withMyNodes } from "./customTree";
+import type { CareerInterest, Notice, Opportunity, Profile, SkillState, StartupCatalog, TreeSignal } from "./types";
 
 const STARTUP_CATALOG = startupData as StartupCatalog;
 registerStartupSkills(startupSkills(STARTUP_CATALOG));
@@ -401,8 +402,9 @@ export function StoreProvider({ children }: { children: React.ReactNode }) {
   }, [ready, signalKey, signalRequest]);
   const careerPath = useMemo(() => {
     if (!profile) return null;
-    return buildCareerPath(profile, visible, new Date(asOf), snapshot?.key === signalKey ? snapshot.signals : [], startupCatalog, startupPlan ?? undefined);
-  }, [profile, signalKey, visible, asOf, snapshot, startupCatalog, startupPlan]);
+    const path = buildCareerPath(profile, visible, new Date(asOf), snapshot?.key === signalKey ? snapshot.signals : [], startupCatalog);
+    return { ...path, tree: withMyNodes(path.tree, profile.myNodes?.[profile.jobId]) };
+  }, [profile, signalKey, visible, asOf, snapshot, startupCatalog]);
   const recommendation = careerPath?.recommendedQuest;
   const questRequestKey = recommendation && profile
     ? JSON.stringify([signalKey, profile.weeklyHours, recommendation])

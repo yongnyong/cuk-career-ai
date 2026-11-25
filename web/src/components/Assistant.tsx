@@ -53,7 +53,7 @@ function errorText(d: unknown): string {
 type Ctx = {
   msgs: AssistantMsg[]; busy: boolean; saved: boolean; ask: (q: string, path: string) => void; clear: () => void;
   memory: Fact[] | null; loadMemory: () => void; forget: (id: string) => void;
-  node: AssistantNode | null; setNode: (n: AssistantNode | null) => void; open: boolean; setOpen: (o: boolean) => void;
+  node: AssistantNode | null; setNode: (n: AssistantNode | null) => void; open: boolean | null; setOpen: (o: boolean) => void;
 };
 const AssistantContext = createContext<Ctx | null>(null);
 
@@ -70,7 +70,8 @@ export function AssistantProvider({ children }: { children: React.ReactNode }) {
   const [mem, setMem] = useState<{ owner: string | null; facts: Fact[] } | null>(null);
   const memory = mem?.owner === owner ? mem.facts : null;
   const [node, setNode] = useState<AssistantNode | null>(null);
-  const [open, setOpen] = useState(false);
+  // null = 아직 열거나 닫은 적 없음. 이때 열지 말지는 AssistantDock이 화면에 맞춰 정한다.
+  const [open, setOpen] = useState<boolean | null>(null);
 
   // 웹 규칙 엔진이 이 학생에게 고른 공고(직무·역량·전공 기준). 비서는 이 안에서 공고를 골라 조건을 다시 판정한다
   const focus = useMemo(() => s.recommendations.filter(r => !r.opp.isVirtual).map(r => r.opp.id), [s.recommendations]);
@@ -359,7 +360,8 @@ export function AssistantHero() {
 }
 
 // 다른 모든 페이지 왼쪽 아래의 챗봇 버튼
-export function AssistantDock() {
+/** rail: 2xl 이상에서 오른쪽 기둥에 붙는 패널. float: 그보다 좁은 화면에서 오른쪽 아래에 뜨는 창 */
+export function AssistantDock({ variant = "float" }: { variant?: "rail" | "float" }) {
   const path = usePathname();
   const { profile } = useStore();
   const { open, setOpen } = useAssistant();
@@ -367,11 +369,14 @@ export function AssistantDock() {
   const mounted = useSyncExternalStore(noop, () => true, () => false);
   if (!mounted) return null;
   if (path === "/" && profile) return null; // 홈에는 큰 챗봇이 있다
-  if (path.startsWith("/print") || path === "/onboarding") return null;
+  if (path.startsWith("/print")) return null;
+  // 직접 열거나 닫기 전에는 넓은 화면에서 열어 둔다. 휴대폰과 가입·온보딩 화면에서는 입력란을 가리므로 닫아 둔다.
+  const shown = open ?? (window.matchMedia("(min-width: 640px)").matches && !/^\/(signup|login|onboarding)/.test(path));
+  const rail = variant === "rail";
   return (
-    <div className="fixed bottom-20 left-4 z-40 sm:bottom-6 print:hidden">
-      {open ? (
-        <div className="window flex h-[min(34rem,calc(100vh-8rem))] w-[min(24rem,calc(100vw-2rem))] flex-col overflow-hidden">
+    <div className={rail ? "sticky top-20 print:hidden" : "fixed bottom-20 right-4 z-40 sm:bottom-6 print:hidden"}>
+      {shown ? (
+        <div className={`window flex flex-col overflow-hidden ${rail ? "h-[calc(100vh-6.5rem)] w-full" : "h-[min(34rem,calc(100vh-8rem))] w-[min(24rem,calc(100vw-2rem))]"}`}>
           <div className="flex items-center gap-2 border-b-2 border-edge bg-navy px-3 py-2 text-white">
             <Bot size={16} />
             <span className="flex-1 text-sm font-bold">CUK Career AI</span>
