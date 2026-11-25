@@ -40,13 +40,18 @@ function SkillNode({ data }: NodeProps<Node<SkillNodeData>>) {
     </>
   );
 }
-type RingsData = { rings: { rx: number; ry: number }[]; sectors: { start: number; end: number }[]; width: number; height: number };
+type RingsData = { rings: { rx: number; ry: number; label?: string }[]; sectors: { start: number; end: number }[]; width: number; height: number };
 function RingsNode({ data }: NodeProps<Node<RingsData>>) {
   const cx = data.width / 2, cy = data.height / 2;
+  // 바깥 고리부터 옅게 칠해 겹칠수록 가운데(목표 직무)가 밝아진다
   return <svg width={data.width} height={data.height} className="pointer-events-none">
-    {data.rings.map((r) => <ellipse key={r.rx} cx={cx} cy={cy} rx={r.rx} ry={r.ry} fill="none" stroke="#3d4680" strokeDasharray="4 6" />)}
+    {[...data.rings].reverse().map((r) => <ellipse key={r.rx} cx={cx} cy={cy} rx={r.rx} ry={r.ry} fill="rgb(124 108 255 / 0.055)" stroke="#4a5596" strokeDasharray="4 6" />)}
     {data.sectors.length > 1 && data.sectors.map((sector) => <line key={sector.start} x1={cx} y1={cy}
       x2={cx + Math.cos(sector.start) * (cx - 10)} y2={cy + Math.sin(sector.start) * (cy - 10)} stroke="#2f3560" />)}
+    {data.rings.map((r, index) => r.label && <g key={r.label} transform={`translate(${cx} ${cy - r.ry})`}>
+      <rect x={-64} y={-11} width={128} height={22} rx={11} fill="#171b3a" stroke="#4a5596" />
+      <text textAnchor="middle" y={4} fontSize={11} fontWeight={700} fill="#b9c2ff">{index + 1}단계 · {r.label}</text>
+    </g>)}
   </svg>;
 }
 function HubNode({ data }: NodeProps<Node<{ title: string; detail: string }>>) {
@@ -332,7 +337,7 @@ function TreeView() {
     } else if (view === "radial") {
       const edge = radial.outer + 80;
       nodes.unshift({ id: "rings", type: "rings", position: { x: 0, y: 0 }, selectable: false, zIndex: -1, data: {
-        rings: radial.rings.map(({ r }) => ({ rx: r * RADIAL_RX, ry: r * RADIAL_RY })), sectors: radial.sectors, width: 2 * edge * RADIAL_RX, height: 2 * edge * RADIAL_RY } });
+        rings: radial.rings.map(({ r, stage }) => ({ rx: r * RADIAL_RX, ry: r * RADIAL_RY, label: progressionStage(stage, mode).title })), sectors: radial.sectors, width: 2 * edge * RADIAL_RX, height: 2 * edge * RADIAL_RY } });
       nodes.push({ id: "hub", type: "hub", position: { x: 0, y: 0 }, selectable: false, data: { title: jobById(p.jobId)?.name ?? "목표 직무", detail: mode === "startup" ? "창업 준비" : "목표 직무" } });
       nodes.push(...radial.sectors.map((sector) => {
         const angle = (sector.start + sector.end) / 2;

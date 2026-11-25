@@ -40,6 +40,8 @@ export const SKILLS: Skill[] = [
   s("SK-PORT", "포트폴리오 정리", "프로젝트"),
   s("SK-RESUME", "이력서·자기소개서", "역량"),
   s("SK-PPT", "기획서·발표", "역량"),
+  s("SK-INTERN", "인턴·현장실습 참여", "경험"),
+  s("SK-INTERVIEW", "취업 면접 준비", "역량"),
   // 직무 공고에 근거가 있을 때 스킬트리에 추가하는 결과물
   s("SK-SQL-PROJECT", "SQL 분석 쿼리와 결과표", "프로젝트"),
   s("SK-ANALYSIS-REPORT", "데이터 분석 보고서", "프로젝트"),

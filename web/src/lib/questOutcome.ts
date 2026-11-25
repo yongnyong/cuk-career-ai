@@ -29,6 +29,8 @@ const samples: Record<string, Work> = {
   "SK-POLICY": ["정책 리서치 보고서 작성", "목표 기관의 사업 하나를 골라 목적, 대상, 성과와 개선 제안을 공개 자료 출처와 함께 정리하세요."],
   "SK-PUBLIC-INTERN": ["공공기관 체험형 인턴 참여 기록", "기관, 기간, 맡은 업무와 수료 확인서를 정리하세요."],
   "SK-PUBLIC-INTERVIEW": ["경험·상황 면접 답변 준비", "경험 다섯 가지를 상황·행동·결과로 정리하고 모의 면접을 한 번 이상 해 보세요."],
+  "SK-INTERN": ["인턴·현장실습 참여 기록", "기관, 기간, 맡은 업무와 수료·참여 확인서를 정리하세요."],
+  "SK-INTERVIEW": ["면접 예상 질문 답변집", "지원 동기와 경험 질문 다섯 개의 답을 상황·행동·결과로 적고, 모의 면접을 한 번 이상 해 보세요."],
   "SK-VOL": ["봉사·현장 활동 기록", "활동 기관, 기간, 맡은 일과 확인서를 정리하세요."],
   "NUR-BASIC": ["핵심기본간호술 실습 점검표", "실습한 술기별로 수행 순서와 피드백 받은 점을 점검표에 기록하세요."],
   "SK-CLIN": ["임상실습 이수 기록", "실습 기관·부서·기간과 배운 점을 기록하세요. 환자 정보는 적지 마세요."],
@@ -143,12 +145,13 @@ export function questOutcome(node: TreeNode) {
   if (project) return { title: project.name, completion: project.completion, label: "추천 작업물" };
   const savedCompletion = preparationCompletionBySkill.get(skill);
   if (node.state !== "none" && savedCompletion) return { title: name, completion: savedCompletion, label: "작업물" };
-  // 결과물이 없는 과목(교육)은 퀘스트가 되지 않는다. 그 밖의 노드는 예시 작업물이 없어도 트리에 남긴다
+  // 예시 작업물이 없는 노드도 트리에 남긴다. 과목(교육)은 이수 기록이 완료 기준이다
   const completion = fallbackCompletion[kind];
-  return completion ? { title: name, completion, label: "트랙 준비" } : undefined;
+  return completion ? { title: name, completion, label: kind === "교육" ? "전공 과목" : "트랙 준비" } : undefined;
 }
 
 const fallbackCompletion: Record<string, string> = {
+  교육: "과목을 이수하고, 과제·발표·시험 결과처럼 배운 내용을 보여 줄 기록을 하나 남기세요.",
   경험: "참여한 기간과 맡은 역할을 적고, 확인서나 결과물처럼 확인할 수 있는 기록을 남기세요.",
   프로젝트: "결과물과 본인이 한 일을 적고, 다시 확인할 수 있는 파일이나 링크를 연결하세요.",
   역량: "이 역량을 쓴 결과물 하나를 골라 무엇을 어떻게 했는지 기록하세요.",

@@ -12,17 +12,21 @@ const data = JSON.parse(readFileSync(new URL('../src/lib/data/startupCatalog.jso
 const now = new Date('2026-11-21');
 const path = p => buildCareerPath(p, data.opportunities, now, [], data).tree;
 
-test('a course with no deliverable cannot become a quest or block a real deliverable', () => {
+// 2026-11-25: 트리가 너무 작아 보여 과목 노드를 되살리고 작은 트랙에 공통 준비를 붙였다
+test('a small track keeps its courses and is filled with common preparation', () => {
   const profile = { ...PERSONAS[0].profile, departmentId: 'chemistry', jobId: 'che-semi', skills: {} };
   const result = buildCareerPath(profile, [], now, [], data);
   const ids = result.tree.map(n => n.skill);
-  assert(!ids.includes('CHE-INORG'));
-  assert(!ids.includes('PR-ROLE-COMPARISON'));
-  assert(!ids.includes('PR-COURSE-EVIDENCE'));
+  assert.equal(questOutcome(result.tree.find(n => n.skill === 'CHE-INORG')).label, '전공 과목');
+  assert(ids.includes('PR-ROLE-COMPARISON'));
+  assert(ids.includes('SK-INTERVIEW'));
+  assert(result.tree.length >= 10);
   const material = result.tree.find(n => n.skill === 'CHE-MATERIAL');
   assert.match(questOutcome(material).title, /데이터시트/);
-  assert.equal(material.locked, false);
+  assert.deepEqual(material.prereq, ['CHE-INORG']);
   assert(ids.includes(result.recommendedQuest.skillId));
+  const big = buildCareerPath({ ...profile, departmentId: 'cs', jobId: 'sw-developer' }, [], now, [], data).tree;
+  assert(!big.some(n => n.skill === 'PR-ROLE-COMPARISON'));
 });
 
 test('every employment track and startup sequence progresses downward with no missing prerequisite', () => {
