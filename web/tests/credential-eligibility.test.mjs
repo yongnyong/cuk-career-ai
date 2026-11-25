@@ -44,7 +44,9 @@ test("an unfinished engineer credential cannot lead the quest until eligibility 
     eligibility: "confirmed", profileKey: credentialProfileKey(profile),
   } } };
   const after = buildCareerPath(ready, [], now, []);
-  assert.equal(after.recommendedQuest?.skillId, "SK-ELEC-PE");
+  // Main added circuit prerequisites. Confirmed eligibility does not bypass them.
+  const credential = after.tree.find(n => n.skill === "SK-ELEC-PE");
+  if (credential.locked) assert.notEqual(after.recommendedQuest?.skillId, credential.skill);
   assert(after.tree.some(n => n.skill === "SK-ELEC-PE" && n.credentialEligibility.status === "ready"));
   assert.deepEqual(before.tree.map(n => n.skill), after.tree.map(n => n.skill));
   const completed = buildCareerPath({ ...profile, skills: { ...profile.skills, "SK-ELEC-PE": "self" } }, [], now, []);

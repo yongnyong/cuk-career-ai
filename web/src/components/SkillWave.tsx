@@ -14,7 +14,7 @@ const R0 = 130; // 막대가 시작하는 안쪽 원
 const LENGTH: Record<WeightTier, number> = { 1: 48, 2: 84, 3: 132 }; // 막대 길이 = 중요도
 const SLOT = (2 * Math.PI) / SEMESTERS.length;
 const GAP = 0.1; // 학기 칸 사이 여백(rad)
-const COLOR = { done: "#2fd39a", go: "#46a6ff", lock: "#5f6690", late: "#ff8a5b" } as const;
+const COLOR = { done: "#2fd39a", go: "#46a6ff", check: "#e6bd52", lock: "#5f6690", late: "#ff8a5b" } as const;
 
 const slotAngle = (slot: number) => -Math.PI / 2 + slot * SLOT; // 12시에서 시작해 시계방향
 const deg = (rad: number) => (rad * 180) / Math.PI;

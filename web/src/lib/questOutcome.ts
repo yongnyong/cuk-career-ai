@@ -116,6 +116,7 @@ const startupTitles: Record<string, string> = {
 export function questOutcome(node: TreeNode) {
   const { name, skill, kind, startup } = node;
   if (node.mine) return { title: name, completion: "스스로 정한 기준을 채우면 완료로 표시하세요.", label: "내 노드" };
+  if (node.personalCompletion) return { title: name, completion: node.personalCompletion, label: "맞춤 작업물" };
   if (startup) {
     const title = startupTitles[skill.replace(/^SU-PREP-/, "")] ?? name;
     const completion = skill === "SU-PREP-problem"

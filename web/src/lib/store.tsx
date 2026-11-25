@@ -2,7 +2,7 @@
 // 클라이언트 상태.
 // - 서버 모드: 계정·세션은 API 서버가 관리하고(HttpOnly 쿠키), 내 데이터는 서버에 저장한다.
 // - 로컬 모드: API 서버에 닿지 않을 때의 대체 동작. 계정이 이 브라우저 안에서만 유효하다(비밀번호는 salt+PBKDF2 해시).
-// 공고 목록과 가상 시계는 아직 브라우저에만 있다.
+// 수집 공고는 서버에서 다시 읽고, 개인 상태·수동 공고·가상 시계는 브라우저에도 저장한다.
 import { createContext, useCallback, useContext, useEffect, useMemo, useRef, useState } from "react";
 import { SEED_OPPORTUNITIES } from "./data/opportunities";
 import { applyOverrides, jobById, registerStartupSkills, type CatalogOverrides } from "./data/catalog";
@@ -15,7 +15,7 @@ import type { Recommendation } from "./engine";
 import type { OpportunityExplanation, OpportunitySearchResult } from "./types";
 import { buildCareerPath, evaluate, latest, syncNotices, fmt } from "./engine";
 import { withMyNodes } from "./customTree";
-import type { CareerInterest, Notice, Opportunity, Profile, SkillState, StartupCatalog, TreeSignal } from "./types";
+import type { CareerInterest, Notice, Opportunity, Profile, SkillState, StartupCatalog, StartupPlan, TreeSignal } from "./types";
 
 const STARTUP_CATALOG = startupData as StartupCatalog;
 registerStartupSkills(startupSkills(STARTUP_CATALOG));
@@ -264,13 +264,17 @@ export function StoreProvider({ children }: { children: React.ReactNode }) {
   }, []);
   /* eslint-enable react-hooks/set-state-in-effect */
 
+  const lastSaved = useRef<string | null>(null);
   useEffect(() => {
     if (!ready) return;
     try {
-      localStorage.setItem(KEY, JSON.stringify(state));
-    } catch {
-      /* 무시 */
-    }
+      // Exclude public snapshots before serialization, rather than after a quota failure.
+      const saved = JSON.stringify({ ...state,
+        opportunities: state.opportunities.filter(o => !isCollected(o) || o.id.startsWith("man-")) });
+      if (saved === lastSaved.current) return;
+      localStorage.setItem(KEY, saved);
+      lastSaved.current = saved;
+    } catch { /* Browser storage may be disabled. */ }
   }, [state, ready]);
 
   // 서버 모드: 내 데이터가 바뀌면 잠시 모아 서버에 저장
@@ -296,10 +300,24 @@ export function StoreProvider({ children }: { children: React.ReactNode }) {
   // 서버가 수집한 실제 공고. 이전에 받아 둔 실제 공고는 서버 목록으로 바꿔 끼운다
   useEffect(() => {
     if (!ready) return;
-    call("/opportunities").then((r) => {
-      if (r?.ok && Array.isArray(r.data))
-        update((s) => ({ ...s, opportunities: [...s.opportunities.filter((o) => !isCollected(o)), ...r.data] }));
-    });
+    let active = true;
+    let sequence = 0;
+    let lastSignature = "";
+    const refresh = async () => {
+      const request = ++sequence;
+      const r = await call("/opportunities");
+      if (!active || request !== sequence || !r?.ok || !Array.isArray(r.data)) return;
+      const signature = JSON.stringify(r.data.map((o: Opportunity) => [o.id, o.versions]));
+      if (signature === lastSignature) return;
+      lastSignature = signature;
+      update((s) => ({ ...s, opportunities: [...s.opportunities.filter((o) => !isCollected(o)), ...r.data] }));
+    };
+    void refresh();
+    window.addEventListener("focus", refresh);
+    const interval = window.setInterval(() => {
+      if (document.visibilityState === "visible") void refresh();
+    }, 60_000);
+    return () => { active = false; window.removeEventListener("focus", refresh); window.clearInterval(interval); };
   }, [ready, update]);
 
   useEffect(() => {
@@ -329,8 +347,8 @@ export function StoreProvider({ children }: { children: React.ReactNode }) {
   const asOf = state.now;
   const searchQuery = useMemo(() => profile ? opportunityQuery(profile, startupPlan) : "", [profile, startupPlan]);
   const searchFocus = profile && careerInterestOf(profile) === "startup" ? startupPlan?.goal ?? "" : "";
-  const searchKey = session && searchQuery ? JSON.stringify([session, searchQuery,
-    visible.map(o => [o.id, o.versions, o.sections])]) : "";
+  const searchKey = useMemo(() => session && searchQuery ? JSON.stringify([session, searchQuery,
+    visible.map(o => [o.id, o.versions, o.sections])]) : "", [session, searchQuery, visible]);
   const [searchSnapshot, setSearchSnapshot] = useState<{ key: string; result: OpportunitySearchResult | null }>();
   useEffect(() => {
     if (!ready || !searchKey) return;

@@ -15,6 +15,7 @@ import { discoveredSignals, discoveredSkillById } from "./discoveredSkills";
 import { employmentRelevance, matchesEmploymentRole } from "./employmentMatch";
 import { credentialsForJob, type CareerCredential } from "./data/careerCredentials";
 import { assessCredential, type CredentialEligibility } from "./credentialEligibility";
+import { CAMPUS_NODES } from "./data/campusNodes";
 import type { StartupCatalog, StartupNode, StartupPlan } from "./types";
 import type {
   ChatAnswer,
@@ -170,21 +171,16 @@ export function recommend(opps: Opportunity[], p: Profile, now: Date): Recommend
     if (careerInterestOf(p) === 'startup') {
       score += 50;
       reasons.push('창업 준비와 연결된 공고');
-    } else if (o.jobs.length === 0) {
-      // 직무 태그가 없는 채용 공고는 아직 분류가 안 된 기업 공고이지, 모든 학생 대상 공지가 아니다
-      if (o.type === "채용") continue;
-      score += 30;
-      reasons.push("모든 학생 대상 공지");
-    } else if (o.jobs.includes(p.jobId) || (job?.base && o.jobs.includes(job.base))) {
-      score += 50;
-      reasons.push(`목표 직무(${job?.name}) 연결`);
-    } else if (dept && o.jobs.some((j) => jobById(j)?.fields.includes(dept.field))) {
-      score += 15;
-      reasons.push("전공 계열 관련 기회");
-    } else if (p.interests.some((i) => o.jobs.includes(i))) {
-      score += 20;
-      reasons.push("관심 분야");
-    } else continue;
+    } else {
+      const relevance = employmentRelevance(o, p);
+      if (!relevance) continue;
+      tier = relevance.tier;
+      score += tier * 10;
+      reasons.push(relevance.reason);
+      const major = o.employmentMatch?.majorConditions?.find(c => c.basis === "preferred" &&
+        c.scope === "role" && !c.unrestricted && c.departmentIds.includes(p.departmentId));
+      if (major && tier > 3) reasons.push("공고에 내 전공 우대 명시");
+    }
     const held = o.preferred.filter((s) => (p.skills[s] ?? "none") !== "none");
     if (held.length) {
       score += held.length * 10;
@@ -249,6 +245,7 @@ export interface TreeNode {
   evidence?: TreeSignal[];
   practice?: Practice;
   credentialOption?: CareerCredential;
+  credentialEligibility?: CredentialEligibility;
   mine?: { weight: 1 | 2 | 3; note?: string }; // 학생이 직접 추가한 노드. 크기는 직접 정한 중요도(★)
 }
 
@@ -264,14 +261,17 @@ const COMMON_PREP: [skill: string, prereq: string[]][] = [
   ["SK-INTERVIEW", ["SK-RESUME"]],
 ];
 
+const STARTUP_ONLY_SKILLS = new Set<string>([
+  "SK-IDEA", "SK-BMC", "SK-BIZPLAN", "SK-MVP", "SK-IR", "PR-ASSUMPTION",
+  ...CAMPUS_NODES.filter(n => /창업|사업화|Startup\s+Challenge/i.test(n.name)).map(n => n.id),
+]);
+const employmentSkill = (id: string) => !STARTUP_ONLY_SKILLS.has(id) && !id.startsWith("SU-");
+
 export function buildTree(p: Profile, opps: Opportunity[], now: Date, extraSkills: readonly string[] = [], signals: ReadonlyMap<string, TreeSignal[]> = new Map()): TreeNode[] {
   const job = jobById(p.jobId);
   if (!job) return [];
   const definitions = new Map(job.nodes.map((node) => [node.skill, node]));
   const trackSkills = new Set(definitions.keys());
-  for (const skill of [...COMMON_WORK, ...COMMON_EXAMS]) {
-    if (!definitions.has(skill)) definitions.set(skill, { skill, required: false });
-  }
   const options = new Map(credentialsForJob(job.id).map(c => [c.id, c]));
   for (const id of options.keys()) {
     if (!definitions.has(id)) definitions.set(id, { skill: id, required: false });
@@ -285,12 +285,10 @@ export function buildTree(p: Profile, opps: Opportunity[], now: Date, extraSkill
     practices.set(practice.id, practice);
   }
   for (const skill of new Set(extraSkills)) {
-    if (skillById(skill) && !definitions.has(skill)) definitions.set(skill, { skill, required: false });
+    if (employmentSkill(skill) && skillById(skill) && !definitions.has(skill)) definitions.set(skill, { skill, required: false });
   }
   const available = opps.filter((o) => o.versions.length && isOpen(o, now) && evaluate(o, p).overall !== "fail");
-  const make = (n: { skill: string; required: boolean; prereq?: string[]; target?: string }): TreeNode => {
-    const sk = skillById(n.skill)!;
-    const state = p.skills[n.skill] ?? "none";
+  const make = (n: { skill: string; required: boolean; prereq?: string[]; target?: string; route?: import("./types").SkillRoute }): TreeNode => {
     const evidence = signals.get(n.skill);
     const plan = evidence?.[0]?.preparation;
     const discovery = plan?.discovery;
@@ -327,6 +325,13 @@ export function buildTree(p: Profile, opps: Opportunity[], now: Date, extraSkill
     definitions.set(skill, definition);
     const practice = PRACTICE.find((item) => item.id === skill);
     if (practice) practices.set(skill, practice);
+    tree.push(make(definition));
+  }
+  // Keep main's specialist fallback decision separate from the common/elective tree.
+  for (const skill of [...COMMON_WORK, ...COMMON_EXAMS]) {
+    if (definitions.has(skill)) continue;
+    const definition = { skill, required: false };
+    definitions.set(skill, definition);
     tree.push(make(definition));
   }
   const quests = tree.filter(node => questOutcome(node) !== undefined);
@@ -452,7 +457,7 @@ export function buildCareerPath(p: Profile, opps: Opportunity[], now: Date, snap
   const signals = groupTreeSignals([
     ...postingSignals(p, opps, now, templateSkills),
     ...snapshotSignals, ...schoolSignals,
-  ]);
+  ].filter(signal => employmentSkill(signal.skillId)));
   const extraSkills = (p.completedPreparation?.[p.jobId] ?? []).filter((id) => p.skills[id] && p.skills[id] !== "none");
   for (const [id, evidence] of signals) {
     if (!templateSkills.has(id) && evidence.some((s) =>

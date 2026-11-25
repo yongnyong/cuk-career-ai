@@ -211,30 +211,23 @@ def test_dietitian_evidence_survives_display_alias_and_preserves_planned_license
     assert optional['basis'] == 'preferred'
 
 
-def test_only_eligible_role_linked_activities_can_expand_beyond_the_job_template():
-    for department, expected in [('ai', True), ('psychology', False)]:
+def test_startup_activity_does_not_expand_employment_tracks_even_for_ai_department():
+    for department in ('ai', 'psychology'):
         profile, job = adapt_profile(student(departmentId=department, jobId='ai-engineer'))
         assert 'SK-BMC' not in {node['skill'] for node in job['nodes']}
         signals = build_tree_signals(profile, job, SKILLS, NOW)['signals']
         activities = [s for s in signals if s['skillId'] == 'SK-BMC' and s['basis'] == 'activity']
-        assert bool(activities) == expected
-        if expected:
-            assert '비즈니스 모델' in activities[0]['reference']['summary']
-            assert activities[0]['reference']['scope'] == 'role'
-            later = build_tree_signals(profile, job, SKILLS, parse_time('2026-12-10T10:00:00+09:00'))
-            assert not any(s['skillId'] == 'SK-BMC' for s in later['signals'])
+        assert not activities
 
 
-def test_reviewed_events_are_separate_nodes_with_their_own_dates_and_eligibility():
+def test_employment_events_preserve_bootcamp_and_exclude_startup_competitions():
     event = 'ACT-cuk-ai-startup-277825'
-    for department, expected in [('ai', True), ('psychology', False)]:
+    for department in ('ai', 'psychology'):
         profile, job = adapt_profile(student(departmentId=department, jobId='ai-engineer'))
         signals = build_tree_signals(profile, job, SKILLS, NOW)['signals']
         matches = [s for s in signals if s['skillId'] == event]
-        assert bool(matches) == expected
-        if matches:
-            assert matches[0]['reference']['title'] == SKILLS[event]['name']
-            assert matches[0]['reference']['scope'] == 'campus'
+        assert not matches
+        assert not any('창업' in s['reference']['title'] for s in signals if s['basis'] == 'activity')
         assert any(s['skillId'] == 'ACT-cuk-bootcamp-277842' for s in signals)
         later = build_tree_signals(profile, job, SKILLS, parse_time('2026-12-10T10:00:00+09:00'))
         assert not any(s['skillId'] == event for s in later['signals'])

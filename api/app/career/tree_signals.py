@@ -1,4 +1,5 @@
 """Connect reviewed occupational evidence to catalog skills, including new branches."""
+import re
 from .evidence import DEFAULT_CATALOG, load_catalog
 from .recommender import activity_candidate, assess_group
 
@@ -87,6 +88,10 @@ def build_tree_signals(profile, job, skills, now, *, path=DEFAULT_CATALOG):
             signals.append(signal)
 
     for item in catalog['activities']:
+        # This endpoint serves employment preparation. Department overlap does not
+        # make a startup competition relevant to an employment goal.
+        if re.search(r'창업|사업화|Startup\s+Challenge', item['title'], re.I):
+            continue
         role_match = bool(pathways.intersection(item['pathways']))
         matches = [skill_id for skill_id in ACTIVITY_SKILLS.get(item['id'], ())
                    if skill_id in skills and (skill_id in node_ids or role_match)]

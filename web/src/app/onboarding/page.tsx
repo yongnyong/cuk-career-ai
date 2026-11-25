@@ -65,7 +65,7 @@ function Form({ start }: { start: Profile }) {
   };
 
   if (startup && step > 0) return <div className="card mx-auto max-w-3xl p-6">
-    <h1 className="text-xl font-bold">우리 팀의 다음 준비를 찾아요</h1>
+    <h1 className="text-xl font-bold">어떤 서비스를 만들고 있나요?</h1>
     <AssistantChat large />
     <div className="mt-4 flex gap-2">
       <button className="btn-primary" onClick={finish}>내 스킬트리 보기</button>

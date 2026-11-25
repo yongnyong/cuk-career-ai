@@ -7,7 +7,6 @@ import { AudioWaveform, Award, Check, ChevronRight, KeyRound, Network, Pencil, P
 import { RequireProfile } from "@/components/RequireProfile";
 import { OppCard } from "@/components/OppCard";
 import { ProofField } from "@/components/ProofField";
-import { CredentialEligibility } from "@/components/CredentialEligibility";
 import { StartupApplication } from "@/components/StartupApplication";
 import { listProofs, type ProofMeta } from "@/lib/files";
 import { COMPACT_DIAMETER, Legend, NodeBox, StatusWindow } from "@/components/quest-ui";
@@ -21,7 +20,7 @@ import { SkillWave } from "@/components/SkillWave";
 import { questProgress } from "@/lib/quest";
 import { questOutcome, recommendedTitle } from "@/lib/questOutcome";
 import { careerInterestOf } from "@/lib/interest";
-import { layoutProgression, progressionStage } from "@/lib/treeProgression";
+import { layoutProgression, progressionStage, routeFor } from "@/lib/treeProgression";
 import { GrowthReplayButton } from "@/components/GrowthReplay";
 import { MyNodeForm } from "@/components/MyNodeForm";
 import { nodeIdeas, removeNode } from "@/lib/customTree";

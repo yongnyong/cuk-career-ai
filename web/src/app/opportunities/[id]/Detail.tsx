@@ -100,8 +100,8 @@ function Body() {
                 <div className="flex-1">
                   <b>{r.condition.label}</b> <span className="text-slate-600">— {r.reason}</span>
                 </div>
-                <a href={`#sec-${r.condition.src}`} className="chip bg-panel text-slate-500">
-                  원문 {r.condition.src}
+                <a href={o.source.url} target="_blank" rel="noopener noreferrer" className="chip bg-panel text-slate-500">
+                  원문 확인
                 </a>
               </li>
             ))}
@@ -226,21 +226,6 @@ function Body() {
             </ul>
           </div>
         )}
-
-        <div className="card p-5">
-          <h2 className="font-bold">원문 (의미 단위)</h2>
-          <p className="text-xs text-slate-500">챗봇과 판정은 아래 문단만 근거로 사용해요.</p>
-          <dl className="mt-3 space-y-2 text-sm">
-            {o.sections.map((sec) => (
-              <div key={sec.id} id={`sec-${sec.id}`} className="scroll-mt-20 rounded-lg border border-slate-100 px-3 py-2 target:ring-2 target:ring-accent">
-                <dt className="text-xs font-bold text-slate-500">
-                  {sec.id} {sec.title}
-                </dt>
-                <dd>{sec.text}</dd>
-              </div>
-            ))}
-          </dl>
-        </div>
 
         <Link href="/opportunities" className="text-sm underline">
           ← 기회 목록

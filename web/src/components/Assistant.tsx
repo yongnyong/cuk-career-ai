@@ -220,6 +220,7 @@ export function AssistantChat({ large = false }: { large?: boolean }) {
   const { profile, startupPlan, startupPlanError, editStartupPlan } = useStore();
   const path = usePathname();
   const [q, setQ] = useState("");
+  const startupIntake = path === "/onboarding";
   const [showMemory, setShowMemory] = useState(false);
   const end = useRef<HTMLDivElement>(null);
   useEffect(() => {
@@ -232,11 +233,9 @@ export function AssistantChat({ large = false }: { large?: boolean }) {
 
   return (
     <div className="flex min-h-0 flex-1 flex-col">
-      {path === "/onboarding" && <div className="space-y-2 p-4">
+      {startupIntake && <div className="space-y-2 p-4">
         <p>누가 어떤 상황에서 쓸 제품이나 서비스를 만들고 있어요?</p>
-        <p className="text-xs">이미 해본 일과 가장 가까운 목표도 함께 알려 주세요.</p>
-        <div className="flex flex-wrap gap-2">{["첫 고객 만나기", "제품 출시", "대회·지원사업 신청"].map(t =>
-          <button key={t} className="btn-ghost text-xs" disabled={busy} onClick={() => send(t)}>{t}</button>)}</div>
+        <p className="text-xs">어떤 사람의 문제를 어떻게 해결하는지 편하게 설명해 주세요. 대화로 서비스 내용을 구체화해 볼게요.</p>
       </div>}
       {startupPlanError && <p role="alert" className="p-3 text-danger">{startupPlanError}</p>}
       {startupPlan && <details className="px-4 text-sm"><summary>우리 팀 정보 수정</summary>
@@ -261,7 +260,9 @@ export function AssistantChat({ large = false }: { large?: boolean }) {
           <>
             {msgs.length === 0 && (
               <p className="text-sm text-ink/70">
-                {profile
+                {startupIntake
+                  ? "예: 대학생이 수강 이력과 관심 직무를 바탕으로 취업 준비 계획을 세우는 AI 서비스를 만들고 있어요."
+                  : profile
                   ? "내 학과·학년·목표 직무·스킬트리와 대화에서 말한 내용을 기억해서 답해요. 공고 조건은 서버가 직접 판정해요."
                   : "로그인하거나 시연 계정으로 들어오면 내 프로필에 맞춰 답해요."}
               </p>
@@ -305,7 +306,7 @@ export function AssistantChat({ large = false }: { large?: boolean }) {
         {node && path.startsWith("/tree") && !showMemory && (
           <p className="mb-2 truncate text-[11px] text-ink/60">지금 보는 노드: <strong>{node.name}</strong> · 이 노드 기준으로 답해요</p>
         )}
-        {!showMemory && (
+        {!showMemory && !startupIntake && (
           <div className="mb-2 flex flex-wrap gap-1.5">
             {START.map((x) => (
               <button key={x} className="rounded-full border border-line px-2.5 py-1 text-xs hover:bg-paper" disabled={busy} onClick={() => send(x)}>
@@ -319,7 +320,7 @@ export function AssistantChat({ large = false }: { large?: boolean }) {
             value={q}
             onChange={(e) => setQ(e.target.value)}
             maxLength={500}
-            placeholder="진로·공고·공부 계획을 물어보세요"
+            placeholder={startupIntake ? "만들고 있는 제품이나 서비스를 설명해 주세요" : "진로·공고·공부 계획을 물어보세요"}
             aria-label="챗봇에게 질문"
             className="min-w-0 flex-1 rounded-md border border-line bg-panel px-3 py-2 text-sm"
           />

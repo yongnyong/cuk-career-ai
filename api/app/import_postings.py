@@ -177,12 +177,18 @@ def build_postings(database, catalog):
 def import_postings(source, target):
     catalog = json.loads((ROOT / 'api/app/career/web_catalog.json').read_text(encoding='utf-8'))
     postings = build_postings(source, catalog)
-    with sqlite3.connect(target) as db:
+    return write_postings(postings, target)
+
+
+def write_postings(postings, target, retired_ids=()):
+    with sqlite3.connect(target, timeout=30) as db:
         db.execute('''CREATE TABLE IF NOT EXISTS postings (
             id VARCHAR(40) PRIMARY KEY,raw_hash VARCHAR(64) NOT NULL,
             data JSON,checked_at BIGINT NOT NULL)''')
         # Import only our stable hist-* IDs. A rerun preserves other collectors and accounts.
         count = 0
+        for pid in retired_ids:
+            db.execute('UPDATE postings SET data=NULL WHERE id=?', (pid,))
         for posting in postings:
             payload = {key: value for key, value in posting.items() if key != 'versions'}
             payload['deadline'] = posting['versions'][0]['deadline']
@@ -191,6 +197,12 @@ def import_postings(source, target):
             if old and old[0] == digest:
                 continue
             data = with_history(json.loads(old[1]) if old and old[1] else None, posting)
+            if old and old[1]:
+                previous = json.loads(old[1])
+                if previous['versions'][-1]['deadline'] == posting['versions'][0]['deadline']:
+                    data['versions'] = previous['versions'] + [{
+                        **posting['versions'][0], 'version': previous['versions'][-1]['version'] + 1,
+                        'changes': [{'field': '공고 내용', 'before': '이전 수집본', 'after': '새 수집본'}]}]
             db.execute('''INSERT INTO postings(id,raw_hash,data,checked_at) VALUES(?,?,?,?)
                 ON CONFLICT(id) DO UPDATE SET raw_hash=excluded.raw_hash,data=excluded.data,checked_at=excluded.checked_at''',
                 (posting['id'], digest, json.dumps(data, ensure_ascii=False), int(datetime.now(timezone.utc).timestamp())))
