@@ -1,13 +1,14 @@
 "use client";
 import { useState } from "react";
 import { Star, X } from "lucide-react";
-import { KINDS, LIMITS, newNode, wouldCycle } from "@/lib/customTree";
+import { KINDS, LIMITS, newNode, wouldCycle, type nodeIdeas } from "@/lib/customTree";
 import type { TreeNode } from "@/lib/engine";
 import type { CustomNode, SkillKind } from "@/lib/types";
 
 /** 스킬트리에 내 노드를 추가하거나 고치는 작은 창. parent가 있으면 그 노드를 먼저 할 노드로 넣고 시작한다 */
-export function MyNodeForm({ tree, mine, parent, initial, onSave, onCancel }: {
+export function MyNodeForm({ tree, mine, ideas = [], parent, initial, onSave, onCancel }: {
   tree: TreeNode[];
+  ideas?: ReturnType<typeof nodeIdeas>; // 이 직무 학생들이 흔히 하는 준비. 누르면 이름·분류를 채운다
   mine: CustomNode[];
   parent?: string;
   initial?: CustomNode;
@@ -25,7 +26,17 @@ export function MyNodeForm({ tree, mine, parent, initial, onSave, onCancel }: {
       className="mt-2 space-y-2 text-xs"
       onSubmit={(e) => { e.preventDefault(); if (name && !full) onSave({ ...node, name }); }}
     >
-      <input className="input !py-1" autoFocus maxLength={LIMITS.name} value={node.name} onChange={(e) => patch({ name: e.target.value })} placeholder="예: 토브넷 직무 인터뷰" aria-label="노드 이름" />
+      <input className="input !py-1" autoFocus maxLength={LIMITS.name} value={node.name} onChange={(e) => patch({ name: e.target.value })} placeholder={`예: ${ideas[0]?.name ?? "현직자 직무 인터뷰"}`} aria-label="노드 이름" />
+      {!initial && ideas.length > 0 && (
+        <div className="flex flex-wrap items-center gap-1">
+          <span className="text-ink/60">많이 하는 준비</span>
+          {ideas.map((i) => (
+            <button type="button" key={i.name} className={`chip border px-2 py-0.5 ${node.name === i.name ? "border-go bg-go/15 text-go" : "border-line hover:border-go"}`} onClick={() => patch({ name: i.name, kind: i.kind })}>
+              {i.name}
+            </button>
+          ))}
+        </div>
+      )}
       <div className="flex flex-wrap items-center gap-2">
         <select className="input w-24 !py-1" value={node.kind} onChange={(e) => patch({ kind: e.target.value as SkillKind })} aria-label="분류">
           {KINDS.map((k) => <option key={k}>{k}</option>)}

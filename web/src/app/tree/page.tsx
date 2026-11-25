@@ -21,7 +21,7 @@ import { questOutcome, recommendedTitle } from "@/lib/questOutcome";
 import { careerInterestOf } from "@/lib/interest";
 import { layoutProgression, progressionStage } from "@/lib/treeProgression";
 import { MyNodeForm } from "@/components/MyNodeForm";
-import { removeNode } from "@/lib/customTree";
+import { nodeIdeas, removeNode } from "@/lib/customTree";
 import type { CustomNode } from "@/lib/types";
 import { currentSemester, layoutFocus, layoutRadial, nodeWeights, RADIAL_RX, RADIAL_RY, type Advantage, type WeightTier } from "@/lib/treeRadial";
 
@@ -306,6 +306,7 @@ function TreeView() {
   const cancel = (skill: string) => (isMine(skill) ? setMineDone(skill, false) : (s.setScore(skill, ""), s.setSkill(skill, "none")));
   // 내 노드 추가·수정 창: parent가 있으면 그 노드 다음에 붙인다
   const [editing, setEditing] = useState<{ parent?: string; node?: CustomNode } | null>(null);
+  const ideas = nodeIdeas(p.jobId, mode === "startup", tree.map((n) => n.name));
   const saveEdited = (node: CustomNode) => {
     saveMine(myNodes.some((n) => n.id === node.id) ? myNodes.map((n) => (n.id === node.id ? node : n)) : [...myNodes, node]);
     setEditing(null);
@@ -464,7 +465,7 @@ function TreeView() {
               )}
               {selNode.mine?.note && <p className="mt-2 rounded bg-paper px-2 py-1 text-xs">메모 · {selNode.mine.note}</p>}
               {editing && (editing.parent === selNode.skill || editing.node?.id === selNode.skill) ? (
-                <MyNodeForm tree={tree} mine={myNodes} parent={editing.parent} initial={editing.node} onSave={saveEdited} onCancel={() => setEditing(null)} />
+                <MyNodeForm tree={tree} mine={myNodes} ideas={ideas} parent={editing.parent} initial={editing.node} onSave={saveEdited} onCancel={() => setEditing(null)} />
               ) : (
                 <div className="mt-2 flex flex-wrap gap-1">
                   <button className="btn-ghost !px-2 !py-1 text-xs" onClick={() => setEditing({ parent: selNode.skill })}>
@@ -568,8 +569,8 @@ function TreeView() {
           </div>
           {editing && !editing.parent && !editing.node && (
             <div className="mt-2 rounded-md border border-go p-3">
-              <p className="text-xs text-ink/70">‘토브넷 입사 준비’처럼 목표 회사나 나만의 계획을 노드로 더해요. 중요도(★)가 노드 크기가 되고, 완료하면 하양이 진화에도 반영돼요.</p>
-              <MyNodeForm tree={tree} mine={myNodes} onSave={saveEdited} onCancel={() => setEditing(null)} />
+              <p className="text-xs text-ink/70">학과 트리에 없는 나만의 준비를 노드로 더해요. 아래 ‘많이 하는 준비’를 눌러도 돼요. 중요도(★)가 노드 크기가 되고, 완료하면 하양이 진화에도 반영돼요.</p>
+              <MyNodeForm tree={tree} mine={myNodes} ideas={ideas} onSave={saveEdited} onCancel={() => setEditing(null)} />
             </div>
           )}
           <ul className="mt-2 divide-y divide-line">

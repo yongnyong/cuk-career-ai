@@ -2,7 +2,7 @@ import assert from 'node:assert/strict';
 import { registerHooks } from 'node:module';
 import { test } from 'node:test';
 registerHooks({ resolve(s, c, next) { return next(c.parentURL?.endsWith('.ts') && s.startsWith('.') && !s.endsWith('.ts') ? s + '.ts' : s, c); } });
-const { newNode, wouldCycle, removeNode, toTreeNodes, withMyNodes } = await import('../src/lib/customTree.ts');
+const { newNode, wouldCycle, removeNode, toTreeNodes, withMyNodes, nodeIdeas } = await import('../src/lib/customTree.ts');
 const { nodeWeights } = await import('../src/lib/treeRadial.ts');
 
 const n = (id, prereq = [], extra = {}) => ({ ...newNode(id), id, prereq, ...extra });
@@ -58,4 +58,12 @@ test('my nodes are sized by their own stars and do not shift the other nodes', (
   for (const id of ['S1', 'S2', 'S3']) assert.equal(after.get(id).tier, before.get(id).tier);
   assert.equal(after.get('my-a').tier, 1);
   assert.equal(after.get('my-b').tier, 3);
+});
+
+test('the add form suggests common preparation for the job group and skips names already in the tree', () => {
+  const dev = nodeIdeas('sw-developer').map(i => i.name);
+  assert.ok(dev.includes('깃허브 포트폴리오 정리'));
+  assert.ok(nodeIdeas('welfare').some(i => i.name === '상담센터 자원봉사'));
+  assert.ok(nodeIdeas('sw-developer', true).some(i => i.name === '고객 인터뷰 10명'));
+  assert.ok(!nodeIdeas('sw-developer', false, ['정보처리기사']).some(i => i.name === '정보처리기사'));
 });
