@@ -1,0 +1,26 @@
+{
+  "files": {
+    "career.jsonl": {
+      "bytes": 11614891,
+      "sha256": "e53b69e211d430cc25d6fb77f321cc5f84d356612b1a067229dace2667b7dfa8",
+      "tables": {
+        "postings": 4952
+      }
+    },
+    "startup.jsonl": {
+      "bytes": 1051101,
+      "sha256": "a7df307f14b22bb1184f697fad2fd275aa41af7ab2f427f1926af48f5781d885",
+      "tables": {
+        "attachments": 39,
+        "postings": 53,
+        "sources": 99,
+        "startup_node_edges": 40,
+        "startup_node_evidence": 111,
+        "startup_nodes": 32,
+        "submission_requirements": 77
+      }
+    }
+  },
+  "format": 1,
+  "scope": "Public posting/source tables only. No accounts, conversations, secrets, or embedding cache."
+}
