@@ -101,6 +101,19 @@ def manual_posting(body: ManualPosting, now: datetime, ask=gemini) -> dict | Non
     return data
 
 
+IMPORT_TYPES = {"채용", "현장실습", "창업지원", "장학", "학사", "비교과"}
+
+
+class PostingRow(BaseModel):
+    id: str = Field(min_length=1, max_length=40)
+    raw_hash: str = Field(min_length=1, max_length=64)
+    data: dict | None = None  # None이면 내린 공고(목록에서 숨김)
+
+
+class PostingImport(BaseModel):
+    rows: list[PostingRow] = Field(min_length=1, max_length=200)
+
+
 def make_router(get_db, get_career_db, current_user, admin_ids, Posting, Setting):
     def require_admin(user=Depends(current_user)):
         if user.id not in admin_ids():
@@ -140,6 +153,28 @@ def make_router(get_db, get_career_db, current_user, admin_ids, Posting, Setting
         db.merge(Posting(id=data["id"], raw_hash=digest, data=data, checked_at=int(now.timestamp())))
         db.commit()
         return data
+
+    @router.post("/api/admin/postings/import")
+    def import_postings(body: PostingImport, user=Depends(require_admin), db: Session = Depends(get_career_db)):
+        """로컬 career.db에서 만든 공고 행을 운영 공고 DB에 그대로 반영한다(app.push_postings가 호출)."""
+        result = {"added": 0, "updated": 0, "unchanged": 0, "rejected": []}
+        now = int(datetime.now(KST).timestamp())
+        for row in body.rows:
+            data = row.data
+            ok = data is None or (
+                data.get("id") == row.id and data.get("type") in IMPORT_TYPES and isinstance(data.get("title"), str)
+                and data["title"].strip() and isinstance(data.get("versions"), list) and data["versions"])
+            if not ok:
+                result["rejected"].append(row.id)
+                continue
+            old = db.get(Posting, row.id)
+            if old and old.raw_hash == row.raw_hash and (old.data is None) == (data is None):
+                result["unchanged"] += 1
+                continue
+            result["updated" if old else "added"] += 1
+            db.merge(Posting(id=row.id, raw_hash=row.raw_hash, data=data, checked_at=now))
+        db.commit()
+        return result
 
     @router.delete("/api/admin/postings/{posting_id}")
     def remove_posting(posting_id: str, user=Depends(require_admin), db: Session = Depends(get_career_db)):

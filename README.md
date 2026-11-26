@@ -352,6 +352,18 @@ npx vercel deploy --prod
 
 Vercel 환경변수 `API_URL`은 `https://43-200-13-8.sslip.io`로 설정돼 있다.
 
+### 로컬 공고 DB를 운영 서버에 올리기
+
+공고 DB(`api/career.db`)는 Git에 없으므로, 로컬에서 수집·가져오기를 한 사람이 직접 올린다. 서버 `.env`의 `ADMIN_IDS`에 들어 있는 관리자 계정이 필요하다.
+
+```powershell
+cd api
+.\.venv\Scripts\python.exe -m app.push_postings --server https://43-200-13-8.sslip.io --user 내아이디 --dry-run   # 건수만 확인
+.\.venv\Scripts\python.exe -m app.push_postings --server https://43-200-13-8.sslip.io --user 내아이디
+```
+
+비밀번호는 실행 중에 묻는다. 같은 공고는 바뀐 것만 반영되고, 서버에만 있는 다른 공고(고용24·K-Startup·직접 등록)는 건드리지 않는다. `--prefix jk-`처럼 id 앞글자로 범위를 좁힐 수 있다. 올린 뒤 검색 색인은 다음 검색 때 자동으로 갱신된다.
+
 ### 서버 배포 (AWS Lightsail)
 
 **배포 전에 반드시 `cd api && pytest -q`가 통과하는지 확인한다.** (2026-11-17에 테스트 실패를 놓친 채 배포해 API가 2~3분 멈춘 적이 있다.) `api/`나 `docker-compose.yml`을 고쳐 `main`에 합쳤다면 서버에서 받아 다시 빌드한다. DB 데이터는 유지된다.
