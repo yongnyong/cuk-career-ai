@@ -4,12 +4,17 @@
     python -m app.push_postings --server https://43-200-13-8.sslip.io --user 내아이디
 
 비밀번호는 실행 중에 묻는다(화면에 보이지 않고 저장하지 않는다). 같은 공고를 다시 올려도 바뀐 것만 반영된다.
+
+서버 안에서는 Git에 있는 공유 파일(data/public/career.jsonl)을 로그인 없이 공고 DB에 바로 넣을 수 있다.
+
+    sudo docker compose exec -T api python -m app.push_postings --load-jsonl - < data/public/career.jsonl
 """
 import argparse
 import getpass
 import http.cookiejar
 import json
 import sqlite3
+import sys
 import urllib.error
 import urllib.request
 from pathlib import Path
@@ -36,6 +41,21 @@ def push(rows, post):
     return total
 
 
+def load_jsonl(lines, session_factory, Posting):
+    """public_snapshot이 만든 career.jsonl 줄들을 CAREER_DATABASE_URL의 공고 DB에 넣는다."""
+    from types import SimpleNamespace
+    from .process import upsert_rows
+    rows = []
+    for line in lines:
+        if line.strip():
+            entry = json.loads(line)
+            if entry.get('table') == 'postings':
+                row = entry['row']
+                rows.append(SimpleNamespace(id=row['id'], raw_hash=row['raw_hash'], data=row['data']))
+    with session_factory() as db:
+        return upsert_rows(db, Posting, rows)
+
+
 def client(server):
     opener = urllib.request.build_opener(urllib.request.HTTPCookieProcessor(http.cookiejar.CookieJar()))
 
@@ -54,11 +74,22 @@ def client(server):
 def main():
     parser = argparse.ArgumentParser(description=__doc__, formatter_class=argparse.RawDescriptionHelpFormatter)
     parser.add_argument('--source', type=Path, default=DEFAULT_SOURCE)
-    parser.add_argument('--server', required=True, help='예: https://43-200-13-8.sslip.io')
-    parser.add_argument('--user', required=True, help='관리자 아이디')
+    parser.add_argument('--server', help='예: https://43-200-13-8.sslip.io')
+    parser.add_argument('--user', help='관리자 아이디')
+    parser.add_argument('--load-jsonl', help='서버 안에서 쓴다: career.jsonl 경로, 표준 입력이면 -')
     parser.add_argument('--prefix', action='append', default=[], help='이 글자로 시작하는 공고 id만 올린다(여러 번 가능)')
     parser.add_argument('--dry-run', action='store_true', help='올리지 않고 건수만 본다')
     args = parser.parse_args()
+    if args.load_jsonl:
+        from .career_db import CareerSessionLocal, Posting
+        if args.load_jsonl == '-':
+            result = load_jsonl(sys.stdin.buffer.read().decode('utf-8').splitlines(), CareerSessionLocal, Posting)
+        else:
+            result = load_jsonl(Path(args.load_jsonl).read_text(encoding='utf-8').splitlines(), CareerSessionLocal, Posting)
+        print(json.dumps({**result, 'rejected': len(result['rejected'])}, ensure_ascii=False))
+        return
+    if not args.server or not args.user:
+        parser.error('--server와 --user가 필요해요.')
     rows = read_rows(args.source, args.prefix)
     live = sum(row['data'] is not None for row in rows)
     print(f'{args.source}: 공고 {len(rows)}건(게시 {live}, 내림 {len(rows) - live})')

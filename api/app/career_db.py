@@ -50,6 +50,12 @@ class SearchSection(CareerBase):
 CareerBase.metadata.create_all(career_engine)
 
 
+def postings_version(db) -> tuple:
+    """공고 표가 바뀌었는지 싸게 알아보는 값. 공고를 넣고 고치는 경로는 모두 checked_at을 새로 쓰고, 지우면 건수가 바뀐다."""
+    from sqlalchemy import func, select
+    return tuple(db.execute(select(func.count(Posting.id), func.count(Posting.data), func.max(Posting.checked_at))).one())
+
+
 def migrate_legacy_postings(account_url, career_url=CAREER_DATABASE_URL):
     """Move the former SQLite postings table in one attached-DB transaction."""
     source, target = make_url(account_url), make_url(career_url)

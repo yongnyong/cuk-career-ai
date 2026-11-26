@@ -150,9 +150,21 @@ def tokens(text):
     return terms
 
 
+_DOCUMENTS = {}  # 문단 본문 → 낱말 수. 검색마다 수천 문단을 다시 쪼개지 않는다
+
+
+def _document(quote):
+    document = _DOCUMENTS.get(quote)
+    if document is None:
+        if len(_DOCUMENTS) > 60000:
+            _DOCUMENTS.clear()
+        document = _DOCUMENTS[quote] = Counter(tokens(quote))
+    return document
+
+
 def keyword_scores(sections, query):
     words = set(tokens(query))
-    documents = [Counter(tokens(section.quote)) for section in sections]
+    documents = [_document(section.quote) for section in sections]
     frequencies = Counter(term for document in documents for term in document)
     average = sum(sum(document.values()) for document in documents) / max(1, len(documents))
     scores = {}
@@ -178,8 +190,10 @@ def posting_ranks(sections, scores):
 
 
 class OpportunitySearch:
-    def __init__(self, sessions, source, embeddings=None):
+    def __init__(self, sessions, source, embeddings=None, version=None):
         self.sessions, self.source, self.embeddings = sessions, source, embeddings
+        # version(): 공고가 바뀌었는지 싸게 알려 주는 값. 같으면 전체 공고를 다시 읽지 않는다
+        self.version, self.seen = version, None
         self.lock = RLock()
         self.fingerprint = ""
         self.sections = []
@@ -187,6 +201,9 @@ class OpportunitySearch:
 
     def refresh(self):
         with self.lock:
+            seen = self.version() if self.version else None
+            if seen is not None and seen == self.seen and self.fingerprint:
+                return list(self.sections), dict(self.postings)
             postings = current_postings(self.source())
             sections = posting_sections(postings)
             fingerprint = digest("|".join(section.id for section in sections))
@@ -210,6 +227,7 @@ class OpportunitySearch:
                             raise
                 self.sections, self.fingerprint = sections, fingerprint
             self.postings = {row["id"]: row for row in postings}
+            self.seen = seen
             return list(self.sections), dict(self.postings)
 
     def index_embeddings(self, batch_size=24):

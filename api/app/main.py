@@ -5,6 +5,7 @@
 - 세션 토큰은 HttpOnly 쿠키로만 전달하고, DB에는 토큰의 SHA-256만 저장한다.
 - 이름·연락처·학번 전체는 받지 않는다(아이디는 가명).
 """
+import gzip
 import hashlib
 import json
 import os
@@ -17,11 +18,13 @@ from typing import Any, Literal
 
 from argon2 import PasswordHasher
 from argon2.exceptions import InvalidHashError, VerificationError
-from fastapi import Cookie, Depends, FastAPI, HTTPException, Response
+from threading import Lock
+
+from fastapi import Cookie, Depends, FastAPI, HTTPException, Request, Response
 from pydantic import BaseModel, Field
 from sqlalchemy import JSON, BigInteger, ForeignKey, String, create_engine, delete, func, inspect, select, text
 from sqlalchemy.orm import DeclarativeBase, Mapped, Session, mapped_column, sessionmaker
-from .career_db import CareerSessionLocal, Posting, migrate_legacy_postings
+from .career_db import CareerSessionLocal, Posting, migrate_legacy_postings, postings_version
 
 # 기본값: api/dev.db (실행 위치와 무관하게 같은 파일)
 DATABASE_URL = os.environ.get("DATABASE_URL") or f"sqlite:///{(Path(__file__).resolve().parent.parent / 'dev.db').as_posix()}"
@@ -143,10 +146,30 @@ def health():
     return {"ok": True}
 
 
+# 공고 목록은 수천 건(압축 전 10MB 안팎)이라 요청마다 다시 읽고 직렬화하지 않는다.
+# 공고 표가 바뀔 때만 다시 만들고, 브라우저가 이미 가진 목록이면 304로 답한다.
+_OPPORTUNITIES = {"version": None, "at": 0.0, "etag": "", "raw": b"[]", "gzip": b""}
+_OPPORTUNITIES_LOCK = Lock()
+OPPORTUNITIES_TTL = 300  # checked_at을 안 바꾸는 수정이 있더라도 5분 안에는 반영된다
+
+
 @app.get("/api/opportunities")
-def opportunities(db: Session = Depends(get_career_db)):
-    rows = db.scalars(select(Posting).where(Posting.data.is_not(None))).all()
-    return [r.data for r in rows if r.data]
+def opportunities(request: Request, db: Session = Depends(get_career_db)):
+    version = postings_version(db)
+    with _OPPORTUNITIES_LOCK:
+        cache = _OPPORTUNITIES
+        if cache["version"] != version or time.time() - cache["at"] > OPPORTUNITIES_TTL:
+            rows = db.scalars(select(Posting.data).where(Posting.data.is_not(None))).all()
+            raw = json.dumps([row for row in rows if row], ensure_ascii=False, separators=(",", ":")).encode("utf-8")
+            cache.update(version=version, at=time.time(), raw=raw, gzip=gzip.compress(raw, 6),
+                         etag='"' + hashlib.sha256(raw).hexdigest()[:32] + '"')
+        etag, raw, packed = cache["etag"], cache["raw"], cache["gzip"]
+    headers = {"ETag": etag, "Cache-Control": "no-cache", "Vary": "Accept-Encoding"}
+    if etag in (request.headers.get("if-none-match") or ""):
+        return Response(status_code=304, headers=headers)
+    if "gzip" in (request.headers.get("accept-encoding") or ""):
+        return Response(packed, media_type="application/json", headers={**headers, "Content-Encoding": "gzip"})
+    return Response(raw, media_type="application/json", headers=headers)
 
 
 @app.post("/api/auth/signup")

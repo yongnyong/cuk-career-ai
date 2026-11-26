@@ -14,6 +14,7 @@ import re
 import secrets
 import time
 from collections import OrderedDict, deque
+from pathlib import Path
 from threading import Lock
 from types import SimpleNamespace
 
@@ -64,7 +65,15 @@ def make_assistant(Base, SessionLocal, career_session, Posting, User, session_us
     data = ServiceCareerData(career_session, Posting, profile_of)
     from ..career.embeddings import configured_embeddings
     from ..career.opportunity_search import OpportunitySearch
-    data.search = OpportunitySearch(career_session, data.public_postings, configured_embeddings())
+
+    def postings_seen():
+        from ..career_db import postings_version
+        from ..startup_db import DEFAULT_DB
+        with career_session() as db:
+            startup = Path(DEFAULT_DB)
+            return postings_version(db), startup.stat().st_mtime_ns if startup.is_file() else 0
+
+    data.search = OpportunitySearch(career_session, data.public_postings, configured_embeddings(), postings_seen)
     store = RoutingStore(accounts, demo_store)
     service = AssistantService(data, store, model or default_model())
 
