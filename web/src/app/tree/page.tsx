@@ -13,14 +13,15 @@ import { COMPACT_DIAMETER, Legend, NodeBox, StatusWindow } from "@/components/qu
 import { AiNotice, DDay, TypeTag, VirtualTag } from "@/components/ui";
 import { useStore } from "@/lib/store";
 import { countsTowardTrack, dday, type TreeNode } from "@/lib/engine";
-import type { RecommendedQuest, TreeSignal, TreeDomain } from "@/lib/types";
+import type { RecommendedQuest, TreeSignal } from "@/lib/types";
 import { formatScore, jobById, meetsTarget, scaleOf, skillById } from "@/lib/data/catalog";
 import { AskNodeButton, useAssistantNode } from "@/components/Assistant";
+import { StepsRoadmap } from "@/components/StepsRoadmap";
 import { SkillWave } from "@/components/SkillWave";
 import { questProgress } from "@/lib/quest";
 import { questOutcome, recommendedTitle } from "@/lib/questOutcome";
 import { careerInterestOf } from "@/lib/interest";
-import { layoutProgression, progressionStage, routeFor } from "@/lib/treeProgression";
+import { EMPLOYMENT_SECTIONS, STARTUP_SECTIONS, employmentSection, startupSection, layoutEmployment, layoutProgression, progressionStage, unifiedTree } from "@/lib/treeProgression";
 import { GrowthReplayButton } from "@/components/GrowthReplay";
 import { MyNodeForm } from "@/components/MyNodeForm";
 import { nodeIdeas, removeNode } from "@/lib/customTree";
@@ -263,20 +264,20 @@ function TreeView() {
   const now = s.nowDate;
   const { tree: allTree, recommendedQuest, treeProgress } = s.careerPath!;
   const mode = careerInterestOf(p);
-  const [selectedDomain, setDomain] = useState<TreeDomain>("specialist");
-  const domain = mode === "startup" && !allTree.some(n => n.route?.domain === "specialist") ? "common" : selectedDomain;
-  const tree = useMemo(() => allTree.filter(n => routeFor(n).domain === domain), [allTree, domain]);
+  const tree = useMemo(() => unifiedTree(allTree, mode, recommendedQuest?.skillId), [allTree, mode, recommendedQuest?.skillId]);
+  const questNodes = tree.filter(node => !node.groupChildren).sort((a, b) => mode === "employment" ? EMPLOYMENT_SECTIONS.indexOf(employmentSection(a)) - EMPLOYMENT_SECTIONS.indexOf(employmentSection(b)) || (a.credentialPriority?.rank ?? 2) - (b.credentialPriority?.rank ?? 2) || a.depth - b.depth : STARTUP_SECTIONS.indexOf(startupSection(a)) - STARTUP_SECTIONS.indexOf(startupSection(b)) || a.depth - b.depth);
   const openNode = (id: string) => {
-    const node = allTree.find(n => n.skill === id);
-    if (node) setDomain(routeFor(node).domain);
     setSel(id);
     requestAnimationFrame(() => requestAnimationFrame(() => { void flow.current?.fitView({ nodes: [{ id }], maxZoom: 1, duration: 300, padding: 0.5 }); }));
   };
-  const readyCount = tree.filter((node) => node.state === "none" && !node.locked
+  const readyCount = tree.filter((node) => !node.groupChildren && node.state === "none" && !node.locked
     && (!node.credentialEligibility || node.credentialEligibility.status === "ready")).length;
   const recs = s.recommendations;
   const [sel, setSel] = useState<string | null>(null);
-  const selNode = allTree.find((n) => n.skill === sel);
+  const selNode = tree.find((n) => n.skill === sel);
+  const completedPortfolioProjects = (selNode?.portfolioSources ?? [])
+    .map(id => tree.find(node => node.skill === id))
+    .filter((node): node is TreeNode => !!node && node.state !== "none");
   const outcome = selNode && questOutcome(selNode);
   // 비서 카탈로그에는 직무 기본 노드만 있다. 공고·활동에서 더해진 노드는 이름만 넘긴다
   const askNode = selNode ? { name: selNode.name, ...(selNode.skill.startsWith("SUP-") ? { startupNodeId: selNode.skill } : {}), ...(jobById(p.jobId)?.nodes.some((n) => n.skill === selNode.skill) ? { skillId: selNode.skill } : {}) } : null;
@@ -295,21 +296,17 @@ function TreeView() {
     if (canvas.current) observer.observe(canvas.current);
     return () => observer.disconnect();
   }, []);
-  const layout = useMemo(() => layoutProgression(tree, columns), [tree, columns]);
+  const layout = useMemo(() => mode === "employment" ? layoutEmployment(tree) : layoutProgression(tree, columns), [tree, columns, mode]);
   const [view, setView] = useState<"wave" | "radial" | "steps">("wave");
   // 자세히 보기로 들어간 노드들. 마지막이 지금 가운데에 있는 노드
   const [focusPath, setFocusPath] = useState<string[]>([]);
   const trail = useMemo(() => focusPath.filter((id) => tree.some((n) => n.skill === id)), [focusPath, tree]);
   const focus = trail.length ? trail[trail.length - 1] : undefined;
   const weights = useMemo(() => nodeWeights(tree), [tree]);
-  const radial = useMemo(() => layoutRadial(tree), [tree]);
+  const radial = useMemo(() => layoutRadial(tree, mode), [tree, mode]);
   const focusLayout = useMemo(() => focus ? layoutFocus(tree, focus, s.opportunities, now, p.jobId) : null, [tree, focus, s.opportunities, now, p.jobId]);
   const centered = view === "radial" || !!focusLayout;
   const openFocus = (skill: string) => { setFocusPath((path) => [...path.filter((id) => id !== skill), skill]); setSel(skill); };
-  const focusStage = (depth: number) => {
-    const band = layout.bands.find(b => b.depth === depth);
-    if (band) void flow.current?.fitView({ nodes: band.skills.slice(0, columns * 2).map(id => ({ id })), padding: 0.3, maxZoom: 1, duration: 300 });
-  };
   // 증빙 파일 목록(이 브라우저에만 저장)
   const [proofs, setProofs] = useState<Record<string, ProofMeta>>({});
   const loadProofs = useCallback(() => {
@@ -351,24 +348,26 @@ function TreeView() {
     } else if (view === "radial") {
       const edge = radial.outer + 80;
       nodes.unshift({ id: "rings", type: "rings", position: { x: 0, y: 0 }, selectable: false, zIndex: -1, data: {
-        rings: radial.rings.map(({ r, stage }) => ({ rx: r * RADIAL_RX, ry: r * RADIAL_RY, label: progressionStage(stage, mode).title })), sectors: radial.sectors, width: 2 * edge * RADIAL_RX, height: 2 * edge * RADIAL_RY } });
+        rings: radial.rings.map(({ r }) => ({ rx: r * RADIAL_RX, ry: r * RADIAL_RY })), sectors: radial.sectors, width: 2 * edge * RADIAL_RX, height: 2 * edge * RADIAL_RY } });
       nodes.push({ id: "hub", type: "hub", position: { x: 0, y: 0 }, selectable: false, data: { title: jobById(p.jobId)?.name ?? "목표 직무", detail: mode === "startup" ? "창업 준비" : "목표 직무" } });
       nodes.push(...radial.sectors.map((sector) => {
         const angle = (sector.start + sector.end) / 2;
         return { id: `sector-${sector.kind}`, type: "sector", position: { x: Math.cos(angle) * (radial.outer + 100) * RADIAL_RX, y: Math.sin(angle) * (radial.outer + 100) * RADIAL_RY }, selectable: false, data: { kind: sector.kind, count: sector.count } };
       }));
     } else {
-      nodes.push(...layout.bands.map(band => ({ id: `stage-${band.depth}`, type: "stage", position: { x: 0, y: band.y }, selectable: false, data: { ...progressionStage(band.depth, mode), width: band.width, count: band.skills.length } })));
+      nodes.push(...layout.bands.map(band => ({ id: `stage-${band.depth}`, type: "stage", position: { x: "x" in band ? band.x as number : 0, y: band.y }, selectable: false, data: { ...(mode === "employment" && "title" in band ? { title: band.title, detail: "목표에 맞는 항목을 선택해 준비하세요." } : progressionStage(band.depth, mode)), width: band.width, count: band.skills.length } })));
     }
     const edges: Edge[] = shown.flatMap((n) =>
       [...n.prereq.map((q) => ({ id: `${q}-${n.skill}`, source: q, target: n.skill, animated: n.state === "none" && !n.locked, style: { stroke: n.locked ? "#4a5078" : "#7c6cff", strokeWidth: 2 } })),
-       ...(n.sequence ?? []).map((q) => ({ id: `startup-${q}-${n.skill}`, source: q, target: n.skill, style: { stroke: '#7c6cff', strokeWidth: 1.5, strokeDasharray: '5 4' } }))],
+       ...(n.portfolioSources ?? []).map(q => ({ id: `portfolio-${q}-${n.skill}`, source: q, target: n.skill, label: "작업물 선택", style: { stroke: "#2fd39a", strokeWidth: 1.5, strokeDasharray: "3 4" } })),
+       ...(n.groupParent ? [{ id: `group-${n.skill}`, source: n.groupParent, target: n.skill, label: "선택 시험", style: { stroke: "#46a6ff", strokeWidth: 1.5 } }] : []),
+       ...(n.sequence ?? []).filter(q => !n.prereq.includes(q)).map((q) => ({ id: `startup-${q}-${n.skill}`, source: q, target: n.skill, style: { stroke: '#7c6cff', strokeWidth: 1.5, strokeDasharray: '5 4' } }))],
     );
     const visible = new Set(shown.map((n) => n.skill));
     const kept: Edge[] = edges.filter((edge) => visible.has(edge.source) && visible.has(edge.target));
     if (view === "radial" && !focusLayout) {
       // 선수가 없는 노드는 가운데 목표 직무에서 뻗어 나간다
-      kept.push(...shown.filter((n) => ![...n.prereq, ...(n.sequence ?? [])].some((q) => visible.has(q)))
+      kept.push(...shown.filter((n) => ![...n.prereq, ...(n.sequence ?? []), ...(n.groupParent ? [n.groupParent] : []), ...(n.portfolioSources ?? [])].some((q) => visible.has(q)))
         .map((n) => ({ id: `hub-${n.skill}`, source: "hub", target: n.skill, style: { stroke: "#46a6ff", strokeWidth: 1, strokeDasharray: "2 6" } })));
     }
     if (focusLayout) {
@@ -405,10 +404,10 @@ function TreeView() {
       {mode === "startup" && <StartupApplication key={`${p.pseudoId}-${s.startupPlan?.application?.project_id ?? s.startupPlan?.idea ?? "new"}`} />}
 
       <div className="grid gap-4 lg:grid-cols-[1fr_340px]">
-        <div className={`relative flex ${view !== "steps" || focusLayout ? "h-[760px]" : "h-[620px]"} min-w-0 flex-col overflow-hidden rounded-lg border-2 border-edge bg-panel`}>
+        <div className={`relative flex ${view !== "steps" || focusLayout ? "h-[760px]" : "h-auto"} min-w-0 flex-col overflow-hidden rounded-lg border-2 border-edge bg-panel`}>
           <div className="flex flex-wrap items-center justify-between gap-2 border-b border-line px-3 py-2">
             <Legend />
-            <span className="flex items-center gap-2 text-xs text-ink/60">전체 {tree.length}개 · 지금 도전 {readyCount}개 <GrowthReplayButton className="btn-ghost !px-2 !py-1 text-xs" /></span>
+            <span className="flex items-center gap-2 text-xs text-ink/60">전체 {questNodes.length}개 · 지금 도전 {readyCount}개 <GrowthReplayButton className="btn-ghost !px-2 !py-1 text-xs" /></span>
           </div>
           <div className="space-y-2 border-b border-line px-3 py-2">
             {focusLayout ? <>
@@ -431,20 +430,26 @@ function TreeView() {
                   <button className={`flex items-center gap-1 px-2 py-1 ${view === "steps" ? "bg-go text-white" : ""}`} aria-pressed={view === "steps"} onClick={() => setView("steps")}><Rows3 size={12} /> 단계별</button>
                 </div>
                 <p className="text-xs text-ink/70">
-                  {view === "wave" ? "12시 1학년부터 시계방향으로 졸업까지 · 막대 길이는 중요도" : view === "radial" ? "가운데에서 바깥으로 기초 → 심화 · 방향은 분류" : "위에서 아래로 기초 → 심화 · 수행 권장 순서"}
-                  {mode === "startup" && " · 점선은 권장 흐름"} · <span className="text-gold">큰 노드(★ 핵심)부터 찍으면 돼요</span>
+                  {view === "wave" ? mode === "startup" ? "시계방향으로 공통 역량부터 출시·지원까지 · 막대 길이는 중요도" : "12시 1학년부터 시계방향으로 졸업까지 · 막대 길이는 중요도" : view === "radial" ? "가운데에서 바깥으로 기초 → 심화 · 방향은 분류" : mode === "startup" ? "준비 단계별로 필요한 항목을 선택하세요." : "분야별로 준비할 항목을 선택하고, 완성한 작업물을 포트폴리오로 모아요."}
+                  {view !== "steps" && <>{mode === "startup" && " · 점선은 권장 흐름"} · <span className="text-gold">큰 노드(★ 핵심)부터 찍으면 돼요</span></>}
                 </p>
               </div>
-              {view === "steps" && <div className="flex flex-wrap gap-1" aria-label="준비 단계 이동">
-                {layout.bands.map((band, index) => <button key={band.depth} className="btn-ghost !px-2 !py-1 text-xs" onClick={() => focusStage(band.depth)}>{index + 1}. {progressionStage(band.depth, mode).title}</button>)}
-              </div>}
             </>}
           </div>
+          {view === "steps" && !focusLayout && <div className="flex flex-wrap gap-2 border-b border-line px-4 py-3">
+            <button className="btn-ghost !py-1 text-xs" onClick={() => { setSel(null); setEditing({}); }}><Plus size={12} /> 내 노드 추가</button>
+            <Link href="/print" className="btn-ghost !py-1 text-xs"><Printer size={12} /> 완료 내역·증빙 인쇄</Link>
+          </div>}
+          {view === "steps" && !focusLayout && editing && !editing.parent && !editing.node && <div className="border-b border-line p-4">
+            <MyNodeForm tree={tree} mine={myNodes} ideas={ideas} onSave={saveEdited} onCancel={() => setEditing(null)} />
+          </div>}
           <div ref={canvas} className="min-h-0 flex-1">
-            {tree.length === 0 ? <p className="p-5 text-sm text-ink/70">이 직무에 연결된 자격이나 작업물 퀘스트를 준비 중이에요.</p> : view === "wave" && !focusLayout ? <SkillWave
+            {tree.length === 0 ? <p className="p-5 text-sm text-ink/70">이 직무에 연결된 자격이나 작업물 퀘스트를 준비 중이에요.</p> : view === "steps" && !focusLayout ? <StepsRoadmap tree={tree} mode={mode} selected={sel} recommended={questSkill} onPick={setSel} /> : view === "wave" && !focusLayout ? <SkillWave
+              key={mode}
               tree={tree}
               weights={weights}
-              current={currentSemester(p.grade, now)}
+              current={mode === "startup" ? 0 : currentSemester(p.grade, now)}
+              mode={mode}
               title={jobById(p.jobId)?.name ?? "목표 직무"}
               subtitle={mode === "startup" ? "창업 준비" : "목표 직무"}
               recommended={questSkill}
@@ -470,19 +475,40 @@ function TreeView() {
             </ReactFlow>}
           </div>
 
+          {selNode?.groupChildren && (
+            <div className={`window ${view === "steps" && !focusLayout ? "fixed bottom-20 right-4 z-40 max-w-[calc(100vw-2rem)]" : "absolute bottom-3 right-3 z-10"} w-72 p-4`}>
+              <button className="absolute right-2 top-2" onClick={() => setSel(null)} aria-label="닫기"><X size={16} /></button>
+              <h3 className="font-bold">어학</h3>
+              <p className="mt-2 text-xs">목표 직무와 공고에 맞는 시험을 선택해 성적을 기록하세요.</p>
+              <ul className="mt-3 space-y-2">{selNode.groupChildren.map(id => {
+                const exam = tree.find(node => node.skill === id)!;
+                return <li key={id}><button className="text-sm text-go underline" onClick={() => openNode(id)}>{exam.name}{exam.score ? ` · ${formatScore(id, exam.score)}` : exam.state !== "none" ? " · 완료" : ""}</button></li>;
+              })}</ul>
+            </div>
+          )}
           {selNode && outcome && (
-            <div key={selNode.skill} className="window absolute bottom-3 right-3 z-10 max-h-[70%] w-72 overflow-y-auto p-4">
+            <div key={selNode.skill} className={`window ${view === "steps" && !focusLayout ? "fixed bottom-20 right-4 z-40 max-w-[calc(100vw-2rem)]" : "absolute bottom-3 right-3 z-10"} max-h-[70vh] w-80 overflow-y-auto p-4`}>
               <button className="absolute right-2 top-2 text-slate-400" onClick={() => setSel(null)} aria-label="닫기">
                 <X size={16} />
               </button>
               <p className="pr-4 text-xs text-slate-500">{selNode.name} · {outcome.label}</p>
               <h3 className="font-bold">{outcome.title}</h3>
+              {selNode.credentialPriority && <p className="mt-2 text-xs text-go">{selNode.credentialPriority.label} · {selNode.credentialPriority.reason}</p>}
               <p className="mt-2 text-xs"><strong>완료 기준</strong> {outcome.completion}</p>
               {focus !== selNode.skill && (
                 <button className="btn-ghost mt-2 w-full !py-1 text-xs" onClick={() => openFocus(selNode.skill)}>
                   <ZoomIn size={12} /> 자세히 보기 · 다음 노드와 유리한 곳
                 </button>
               )}
+              {selNode.portfolioSources && <div className="mt-3 space-y-1 text-xs">
+                <p className="font-bold">포함할 프로젝트 선택</p>
+                {completedPortfolioProjects.length > 0 ? <>
+                  <p>완료한 작업 중 대표 사례를 골라 하나로 정리하세요.</p>
+                  <ul className="space-y-2 pt-1">{completedPortfolioProjects.map(node => <li key={node.skill}>
+                    <button className="text-left text-go underline" onClick={() => openNode(node.skill)}>{node.name} · 완료</button>
+                  </li>)}</ul>
+                </> : <p className="text-ink/60">아직 완료한 프로젝트가 없어요. 프로젝트를 완료하면 여기에 표시돼요.</p>}
+              </div>}
               {selNode.mine?.note && <p className="mt-2 rounded bg-paper px-2 py-1 text-xs">메모 · {selNode.mine.note}</p>}
               {editing && (editing.parent === selNode.skill || editing.node?.id === selNode.skill) ? (
                 <MyNodeForm tree={tree} mine={myNodes} ideas={ideas} parent={editing.parent} initial={editing.node} onSave={saveEdited} onCancel={() => setEditing(null)} />
@@ -507,10 +533,7 @@ function TreeView() {
               {selNode.commonExamOption && !countsTowardTrack(selNode) && <p className="mt-2 text-xs text-ink/70">목표에 맞으면 선택하세요. 취득 결과를 기록하면 추가 경험치를 받아요.</p>}
               {selNode.credentialOption && !selectedRoutes?.some(s => s.preparation?.action === selNode.credentialOption?.reason) &&
                 <p className="mt-2 text-xs"><strong>직무와의 연결</strong> {selNode.credentialOption.reason}</p>}
-              <p className="mt-1 text-xs text-go">{progressionStage(selNode.depth, mode, mode === "employment" ? routeFor(selNode).domain : undefined).title}</p>
-              {[...selNode.prereq, ...selNode.sequence ?? []].some(id => allTree.some(n => n.skill === id && routeFor(n).domain !== domain)) &&
-                <div className="mt-2 space-y-1 text-xs"><p>다른 트리에서 이어지는 준비</p>{[...new Set([...selNode.prereq, ...selNode.sequence ?? []])].map(id => allTree.find(n => n.skill === id)).filter(n => n && routeFor(n).domain !== domain).map(n => n &&
-                  <button key={n.skill} className="block text-go underline" onClick={() => openNode(n.skill)}>{routeFor(n).domain === "common" ? "공통 역량" : "전공·직무 전문"} · {n.name} · {n.state === "none" ? "준비 전" : "완료"}</button>)}</div>}
+              <p className="mt-1 text-xs text-go">{mode === "employment" ? employmentSection(selNode) : startupSection(selNode)}</p>
               {selNode.route?.reason && <p className="mt-2 text-xs text-ink/70">{selNode.route.reason}</p>}
               {!!selNode.sequence?.length && <p className="mt-2 text-xs text-ink/70">먼저 준비하면 좋은 과제: {selNode.sequence.map(id => allTree.find(n => n.skill === id)?.name).join(", ")} · 지원 자격과는 별개인 권장 순서예요.</p>}
               {selNode.startup && <StartupDetail node={selNode} recommended={!!selectedQuest} />}
@@ -578,10 +601,10 @@ function TreeView() {
           )}
         </div>
 
-        <section className="card p-4 lg:col-start-1">
+        {(view !== "steps" || focusLayout) && <section className="card p-4 lg:col-start-1">
           <div className="flex flex-wrap items-center justify-between gap-2">
             <h2 className="font-bold">
-              노드 체크리스트 <span className="text-sm font-normal text-ink/60">완료 {tree.filter((n) => n.state !== "none").length} / {tree.length}</span>
+              퀘스트 목록 <span className="text-sm font-normal text-ink/60">완료 {tree.filter((n) => !n.groupChildren && n.state !== "none").length} / {tree.filter(n => !n.groupChildren).length}</span>
             </h2>
             <div className="flex flex-wrap gap-2">
               <button className="btn-primary !py-1 text-xs" onClick={() => setEditing({})}>
@@ -599,16 +622,17 @@ function TreeView() {
             </div>
           )}
           <ul className="mt-2 divide-y divide-line">
-            {tree.map((n, index) => {
+            {questNodes.map((n, index) => {
               const done = n.state !== "none";
               return (
                 <li key={n.skill} className="flex flex-wrap items-center gap-2 py-2 text-sm">
-                  {(index === 0 || tree[index - 1].depth !== n.depth) && <p className="w-full py-2 font-bold text-go">{progressionStage(n.depth, mode, domain).title}</p>}
+                  {(index === 0 || (mode === "employment" ? employmentSection(questNodes[index - 1]) !== employmentSection(n) : startupSection(questNodes[index - 1]) !== startupSection(n))) && <p className="w-full py-2 font-bold text-go">{mode === "employment" ? employmentSection(n) : startupSection(n)}</p>}
                   <span className={`grid size-6 shrink-0 place-items-center rounded ${done ? "bg-ok text-white" : "border border-line"}`}>
                     {done && <Check size={14} />}
                   </span>
                   <button className="min-w-0 flex-1 text-left hover:underline" onClick={() => openNode(n.skill)}>
                     <span className="font-semibold">{done && !proofs[n.skill] ? n.name : questOutcome(n)?.title ?? n.name}</span>
+                    {n.credentialPriority && <span className="ml-2 text-xs font-bold text-go">{n.credentialPriority.label}</span>}
                     <span className="ml-1.5 text-xs text-ink/60">
                       {n.kind}
                       {n.required && " · 트랙 기본"}
@@ -636,7 +660,7 @@ function TreeView() {
             })}
           </ul>
           <p className="mt-2 text-xs text-ink/60">노드를 누르면 완료 기준을 확인하고 작업물이나 취득 증빙을 붙일 수 있어요.</p>
-        </section>
+        </section>}
 
         <aside className="space-y-4 lg:col-start-2 lg:row-span-2 lg:row-start-1">
           <div className="card p-4">
@@ -671,7 +695,7 @@ function TreeView() {
 
           <div>
             <div className="mb-2 flex items-baseline justify-between">
-              <h2 className="font-bold">이번 주 기회 카드</h2>
+              <h2 className="font-bold">{mode === "startup" ? "추천 창업 공고" : "추천 채용 공고"}</h2>
               <Link href="/opportunities" className="text-xs underline">
                 전체 보기
               </Link>

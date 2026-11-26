@@ -355,7 +355,7 @@ class GeminiModel:
                 "generationConfig": {
                     "responseMimeType": "application/json",
                     "responseSchema": schema,
-                    "maxOutputTokens": 2048,
+                    "maxOutputTokens": 8192 if _STAGE.get() == "startup_nodes" else 2048,
                     "temperature": 0.2,
                 },
             }

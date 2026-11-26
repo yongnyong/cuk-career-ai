@@ -67,9 +67,9 @@ test('common work can start early and optional exams gain priority only with rol
   const baseline = buildCareerPath(profile, [], now, []);
   const common = baseline.tree.filter(n => n.route?.domain === 'common');
   assert(common.some(n => n.depth === 0 && !n.locked && questOutcome(n)?.completion));
-  assert(common.find(n => n.skill === 'SK-RESUME').sequence.includes('CW-EVIDENCE'));
+  assert.deepEqual(common.find(n => n.skill === 'SK-RESUME').sequence, []);
   const exams = common.filter(n => n.commonExamOption);
-  assert.equal(exams.length, 4);
+  assert.equal(exams.length, 7);
   assert(exams.every(n => !countsTowardTrack(n) && questOutcome(n).label === '공통 선택 시험'));
   const held = buildCareerPath({ ...profile, skills: { ...profile.skills, 'SK-COMP': 'verified' } }, [], now, []);
   assert.equal(held.treeProgress.pct, baseline.treeProgress.pct);

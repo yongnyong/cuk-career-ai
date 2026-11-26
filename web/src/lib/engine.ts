@@ -9,11 +9,13 @@ import { preparationSignals, replacedPreparationSignal } from "./preparationRout
 import { careerInterestOf } from "./interest";
 import { buildStartupPath } from "./startup";
 import { assignProgression } from "./treeProgression";
+import { AI_PROJECTS } from "./data/aiProjects";
+import { PSYCHOLOGY_PROJECTS } from "./data/psychologyProjects";
 import { COMMON_WORK, COMMON_EXAMS } from "./data/skillRoutes";
 import { questOutcome } from "./questOutcome";
 import { discoveredSignals, discoveredSkillById } from "./discoveredSkills";
 import { employmentRelevance, matchesEmploymentRole } from "./employmentMatch";
-import { credentialsForJob, type CareerCredential } from "./data/careerCredentials";
+import { credentialPriority, credentialsForJob, type CareerCredential } from "./data/careerCredentials";
 import { assessCredential, type CredentialEligibility } from "./credentialEligibility";
 import { CAMPUS_NODES } from "./data/campusNodes";
 import type { StartupCatalog, StartupNode, StartupPlan } from "./types";
@@ -224,10 +226,16 @@ export function preparationReferences(opps: Opportunity[], p: Profile, now: Date
 // ───────── 스킬트리
 export interface TreeNode {
   personalCompletion?: string;
+  startupSection?: string;
   personalReason?: string;
   commonExamOption?: boolean;
   route?: import("./types").SkillRoute;
   startup?: StartupNode;
+  curated?: boolean;
+  credentialPriority?: ReturnType<typeof credentialPriority>;
+  portfolioSources?: string[];
+  groupParent?: string;
+  groupChildren?: string[];
   connections?: string[];
   sequence?: string[];
   skill: string;
@@ -271,10 +279,21 @@ export function buildTree(p: Profile, opps: Opportunity[], now: Date, extraSkill
   const job = jobById(p.jobId);
   if (!job) return [];
   const definitions = new Map(job.nodes.map((node) => [node.skill, node]));
-  const trackSkills = new Set(definitions.keys());
+  const psychology = job.id.startsWith("psy-");
+  const ai = ["ai-research", "ai-engineer", "ai-data"].includes(job.id);
+  const projects = psychology ? PSYCHOLOGY_PROJECTS : ai ? AI_PROJECTS : [];
   const options = new Map(credentialsForJob(job.id).map(c => [c.id, c]));
-  for (const id of options.keys()) {
-    if (!definitions.has(id)) definitions.set(id, { skill: id, required: false });
+  const trackSkills = new Set(job.nodes.map(node => node.skill));
+  for (const [id, option] of options) {
+    if (ai || psychology) definitions.set(id, { skill: id, required: false, prereq: [], route: { domain: "specialist", stage: option.stage } });
+    else if (!definitions.has(id)) definitions.set(id, { skill: id, required: false });
+  }
+  if (projects.length) {
+    for (const project of projects) definitions.set(project.id, {
+      skill: project.id, required: false, route: { domain: "specialist", stage: 2 },
+    });
+    definitions.set("SK-PORT", { skill: "SK-PORT", required: false, prereq: [], route: { domain: "specialist", stage: 4 } });
+    definitions.set("SK-RESUME", { skill: "SK-RESUME", required: false, prereq: [], route: { domain: "common", stage: 0 } });
   }
   const practices = new Map<string, Practice>();
   for (const practice of PRACTICE) {
@@ -297,9 +316,11 @@ export function buildTree(p: Profile, opps: Opportunity[], now: Date, extraSkill
     const linked = available.filter((o) => o.preferred.includes(n.skill) || o.required.some((c) => c.skill === n.skill));
     return {
       skill: n.skill,
+      curated: (ai || psychology) && (options.has(n.skill) || projects.some(project => project.id === n.skill) || ["SK-PORT", ...COMMON_WORK, ...COMMON_EXAMS].includes(n.skill)),
+      credentialPriority: credentialPriority(n.skill, job.id),
       commonExamOption: COMMON_EXAMS.has(n.skill) && !trackSkills.has(n.skill),
       route: n.route ?? (discovery ? { domain: discovery.domain, stage: sk.kind === "자격증" ? 1 : 2 } : undefined),
-      name: plan?.discovery && sk.kind === "프로젝트" ? plan.action : sk.name,
+      name: projects.find(project => project.id === n.skill)?.name ?? options.get(n.skill)?.name ?? (plan?.discovery && sk.kind === "프로젝트" ? plan.action : sk.name),
       kind: sk.kind,
       credentialEligibility: assessCredential(n.skill, p),
       required: n.required,
@@ -313,7 +334,7 @@ export function buildTree(p: Profile, opps: Opportunity[], now: Date, extraSkill
       target: n.target,
       score: p.scores?.[n.skill],
       practice: practices.get(n.skill),
-      credentialOption: trackSkills.has(n.skill) ? undefined : options.get(n.skill),
+      credentialOption: options.get(n.skill),
     };
   };
   const tree = Array.from(definitions.values(), make);
@@ -353,7 +374,15 @@ export function buildTree(p: Profile, opps: Opportunity[], now: Date, extraSkill
     node.prereq = visibleParents(node.prereq);
     node.locked = node.prereq.some(id => (p.skills[id] ?? "none") === "none");
   }
-  return assignProgression(quests, "employment");
+  const ordered = assignProgression(quests, "employment");
+  if (projects.length) {
+    const sources = ordered.filter(node => projects.some(project => project.id === node.skill));
+    const portfolio = ordered.find(node => node.skill === "SK-PORT")!;
+    portfolio.name = psychology ? "심리학 포트폴리오 완성" : "AI 포트폴리오 완성";
+    portfolio.portfolioSources = sources.map(node => node.skill);
+    portfolio.depth = Math.max(portfolio.depth, ...sources.map(node => node.depth + 1));
+  }
+  return ordered.sort((a, b) => a.depth - b.depth);
 }
 
 export function progress(p: Profile, nodes = jobById(p.jobId)?.nodes ?? [], electives: readonly { skill: string }[] = []) {
@@ -472,7 +501,8 @@ export function buildCareerPath(p: Profile, opps: Opportunity[], now: Date, snap
     signals.get(node.skill)?.some((signal) => signal.minimum && recordedScoreCheck(p, node.skill, signal.minimum) === false)
   )).map((node) => node.skill));
   // Optional issuer-backed paths never displace a core quest or dilute track progress.
-  const core = tree.filter(countsTowardTrack);
+  const curated = tree.some(node => node.curated);
+  const core = tree.filter(node => (!curated || node.curated) && countsTowardTrack(node));
   const coreIds = new Set(core.map(n => n.skill));
   return { tree, recommendedQuest: selectRecommendedQuest(core, signals, focus, belowTarget),
     treeProgress: progress(p, core, tree.filter(n => !coreIds.has(n.skill))) };

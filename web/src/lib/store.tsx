@@ -8,6 +8,7 @@ import { SEED_OPPORTUNITIES } from "./data/opportunities";
 import { applyOverrides, jobById, registerStartupSkills, type CatalogOverrides } from "./data/catalog";
 import startupData from "./data/startupCatalog.json";
 import { PERSONAS, restoreDemoProfile } from "./data/personas";
+import startupDemo from "./data/startupDemo.json";
 import { startupSkills } from "./startup";
 import { careerInterestOf } from "./interest";
 import { opportunityQuery, retrievedRecommendations } from "./opportunitySearch";
@@ -179,7 +180,8 @@ export function StoreProvider({ children }: { children: React.ReactNode }) {
   const [isAdmin, setIsAdmin] = useState(false); // 서버가 알려준 관리자 여부(저장하지 않는다)
   const [startupPlanError, setStartupPlanError] = useState("");
   const [ownedPlan, setOwnedPlan] = useState<{ owner: string | null; plan: StartupPlan | null; revision: number }>({ owner: null, plan: null, revision: 0 });
-  const startupPlan = ownedPlan.owner === state.session ? ownedPlan.plan : null;
+  const startupPlan = (ownedPlan.owner === state.session ? ownedPlan.plan : null)
+    ?? (state.session === "demo-seojun" ? startupDemo as StartupPlan : null);
   const [startupApplicationStale, setStartupApplicationStale] = useState<Record<string, boolean>>({});
   const refreshStartupPlan = useCallback(async () => {
     const r = await call("/assistant/startup-plan", "GET", undefined, state.session);
@@ -420,9 +422,9 @@ export function StoreProvider({ children }: { children: React.ReactNode }) {
   }, [ready, signalKey, signalRequest]);
   const careerPath = useMemo(() => {
     if (!profile) return null;
-    const path = buildCareerPath(profile, visible, new Date(asOf), snapshot?.key === signalKey ? snapshot.signals : [], startupCatalog);
+    const path = buildCareerPath(profile, visible, new Date(asOf), snapshot?.key === signalKey ? snapshot.signals : [], startupCatalog, startupPlan ?? undefined);
     return { ...path, tree: withMyNodes(path.tree, profile.myNodes?.[profile.jobId]) };
-  }, [profile, signalKey, visible, asOf, snapshot, startupCatalog]);
+  }, [profile, signalKey, visible, asOf, snapshot, startupCatalog, startupPlan]);
   const recommendation = careerPath?.recommendedQuest;
   const questRequestKey = recommendation && profile
     ? JSON.stringify([signalKey, profile.weeklyHours, recommendation])

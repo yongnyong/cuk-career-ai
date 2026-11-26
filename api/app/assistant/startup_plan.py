@@ -45,10 +45,13 @@ class PlanNode(BaseModel):
     goal_id: str = ""
     output: str = ""
     stage: int = 2
+    section: str = ""
     evidence: list[PlanEvidence] = Field(default_factory=list)
 
 
 class StartupPlan(BaseModel):
+    generation_fingerprint: str = ""
+    generation_status: str = "not_requested"
     idea: str = ""
     customer: str = ""
     artifacts: str = ""
@@ -81,7 +84,36 @@ def _clean(text: str) -> str:
     return redact(text).strip()[:240]
 
 
-def update_plan(plan: StartupPlan, fields: dict[str, str], *, new_project: bool = False) -> StartupPlan:
+def update_plan(plan: StartupPlan, fields: dict[str, str], *, new_project: bool = False, model=None) -> StartupPlan:
+    from .startup_generation import fingerprint, generate_nodes
+    result = _rule_plan(plan, fields, new_project=new_project)
+    current = fingerprint(result)
+    cached = current == plan.generation_fingerprint and plan.generation_status in {"generated", "fixture"}
+    if cached:
+        # Completion changes and repeated form submissions must not regenerate the tree.
+        generated = [n.model_copy(deep=True) for n in plan.nodes if n.action.startswith("generated:")]
+    elif model is not None and result.idea:
+        candidate = result.model_copy(deep=True)
+        candidate.nodes = plan.nodes
+        generated = generate_nodes(candidate, model)
+        result.generation_status = "generated" if generated else "fallback"
+    else:
+        generated = None
+        result.generation_status = "fallback" if result.idea else "not_requested"
+    if generated:
+        ids = {n.id for n in generated}
+        # Keep grounded submission/application tasks alongside optional model suggestions.
+        grounded = [n for n in result.nodes if n.active and (n.evidence or n.action.startswith("application_") or n.action == "verify_documents")]
+        history = [n.model_copy(update={"active": False}, deep=True) for n in plan.nodes if n.completed and n.id not in ids and n.id not in {g.id for g in grounded}]
+        result.nodes = generated + grounded + history
+        result.generation_fingerprint = current
+        result.generation_status = plan.generation_status if cached else "generated"
+    else:
+        result.generation_fingerprint = ""
+    return result
+
+
+def _rule_plan(plan: StartupPlan, fields: dict[str, str], *, new_project: bool = False) -> StartupPlan:
     """Recompute from merged facts. Arrival order never determines the chosen task."""
     result = plan.model_copy(deep=True)
     previous_goal = plan.goal
@@ -338,7 +370,7 @@ def chat_plan(service, user_id, request):
     else:
         new_project = bool(re.search(r"(?:아이디어|아이템).*(?:바꿔|변경|교체)", request.message)
                            and fields.get("idea") != plan.idea and fields.get("idea"))
-        plan = update_plan(plan, fields, new_project=new_project)
+        plan = update_plan(plan, fields, new_project=new_project, model=service.model)
         plan.turns += 1
         active = next((node for node in plan.nodes if node.active and not node.completed), None)
         missing = next((question for key, question in (
@@ -347,6 +379,8 @@ def chat_plan(service, user_id, request):
             *(([("artifacts", "지금 준비된 결과물이 있나요? 기획만 있는 단계라면 그렇게 알려 주세요.")] if intake else [])),
             ("goal", "다음으로 무엇을 해보거나 확인하고 싶어요? 아직 정하지 못했다면 그렇게 알려 주세요."))
             if not getattr(plan, key)), "")
+        if intake and plan.idea and plan.generation_status == "generated":
+            missing = ""
         answer = missing if intake and missing else f"추천 퀘스트는 ‘{active.title}’예요.\n{active.completion}" if active else missing or "완료한 결과물을 활용해 다음 목표를 알려 주세요."
         if intake and fields:
             labels = {'idea': '서비스 설명', 'customer': '주요 사용자', 'artifacts': '준비한 결과물', 'goal': '다음 목표'}

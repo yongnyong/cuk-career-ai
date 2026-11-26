@@ -45,6 +45,7 @@ export function NodeBox({ node, isNew, now, proof, recommended, weight, compact 
           {opps.length > 0 && <span className="absolute -right-1 -top-1 grid size-4 place-items-center rounded-full bg-gold text-on-gold"><KeyRound size={9} /></span>}
         </span>
         <span className={`mt-1 line-clamp-2 leading-tight ${weight === 3 ? "text-[13px] font-bold text-gold" : weight === 1 ? "text-[11px] text-ink/75" : "text-xs font-semibold"}`}>{title}</span>
+        {node.credentialPriority && <span className="text-[10px] text-go">{node.credentialPriority.label}</span>}
         {recommended && <span className="text-[10px] font-bold leading-none text-go">추천 퀘스트</span>}
       </div>
     );
@@ -63,6 +64,7 @@ export function NodeBox({ node, isNew, now, proof, recommended, weight, compact 
             <span className="block text-[11px] text-go">{node.credentialEligibility.label}</span>}
           <span className="block text-[11px] opacity-70">
             {node.state === "none" ? st.label : node.score ? `완료 · ${formatScore(node.skill, node.score)}` : node.state === "verified" ? "완료 · 검증됨" : "완료 · 자기 보고"}
+            {node.credentialPriority && ` · ${node.credentialPriority.label}`}
             {node.required ? " · 트랙 기본" : ""}
             {node.mine ? " · 내 노드" : ""}
             {source && ` · ${source}`}

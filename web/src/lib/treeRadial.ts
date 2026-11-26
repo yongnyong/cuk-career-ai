@@ -1,6 +1,7 @@
 import { isOpen, type TreeNode } from "./engine";
 import type { Opportunity } from "./types";
 import { JOBS, jobById } from "./data/catalog";
+import { employmentSection, startupSection, type TreeMode } from "./treeProgression";
 
 export type WeightTier = 1 | 2 | 3;
 type Point = { x: number; y: number };
@@ -8,12 +9,12 @@ type Point = { x: number; y: number };
 // 추천 퀘스트(selectRecommendedQuest)와 같은 근거 순위: 공고 필수 > 우대 > 학습 활동 > 학과 자료
 const BASIS_WEIGHT = { required: 6, preferred: 5, activity: 2, school: 1 } as const;
 
-const parentsOf = (node: TreeNode) => [...node.prereq, ...(node.sequence ?? [])];
+const parentsOf = (node: TreeNode) => [...node.prereq, ...(node.sequence ?? []), ...(node.groupParent ? [node.groupParent] : []), ...(node.portfolioSources ?? [])];
 
 /** 노드 중요도. 트랙 필수, 공고 근거, 열린 공고 수, 이 노드를 선수로 쓰는 노드 수만 쓴다. 근거 없는 난이도는 넣지 않는다. */
 export function nodeWeights(tree: TreeNode[]): Map<string, { score: number; tier: WeightTier }> {
   const dependents = new Map<string, number>();
-  for (const node of tree) if (!node.mine) for (const parent of parentsOf(node)) dependents.set(parent, (dependents.get(parent) ?? 0) + 1);
+  for (const node of tree) if (!node.mine) for (const parent of [...node.prereq, ...(node.sequence ?? [])]) dependents.set(parent, (dependents.get(parent) ?? 0) + 1);
   const scores = tree.filter((node) => !node.mine).map((node) => {
     const refs = new Map<string, number>();
     for (const signal of node.evidence ?? []) {
@@ -21,7 +22,7 @@ export function nodeWeights(tree: TreeNode[]): Map<string, { score: number; tier
     }
     const evidence = Math.min([...refs.values()].reduce((sum, value) => sum + value, 0), 12);
     const opportunities = new Set(node.opportunities.filter((o) => !o.isVirtual).map((o) => o.id)).size;
-    const score = (node.required ? 6 : 0) + evidence + 2 * Math.min(opportunities, 3) + 2 * Math.min(dependents.get(node.skill) ?? 0, 3);
+    const score = node.groupChildren ? 0 : (node.required ? 6 : 0) + evidence + 2 * Math.min(opportunities, 3) + 2 * Math.min(dependents.get(node.skill) ?? 0, 3);
     return [node.skill, score] as const;
   });
   const ranked = scores.map(([, score]) => score).filter((score) => score > 0).sort((a, b) => b - a);
@@ -71,13 +72,14 @@ function spread(targets: number[], sep: number): number[] {
 }
 
 /** 가운데 목표 직무, 고리 = 준비 단계(안쪽이 먼저), 방향 = 노드 분류 */
-export function layoutRadial(tree: TreeNode[]): RadialLayout {
+export function layoutRadial(tree: TreeNode[], mode: TreeMode = "employment"): RadialLayout {
   const positions = new Map<string, Point>();
   const angles = new Map<string, number>();
-  const kinds = [...new Set(tree.map((node) => node.kind))].sort((a, b) => kindRank(a) - kindRank(b));
+  const category = (node: TreeNode) => mode === "employment" ? employmentSection(node) : startupSection(node);
+  const kinds = [...new Set(tree.map(category))].sort((a, b) => a === "공통 역량" ? -1 : b === "공통 역량" ? 1 : kindRank(a) - kindRank(b));
   let cursor = -Math.PI / 2;
   const sectors = kinds.map((kind) => {
-    const count = tree.filter((node) => node.kind === kind).length;
+    const count = tree.filter((node) => category(node) === kind).length;
     const start = cursor;
     cursor += (2 * Math.PI * count) / Math.max(tree.length, 1);
     return { kind, start, end: cursor, count };
@@ -91,7 +93,7 @@ export function layoutRadial(tree: TreeNode[]): RadialLayout {
         const known = parentsOf(node).flatMap((id) => angles.has(id) ? [angles.get(id)!] : []);
         return known.length ? known.reduce((sum, angle) => sum + angle, 0) / known.length : (sector.start + sector.end) / 2;
       };
-      const nodes = ring.filter((node) => node.kind === sector.kind).sort((a, b) => center(a) - center(b) || a.depth - b.depth);
+      const nodes = ring.filter((node) => category(node) === sector.kind).sort((a, b) => center(a) - center(b) || a.depth - b.depth);
       return nodes.map((node, index) => ({ node, target: sector.start + ((sector.end - sector.start) * (index + 0.5)) / nodes.length }));
     }).sort((a, b) => a.target - b.target);
     // 간격은 호가 아니라 현(직선 거리)으로 잰다. 작은 고리에서는 호 길이가 같아도 실제 거리가 더 짧다

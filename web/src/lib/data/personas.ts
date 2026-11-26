@@ -37,11 +37,11 @@ export const PERSONAS: { id: string; label: string; desc: string; profile: Profi
   {
     id: "demo-seojun",
     label: "서준",
-    desc: "경영학과 4학년 · 창업 준비",
+    desc: "경영학과 4학년 · 대학생 취업·창업 AI 서비스",
     profile: {
       ...base, careerInterest: "startup", pseudoId: "demo-seojun", admissionYear: 2023, departmentId: "business", grade: 4, jobId: "founder",
       weeklyHours: 10, startup: { stage: "pre" },
-      skills: { "SU-PREP-item": "self", "SU-PREP-team-capability": "self" },
+      skills: {},
     },
   },
 ];

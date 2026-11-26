@@ -6,6 +6,8 @@ import { DEPT_JOBS_2, DEPT_SKILLS_2 } from "./deptTracks2";
 import { PRACTICE } from "./practice";
 import { POSTING_PROJECTS } from "./postingProjects";
 import { CAMPUS_NODES } from "./campusNodes";
+import { AI_PROJECTS } from "./aiProjects";
+import { PSYCHOLOGY_PROJECTS } from "./psychologyProjects";
 import { CAREER_CREDENTIALS } from "./careerCredentials";
 
 const s = (id: string, name: string, kind: Skill["kind"], verifiable = false, officialUrl?: string): Skill => ({
@@ -20,6 +22,8 @@ const QNET = "https://www.q-net.or.kr/";
 const DATAQ = "https://www.dataq.or.kr/";
 
 export const SKILLS: Skill[] = [
+  ...PSYCHOLOGY_PROJECTS.filter(project => !("reuseExisting" in project)).map(project => s(project.id, project.name, "프로젝트")),
+  ...AI_PROJECTS.map(project => s(project.id, project.name, "프로젝트")),
   ...DEPT_SKILLS,
   ...DEPT_SKILLS_2,
   ...CAREER_CREDENTIALS.filter(c => !c.reuseExisting).map(({ id, name, officialUrl }) => s(id, name, "자격증", true, officialUrl)),
@@ -42,7 +46,7 @@ export const SKILLS: Skill[] = [
   s("SK-DELF", "DELF", "어학", true),
   s("SK-COMP", "컴퓨터활용능력", "자격증", true, "https://license.korcham.net/"),
   s("SK-PORT", "포트폴리오 정리", "프로젝트"),
-  s("SK-RESUME", "이력서·자기소개서", "역량"),
+  s("SK-RESUME", "자기소개서 작성", "역량"),
   s("SK-PPT", "기획서·발표", "역량"),
   s("SK-INTERN", "인턴·현장실습 참여", "경험"),
   s("SK-INTERVIEW", "취업 면접 준비", "역량"),
@@ -147,7 +151,10 @@ export const SKILLS: Skill[] = [
   s("NUR-HOSPITAL", "목표 병원 정하기", "역량"),
   s("NUR-APPLY", "병원 지원서·면접 준비", "프로젝트"),
   s("NUR-EXAM", "간호사 국가시험(면허)", "자격증", true),
-];
+].map(skill => {
+  const credential = CAREER_CREDENTIALS.find(item => item.reuseExisting && item.id === skill.id);
+  return credential ? { ...skill, name: credential.name, officialUrl: credential.officialUrl } : skill;
+});
 
 export const JOBS: Job[] = [
   ...DEPT_JOBS,

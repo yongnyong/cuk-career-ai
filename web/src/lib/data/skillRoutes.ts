@@ -1,29 +1,21 @@
 import type { SkillRoute } from "../types";
 
 // Shared employment work that students can start before choosing a specific posting.
-export const COMMON_WORK = [
-  "CW-EVIDENCE", "CW-BUDGET", "SK-PPT", "CW-JOB-INTERVIEW", "SK-RESUME", "SK-PORT",
-];
-export const COMMON_EXAMS = new Set(["SK-COMP", "SK-TOEIC", "SK-OPIC", "SK-TOEIC-SPEAKING"]);
-
-// Service-authored preparation paths, distinct from employer requirements.
-export const COMMON_SKILLS = new Set([
-  "SK-TOEIC", "SK-TOEIC-SPEAKING", "SK-OPIC", "SK-JLPT", "SK-HSK", "SK-DELF",
-  "SK-COMP", "SK-PORT", "SK-RESUME", "SK-PPT", "SK-PRESENTATION-SAMPLE",
-  "SK-PROPOSAL", "SK-WRITING-SAMPLE", "SK-BRIEF", "SK-SPREADSHEET",
-  "PR-TEAM-HANDOFF", "PR-SHARED-DOCS", "PR-NOTION", "PR-STAKEHOLDER", "PR-FOREIGN-CALL", "PR-EN-READING", "PR-WORD-TEMPLATE",
-]);
+export const COMMON_WORK = ["SK-RESUME"];
+export const LANGUAGE_EXAMS = ["SK-TOEIC", "SK-TOEIC-SPEAKING", "SK-OPIC", "SK-JLPT", "SK-HSK", "SK-DELF"];
+export const COMMON_EXAMS = new Set(["SK-COMP", ...LANGUAGE_EXAMS]);
+export const COMMON_SKILLS = new Set(["SK-RESUME", "SK-COMP", "COMMON-LANGUAGE", ...LANGUAGE_EXAMS]);
 
 const stage = (value: number, recommendedBefore?: string[], reason?: string): SkillRoute =>
   ({ domain: "specialist", stage: value, recommendedBefore, reason });
 
 export const SKILL_ROUTES: Record<string, SkillRoute> = {
-  "CW-EVIDENCE": { domain: "common", stage: 0 },
-  "CW-BUDGET": { domain: "common", stage: 1 },
-  "SK-PPT": { domain: "common", stage: 2, recommendedBefore: ["CW-BUDGET"], reason: "예산표에서 비교한 비용과 대안을 발표 자료에 활용할 수 있어요." },
-  "SK-RESUME": { domain: "common", stage: 3, recommendedBefore: ["CW-EVIDENCE"], reason: "경험별 증빙에서 지원할 직무에 맞는 성과를 골라 이력서에 옮겨요." },
-  "CW-JOB-INTERVIEW": { domain: "common", stage: 4, recommendedBefore: ["SK-RESUME"], reason: "이력서에 적은 경험을 바탕으로 지원 직무의 면접 질문에 답해요." },
-  "SK-PORT": { domain: "common", stage: 4, recommendedBefore: ["CW-EVIDENCE", "SK-PPT", "AI-CAP", "PR-AGENT-EVAL", "PR-PSY-PROGRAM"], reason: "증빙과 발표 자료에서 대표 사례를 고르고 전문 작업물을 함께 연결해요." },
+  "CW-EVIDENCE": { domain: "specialist", stage: 0 },
+  "CW-BUDGET": { domain: "specialist", stage: 1 },
+  "SK-PPT": { domain: "specialist", stage: 2, recommendedBefore: ["CW-BUDGET"], reason: "예산표에서 비교한 비용과 대안을 발표 자료에 활용할 수 있어요." },
+  "SK-RESUME": { domain: "common", stage: 0 },
+  "CW-JOB-INTERVIEW": { domain: "specialist", stage: 4, recommendedBefore: ["SK-RESUME"], reason: "이력서에 적은 경험을 바탕으로 지원 직무의 면접 질문에 답해요." },
+  "SK-PORT": { domain: "specialist", stage: 4, recommendedBefore: ["CW-EVIDENCE", "SK-PPT", "AI-CAP", "PR-AGENT-EVAL", "PR-PSY-PROGRAM"], reason: "증빙과 발표 자료에서 대표 사례를 고르고 전문 작업물을 함께 연결해요." },
   "SK-PY-01": stage(0), "SK-SQL": stage(0),
   "AI-ML": stage(1), "AI-NLP": stage(2), "AI-CV": stage(2), "AI-SPEECH": stage(2),
   "AI-CAP": stage(3), "AI-FIELD": stage(4), "SK-SCI-PAPER": stage(4),

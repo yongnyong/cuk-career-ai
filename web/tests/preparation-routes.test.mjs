@@ -40,7 +40,7 @@ test("career electives are track-specific, optional and retain the issuer and ea
     assert.notEqual(result.recommendedQuest?.skillId, credential.id);
   }
   assert(!path("mtc-vfx").tree.some(n => n.skill === "CERT-ACP-PREMIERE"));
-  assert(!path("ai-research").tree.some(n => n.skill === "CERT-AWS-ML"));
+  assert(path("ai-research").tree.some(n => n.skill === "CERT-AWS-ML"));
   const completed = path("mtc-video", { "CERT-ACP-PREMIERE": "verified" });
   assert.equal(completed.tree.find(n => n.skill === "CERT-ACP-PREMIERE").state, "verified");
   assert.equal(completed.treeProgress.bonusExp, 100);

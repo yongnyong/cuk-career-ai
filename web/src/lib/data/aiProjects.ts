@@ -1,0 +1,28 @@
+// Service-authored portfolio projects. Students select relevant work.
+export const AI_PROJECTS = [
+  { id: "AI-PROJECT-DATA", name: "공개 데이터 분석 보고서 완성",
+    completion: "공개 데이터의 출처, 분석 코드, 시각화와 결론·한계를 포함한 보고서를 남기세요." },
+  { id: "AI-PROJECT-DASHBOARD", name: "데이터 대시보드 배포",
+    completion: "필터에 따라 지표와 그래프가 바뀌는 대시보드, 실행 방법과 접속 링크를 남기세요." },
+  { id: "AI-PROJECT-MODELS", name: "예측 모델 비교 프로젝트 완성",
+    completion: "같은 평가 데이터로 기준 모델과 개선 모델을 비교하고 데이터 분할, 성능 지표와 오류 분석을 남기세요." },
+  { id: "AI-PROJECT-VISION", name: "이미지 분류·객체 탐지 서비스 구현",
+    completion: "데이터 출처, 학습 코드, 평가 결과와 실행 가능한 이미지 분류 또는 객체 탐지 데모를 남기세요." },
+  { id: "AI-PROJECT-NLP", name: "문서 분류·정보 추출 모델 구현",
+    completion: "평가 데이터, 모델 코드, 문서 분류 또는 정보 추출 결과와 성능·오류 분석을 남기세요." },
+  { id: "AI-PROJECT-RAG", name: "문서 기반 RAG 서비스 구현",
+    completion: "답변에 근거 출처를 제시하는 서비스, 문서·검색 설정과 검색 및 답변 평가 결과를 남기세요." },
+  { id: "AI-PROJECT-AGENT", name: "도구를 사용하는 AI 에이전트 구현",
+    completion: "도구 호출로 작업을 완료하는 실행 가능한 데모, 도구 명세와 시나리오별 성공률·실패 분석을 남기세요." },
+  { id: "AI-PROJECT-RECOMMEND", name: "개인화 추천 서비스 구현",
+    completion: "추천 로직과 실행 가능한 데모, 기준 방식과 비교한 평가 및 추천 이유를 남기세요." },
+  { id: "AI-PROJECT-PAPER", name: "논문 재현 프로젝트 완성",
+    completion: "논문 출처, 재현 코드, 실험 설정과 원 논문 결과와의 비교·한계를 남기세요." },
+  { id: "AI-PROJECT-OPTIMIZE", name: "모델 경량화·추론 최적화 프로젝트 완성",
+    completion: "동일한 평가 환경에서 최적화 전후 정확도, 응답 속도와 메모리 사용량을 비교한 코드·보고서를 남기세요." },
+  { id: "AI-PROJECT-PIPELINE", name: "데이터 수집·처리 파이프라인 구축",
+    completion: "데이터 출처와 이용 조건, 반복 실행 가능한 수집·정제 코드, 오류 처리와 품질 검사 결과를 남기세요." },
+  { id: "AI-PROJECT-MLOPS", name: "모델 배포·모니터링 시스템 구축",
+    completion: "예측 API, 배포 설정과 실행 방법, 성능 및 오류 모니터링 화면을 남기세요." },
+];
+export const aiProjectById = new Map(AI_PROJECTS.map(project => [project.id, project]));

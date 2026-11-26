@@ -1,44 +1,101 @@
 import type { TreeNode } from "./engine";
-import { COMMON_SKILLS, SKILL_ROUTES } from "./data/skillRoutes";
+import { COMMON_SKILLS, SKILL_ROUTES, LANGUAGE_EXAMS } from "./data/skillRoutes";
 import type { SkillRoute } from "./types";
 
 export type TreeMode = "employment" | "startup";
 
-const startupStages = [
-  { title: "문제·팀 정리", detail: "아이템과 해결할 문제, 팀의 역할을 구체화해요.", skills: ["problem", "item", "team-capability", "regional-value", "SU-DOC-team-introduction"] },
-  { title: "시장·가설 검증", detail: "고객과 경쟁 대안을 조사하고 사업모델을 점검해요.", skills: ["market", "business-model", "customer-validation", "differentiation", "social-impact", "target-customer"] },
-  { title: "개발·실행 설계", detail: "개발 방법, 일정과 필요한 자금을 계획해요.", skills: ["feasibility", "execution", "schedule", "funding", "budget", "cost-breakdown"] },
-  { title: "시제품·실증", detail: "제품을 구현하고 확인 가능한 결과물을 준비해요.", skills: ["SU-DOC-prototype", "item-images"] },
-  { title: "사업화·제출자료", detail: "사업화 전략과 지원할 공고의 제출자료를 완성해요.", skills: ["market-entry", "SU-DOC-business-plan", "SU-DOC-pitch-deck", "SU-DOC-portfolio"] },
-];
+export const EMPLOYMENT_SECTIONS = ["공통 역량", "직무 자격증", "프로젝트·포트폴리오"];
+export const STARTUP_SECTIONS = ["공통 준비", "고객·시장 검증", "아이템 구체화", "사업화 준비"];
 
-// Service-authored preparation order. These edges do not impose application eligibility.
+export function startupSection(node: TreeNode) {
+  if (node.startupSection && STARTUP_SECTIONS.includes(node.startupSection)) return node.startupSection;
+  if (node.route?.domain === "common") return STARTUP_SECTIONS[0];
+  const key = node.skill.replace("SU-PREP-", "");
+  if (["problem", "item", "business-model", "team-capability", "SU-DOC-team-introduction"].includes(key)) return STARTUP_SECTIONS[0];
+  if (["market", "customer-validation", "differentiation", "social-impact", "target-customer"].includes(key)) return STARTUP_SECTIONS[1];
+  if (["feasibility", "execution", "schedule", "SU-DOC-prototype", "item-images"].includes(key)) return STARTUP_SECTIONS[2];
+  return STARTUP_SECTIONS[3];
+}
+
+export function employmentSection(node: TreeNode) {
+  if (routeFor(node).domain === "common") return EMPLOYMENT_SECTIONS[0];
+  return node.kind === "자격증" ? EMPLOYMENT_SECTIONS[1] : EMPLOYMENT_SECTIONS[2];
+}
+
+export function layoutEmployment(tree: TreeNode[]) {
+  const positions = new Map<string, { x: number; y: number }>();
+  const levels = [...new Set(tree.map(node => node.depth))].sort((a, b) => a - b);
+  const width = 432;
+  let y = 100;
+  for (const depth of levels) {
+    let rows = 1;
+    EMPLOYMENT_SECTIONS.forEach((title, section) => {
+      const group = tree.filter(node => node.depth === depth && employmentSection(node) === title)
+        .sort((a, b) => (a.credentialPriority?.rank ?? 2) - (b.credentialPriority?.rank ?? 2));
+      rows = Math.max(rows, Math.ceil(group.length / 2));
+      group.forEach((node, index) => positions.set(node.skill, {
+        x: section * (width + 80) + (index % 2) * 226,
+        y: y + Math.floor(index / 2) * 210,
+      }));
+    });
+    y += rows * 210 + 90;
+  }
+  const bands = EMPLOYMENT_SECTIONS.map((title, section) => ({
+    depth: -section - 1, x: section * (width + 80), y: 0, width, title,
+    skills: tree.filter(node => employmentSection(node) === title).map(node => node.skill),
+  }));
+  return { positions, bands };
+}
+
+// Keep the shared foundation small. Evidence-backed, completed and personal work
+// stays visible, together with every prerequisite of the retained nodes.
+export function unifiedTree(nodes: TreeNode[], mode: TreeMode, recommended?: string): TreeNode[] {
+  const foundation = new Set(mode === "employment"
+    ? ["SK-RESUME", "SK-COMP", ...LANGUAGE_EXAMS]
+    : ["SU-PREP-problem", "SU-PREP-item", "SU-PREP-team-capability"]);
+  const byId = new Map(nodes.map(node => [node.skill, node]));
+  const personalPostings = new Set(nodes.filter(node => node.personalCompletion).flatMap(node => node.opportunities.map(opp => opp.id)));
+  const curated = mode === "employment" && nodes.some(node => node.curated);
+  const kept = new Set<string>();
+  function keep(id: string) {
+    if (kept.has(id)) return;
+    const node = byId.get(id);
+    if (!node) return;
+    kept.add(id);
+    [...node.prereq, ...(node.sequence ?? [])].forEach(keep);
+  }
+  for (const node of nodes) {
+    const relevant = mode === "employment"
+      ? routeFor(node).domain === "specialist" || (node.evidence ?? []).some(signal => signal.basis === "required" || signal.basis === "preferred")
+      : !!node.personalCompletion || node.opportunities.some(opp => personalPostings.has(opp.id));
+    if ((curated ? node.curated : foundation.has(node.skill) || relevant || node.required) || node.mine || node.state !== "none" || node.skill === recommended) keep(node.skill);
+  }
+  const visible = nodes.filter(node => kept.has(node.skill));
+  if (mode !== "employment") return visible;
+  const exams = visible.filter(node => LANGUAGE_EXAMS.includes(node.skill));
+  if (!exams.length) return visible;
+  const group: TreeNode = {
+    skill: "COMMON-LANGUAGE", name: "어학", kind: "분류", required: false,
+    prereq: [], depth: 0, state: "none", locked: false, opportunities: [],
+    route: { domain: "common", stage: 0 }, groupChildren: exams.map(node => node.skill),
+  };
+  return [group, ...visible.map(node => LANGUAGE_EXAMS.includes(node.skill)
+    ? { ...node, groupParent: group.skill, depth: Math.max(1, node.depth) } : node)]
+    .sort((a, b) => a.depth - b.depth);
+
+}
+
+// Only concrete result reuse establishes an optional ordering for legacy nodes.
+// General business topics can proceed in parallel.
 const startupSequence: Record<string, string[]> = {
-  market: ["problem"],
-  "business-model": ["problem", "item"],
-  "customer-validation": ["problem"],
-  differentiation: ["item"],
-  "social-impact": ["problem"],
-  feasibility: ["market"],
-  execution: ["business-model", "team-capability"],
-  schedule: ["business-model"],
-  funding: ["business-model"],
-  budget: ["business-model"],
-  "cost-breakdown": ["business-model"],
-  "SU-DOC-prototype": ["feasibility", "schedule"],
-  "item-images": ["feasibility"],
-  "market-entry": ["customer-validation", "SU-DOC-prototype"],
-  "SU-DOC-business-plan": ["execution", "budget"],
-  "SU-DOC-pitch-deck": ["differentiation", "feasibility"],
+  "item-images": ["SU-DOC-prototype"],
   "SU-DOC-portfolio": ["SU-DOC-prototype"],
 };
 const startupId = (key: string) => key.startsWith("SU-") ? key : "SU-PREP-" + key;
 
 function initialDepth(node: TreeNode, mode: TreeMode) {
   if (mode === "startup") {
-    if (node.personalCompletion) return node.route?.stage ?? node.depth;
-    const index = startupStages.findIndex(stage => stage.skills.some(key => startupId(key) === node.skill));
-    return index < 0 ? 2 : index;
+    return 0; // Section is a category, never a minimum dependency depth.
   }
   return routeFor(node).stage;
 }
@@ -109,7 +166,7 @@ export function assignProgression(nodes: TreeNode[], mode: TreeMode): TreeNode[]
 }
 
 export function progressionStage(depth: number, mode: TreeMode, domain?: "common" | "specialist") {
-  if (mode === "startup") return startupStages[Math.min(depth, startupStages.length - 1)];
+  if (mode === "startup") return { title: depth === 0 ? "병행 가능한 준비" : `선행 작업 후 · ${depth}단계`, detail: "연결된 작업의 결과물을 활용해 다음 준비를 진행해요." };
   if (domain === "common") {
     const common = [
       { title: "공통 기본기", detail: "여러 직무에서 함께 사용하는 기본 역량을 준비해요." },
@@ -122,11 +179,11 @@ export function progressionStage(depth: number, mode: TreeMode, domain?: "common
   }
   if (depth > 4) return { title: `전문 심화 · 후속 ${depth - 4}`, detail: "앞선 실전·전문 과제를 마친 뒤 이어서 준비해요." };
   const stages = [
-    { title: "직무 이해·기초", detail: "직무를 살펴보고 기초 지식을 익혀요." },
-    { title: "전공·핵심 역량", detail: "목표 직무에 필요한 지식과 도구를 준비해요." },
-    { title: "응용·직무 실습", detail: "배운 내용을 작은 과제에 적용해요." },
-    { title: "프로젝트·심화", detail: "여러 역량을 활용해 깊이 있는 결과물을 만들어요." },
-    { title: "실전·전문 심화", detail: "실전 경험과 전문 과제, 지원용 작업물을 준비해요." },
+    { title: "공통 역량과 직무 기초", detail: "직무를 살펴보고 기초 지식을 익혀요." },
+    { title: "직무 핵심 역량", detail: "목표 직무에 필요한 지식과 도구를 준비해요." },
+    { title: "직무 실습과 결과물", detail: "배운 내용을 작은 과제에 적용해요." },
+    { title: "프로젝트와 지원 서류", detail: "여러 역량을 활용해 깊이 있는 결과물을 만들어요." },
+    { title: "포트폴리오와 실전 경험", detail: "실전 경험과 전문 과제, 지원용 작업물을 준비해요." },
   ];
   return stages[Math.min(depth, stages.length - 1)];
 }

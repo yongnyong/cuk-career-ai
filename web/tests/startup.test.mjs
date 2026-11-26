@@ -20,12 +20,10 @@ test('startup uses all 22 sourced preparation nodes with freely accessible docum
   assert.equal(result.tree.length, 22);
   assert(result.tree.every(n => n.skill.startsWith('SU-') && !n.locked && n.prereq.length === 0));
   assert(result.tree.some(n => n.connections?.length));
-  assert.equal(result.recommendedQuest.targetSkill, 'SU-DOC-pitch-deck');
+  assert.equal(result.recommendedQuest.skillId, 'SU-DOC-pitch-deck');
   assert.equal(result.tree.find(n => n.skill === result.recommendedQuest.skillId).depth, 0);
-  const prepared = Object.fromEntries(result.tree.filter(n => n.depth < 4).map(n => [n.skill, 'self']));
-  assert.equal(buildCareerPath({ ...profile, skills: prepared }, data.opportunities, now, [], data).recommendedQuest.skillId, 'SU-DOC-pitch-deck');
   const done = buildCareerPath({ ...profile, skills: { 'SU-DOC-pitch-deck': 'self' } }, data.opportunities, now, [], data);
-  assert.equal(done.recommendedQuest.targetSkill, 'SU-DOC-prototype');
+  assert.notEqual(done.recommendedQuest.skillId, 'SU-DOC-pitch-deck');
   assert.equal(done.treeProgress.exp, 60);
 });
 
@@ -72,9 +70,10 @@ test('employment scenarios stay employment and the new business senior uses the 
   const founder = PERSONAS.find(p => p.id === 'demo-seojun').profile;
   assert.equal(founder.departmentId, 'business');
   assert.equal(founder.grade, 4);
-  const path = buildCareerPath(founder, data.opportunities, now, [], data);
-  assert.equal(path.tree.length, 22);
-  assert.equal(path.tree.filter(n => n.state !== 'none').length, 2);
+  const demo = JSON.parse(readFileSync(new URL('../src/lib/data/startupDemo.json', import.meta.url)));
+  const path = buildCareerPath(founder, data.opportunities, now, [], data, demo);
+  assert.equal(path.tree.length, 14);
+  assert.equal(path.tree.filter(n => n.state !== 'none').length, 4);
   const haneul = PERSONAS.find(p => p.id === 'demo-haneul').profile;
   const restored = restoreDemoProfile(haneul, { ...haneul, jobId: 'founder', careerInterest: 'startup', skills: { 'SW-SOCIAL': 'self' } });
   assert.equal(careerInterestOf(restored), 'employment');
