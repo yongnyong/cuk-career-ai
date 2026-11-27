@@ -79,4 +79,13 @@ test('employment scenarios stay employment and the new business senior uses the 
   assert.equal(careerInterestOf(restored), 'employment');
   assert.equal(restored.jobId, 'sw-social');
   assert.equal(restored.skills['SW-SOCIAL'], 'self');
+  // 예전에 저장된 시연 프로필에도 시나리오에 새로 더한 완료 노드가 채워지고, 직접 취소한 노드는 그대로 둔다
+  const minji = PERSONAS.find(p => p.id === 'demo-minji').profile;
+  const old = restoreDemoProfile(minji, { ...minji, skills: { 'SK-PY-01': 'verified', 'AI-ML': 'none', 'SK-SQLD': 'self' } });
+  assert.deepEqual(old.skills, { ...minji.skills, 'AI-ML': 'none', 'SK-SQLD': 'self' });
+  assert(buildCareerPath(old, [], now, []).treeProgress.pct > 0);
+  assert.deepEqual(restoreDemoProfile(minji, { ...minji, jobId: 'data-analyst', skills: {} }).skills, {});
+  for (const id of ['demo-minji', 'demo-jiwoo']) {
+    assert(buildCareerPath(PERSONAS.find(p => p.id === id).profile, [], now, []).treeProgress.pct > 0, id);
+  }
 });
