@@ -9,6 +9,23 @@ const { questOutcome } = await import("../src/lib/questOutcome.ts");
 const { layoutTree } = await import("../src/lib/treeLayout.ts");
 const cat = JSON.parse(readFileSync(new URL("../src/lib/data/startupCatalog.json", import.meta.url)));
 const profile = PERSONAS.find(x => x.profile.careerInterest === "startup").profile;
+
+test("Seojun demo exposes fourteen personalized nodes and four completed implementations", () => {
+ const plan = JSON.parse(readFileSync(new URL("../src/lib/data/startupDemo.json", import.meta.url)));
+ const path = buildStartupPath(profile, cat.opportunities, new Date("2026-11-27"), cat, plan);
+ assert.equal(path.tree.length, 14);
+ assert.equal(path.tree.filter(n => n.state !== "none").length, 4);
+ assert.equal(path.tree.filter(n => n.route.domain === "common").length, 3);
+ assert.equal(new Set(path.tree.map(n => n.startupSection)).size, 4);
+ assert.equal(path.recommendedQuest.skillId, "SUP-DEMO-tree_test");
+ assert(new Set(path.tree.map(n => n.depth)).size >= 3);
+ const byId = new Map(path.tree.map(n => [n.skill, n]));
+ for (const node of path.tree) for (const parent of [...node.prereq, ...node.sequence]) {
+   assert(byId.get(parent).depth < node.depth);
+ }
+ assert.equal(byId.get('SUP-DEMO-tree_test').locked, false);
+ assert(byId.get('SUP-DEMO-slides').depth > byId.get('SUP-DEMO-application').depth);
+});
 test("personal work is recommended in its own domain and completed work survives a goal change", () => {
  const old = { id:"SUP-demo",title:"학원장 미팅용 시연본",completion:"가상 입력과 수정 화면 저장",reason:"고객 미팅",action:"demo",completed:true,active:false,reuse:[] };
  const next = { ...old,id:"SUP-next",title:"우리 팀이 지원할 창업 공고 선택",completed:false,active:true,reuse:[old.id] };
@@ -17,7 +34,7 @@ test("personal work is recommended in its own domain and completed work survives
  assert.equal(path.recommendedQuest.skillId,next.id);
  assert.equal(path.tree.find(n=>n.skill===old.id).state,"self");
  assert.equal(path.tree.find(n=>n.skill===next.id).route.domain,"specialist");
- assert.ok(path.tree.filter(n=>!n.skill.startsWith("SUP-")).every(n=>n.route.domain==="common"));
+ assert.ok(path.tree.filter(n=>n.route.domain==="common").every(n=>["SU-PREP-problem", "SU-PREP-item", "SU-PREP-team-capability"].includes(n.skill)));
  assert.equal(questOutcome(path.tree.find(n=>n.skill===old.id)).completion,old.completion);
  assert.equal(path.tree.filter(n=>n.skill===old.id).length,1);
 });

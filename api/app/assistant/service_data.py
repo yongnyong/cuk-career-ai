@@ -312,7 +312,20 @@ class MemoryAssistantStore(_DocumentMixin):
     def get_state(self, user_id: str) -> UserState:
         with self.lock:
             state = self.states.get(user_id)
-            return state.model_copy(deep=True) if state else UserState()
+            result = state.model_copy(deep=True) if state else UserState()
+            if result.startup_plan is None and user_id.startswith("demo:demo-seojun:"):
+                from .startup_demo import seojun_plan
+                result.startup_plan = seojun_plan()
+            elif user_id.startswith("demo:demo-seojun:") and result.startup_plan.generation_status == "fixture":
+                from .startup_demo import seojun_plan
+                template = seojun_plan()
+                if result.startup_plan.project_id == template.project_id:
+                    links = {n.id: n for n in template.nodes}
+                    for node in result.startup_plan.nodes:
+                        if node.id in links:
+                            node.reuse = list(links[node.id].reuse)
+                            node.requires = list(links[node.id].requires)
+            return result
 
     def _drop(self, user_id: str) -> None:
         self.states.pop(user_id, None)

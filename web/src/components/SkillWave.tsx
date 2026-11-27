@@ -1,29 +1,32 @@
 "use client";
 import { useMemo, useRef, useState, type KeyboardEvent, type PointerEvent } from "react";
+import { EMPLOYMENT_SECTIONS, STARTUP_SECTIONS, employmentSection, startupSection, type TreeMode } from "@/lib/treeProgression";
 import { Star } from "lucide-react";
 import type { TreeNode } from "@/lib/engine";
 import { nodeStatus } from "@/components/quest-ui";
 import { questOutcome } from "@/lib/questOutcome";
 import { assignSemesters, SEMESTERS, type WeightTier } from "@/lib/treeRadial";
 
+const STARTUP_LABELS = STARTUP_SECTIONS;
 const W = 1000;
 const H = 800;
 const CX = W / 2;
 const CY = H / 2;
 const R0 = 130; // 막대가 시작하는 안쪽 원
 const LENGTH: Record<WeightTier, number> = { 1: 48, 2: 84, 3: 132 }; // 막대 길이 = 중요도
-const SLOT = (2 * Math.PI) / SEMESTERS.length;
+
 const GAP = 0.1; // 학기 칸 사이 여백(rad)
 const COLOR = { done: "#2fd39a", go: "#46a6ff", check: "#e6bd52", lock: "#5f6690", late: "#ff8a5b" } as const;
 
-const slotAngle = (slot: number) => -Math.PI / 2 + slot * SLOT; // 12시에서 시작해 시계방향
+
 const deg = (rad: number) => (rad * 180) / Math.PI;
-const termLabel = (slot: number) => `${SEMESTERS[slot][0]}학년 ${SEMESTERS[slot][2]}학기`;
+
 
 type Bar = { node: TreeNode; slot: number; angle: number; length: number; width: number; tier: WeightTier };
 
 /** 원형 파형 스킬트리. 막대 하나가 노드, 길이가 중요도, 바늘이 보고 있는 학기다 */
-export function SkillWave({ tree, weights, current, title, subtitle, recommended, onPick }: {
+export function SkillWave({ tree, weights, current, title, subtitle, recommended, onPick, mode = "employment" }: {
+  mode?: TreeMode;
   tree: TreeNode[];
   weights: Map<string, { tier: WeightTier }>;
   current: number;
@@ -32,15 +35,19 @@ export function SkillWave({ tree, weights, current, title, subtitle, recommended
   recommended?: string;
   onPick: (skill: string) => void;
 }) {
+  const labels = mode === "startup" ? STARTUP_LABELS : SEMESTERS;
+  const SLOT = (2 * Math.PI) / labels.length;
+  const slotAngle = (slot: number) => -Math.PI / 2 + slot * SLOT;
+  const termLabel = (slot: number) => mode === "startup" ? labels[slot] : `${SEMESTERS[slot][0]}학년 ${SEMESTERS[slot][2]}학기`;
   const [needle, setNeedle] = useState(current);
   const [zoom, setZoom] = useState<{ skill: string; origin: string } | null>(null);
   const svg = useRef<SVGSVGElement>(null);
   const dragging = useRef(false);
 
   const bars = useMemo(() => {
-    const slots = assignSemesters(tree);
+    const slots = mode === "startup" ? new Map(tree.map(node => [node.skill, STARTUP_SECTIONS.indexOf(startupSection(node))])) : assignSemesters(tree);
     const result: Bar[] = [];
-    SEMESTERS.forEach((_, slot) => {
+    labels.forEach((_, slot) => {
       const nodes = tree.filter((n) => slots.get(n.skill) === slot)
         .sort((a, b) => (weights.get(b.skill)?.tier ?? 2) - (weights.get(a.skill)?.tier ?? 2));
       // 파형처럼 큰 막대를 칸 가운데에 두고 양옆으로 작아지게 놓는다
@@ -52,14 +59,14 @@ export function SkillWave({ tree, weights, current, title, subtitle, recommended
         const tier = weights.get(node.skill)?.tier ?? 2;
         result.push({
           node, slot, tier,
-          angle: slotAngle(slot) + GAP / 2 + step * (i + 0.5),
+          angle: -Math.PI / 2 + slot * SLOT + GAP / 2 + step * (i + 0.5),
           length: LENGTH[tier],
           width: Math.max(5, Math.min(13, R0 * step * 0.5)),
         });
       });
     });
     return result;
-  }, [tree, weights]);
+  }, [tree, weights, mode, SLOT, labels]);
   // 지난 학기 칸인데 아직 안 한 노드는 '밀린 노드'
   const colorOf = (bar: Bar) => {
     const status = nodeStatus(bar.node);
@@ -67,14 +74,14 @@ export function SkillWave({ tree, weights, current, title, subtitle, recommended
   };
 
   const inSlot = bars.filter((b) => b.slot === needle);
-  const done = tree.filter((n) => n.state !== "none").length;
+  const done = tree.filter((n) => !n.groupChildren && n.state !== "none").length;
 
   const angleToSlot = (e: PointerEvent<SVGSVGElement>) => {
     const box = svg.current!.getBoundingClientRect();
     const x = ((e.clientX - box.left) / box.width) * W - CX;
     const y = ((e.clientY - box.top) / box.height) * H - CY;
     const turned = (Math.atan2(y, x) + Math.PI / 2 + 2 * Math.PI) % (2 * Math.PI);
-    return Math.floor(turned / SLOT) % SEMESTERS.length;
+    return Math.floor(turned / SLOT) % labels.length;
   };
   const pick = (bar: Bar) => {
     if (zoom) return;
@@ -85,8 +92,8 @@ export function SkillWave({ tree, weights, current, title, subtitle, recommended
     window.setTimeout(() => { onPick(bar.node.skill); setZoom(null); }, 330);
   };
   const onKey = (e: KeyboardEvent) => {
-    if (e.key === "ArrowRight" || e.key === "ArrowDown") setNeedle((s) => (s + 1) % SEMESTERS.length);
-    if (e.key === "ArrowLeft" || e.key === "ArrowUp") setNeedle((s) => (s + SEMESTERS.length - 1) % SEMESTERS.length);
+    if (e.key === "ArrowRight" || e.key === "ArrowDown") setNeedle((s) => (s + 1) % labels.length);
+    if (e.key === "ArrowLeft" || e.key === "ArrowUp") setNeedle((s) => (s + labels.length - 1) % labels.length);
   };
 
   return (
@@ -97,9 +104,9 @@ export function SkillWave({ tree, weights, current, title, subtitle, recommended
           viewBox={`0 0 ${W} ${H}`}
           className="h-full w-full touch-none select-none outline-none"
           role="slider"
-          aria-label="볼 학기 선택"
+          aria-label={mode === "startup" ? "준비 단계 선택" : "볼 학기 선택"}
           aria-valuemin={0}
-          aria-valuemax={SEMESTERS.length - 1}
+          aria-valuemax={labels.length - 1}
           aria-valuenow={needle}
           aria-valuetext={termLabel(needle)}
           tabIndex={0}
@@ -116,7 +123,7 @@ export function SkillWave({ tree, weights, current, title, subtitle, recommended
           </defs>
           <circle cx={CX} cy={CY} r={R0 + 170} fill="url(#wave-glow)" />
           {/* 지난 학기 = 이미 녹음된 구간 */}
-          {SEMESTERS.map((label, slot) => {
+          {labels.map((label, slot) => {
             const a0 = slotAngle(slot) + GAP / 2, a1 = slotAngle(slot + 1) - GAP / 2;
             const r1 = R0 - 6, r2 = R0 + LENGTH[3] + 14;
             const p = (r: number, a: number) => `${CX + Math.cos(a) * r} ${CY + Math.sin(a) * r}`;
@@ -128,7 +135,7 @@ export function SkillWave({ tree, weights, current, title, subtitle, recommended
                   fill={slot === needle ? "rgb(70 166 255 / 0.10)" : past ? "rgb(47 211 154 / 0.06)" : "transparent"}
                   stroke={slot === needle ? "rgb(70 166 255 / 0.5)" : "#262b52"} />
                 <text x={CX + Math.cos(mid) * (r2 + 26)} y={CY + Math.sin(mid) * (r2 + 26)} textAnchor="middle" dominantBaseline="middle"
-                  className="cursor-pointer" fontSize={slot === needle ? 20 : 16} fontWeight={slot === needle ? 700 : 400}
+                  className="cursor-pointer" fontSize={mode === "startup" ? 13 : slot === needle ? 20 : 16} fontWeight={slot === needle ? 700 : 400}
                   fill={slot === needle ? "#46a6ff" : slot === current ? "#ecebff" : "#8d92bd"} onClick={() => setNeedle(slot)}>
                   {label}{slot === current ? " · 지금" : ""}
                 </text>
@@ -169,22 +176,24 @@ export function SkillWave({ tree, weights, current, title, subtitle, recommended
           <circle cx={CX} cy={CY} r={R0 - 14} fill="#07081a" stroke="#46a6ff" strokeWidth={2} />
           <text x={CX} y={CY - 30} textAnchor="middle" fontSize={15} fill="#46a6ff">{subtitle}</text>
           <text x={CX} y={CY + 2} textAnchor="middle" fontSize={title.length > 8 ? 20 : 24} fontWeight={700} fill="#ecebff">{title}</text>
-          <text x={CX} y={CY + 34} textAnchor="middle" fontSize={15} fill="#8d92bd">완료 {done} / {tree.length}</text>
+          <text x={CX} y={CY + 34} textAnchor="middle" fontSize={15} fill="#8d92bd">완료 {done} / {tree.filter(node => !node.groupChildren).length}</text>
         </svg>
       </div>
       {/* 바늘이 가리키는 학기의 노드 이름. 글씨는 여기서만 크게 읽는다 */}
       <div className="absolute left-3 top-3 w-56 rounded-md border border-line bg-panel/90 p-3 text-xs backdrop-blur">
         <p className="font-bold text-go">{termLabel(needle)}{needle === current && " · 지금"} <span className="font-normal text-ink/60">{inSlot.length}개</span></p>
-        <p className="mt-0.5 text-[11px] text-ink/60">{needle < current ? "지난 학기 권장 노드 · 주황은 밀린 노드(지금 해도 돼요)" : "이 시기에 권장하는 노드"} · 시기는 준비 단계 순서로 추정</p>
+        <p className="mt-0.5 text-[11px] text-ink/60">{mode === "startup" ? "제품과 팀 상황에 따라 필요한 퀘스트를 선택해요" : needle < current ? "지난 학기 권장 노드 · 주황은 밀린 노드(지금 해도 돼요)" : "이 시기에 권장하는 노드 · 시기는 준비 단계 순서로 추정"}</p>
         <ul className="mt-2 space-y-1">
-          {inSlot.length === 0 && <li className="text-ink/60">이 학기에 배치된 노드가 없어요</li>}
-          {[...inSlot].sort((a, b) => b.tier - a.tier).map((bar) => {
+          {inSlot.length === 0 && <li className="text-ink/60">이 구간에 배치된 퀘스트가 없어요</li>}
+          {[...inSlot].sort((a, b) => mode === "employment" ? EMPLOYMENT_SECTIONS.indexOf(employmentSection(a.node)) - EMPLOYMENT_SECTIONS.indexOf(employmentSection(b.node)) || (a.node.credentialPriority?.rank ?? 2) - (b.node.credentialPriority?.rank ?? 2) : b.tier - a.tier).map((bar) => {
             const status = colorOf(bar);
             return (
               <li key={bar.node.skill}>
                 <button className="flex w-full items-center gap-1.5 text-left hover:underline" onClick={() => pick(bar)}>
                   <span className="size-2.5 shrink-0 rounded-full" style={{ background: status === "lock" ? "transparent" : COLOR[status], border: `1.5px solid ${COLOR[status]}` }} />
+                  {mode === "employment" && <span className="shrink-0 text-[10px] text-ink/60">{employmentSection(bar.node)}</span>}
                   <span className={bar.tier === 3 ? "font-bold text-gold" : ""}>{bar.node.name}</span>
+                  {bar.node.credentialPriority && <span className="shrink-0 text-[10px] text-go">{bar.node.credentialPriority.label}</span>}
                   {bar.tier === 3 && <Star size={10} className="shrink-0 text-gold" fill="currentColor" />}
                   {bar.node.skill === recommended && <span className="shrink-0 text-[10px] font-bold text-go">추천</span>}
                   {status === "late" && <span className="shrink-0 text-[10px] font-bold" style={{ color: COLOR.late }}>밀림</span>}
@@ -194,7 +203,7 @@ export function SkillWave({ tree, weights, current, title, subtitle, recommended
           })}
         </ul>
       </div>
-      <p className="pointer-events-none absolute bottom-2 right-3 text-[11px] text-ink/60">바늘을 돌려 학기 선택 · 막대를 누르면 그 노드로 들어가요</p>
+      <p className="pointer-events-none absolute bottom-2 right-3 text-[11px] text-ink/60">바늘을 돌려 구간 선택 · 막대를 누르면 퀘스트를 볼 수 있어요</p>
     </div>
   );
 }

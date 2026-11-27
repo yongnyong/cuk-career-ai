@@ -273,7 +273,7 @@ export interface StartupPlan {
   opportunity?: { id: string; title: string; version: number; source_url: string } | null;
   nodes: {
     id: string; title: string; action: string; completion: string; reason: string;
-    completed: boolean; active: boolean; reuse: string[]; requires?: string[]; stage?: number;
+    completed: boolean; active: boolean; reuse: string[]; requires?: string[]; stage?: number; section?: string;
     evidence?: { posting_id: string; version: number; title: string; quote: string; source_url: string }[];
   }[];
 }

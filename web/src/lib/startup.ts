@@ -8,7 +8,9 @@ export const startupSkills = (catalog: StartupCatalog): Skill[] => catalog.nodes
   .map((n) => ({ id: n.id, name: n.title, kind: n.kind === "artifact" ? "프로젝트" : "역량", verifiable: false }));
 
 export function buildStartupPath(profile: Profile, opportunities: Opportunity[], now: Date, catalog: StartupCatalog, plan?: StartupPlan) {
-  const definitions = catalog.nodes.filter((n) => n.kind === "artifact" || n.kind === "preparation");
+  const generated = plan?.nodes.some(n => n.active && n.action.startsWith("generated:"));
+  const definitions = catalog.nodes.filter((n) => (n.kind === "artifact" || n.kind === "preparation") &&
+    (!generated || (profile.skills[n.id] ?? "none") !== "none"));
   const ids = new Set(definitions.map((n) => n.id));
   const byPosting = new Map(opportunities.filter((o) => o.startup).map((o) => [o.startup!.postingId, o]));
   const signals = new Map<string, TreeSignal[]>();
@@ -27,7 +29,7 @@ export function buildStartupPath(profile: Profile, opportunities: Opportunity[],
     const connections = [...new Set(catalog.edges.filter((e) => e.parent_id === definition.id && ids.has(e.child_id)).map((e) => e.child_id))];
     const linkedIds = new Set(definition.references.map((r) => r.posting_id));
     return {
-      route: { domain: "common", stage: 1 },
+      route: { domain: ["SU-PREP-problem", "SU-PREP-item", "SU-PREP-team-capability"].includes(definition.id) ? "common" : "specialist", stage: 1 },
       skill: definition.id, name: definition.title.replace("발표자료·피치덱 제작", "아이템 소개 발표자료 제작"), kind: definition.kind === "artifact" ? "프로젝트" : "역량",
       required: false, prereq: [], connections, depth: 0, state, locked: false,
       opportunities: [...byPosting.values()].filter((o) => linkedIds.has(o.startup!.postingId) && isOpen(o, now) && evaluate(o, profile).overall !== "fail"),
@@ -50,7 +52,8 @@ export function buildStartupPath(profile: Profile, opportunities: Opportunity[],
       skill: item.id, name: item.title, kind: "프로젝트", state: item.completed ? "self" : "none",
       required: false, prereq: (item.requires ?? []).filter(id => dependencies.has(id)),
       locked: (item.requires ?? []).some(id => plan?.nodes.some(n => n.id === id && !n.completed)),
-      depth: item.stage ?? 2, route: { domain: "specialist", stage: item.stage ?? 2 },
+      startupSection: item.section,
+      depth: item.stage ?? 2, route: { domain: item.section === "공통 준비" ? "common" : "specialist", stage: item.stage ?? 2 },
       sequence: item.reuse.filter(id => dependencies.has(id)),
       opportunities: opportunities.filter(o => item.evidence?.some(source => source.posting_id === o.id)),
       evidence: references, personalCompletion: item.completion, personalReason: item.reason,

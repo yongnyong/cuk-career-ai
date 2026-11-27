@@ -158,13 +158,13 @@ def make_router(current_user: Callable, service: AssistantService) -> APIRouter:
             plan = apply_request(plan.model_copy(deep=True), body)
         except ValueError as error:
             raise HTTPException(422, str(error)) from None
-        state.startup_plan = update_plan(plan, {})
+        state.startup_plan = update_plan(plan, {}, model=getattr(service, "model", None))
         service.store.save_state(user_id, state)
         return {"revision": state.revision + 1, "plan": state.startup_plan,
                 "application_stale": application_view(state.startup_plan)}
 
     @router.patch("/startup-plan")
-    def patch_startup_plan(body: PlanPatch, user_id: str = Depends(owner)):
+    def patch_startup_plan(body: PlanPatch, user_id: str = Depends(limited_owner)):
         from .errors import Conflict
         state = service.store.get_state(user_id)
         if state.revision != body.revision:
@@ -190,7 +190,7 @@ def make_router(current_user: Callable, service: AssistantService) -> APIRouter:
             if body.completed and any(n.id in node.requires and not n.completed for n in plan.nodes):
                 raise HTTPException(422, "먼저 필요한 시제품 퀘스트를 완료해 주세요.")
             node.completed = body.completed
-        plan = update_plan(plan, {})
+        plan = update_plan(plan, {}, model=getattr(service, "model", None))
         state.startup_plan = plan
         service.store.save_state(user_id, state)
         return {"revision": state.revision + 1, "plan": plan}

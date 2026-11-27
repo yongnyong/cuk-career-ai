@@ -1,3 +1,5 @@
+import { aiProjectById } from "./data/aiProjects";
+import { psychologyProjectById } from "./data/psychologyProjects";
 import type { TreeNode } from "./engine";
 import type { RecommendedQuest } from "./types";
 import { scaleOf } from "./data/catalog";
@@ -71,7 +73,7 @@ const samples: Record<string, Work> = {
   "SK-MKT": ["광고 캠페인 브리프 작성", "상품, 타깃, 핵심 메시지, 매체 예산과 성과 판단 기준을 담은 브리프를 만드세요."],
   "SK-SNS": ["채널 게시물 시리즈 제작", "직접 만든 게시물의 카피와 이미지·영상 원본, 발행 순서와 게시 일정을 묶으세요."],
   "SK-PPT": ["프로젝트 제안용 발표 덱 제작", "제안 대상, 해결할 문제, 제안 내용, 비용과 다음 결정을 설명하는 슬라이드를 만드세요."],
-  "SK-RESUME": ["목표 공고에 맞춘 이력서 완성", "선택한 공고의 업무와 관련된 경험을 골라 본인의 역할과 성과를 담은 제출용 이력서를 저장하세요."],
+  "SK-RESUME": ["자기소개서 작성", "목표 직무나 공고의 자기소개서 문항에 맞춰 지원 동기, 관련 경험에서 맡은 역할과 성과를 담은 제출용 자기소개서를 완성하세요."],
   "KOR-CREATE": ["문예지 투고용 창작 원고 완성", "투고할 지면과 장르를 정하고, 해당 지면의 원고 규격에 맞춘 완성본을 만드세요."],
   "KOR-CONTEST": ["문예 공모전 응모", "공고의 응모 자격과 미발표작 조건을 확인하고 제출한 원고와 접수 확인을 남기세요."],
   "KLC-MATERIAL": ["한국어 수업용 교재 단원 제작", "대상 학습 수준에 맞춰 예시 대화, 어휘, 말하기 활동과 교사용 해설을 한 단원으로 묶으세요."],
@@ -115,6 +117,9 @@ const startupTitles: Record<string, string> = {
 
 export function questOutcome(node: TreeNode) {
   const { name, skill, kind, startup } = node;
+  if (node.portfolioSources) return { title: name, completion: "완료한 프로젝트 중 대표 작업을 골라 목적, 접근 방법과 근거, 본인 기여, 결과와 한계, 결과물 링크를 하나의 포트폴리오 파일이나 사이트로 정리하세요. 모든 후보 프로젝트를 수행할 필요는 없어요.", label: "포트폴리오" };
+  const psychologyProject = psychologyProjectById.get(skill) ?? aiProjectById.get(skill);
+  if (psychologyProject) return { title: psychologyProject.name, completion: psychologyProject.completion, label: "추천 프로젝트" };
   if (node.mine) return { title: name, completion: "스스로 정한 기준을 채우면 완료로 표시하세요.", label: "내 노드" };
   if (node.personalCompletion) return { title: name, completion: node.personalCompletion, label: "맞춤 작업물" };
   if (startup) {

@@ -1,5 +1,6 @@
 """Owned startup facts, deterministic task planning and conversational intake."""
 import hashlib
+import logging
 import re
 from datetime import datetime, timezone
 from uuid import uuid4
@@ -11,6 +12,7 @@ from .startup_tasks import Task, artifact_types, goal_intent, task_for
 from .startup_application import StartupApplication
 
 FACT_FIELDS = ("idea", "customer", "artifacts", "goal", "action")
+_LOGGER = logging.getLogger(__name__)
 
 
 class PlanEvidence(BaseModel):
@@ -43,10 +45,13 @@ class PlanNode(BaseModel):
     goal_id: str = ""
     output: str = ""
     stage: int = 2
+    section: str = ""
     evidence: list[PlanEvidence] = Field(default_factory=list)
 
 
 class StartupPlan(BaseModel):
+    generation_fingerprint: str = ""
+    generation_status: str = "not_requested"
     idea: str = ""
     customer: str = ""
     artifacts: str = ""
@@ -79,7 +84,36 @@ def _clean(text: str) -> str:
     return redact(text).strip()[:240]
 
 
-def update_plan(plan: StartupPlan, fields: dict[str, str], *, new_project: bool = False) -> StartupPlan:
+def update_plan(plan: StartupPlan, fields: dict[str, str], *, new_project: bool = False, model=None) -> StartupPlan:
+    from .startup_generation import fingerprint, generate_nodes
+    result = _rule_plan(plan, fields, new_project=new_project)
+    current = fingerprint(result)
+    cached = current == plan.generation_fingerprint and plan.generation_status in {"generated", "fixture"}
+    if cached:
+        # Completion changes and repeated form submissions must not regenerate the tree.
+        generated = [n.model_copy(deep=True) for n in plan.nodes if n.action.startswith("generated:")]
+    elif model is not None and result.idea:
+        candidate = result.model_copy(deep=True)
+        candidate.nodes = plan.nodes
+        generated = generate_nodes(candidate, model)
+        result.generation_status = "generated" if generated else "fallback"
+    else:
+        generated = None
+        result.generation_status = "fallback" if result.idea else "not_requested"
+    if generated:
+        ids = {n.id for n in generated}
+        # Keep grounded submission/application tasks alongside optional model suggestions.
+        grounded = [n for n in result.nodes if n.active and (n.evidence or n.action.startswith("application_") or n.action == "verify_documents")]
+        history = [n.model_copy(update={"active": False}, deep=True) for n in plan.nodes if n.completed and n.id not in ids and n.id not in {g.id for g in grounded}]
+        result.nodes = generated + grounded + history
+        result.generation_fingerprint = current
+        result.generation_status = plan.generation_status if cached else "generated"
+    else:
+        result.generation_fingerprint = ""
+    return result
+
+
+def _rule_plan(plan: StartupPlan, fields: dict[str, str], *, new_project: bool = False) -> StartupPlan:
     """Recompute from merged facts. Arrival order never determines the chosen task."""
     result = plan.model_copy(deep=True)
     previous_goal = plan.goal
@@ -211,7 +245,7 @@ def is_plan_message(message: str) -> bool:
                           r"아이디어.*(?:바꿔|변경)|(?:고객|시제품|도안).*(?:있|바꿔)", message))
 
 
-def extract_fields(message: str, plan: StartupPlan, model=None) -> dict[str, str]:
+def extract_fields(message: str, plan: StartupPlan, model=None, *, expected: str | None = None) -> dict[str, str]:
     if re.search(r"만약|예를\s*들|다른\s*팀|친구.{0,6}(?:팀|아이디어)|[?？]", message):
         return {}
     if re.search(r"(?:대회|지원사업|선주문|출시|시연).*(?:생각이\s*없|계획이\s*없|않|안\s*나가|취소)", message):
@@ -219,24 +253,31 @@ def extract_fields(message: str, plan: StartupPlan, model=None) -> dict[str, str
     from .privacy import redact
     message = redact(message)
     if model:
-        schema = {"type": "object", "properties": {
-            key: {"type": "string", "maxLength": 240} for key in FACT_FIELDS},
-            "additionalProperties": False}
+        from .model import generate_for
+        from .prompts import object_schema
+        # Use the same Gemini responseSchema dialect as the working chat path.
+        schema = object_schema(**{key: {"type": "STRING"} for key in FACT_FIELDS})
         schema["properties"]["action"]["enum"] = ["preorder", "demo", "launch", "competition", "customer", ""]
         try:
             current = {key: redact(getattr(plan, key)) for key in FACT_FIELDS}
-            fields = model.generate(
+            fields = generate_for(model, 'startup_intake',
                 "학생 자신의 창업 정보에서 명시한 변경만 JSON으로 추출. 기존 값 반복 금지. "
                 "가정·다른 팀·일반 질문은 빈 객체. 거절하거나 취소한 목표를 새 목표로 저장하지 않는다. "
-                "goal은 교내/전국 등 대상과 시기를 보존한다. action은 목표 의도이며 보유 결과물로 추론하지 않는다.",
-                {"message": message, "current": current}, schema)
-        except (OSError, ValueError, ModelUnavailable):
+                "goal은 교내/전국 등 대상과 시기를 보존한다. action은 목표 의도이며 보유 결과물로 추론하지 않는다. "
+                "서비스를 기획·구상하는 설명도 idea로 추출한다. asked_field는 직전 질문의 항목이다. "
+                "명시되지 않거나 바뀌지 않은 항목은 빈 문자열. 각 값은 240자 이내. 사용자·보유 결과물·목표를 임의로 만들지 않는다.",
+                {"message": message, "current": current, "asked_field": expected}, schema)
+        except (OSError, ValueError, ModelUnavailable) as exc:
+            _LOGGER.info('startup_intake extraction=failed error=%s', getattr(exc, 'code', type(exc).__name__))
             fields = None
         else:
             if (isinstance(fields, dict) and all(key in FACT_FIELDS and isinstance(value, str)
                     and len(value) <= 240 for key, value in fields.items())
                     and fields.get("action") in (None, "", "preorder", "demo", "launch", "competition", "customer")):
-                return {key: _clean(value) for key, value in fields.items()}
+                result = {key: _clean(value) for key, value in fields.items() if value.strip()}
+                _LOGGER.info('startup_intake extraction=%s fields=%d', 'model' if result else 'empty', len(result))
+                return result
+            _LOGGER.info('startup_intake extraction=invalid_result')
             fields = None
 
     # Fallback is used for an unavailable/invalid model, never for a valid empty extraction.
@@ -257,6 +298,23 @@ def extract_fields(message: str, plan: StartupPlan, model=None) -> dict[str, str
         fields["artifacts"] = "없음" if re.search(r"없|아직|안\s*만들", message) else "디자인 도안"
     if "시제품" in message:
         fields["artifacts"] = "없음" if re.search(r"없|아직|안\s*만들", message) else "시제품"
+    # Preserve an explicit product description without inventing its users or status.
+    if not fields.get("idea") and re.search(r'서비스|웹사이트|웹\s*서비스|앱|플랫폼|제품|AI|비서|도구', message, re.I) and re.search(
+            r'기획|만들|개발|구상|운영|제작', message):
+        fields['idea'] = _clean(message)
+    unresolved = bool(re.search(r'모르|미정|안\s*정|정하지|생각\s*중|아무거나|아직.*없', message)) or bool(
+        re.fullmatch(r'(?:안녕|안녕하세요|네|응|그래|좋아|도와줘|시작|계속|다음|몰라|패스)[.! ]*', message.strip()))
+    # Short replies belong to the question just asked, only during explicit intake.
+    # Do not interpret a product/goal update as the answer to a different question.
+    if expected and not fields and not unresolved:
+        if expected == 'customer':
+            fields['customer'] = _clean(message)
+        elif expected == 'artifacts':
+            fields['artifacts'] = _clean(message)
+        elif expected == 'goal':
+            fields['goal'] = _clean(message)
+    if expected == 'artifacts' and re.search(r'없|아직.*기획|기획.*단계', message) and not fields.get('idea'):
+        fields['artifacts'] = '없음' if re.search(r'없', message) else _clean(message)
     return fields
 
 
@@ -301,7 +359,9 @@ def chat_plan(service, user_id, request):
             return turn.result
     plan = state.startup_plan or StartupPlan()
     personal = request.context.startup_node_id
-    fields = extract_fields(request.message, plan, service.model) if (
+    intake = request.mode == 'startup_intake'
+    expected = next((key for key in ('idea', 'customer', 'artifacts', 'goal') if not getattr(plan, key)), None) if intake else None
+    fields = extract_fields(request.message, plan, service.model, expected=expected) if (
         not personal or is_plan_message(request.message)) else {}
     node = next((node for node in plan.nodes if node.id == personal), None) if personal else None
     if personal and not fields:
@@ -310,17 +370,23 @@ def chat_plan(service, user_id, request):
     else:
         new_project = bool(re.search(r"(?:아이디어|아이템).*(?:바꿔|변경|교체)", request.message)
                            and fields.get("idea") != plan.idea and fields.get("idea"))
-        plan = update_plan(plan, fields, new_project=new_project)
+        plan = update_plan(plan, fields, new_project=new_project, model=service.model)
         plan.turns += 1
         active = next((node for node in plan.nodes if node.active and not node.completed), None)
         missing = next((question for key, question in (
             ("idea", "어떤 제품이나 서비스를 만들고 있어요?"),
             ("customer", "누가 어떤 상황에서 사용하면 좋을까요?"),
-            ("goal", "지금은 첫 고객 만나기, 제품 출시, 대회·지원사업 신청 중 무엇을 먼저 하고 싶어요?"))
+            *(([("artifacts", "지금 준비된 결과물이 있나요? 기획만 있는 단계라면 그렇게 알려 주세요.")] if intake else [])),
+            ("goal", "다음으로 무엇을 해보거나 확인하고 싶어요? 아직 정하지 못했다면 그렇게 알려 주세요."))
             if not getattr(plan, key)), "")
-        answer = f"추천 퀘스트는 ‘{active.title}’예요.\n{active.completion}" if active else missing or "완료한 결과물을 활용해 다음 목표를 알려 주세요."
-        if plan.turns >= 3 and missing:
-            answer = "지금 아는 내용으로 공통 준비 트리를 열 수 있어요. 우리 팀 정보 수정에서 아이디어·고객·목표를 채우면 맞춤 퀘스트를 만들어요."
+        if intake and plan.idea and plan.generation_status == "generated":
+            missing = ""
+        answer = missing if intake and missing else f"추천 퀘스트는 ‘{active.title}’예요.\n{active.completion}" if active else missing or "완료한 결과물을 활용해 다음 목표를 알려 주세요."
+        if intake and fields:
+            labels = {'idea': '서비스 설명', 'customer': '주요 사용자', 'artifacts': '준비한 결과물', 'goal': '다음 목표'}
+            acknowledged = [f"{label}: {getattr(plan, key)}" for key, label in labels.items() if fields.get(key)]
+            if acknowledged:
+                answer = '알려준 내용을 기록했어요.\n' + '\n'.join(acknowledged) + '\n\n' + answer
         state.startup_plan = plan
         changed = True
     result = ChatResult(answer=redact(answer), conversation_id=request.conversation_id, startup_plan_updated=changed)
